@@ -11,13 +11,14 @@ namespace Boilerplate.Infrastructure.Migrations
                 "Heroes",
                 table => new
                 {
-                    Id = table.Column<Guid>("uniqueidentifier", nullable: false),
-                    Name = table.Column<string>("nvarchar(max)", nullable: false),
-                    Nickname = table.Column<string>("nvarchar(max)", nullable: true),
-                    Individuality = table.Column<string>("nvarchar(max)", nullable: true),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>("text", nullable: false),
+                    Nickname = table.Column<string>("text", nullable: true),
+                    Individuality = table.Column<string>("text", nullable: true),
                     Age = table.Column<int>("int", nullable: true),
                     HeroType = table.Column<int>("int", nullable: false),
-                    Team = table.Column<string>("nvarchar(max)", nullable: true)
+                    Team = table.Column<string>("text", nullable: true)
                 },
                 constraints: table =>
                 {
