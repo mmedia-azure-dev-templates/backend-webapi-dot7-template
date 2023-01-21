@@ -22,7 +22,7 @@ public partial struct HeroId : ILong
 }
 
 [StronglyTypedId]
-public partial struct UserId : IGuid
+public partial struct UserId : ILong
 {
     public static implicit operator UserId(long userId)
     {

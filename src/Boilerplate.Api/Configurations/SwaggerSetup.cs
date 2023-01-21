@@ -56,7 +56,7 @@ public static class SwaggerSetup
                 In = ParameterLocation.Header,
                 Description = "Enter your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
             });
-            
+
             // Maps all structured ids to the guid type to show correctly on swagger
             var allGuids = typeof(IGuid).Assembly.GetTypes().Where(type => typeof(IGuid).IsAssignableFrom(type) && !type.IsInterface).ToList();
             foreach (var guid in allGuids)
