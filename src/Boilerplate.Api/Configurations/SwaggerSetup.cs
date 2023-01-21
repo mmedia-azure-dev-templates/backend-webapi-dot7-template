@@ -70,6 +70,18 @@ public static class SwaggerSetup
                 c.MapType(allLong, () => new OpenApiSchema { Type = "integer", Format = "int64" });
             }
 
+            var allInts = typeof(IInt).Assembly.GetTypes().Where(type => typeof(IInt).IsAssignableFrom(type) && !type.IsInterface).ToList();
+            foreach (var allInt in allInts)
+            {
+                c.MapType(allInt, () => new OpenApiSchema { Type = "integer", Format = "int32" });
+            }
+
+            var allStrings = typeof(IString).Assembly.GetTypes().Where(type => typeof(IString).IsAssignableFrom(type) && !type.IsInterface).ToList();
+            foreach (var allString in allStrings)
+            {
+                c.MapType(allString, () => new OpenApiSchema { Type = "string" });
+            }
+
         });
         return services;
     }

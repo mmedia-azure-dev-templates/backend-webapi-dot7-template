@@ -11,6 +11,8 @@ namespace Boilerplate.Domain.Entities.Common;
 
 public interface IGuid {}
 public interface ILong { }
+public interface IInt { }
+public interface IString { }
 
 [StronglyTypedId]
 public partial struct HeroId : ILong
