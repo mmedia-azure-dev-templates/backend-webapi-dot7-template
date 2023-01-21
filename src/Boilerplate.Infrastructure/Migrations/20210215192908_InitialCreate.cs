@@ -11,8 +11,7 @@ public partial class InitialCreate : Migration
             "Heroes",
             table => new
             {
-                Id = table.Column<long>(type: "serial", nullable: false)
-                    .Annotation("SqlServer:Identity", "1, 1"),
+                Id = table.Column<long>(type: "serial", nullable: false),
                 Name = table.Column<string>("text", nullable: false),
                 Nickname = table.Column<string>("text", nullable: true),
                 Individuality = table.Column<string>("text", nullable: true),
