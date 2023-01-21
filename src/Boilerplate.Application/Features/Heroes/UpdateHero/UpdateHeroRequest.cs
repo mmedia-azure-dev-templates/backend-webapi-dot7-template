@@ -8,7 +8,6 @@ namespace Boilerplate.Application.Features.Heroes.UpdateHero;
 
 public record UpdateHeroRequest : IRequest<OneOf<GetHeroResponse, HeroNotFound>>
 {
-    [JsonIgnore]
     public HeroId Id { get; init; }
     
     public string Name { get; init; } = null!;

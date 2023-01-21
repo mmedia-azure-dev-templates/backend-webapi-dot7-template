@@ -20,7 +20,7 @@ public class Session : ISession
 
         if(nameIdentifier != null)
         {
-            UserId = new Guid(nameIdentifier.Value);
+            UserId = Convert.ToInt64(nameIdentifier.Value);
         }
     }
 

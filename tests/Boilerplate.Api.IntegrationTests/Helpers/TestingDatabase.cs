@@ -23,14 +23,14 @@ public static class TestingDatabase
     {
         new User()
         {
-            Id = new Guid("2e3b7a21-f06e-4c47-b28a-89bdaa3d2a37"),
+            Id = 1,
             Password = BC.HashPassword("testpassword123"),
             Email = "admin@boilerplate.com",
             Role = "Admin"
         },
         new User()
         {
-            Id = new Guid("c68acd7b-9054-4dc3-b536-17a1b81fa7a3"),
+            Id = 2,
             Password = BC.HashPassword("testpassword123"),
             Email = "user@boilerplate.com",
             Role = "User"
@@ -40,8 +40,8 @@ public static class TestingDatabase
     public static readonly List<Hero> GetSeedingHeroes =
         new()
         {
-            new(){ Id = new Guid("824a7a65-b769-4b70-bccb-91f880b6ddf1"), Name = "Corban Best", HeroType = HeroType.ProHero },
-            new() { Id = new Guid("b426070e-ccb3-42e6-8fb4-ef6aa5a62cc4"), Name = "Priya Hull", HeroType = HeroType.Student },
-            new() { Id = new Guid("634769f7-a7b8-4146-9cb2-ff2dd90e886b"), Name = "Harrison Vu", HeroType = HeroType.Teacher }
+            new(){ Id = 1, Name = "Corban Best", HeroType = HeroType.ProHero },
+            new() { Id = 2, Name = "Priya Hull", HeroType = HeroType.Student },
+            new() { Id = 3, Name = "Harrison Vu", HeroType = HeroType.Teacher }
         };
 }

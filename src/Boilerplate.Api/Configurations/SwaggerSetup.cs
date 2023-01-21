@@ -58,11 +58,16 @@ public static class SwaggerSetup
             });
             
             // Maps all structured ids to the guid type to show correctly on swagger
-            var allGuids = typeof(IGuid).Assembly.GetTypes().Where(type => typeof(IGuid).IsAssignableFrom(type) && !type.IsInterface)
-                .ToList();
+            var allGuids = typeof(IGuid).Assembly.GetTypes().Where(type => typeof(IGuid).IsAssignableFrom(type) && !type.IsInterface).ToList();
             foreach (var guid in allGuids)
             {
                 c.MapType(guid, () => new OpenApiSchema { Type = "string", Format = "uuid" });
+            }
+
+            var allLongs = typeof(ILong).Assembly.GetTypes().Where(type => typeof(ILong).IsAssignableFrom(type) && !type.IsInterface).ToList();
+            foreach (var allLong in allLongs)
+            {
+                c.MapType(allLong, () => new OpenApiSchema { Type = "integer", Format = "int64" });
             }
 
         });

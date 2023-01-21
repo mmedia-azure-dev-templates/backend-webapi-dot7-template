@@ -2,30 +2,30 @@
 using System;
 
 [assembly: StronglyTypedIdDefaults(
-    backingType: StronglyTypedIdBackingType.Guid,
+    backingType: StronglyTypedIdBackingType.Long,
     converters: StronglyTypedIdConverter.SystemTextJson | StronglyTypedIdConverter.EfCoreValueConverter |
                 StronglyTypedIdConverter.Default | StronglyTypedIdConverter.TypeConverter,
     implementations: StronglyTypedIdImplementations.IEquatable | StronglyTypedIdImplementations.Default)]
 
 namespace Boilerplate.Domain.Entities.Common;
 
-
 public interface IGuid {}
+public interface ILong { }
 
 [StronglyTypedId]
-public partial struct HeroId : IGuid
+public partial struct HeroId : ILong
 {
-    public static implicit operator HeroId(Guid guid)
+    public static implicit operator HeroId(long heroId)
     {
-        return new HeroId(guid);
+        return new HeroId(heroId);
     }
 }
 
 [StronglyTypedId]
 public partial struct UserId : IGuid
 {
-    public static implicit operator UserId(Guid guid)
+    public static implicit operator UserId(long userId)
     {
-        return new UserId(guid);
+        return new UserId(userId);
     }
 }
