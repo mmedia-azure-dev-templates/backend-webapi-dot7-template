@@ -10,7 +10,7 @@ public partial class AddSchemaWeb : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql("CREATE SCHEMA web;");
+        migrationBuilder.Sql("CREATE SCHEMA IF NOT EXISTS web;");
     }
 
     /// <inheritdoc />
