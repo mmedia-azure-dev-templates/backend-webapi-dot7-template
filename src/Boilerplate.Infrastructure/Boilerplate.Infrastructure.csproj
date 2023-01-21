@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -18,6 +18,14 @@
   <ItemGroup>
     <ProjectReference Include="..\Boilerplate.Application\Boilerplate.Application.csproj" />
     <ProjectReference Include="..\Boilerplate.Domain\Boilerplate.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(SolutionDir)Scripts\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Scripts\*.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
