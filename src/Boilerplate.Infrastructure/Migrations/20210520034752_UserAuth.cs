@@ -12,7 +12,7 @@ namespace Boilerplate.Infrastructure.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "serial", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "varchar(254)", maxLength: 254, nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
