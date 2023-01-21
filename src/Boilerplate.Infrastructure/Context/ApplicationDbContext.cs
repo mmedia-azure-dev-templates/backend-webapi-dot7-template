@@ -15,7 +15,7 @@ public class ApplicationDbContext : DbContext, IContext
 
     public DbSet<User> Users { get; set; } = null!;
 
-    public virtual DbSet<Articulo> Articulos { get; set; }
+    /*public virtual DbSet<Articulo> Articulos { get; set; }
 
     public virtual DbSet<Catalogo> Catalogos { get; set; }
 
@@ -76,7 +76,7 @@ public class ApplicationDbContext : DbContext, IContext
     public virtual DbSet<Ubicaciongeografica> Ubicaciongeograficas { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-    /*
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
 
