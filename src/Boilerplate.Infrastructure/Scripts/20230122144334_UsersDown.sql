@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS web."Users";
+DROP TABLE web."Users";
