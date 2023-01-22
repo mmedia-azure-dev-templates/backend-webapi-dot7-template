@@ -1047,5 +1047,6 @@ public class ApplicationDbContext : DbContext, IContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
+        modelBuilder.HasDefaultSchema("web");
     }
 }

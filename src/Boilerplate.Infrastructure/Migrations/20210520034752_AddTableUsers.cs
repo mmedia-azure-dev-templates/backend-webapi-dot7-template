@@ -1,19 +1,19 @@
 ﻿using System;
 using Boilerplate.Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore.Migrations;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Boilerplate.Infrastructure.Migrations;
 
-public partial class InitialCreate : Migration
+public partial class UserAuth : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql("CREATE SCHEMA IF NOT EXISTS web;");
-        
+        migrationBuilder.Sql(Utils.GetRawSql("20210520034752_AddTableUsers.sql"));
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql("DROP SCHEMA IF EXISTS web;");
+        migrationBuilder.DropTable(name: "Users","web");
     }
 }
