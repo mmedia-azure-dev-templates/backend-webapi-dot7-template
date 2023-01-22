@@ -103,7 +103,11 @@ After that, you can pass the jwt on the lock (if using swagger) or via the Autho
 1. To run migrations on this project, run the following command on the root folder: 
 	- ``dotnet ef migrations add InitialCreate --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\``
 
+
 2. This command will set the entrypoint for the migration (the responsible to selecting the dbprovider { sqlserver, mysql, etc } and the connection string) and the selected project will be "Boilerplate.Infrastructure", which is where the dbcontext is.
+
+3. Rollback all migrations
+	- ``dotnet ef database update --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\``
 
 # If you like it, give it a Star
 If this template was useful for you, or if you learned something, please give it a Star! :star:
