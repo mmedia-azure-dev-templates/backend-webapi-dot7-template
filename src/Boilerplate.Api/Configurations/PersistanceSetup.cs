@@ -15,7 +15,7 @@ public static class PersistanceSetup
         services.AddScoped<ISession, Session>();
         services.AddDbContext<ApplicationDbContext>(o =>
         {
-            o.UseNpgsql(configuration.GetConnectionString("PostgresConnection"), x => x.MigrationsHistoryTable("EFMigrationsHistory","web"));
+            o.UseNpgsql(configuration.GetConnectionString("PostgresConnection"), x => x.MigrationsHistoryTable("__EFMigrationsHistory", "web"));
         });
 
         return services;
