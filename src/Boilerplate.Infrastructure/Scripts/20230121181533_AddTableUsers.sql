@@ -45,3 +45,40 @@ CREATE INDEX IF NOT EXISTS Idx_Users_Nombres
     ON web."Users" USING btree
     ("Nombres" COLLATE pg_catalog."default" ASC NULLS LAST)
     TABLESPACE pg_default;
+
+
+insert into web."Users"
+(
+	"Id",
+	"Nombres",
+	"Apellidos",
+	"Username",
+	"Password",
+	"Role",
+	"RememberToken",
+	"Email",
+	"IsActive",
+	"LastLogin",
+	"LastLoginIp",
+	"CreatedAt",
+	"UpdatedAt",
+	"DeletedAt"
+)
+select 
+    "id",
+	"nombres",
+	"apellidos",
+	"username",
+	"password",
+    'User',
+	"remember_token",
+	"email",
+	"is_active",
+	"last_login",
+	"last_login_ip",
+	"created_at",
+	"updated_at",
+	"deleted_at"
+    FROM  public.users;
+
+update web."Users" set "Role" = 'Admin' where "Id" = 1
