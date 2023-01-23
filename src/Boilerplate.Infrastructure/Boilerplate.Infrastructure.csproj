@@ -27,5 +27,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Reverse\" />
+  </ItemGroup>
 
 </Project>

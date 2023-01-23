@@ -8,47 +8,47 @@ namespace Boilerplate.Domain.Entities;
 /// </summary>
 public partial class Postulant
 {
-    public int Ptlid { get; set; }
+    public int Id { get; set; }
 
-    public bool? Ptlcontacted { get; set; }
+    public bool? Contacted { get; set; }
 
-    public string Ptlnombres { get; set; }
+    public string Name { get; set; } = null!;
 
-    public string Ptlapellidos { get; set; }
+    public string SurName { get; set; } = null!;
 
-    public string Ptlusername { get; set; }
+    public string UserName { get; set; } = null!;
 
-    public string Ptlemail { get; set; }
+    public string Email { get; set; } = null!;
 
-    public int Ptltipodocumento { get; set; }
+    public int CatTypeDocument { get; set; }
 
-    public int Ptlnacionalidad { get; set; }
+    public int CatNacionality { get; set; }
 
-    public string Ptlndocumento { get; set; }
+    public string Ndocument { get; set; } = null!;
 
-    public int Ptlgenero { get; set; }
+    public int Gender { get; set; }
 
-    public int Ptlestadocivil { get; set; }
+    public int CatCivilStatus { get; set; }
 
-    public DateOnly Ptlfecnacimiento { get; set; }
+    public DateOnly BirthDate { get; set; }
 
-    public int Ptlprovincia { get; set; }
+    public int UbcProvincia { get; set; }
 
-    public int Ptlcanton { get; set; }
+    public int UbcCanton { get; set; }
 
-    public int Ptlparroquia { get; set; }
+    public int UbcParroquia { get; set; }
 
-    public string Ptldireccion { get; set; }
+    public string? Address { get; set; }
 
-    public string Ptltelefono { get; set; }
+    public string Phone { get; set; } = null!;
 
-    public string Ptlcelular { get; set; }
+    public string Mobile { get; set; } = null!;
 
-    public int Ptlestado { get; set; }
+    public int State { get; set; }
 
-    public string Ptlimgurl { get; set; }
+    public string? ImgUrl { get; set; }
 
-    public string Ptlhojavidaurl { get; set; }
+    public string? CurriculumUrl { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

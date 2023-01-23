@@ -108,8 +108,9 @@ After that, you can pass the jwt on the lock (if using swagger) or via the Autho
 
 3. Rollback all migrations
 	- ``dotnet ef database update 0 --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\``
-4. Reverse Enginering Database
-	- `` dotnet ef dbcontext scaffold "Host=172.16.20.4;Database=madsisqa;Username=raul.flores;Password=Per aspera$" Npgsql.EntityFrameworkCore.PostgreSQL --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\ ``
+	
+4. Reverse Enginering Database (Remove Schema public)
+	- `` dotnet ef dbcontext scaffold "Host=172.16.20.4;Database=madsisqa;Username=raul.flores;Password=Per aspera$" Npgsql.EntityFrameworkCore.PostgreSQL --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\ --output-dir .\Reverse ``
 # If you like it, give it a Star
 If this template was useful for you, or if you learned something, please give it a Star! :star:
 

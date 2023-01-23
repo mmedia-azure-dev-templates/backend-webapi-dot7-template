@@ -6,11 +6,11 @@ namespace Boilerplate.Domain.Entities;
 /// <summary>
 /// TABLA DONDE SE ALMACENA EL INVENTARIO DE LOS DOCUMENTOS REQUERIDOS EN LAS ORDENES
 /// </summary>
-public partial class Documento
+public partial class InventoryDoc
 {
-    public int Docuid { get; set; }
+    public int Id { get; set; }
 
-    public string Docucodigo { get; set; }
+    public string Code { get; set; } = null!;
 
-    public string Docudescripcion { get; set; }
+    public string Description { get; set; } = null!;
 }

@@ -5,13 +5,13 @@ namespace Boilerplate.Domain.Entities;
 
 public partial class Inscription
 {
-    public int Insid { get; set; }
+    public int Id { get; set; }
 
-    public string Insconvenio { get; set; }
+    public string Agreement { get; set; } = null!;
 
-    public DateTime Insfecha { get; set; }
+    public DateTime InscriptionDate { get; set; }
 
-    public int Inssolicitante { get; set; }
+    public int Applicant { get; set; }
 
-    public string Insdatos { get; set; }
+    public string? Information { get; set; }
 }

@@ -18,9 +18,9 @@ CREATE TABLE IF NOT EXISTS web."Users"
     "CreatedAt" timestamp(0) without time zone NOT NULL,
     "UpdatedAt" timestamp without time zone NOT NULL,
     "DeletedAt" timestamp without time zone,
-    CONSTRAINT Users_Id PRIMARY KEY ("Id"),
-    CONSTRAINT Users_Email UNIQUE ("Email"),
-    CONSTRAINT Users_UserName UNIQUE ("UserName")
+    CONSTRAINT "Users_Id_pkey" PRIMARY KEY ("Id"),
+    CONSTRAINT "Users_Email_key" UNIQUE ("Email"),
+    CONSTRAINT "Users_UserName_key" UNIQUE ("UserName")
 )
 WITH (
     OIDS = FALSE
@@ -29,19 +29,19 @@ TABLESPACE pg_default;
 
 COMMENT ON TABLE web."Users"
     IS 'EN ESTA TABLA SE GUARDAN LOS USUARIOS DEL SISTEMA';
--- Index: Idx_Users_Surname
+-- Index: Users_SurName_idx
 
--- DROP INDEX IF EXISTS web.Idx_Users_Surname;
+-- DROP INDEX IF EXISTS web."Users_SurName_idx";
 
-CREATE INDEX IF NOT EXISTS Idx_Users_SurName
+CREATE INDEX IF NOT EXISTS "Users_SurName_idx"
     ON web."Users" USING btree
     ("SurName" COLLATE pg_catalog."default" ASC NULLS LAST)
     TABLESPACE pg_default;
--- Index: idx_Users_Name
+-- Index: "Users_Name_idx"
 
--- DROP INDEX IF EXISTS web.Idx_Users_Name;
+-- DROP INDEX IF EXISTS web."Users_Name_idx";
 
-CREATE INDEX IF NOT EXISTS Idx_Users_Name
+CREATE INDEX IF NOT EXISTS "Users_Name_idx"
     ON web."Users" USING btree
     ("Name" COLLATE pg_catalog."default" ASC NULLS LAST)
     TABLESPACE pg_default;

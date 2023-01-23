@@ -12,7 +12,9 @@ public class Hero : Entity<HeroId>
     public string Name { get; set; } = null!;
 
     public string? Nickname { get; set; }
-    public string? Individuality { get; set; } = null!;
+
+    public string? Individuality { get; set; }
+
     public int? Age { get; set; }
 
     public HeroType HeroType { get; set; }

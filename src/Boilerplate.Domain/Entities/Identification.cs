@@ -21,7 +21,7 @@ public partial class Identification : Entity<IdentificationId>
 
     public int CatNacionality { get; set; }
 
-    public string Ndocument { get; set; } = string.Empty;
+    public string Ndocument { get; set; } = null!;
 
     public int? CatGender { get; set; }
 
@@ -35,15 +35,15 @@ public partial class Identification : Entity<IdentificationId>
 
     public short Hired { get; set; }
 
-    public string ImgUrl { get; set; } = string.Empty;
+    public string? ImgUrl { get; set; }
 
-    public string CurriculumUrl { get; set; } = string.Empty;
+    public string? CurriculumUrl { get; set; }
 
-    public string Mobile { get; set; } = string.Empty;
+    public string? Mobile { get; set; }
 
-    public string Phone { get; set; } = string.Empty;
+    public string? Phone { get; set; }
 
-    public string Address { get; set; } = string.Empty;
+    public string? Address { get; set; }
 
     public int? UbcProvincia { get; set; }
 
@@ -51,5 +51,7 @@ public partial class Identification : Entity<IdentificationId>
 
     public int? UbcParroquia { get; set; }
 
-    public string Notes { get; set; } = string.Empty;
+    public string? Notes { get; set; }
+
+    public virtual User User { get; set; } = null!;
 }

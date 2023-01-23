@@ -10,17 +10,31 @@ public class User : Entity<UserId>
 {
     [Required]
     public override UserId Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string SurName { get; set; } = string.Empty;
-    public string UserName { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-    public string Role { get; set; } = string.Empty;
-    public string RememberToken { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
+    public string Name { get; set; } = null!;
+
+    public string SurName { get; set; } = null!;
+
+    public string UserName { get; set; } = null!;
+
+    public string Password { get; set; } = null!;
+
+    public string Role { get; set; } = null!;
+
+    public string? RememberToken { get; set; }
+
+    public string Email { get; set; } = null!;
+
     public short IsActive { get; set; }
+
     public DateTime? LastLogin { get; set; }
-    public string LastLoginIp { get; set; } = string.Empty;
+
+    public string? LastLoginIp { get; set; }
+
     public DateTime CreatedAt { get; set; }
+
     public DateTime UpdatedAt { get; set; }
+
     public DateTime? DeletedAt { get; set; }
+
+    public virtual Identification? Identification { get; set; }
 }
