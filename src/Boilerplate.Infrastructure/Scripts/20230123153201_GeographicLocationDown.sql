@@ -1,1 +1,1 @@
-DROP TABLE web."UbicacionGeografica";
+DROP TABLE web."GeographicLocation";
