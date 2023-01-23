@@ -27,3 +27,14 @@ select
 "SLUG",
 "CUSTOMCOUNTER"
 from public."contadores"
+
+insert into web."InventoryDocs"(
+	"Id",
+    "Code",
+    "Description"
+)
+select 
+    "DOCUID",
+    "DOCUCODIGO",
+    "DOCUDESCRIPCION"
+from public.documentos
