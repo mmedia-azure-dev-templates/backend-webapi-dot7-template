@@ -19,22 +19,12 @@ COMMENT ON TABLE web."Counters"
 
 insert into web."Counters"(
 	"Id",
-"Slug",
-"CustomCounter"
+    "Slug",
+    "CustomCounter"
 ) 
 select 
-"ID",
-"SLUG",
-"CUSTOMCOUNTER"
+    "ID",
+    "SLUG",
+    "CUSTOMCOUNTER"
 from public."contadores"
 
-insert into web."InventoryDocs"(
-	"Id",
-    "Code",
-    "Description"
-)
-select 
-    "DOCUID",
-    "DOCUCODIGO",
-    "DOCUDESCRIPCION"
-from public.documentos
