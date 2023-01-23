@@ -35,8 +35,8 @@ public partial struct UserId : ILong
 [StronglyTypedId]
 public partial struct IdentificationId : ILong
 {
-    public static implicit operator IdentificationId(long userId)
+    public static implicit operator IdentificationId(long identificationId)
     {
-        return new IdentificationId(userId);
+        return new IdentificationId(identificationId);
     }
 }

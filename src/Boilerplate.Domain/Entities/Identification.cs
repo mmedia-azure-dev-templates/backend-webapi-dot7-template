@@ -9,7 +9,7 @@ namespace Boilerplate.Domain.Entities;
 /// <summary>
 /// TABLA HACE JOIN CON TABLA USERS AQUI SE ALMACENA LOS DATOS INFORMATIVOS DEL USUARIO
 /// </summary>
-[Table("Users", Schema = "web")]
+[Table("Identifications", Schema = "web")]
 public partial class Identification : Entity<IdentificationId>
 {
     [Required]
@@ -17,39 +17,39 @@ public partial class Identification : Entity<IdentificationId>
 
     public UserId UserId { get; set; }
 
-    public int Cattipodocumento { get; set; }
+    public int CatTypeDocument { get; set; }
 
-    public int Catnacionalidad { get; set; }
+    public int CatNacionality { get; set; }
 
-    public string Idtndocumento { get; set; }
+    public string Ndocument { get; set; } = string.Empty;
 
-    public int? Catgenero { get; set; }
+    public int? CatGender { get; set; }
 
-    public int? Catestadocivil { get; set; }
+    public int? CatCivilStatus { get; set; }
 
-    public DateOnly? Idtfecnacimiento { get; set; }
+    public DateOnly? BirthDate { get; set; }
 
-    public DateOnly? Idtfecingreso { get; set; }
+    public DateOnly? EntryDate { get; set; }
 
-    public DateOnly? Idtfecsalida { get; set; }
+    public DateOnly? DepartureDate { get; set; }
 
-    public short Idtcontratado { get; set; }
+    public short Hired { get; set; }
 
-    public string Idtimgurl { get; set; }
+    public string ImgUrl { get; set; } = string.Empty;
 
-    public string Idthojavidaurl { get; set; }
+    public string CurriculumUrl { get; set; } = string.Empty;
 
-    public string Idtcelular { get; set; }
+    public string Mobile { get; set; } = string.Empty;
 
-    public string Idttelefono { get; set; }
+    public string Phone { get; set; } = string.Empty;
 
-    public string Idtdireccion { get; set; }
+    public string Address { get; set; } = string.Empty;
 
-    public int? Ubcprovincia { get; set; }
+    public int? UbcProvincia { get; set; }
 
-    public int? Ubccanton { get; set; }
+    public int? UbcCanton { get; set; }
 
-    public int? Ubcparroquia { get; set; }
+    public int? UbcParroquia { get; set; }
 
-    public string Idtnotas { get; set; }
+    public string Notes { get; set; } = string.Empty;
 }

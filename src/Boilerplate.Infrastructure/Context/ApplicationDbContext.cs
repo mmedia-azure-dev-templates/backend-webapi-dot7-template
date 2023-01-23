@@ -1,6 +1,7 @@
 ﻿using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Infrastructure.Configuration;
+using Boilerplate.Infrastructure.Migrations;
 using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ public class ApplicationDbContext : DbContext, IContext
 
     public DbSet<User> Users { get; set; } = null!;
 
+    public virtual DbSet<Identification> Identifications { get; set; }
+
     /*public virtual DbSet<Articulo> Articulos { get; set; }
 
     public virtual DbSet<Catalogo> Catalogos { get; set; }
@@ -27,7 +30,7 @@ public class ApplicationDbContext : DbContext, IContext
 
     public virtual DbSet<FailedJob> FailedJobs { get; set; }
 
-    public virtual DbSet<Identificacione> Identificaciones { get; set; }
+    
 
     public virtual DbSet<Inscription> Inscriptions { get; set; }
 
@@ -244,56 +247,6 @@ public class ApplicationDbContext : DbContext, IContext
                 .IsRequired()
                 .HasMaxLength(255)
                 .HasColumnName("uuid");
-        });
-
-        modelBuilder.Entity<Identificacione>(entity =>
-        {
-            entity.HasKey(e => e.Idtid).HasName("identificaciones_pkey");
-
-            entity.ToTable("identificaciones", tb => tb.HasComment("TABLA HACE JOIN CON TABLA USERS AQUI SE ALMACENA LOS DATOS INFORMATIVOS DEL USUARIO"));
-
-            entity.HasIndex(e => e.Idtndocumento, "identificaciones_n_documento_key").IsUnique();
-
-            entity.HasIndex(e => e.Usuid, "identificaciones_usuario_id_key").IsUnique();
-
-            entity.Property(e => e.Idtid).HasColumnName("IDTID");
-            entity.Property(e => e.Catestadocivil).HasColumnName("CATESTADOCIVIL");
-            entity.Property(e => e.Catgenero).HasColumnName("CATGENERO");
-            entity.Property(e => e.Catnacionalidad).HasColumnName("CATNACIONALIDAD");
-            entity.Property(e => e.Cattipodocumento).HasColumnName("CATTIPODOCUMENTO");
-            entity.Property(e => e.Idtcelular)
-                .HasMaxLength(50)
-                .HasColumnName("IDTCELULAR");
-            entity.Property(e => e.Idtcontratado)
-                .HasDefaultValueSql("'0'::smallint")
-                .HasColumnName("IDTCONTRATADO");
-            entity.Property(e => e.Idtdireccion)
-                .HasMaxLength(200)
-                .HasColumnName("IDTDIRECCION");
-            entity.Property(e => e.Idtfecingreso).HasColumnName("IDTFECINGRESO");
-            entity.Property(e => e.Idtfecnacimiento).HasColumnName("IDTFECNACIMIENTO");
-            entity.Property(e => e.Idtfecsalida).HasColumnName("IDTFECSALIDA");
-            entity.Property(e => e.Idthojavidaurl)
-                .HasMaxLength(200)
-                .HasColumnName("IDTHOJAVIDAURL");
-            entity.Property(e => e.Idtimgurl)
-                .HasMaxLength(200)
-                .HasColumnName("IDTIMGURL");
-            entity.Property(e => e.Idtndocumento)
-                .IsRequired()
-                .HasMaxLength(15)
-                .HasDefaultValueSql("'0'::bpchar")
-                .HasColumnName("IDTNDOCUMENTO");
-            entity.Property(e => e.Idtnotas)
-                .HasMaxLength(50)
-                .HasColumnName("IDTNOTAS");
-            entity.Property(e => e.Idttelefono)
-                .HasMaxLength(50)
-                .HasColumnName("IDTTELEFONO");
-            entity.Property(e => e.Ubccanton).HasColumnName("UBCCANTON");
-            entity.Property(e => e.Ubcparroquia).HasColumnName("UBCPARROQUIA");
-            entity.Property(e => e.Ubcprovincia).HasColumnName("UBCPROVINCIA");
-            entity.Property(e => e.Usuid).HasColumnName("USUID");
         });
 
         modelBuilder.Entity<Inscription>(entity =>
