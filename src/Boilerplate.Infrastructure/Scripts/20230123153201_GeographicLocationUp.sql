@@ -20,9 +20,6 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS web."GeographicLocation"
-    OWNER to postgres;
-
 COMMENT ON TABLE web."GeographicLocation"
     IS 'TABLA CON LA DISTRIBUCION GEOGRÁFICA DEL ECUADOR PROVINCIAS, CANTONES, PARROQUIAS';
 -- Index: GeographicLocation_ParentId_idx
