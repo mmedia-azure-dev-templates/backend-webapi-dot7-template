@@ -31,3 +31,12 @@ public partial struct UserId : ILong
         return new UserId(userId);
     }
 }
+
+[StronglyTypedId]
+public partial struct IdentificationId : ILong
+{
+    public static implicit operator IdentificationId(long userId)
+    {
+        return new IdentificationId(userId);
+    }
+}

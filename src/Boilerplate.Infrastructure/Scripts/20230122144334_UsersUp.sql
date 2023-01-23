@@ -5,9 +5,9 @@
 CREATE TABLE IF NOT EXISTS web."Users"
 (
     "Id" serial NOT NULL,
-    "Nombres" character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    "Apellidos" character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    "Username" character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    "Name" character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    "SurName" character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    "UserName" character varying(50) COLLATE pg_catalog."default" NOT NULL,
 	"Password" text COLLATE pg_catalog."default" NOT NULL,
     "Role" text COLLATE pg_catalog."default" NOT NULL,
     "RememberToken" character varying(100) COLLATE pg_catalog."default" DEFAULT 'NULL::character varying',
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS web."Users"
     "DeletedAt" timestamp without time zone,
     CONSTRAINT Users_Id PRIMARY KEY ("Id"),
     CONSTRAINT Users_Email UNIQUE ("Email"),
-    CONSTRAINT Users_Username UNIQUE ("Username")
+    CONSTRAINT Users_UserName UNIQUE ("UserName")
 )
 WITH (
     OIDS = FALSE
@@ -29,30 +29,30 @@ TABLESPACE pg_default;
 
 COMMENT ON TABLE web."Users"
     IS 'EN ESTA TABLA SE GUARDAN LOS USUARIOS DEL SISTEMA';
--- Index: Idx_Users_Apellidos
+-- Index: Idx_Users_Surname
 
--- DROP INDEX IF EXISTS web.Idx_Users_Apellidos;
+-- DROP INDEX IF EXISTS web.Idx_Users_Surname;
 
-CREATE INDEX IF NOT EXISTS Idx_Users_Apellidos
+CREATE INDEX IF NOT EXISTS Idx_Users_SurName
     ON web."Users" USING btree
-    ("Apellidos" COLLATE pg_catalog."default" ASC NULLS LAST)
+    ("SurName" COLLATE pg_catalog."default" ASC NULLS LAST)
     TABLESPACE pg_default;
--- Index: idx_Users_nombres
+-- Index: idx_Users_Name
 
--- DROP INDEX IF EXISTS web.Idx_Users_nombres;
+-- DROP INDEX IF EXISTS web.Idx_Users_Name;
 
-CREATE INDEX IF NOT EXISTS Idx_Users_Nombres
+CREATE INDEX IF NOT EXISTS Idx_Users_Name
     ON web."Users" USING btree
-    ("Nombres" COLLATE pg_catalog."default" ASC NULLS LAST)
+    ("Name" COLLATE pg_catalog."default" ASC NULLS LAST)
     TABLESPACE pg_default;
 
 
 insert into web."Users"
 (
 	"Id",
-	"Nombres",
-	"Apellidos",
-	"Username",
+	"Name",
+	"SurName",
+	"UserName",
 	"Password",
 	"Role",
 	"RememberToken",

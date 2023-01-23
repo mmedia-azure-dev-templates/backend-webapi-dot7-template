@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Boilerplate.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230122165751_Identificacions")]
+    [Migration("20230122165751_Identifications")]
     partial class Identifications
     {
         /// <inheritdoc />

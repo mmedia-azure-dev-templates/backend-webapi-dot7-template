@@ -1,16 +1,21 @@
-﻿using System;
+﻿using Boilerplate.Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boilerplate.Domain.Entities;
 
 /// <summary>
 /// TABLA HACE JOIN CON TABLA USERS AQUI SE ALMACENA LOS DATOS INFORMATIVOS DEL USUARIO
 /// </summary>
-public partial class Identificacione
+[Table("Users", Schema = "web")]
+public partial class Identification : Entity<IdentificationId>
 {
-    public int Idtid { get; set; }
+    [Required]
+    public override IdentificationId Id { get; set; }
 
-    public int Usuid { get; set; }
+    public UserId UserId { get; set; }
 
     public int Cattipodocumento { get; set; }
 

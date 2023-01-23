@@ -10,9 +10,9 @@ public class User : Entity<UserId>
 {
     [Required]
     public override UserId Id { get; set; }
-    public string Nombres { get; set; } = string.Empty;
-    public string Apellidos { get; set; } = string.Empty;
-    public string Username { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string SurName { get; set; } = string.Empty;
+    public string UserName { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty;
     public string RememberToken { get; set; } = string.Empty;

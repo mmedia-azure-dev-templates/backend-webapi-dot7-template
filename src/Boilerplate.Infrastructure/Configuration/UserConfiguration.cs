@@ -13,10 +13,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasConversion<UserId.EfCoreValueConverter>();
 
-        builder.Property(e => e.Apellidos)
+        builder.Property(e => e.SurName)
             .IsRequired()
             .HasMaxLength(50)
-            .HasColumnName("Apellidos");
+            .HasColumnName("SurName");
         builder.Property(e => e.CreatedAt)
             .HasColumnType("timestamp(0) without time zone")
             .HasColumnName("CreatedAt");
@@ -36,10 +36,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(50)
             .HasDefaultValueSql("NULL::character varying")
             .HasColumnName("LastLoginIp");
-        builder.Property(e => e.Nombres)
+        builder.Property(e => e.Name)
             .IsRequired()
             .HasMaxLength(50)
-            .HasColumnName("Nombres");
+            .HasColumnName("Name");
         builder.Property(e => e.Password)
             .IsRequired()
             .HasMaxLength(100)
@@ -51,21 +51,21 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(e => e.UpdatedAt)
             .HasColumnType("timestamp without time zone")
             .HasColumnName("UpdatedAt");
-        builder.Property(e => e.Username)
+        builder.Property(e => e.UserName)
             .IsRequired()
             .HasMaxLength(50)
-            .HasColumnName("Username");
+            .HasColumnName("UserName");
         
         builder.HasKey(e => e.Id).HasName("Users_Id");
 
         builder.HasIndex(x => x.Email).IsUnique();
+        
+        builder.HasIndex(e => e.SurName, "Idx_Users_SurName");
 
-        builder.HasIndex(e => e.Apellidos, "Idx_Users_Apellidos");
-
-        builder.HasIndex(e => e.Nombres, "Idx_Users_Nombres");
+        builder.HasIndex(e => e.Name, "Idx_Users_Name");
 
         builder.HasIndex(e => e.Email, "Users_Email").IsUnique();
 
-        builder.HasIndex(e => e.Username, "Users_Username").IsUnique();
+        builder.HasIndex(e => e.UserName, "Users_UserName").IsUnique();
     }
 }

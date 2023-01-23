@@ -5,7 +5,7 @@
 CREATE TABLE IF NOT EXISTS web."Identifications"
 (
     "Id" serial NOT NULL,
-    "UsuId" integer NOT NULL DEFAULT 0,
+    "UserId" integer NOT NULL DEFAULT 0,
     "CatTypeDocument" integer NOT NULL DEFAULT 0,
     "CatNacionality" integer NOT NULL,
     "Ndocument" character varying(15) COLLATE pg_catalog."default" NOT NULL,
@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS web."Identifications"
     "UbcCanton" integer,
     "UbcParroquia" integer,
     "Notes" character varying(50) COLLATE pg_catalog."default",
-    CONSTRAINT Identificacions_Id PRIMARY KEY ("Id"),
-    CONSTRAINT Identificacions_Ndocumento_key UNIQUE ("Ndocument"),
-    CONSTRAINT Identificacions_Usuario_Id_key UNIQUE ("UsuId"),
-    CONSTRAINT "FK_UsuId_Users" FOREIGN KEY ("UsuId")
+    CONSTRAINT Identifications_Id PRIMARY KEY ("Id"),
+    CONSTRAINT Identifications_Ndocumento_key UNIQUE ("Ndocument"),
+    CONSTRAINT Identifications_UserId_key UNIQUE ("UserId"),
+    CONSTRAINT "FK_UserId_Users" FOREIGN KEY ("UserId")
         REFERENCES web."Users" ("Id") MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
@@ -42,7 +42,7 @@ COMMENT ON TABLE web."Identifications"
 insert into web."Identifications"
 (
 	"Id",
-	"UsuId",
+	"UserId",
 	"CatTypeDocument",
 	"CatNacionality",
 	"Ndocument",
