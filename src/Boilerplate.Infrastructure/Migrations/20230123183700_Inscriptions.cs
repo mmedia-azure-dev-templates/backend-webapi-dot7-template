@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Boilerplate.Infrastructure.Migrations;
 
 /// <inheritdoc />
-public partial class Counters : Migration
+public partial class Inscriptions : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123175129_CountersUp.sql"));
+        migrationBuilder.Sql(Utils.GetRawSql("20230123183700_InscriptionsUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123175129_CountersDown.sql"));
+        migrationBuilder.Sql(Utils.GetRawSql("20230123183700_InscriptionsDown.sql"));
     }
 }
