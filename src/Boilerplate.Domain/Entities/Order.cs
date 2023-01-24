@@ -68,5 +68,5 @@ public partial class Order : Entity<OrderId>
 
     public virtual Contact? Contact { get; set; }
 
-    //public virtual User User { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }
