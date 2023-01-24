@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Boilerplate.Domain.Entities.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Domain.Entities;
 
-public partial class Article
+public partial class Article : Entity<ArticleId>
 {
-    public int Id { get; set; }
+    [Required]
+    public override ArticleId Id { get; set; }
 
     public int? Provider { get; set; }
 

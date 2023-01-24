@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS web."Contacts"
     "Supervisor" integer,
     "CatCivilStatus" character varying(25) COLLATE pg_catalog."default",
     "BirthDate" timestamp without time zone,
-    CONSTRAINT Contacts_Id_pkey PRIMARY KEY ("Id"),
-    CONSTRAINT Contacts_Ndocument_key UNIQUE ("Ndocument")
+    CONSTRAINT "Contacts_Id_pkey" PRIMARY KEY ("Id"),
+    CONSTRAINT "Contacts_Ndocument_key" UNIQUE ("Ndocument")
 )
 WITH (
     OIDS = FALSE

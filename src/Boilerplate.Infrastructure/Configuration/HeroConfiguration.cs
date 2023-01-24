@@ -7,10 +7,9 @@ namespace Boilerplate.Infrastructure.Configuration;
 
 public class HeroConfiguration : IEntityTypeConfiguration<Hero>
 {
-    public void Configure(EntityTypeBuilder<Hero> builder)
+    public void Configure(EntityTypeBuilder<Hero> entity)
     {
-        builder.HasKey(x => x.Id);
-
-        builder.Property(x => x.Id).HasConversion<HeroId.EfCoreValueConverter>();
+        entity.Property(e => e.Id).HasConversion<HeroId.EfCoreValueConverter>();
+        entity.HasKey(x => x.Id);
     }
 }

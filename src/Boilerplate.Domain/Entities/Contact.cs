@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Boilerplate.Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Domain.Entities;
 
 /// <summary>
 /// TABLA DONDE SE ALMACENAN LOS CLIENTES
 /// </summary>
-public partial class Contact
+public partial class Contact : Entity<ContactId>
 {
-    public int Id { get; set; }
+    [Required]
+    public override ContactId Id { get; set; }
 
     public string? Ndocument { get; set; }
 
@@ -41,4 +44,6 @@ public partial class Contact
     public string? CatCivilStatus { get; set; }
 
     public DateTime? BirthDate { get; set; }
+
+    public virtual ICollection<Order> Orders { get; } = new List<Order>();
 }

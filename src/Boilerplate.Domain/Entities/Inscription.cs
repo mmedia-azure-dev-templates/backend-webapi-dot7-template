@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Boilerplate.Domain.Entities.Common;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Domain.Entities;
 
-public partial class Inscription
+public partial class Inscription : Entity<InscriptionId>
 {
-    public int Id { get; set; }
+    [Required]
+    public override InscriptionId Id { get; set; }
 
     public string Agreement { get; set; } = null!;
 

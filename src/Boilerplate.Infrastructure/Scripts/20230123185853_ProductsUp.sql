@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS web."Products"
     "Quantity" integer,
     "Price" numeric(14,2),
     "Total" numeric(14,2),
-    CONSTRAINT Products_Id_pkey PRIMARY KEY ("Id")
+    CONSTRAINT "Products_Id_pkey" PRIMARY KEY ("Id")
 )
 WITH (
     OIDS = FALSE
@@ -27,7 +27,7 @@ COMMENT ON TABLE web."Products"
 
 -- DROP INDEX IF EXISTS web.Products_OrderId_idx;
 
-CREATE INDEX IF NOT EXISTS Products_OrderId_idx
+CREATE INDEX IF NOT EXISTS "Products_OrderId_idx"
     ON web."Products" USING btree
     ("OrderId" ASC NULLS LAST)
     TABLESPACE pg_default;

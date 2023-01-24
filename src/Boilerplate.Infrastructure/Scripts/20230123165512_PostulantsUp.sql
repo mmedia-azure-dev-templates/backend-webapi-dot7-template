@@ -28,10 +28,10 @@ CREATE TABLE IF NOT EXISTS web."Postulants"
     "CreatedAt" timestamp without time zone,
     "UpdatedAt" timestamp without time zone,
     "DeletedAt" timestamp without time zone,
-    CONSTRAINT Postulants_Id_pkey PRIMARY KEY ("Id"),
-    CONSTRAINT Postulants_Email_key UNIQUE ("Email"),
-    CONSTRAINT Postulants_Ndocument_key UNIQUE ("Ndocument"),
-    CONSTRAINT Postulants_UserName_key UNIQUE ("UserName")
+    CONSTRAINT "Postulants_Id_pkey" PRIMARY KEY ("Id"),
+    CONSTRAINT "Postulants_Email_key" UNIQUE ("Email"),
+    CONSTRAINT "Postulants_Ndocument_key" UNIQUE ("Ndocument"),
+    CONSTRAINT "Postulants_UserName_key" UNIQUE ("UserName")
 )
 WITH (
     OIDS = FALSE

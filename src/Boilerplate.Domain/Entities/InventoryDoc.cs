@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Boilerplate.Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Domain.Entities;
 
 /// <summary>
 /// TABLA DONDE SE ALMACENA EL INVENTARIO DE LOS DOCUMENTOS REQUERIDOS EN LAS ORDENES
 /// </summary>
-public partial class InventoryDoc
+public partial class InventoryDoc : Entity<InventoryDocId>
 {
-    public int Id { get; set; }
+    [Required]
+    public override InventoryDocId Id { get; set; }
 
     public string Code { get; set; } = null!;
 

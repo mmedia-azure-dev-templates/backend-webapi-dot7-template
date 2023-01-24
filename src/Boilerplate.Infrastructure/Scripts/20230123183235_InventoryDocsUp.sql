@@ -7,9 +7,9 @@ CREATE TABLE IF NOT EXISTS web."InventoryDocs"
     "Id" serial NOT NULL,
     "Code" text COLLATE pg_catalog."default" NOT NULL,
     "Description" text COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT InventoryDocs_Id_pkey PRIMARY KEY ("Id"),
-    CONSTRAINT InventoryDocs_Code_key UNIQUE ("Code"),
-    CONSTRAINT InventoryDocs_Description_key UNIQUE ("Description")
+    CONSTRAINT "InventoryDocs_Id_pkey" PRIMARY KEY ("Id"),
+    CONSTRAINT "InventoryDocs_Code_key" UNIQUE ("Code"),
+    CONSTRAINT "InventoryDocs_Description_key" UNIQUE ("Description")
 )
 WITH (
     OIDS = FALSE

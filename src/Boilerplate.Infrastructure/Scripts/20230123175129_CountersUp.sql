@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS web."Counters"
     "Id" serial NOT NULL,
     "Slug" character varying(50) COLLATE pg_catalog."default" NOT NULL,
     "CustomCounter" bigint NOT NULL,
-    CONSTRAINT Counters_Id_pkey PRIMARY KEY ("Id")
+    CONSTRAINT "Counters_Id_pkey" PRIMARY KEY ("Id")
 )
 WITH (
     OIDS = FALSE

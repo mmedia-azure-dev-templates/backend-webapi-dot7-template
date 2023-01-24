@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Boilerplate.Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Domain.Entities;
 
 /// <summary>
 /// POSTULANTES AQUI SE GUARDAN LAS PERSONAS QUE SE REGISTRAN EN EL SISTEMA
 /// </summary>
-public partial class Postulant
+public partial class Postulant : Entity<PostulantId>
 {
-    public int Id { get; set; }
+    [Required]
+    public override PostulantId Id { get; set; }
 
     public bool? Contacted { get; set; }
 

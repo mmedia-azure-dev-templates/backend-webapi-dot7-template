@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS web."Orders"
     "PaidState" boolean DEFAULT 'false',
     "Dispatch" character varying(25) COLLATE pg_catalog."default",
     "Extras" text COLLATE pg_catalog."default",
-    CONSTRAINT Orders_Id_pkey PRIMARY KEY ("Id"),
-    CONSTRAINT Orders_OrderNumber_key UNIQUE ("OrderNumber"),
+    CONSTRAINT "Orders_Id_pkey" PRIMARY KEY ("Id"),
+    CONSTRAINT "Orders_OrderNumber_key" UNIQUE ("OrderNumber"),
     CONSTRAINT "Orders_ContactId_fk" FOREIGN KEY ("ContactId")
         REFERENCES web."Contacts" ("Id") MATCH SIMPLE
         ON UPDATE NO ACTION

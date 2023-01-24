@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Boilerplate.Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Domain.Entities;
 
 /// <summary>
 /// TABLA DE LOS PRODUCTOS ASOCIADO A UNA ORDEN
 /// </summary>
-public partial class Product
+public partial class Product : Entity<ProductId>
 {
-    public int Id { get; set; }
+    [Required]
+    public override ProductId Id { get; set; }
 
     public int? OrderId { get; set; }
 

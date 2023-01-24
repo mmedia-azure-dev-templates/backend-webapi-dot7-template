@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS web."Articles"
     "Notes" character varying(150) COLLATE pg_catalog."default",
     "Meta" json,
     "Discontinued" boolean,
-    CONSTRAINT Articles_Id_pkey PRIMARY KEY ("Id")
+    CONSTRAINT "Articles_Id_pkey" PRIMARY KEY ("Id")
 )
 WITH (
     OIDS = FALSE
@@ -24,26 +24,26 @@ TABLESPACE pg_default;
 insert into web."Articles"
 (
 	"Id",
-"Provider",
-"Sku",
-"Abrevia",
-"Name",
-"Cost",
-"Brand",
-"Notes",
-"Meta",
-"Discontinued"
+    "Provider",
+    "Sku",
+    "Abrevia",
+    "Name",
+    "Cost",
+    "Brand",
+    "Notes",
+    "Meta",
+    "Discontinued"
 )
 select 
     "ARTID",
-"ARTPROVEEDOR",
-"ARTSKU",
-"ARTABREVIA",
-"ARTNOMBRE",
-"ARTCOSTO",
-"ARTMARCA",
-"ARTNOTAS",
-"ARTMETA",
-"ARTDISCONTINUED"
-    FROM  public.articulos;
+    "ARTPROVEEDOR",
+    "ARTSKU",
+    "ARTABREVIA",
+    "ARTNOMBRE",
+    "ARTCOSTO",
+    "ARTMARCA",
+    "ARTNOTAS",
+    "ARTMETA",
+    "ARTDISCONTINUED"
+FROM  public.articulos;
 	

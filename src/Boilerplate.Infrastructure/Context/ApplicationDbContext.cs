@@ -11,7 +11,9 @@ public class ApplicationDbContext : DbContext, IContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public virtual DbSet<Article> Articles { get; set; }
-
+    
+    public virtual DbSet<Catalog> Catalogs { get; set; }
+    
     public virtual DbSet<Contact> Contacts { get; set; }
 
     public virtual DbSet<Counter> Counters { get; set; }
@@ -23,9 +25,11 @@ public class ApplicationDbContext : DbContext, IContext
     public virtual DbSet<Identification> Identifications { get; set; }
 
     public virtual DbSet<Inscription> Inscriptions { get; set; }
-
+    
     public virtual DbSet<InventoryDoc> InventoryDocs { get; set; }
 
+    public virtual DbSet<Order> Orders { get; set; }
+    
     public virtual DbSet<Postulant> Postulants { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }

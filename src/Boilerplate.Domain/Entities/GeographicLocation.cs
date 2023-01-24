@@ -1,24 +1,26 @@
-﻿using System;
+﻿using Boilerplate.Domain.Entities.Common;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Domain.Entities;
 
 /// <summary>
 /// TABLA CON LA DISTRIBUCION GEOGR�FICA DEL ECUADOR PROVINCIAS, CANTONES, PARROQUIAS
 /// </summary>
-public partial class GeographicLocation
+public partial class GeographicLocation : Entity<GeographicLocationId>
 {
-    public int Id { get; set; }
+    [Required]
+    public override GeographicLocationId Id { get; set; }
 
     public string Code { get; set; } = null!;
 
     public string Name { get; set; } = null!;
 
-    public int? ParentId { get; set; }
+    public int? Parent { get; set; }
 
     public short Parroquia { get; set; }
 
     public virtual ICollection<GeographicLocation> InverseParent { get; } = new List<GeographicLocation>();
 
-    public virtual GeographicLocation? Parent { get; set; }
+    //public virtual GeographicLocation? Parent { get; set; }
 }

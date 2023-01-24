@@ -8,64 +8,35 @@ namespace Boilerplate.Infrastructure.Configuration;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<User> entity)
     {
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasConversion<UserId.EfCoreValueConverter>();
+        entity.Property(x => x.Id).HasConversion<UserId.EfCoreValueConverter>();
 
-        builder.Property(e => e.SurName)
-            .IsRequired()
+        entity.HasKey(e => e.Id).HasName("Users_Id_pkey");
+
+        entity.ToTable("Users", "web", tb => tb.HasComment("EN ESTA TABLA SE GUARDAN LOS USUARIOS DEL SISTEMA"));
+
+        entity.HasIndex(e => e.Email, "Users_Email_key").IsUnique();
+
+        entity.HasIndex(e => e.Name, "Users_Name_idx");
+
+        entity.HasIndex(e => e.SurName, "Users_SurName_idx");
+
+        entity.HasIndex(e => e.UserName, "Users_UserName_key").IsUnique();
+
+        entity.Property(e => e.CreatedAt).HasColumnType("timestamp(0) without time zone");
+        entity.Property(e => e.DeletedAt).HasColumnType("timestamp without time zone");
+        entity.Property(e => e.Email).HasMaxLength(60);
+        entity.Property(e => e.LastLogin).HasColumnType("timestamp without time zone");
+        entity.Property(e => e.LastLoginIp)
             .HasMaxLength(50)
-            .HasColumnName("SurName");
-        builder.Property(e => e.CreatedAt)
-            .HasColumnType("timestamp(0) without time zone")
-            .HasColumnName("CreatedAt");
-        builder.Property(e => e.DeletedAt)
-            .HasColumnType("timestamp without time zone")
-            .HasColumnName("DeletedAt");
-        builder.Property(e => e.Email)
-            .IsRequired()
-            .HasMaxLength(254)
-            .HasColumnName("Email");
-        builder.Property(e => e.IsActive)
-            .HasColumnName("IsActive");
-        builder.Property(e => e.LastLogin)
-            .HasColumnType("timestamp without time zone")
-            .HasColumnName("LastLogin");
-        builder.Property(e => e.LastLoginIp)
-            .HasMaxLength(50)
-            .HasDefaultValueSql("NULL::character varying")
-            .HasColumnName("LastLoginIp");
-        builder.Property(e => e.Name)
-            .IsRequired()
-            .HasMaxLength(50)
-            .HasColumnName("Name");
-        builder.Property(e => e.Password)
-            .IsRequired()
+            .HasDefaultValueSql("'NULL::character varying'::character varying");
+        entity.Property(e => e.Name).HasMaxLength(50);
+        entity.Property(e => e.RememberToken)
             .HasMaxLength(100)
-            .HasColumnName("Password");
-        builder.Property(e => e.RememberToken)
-            .HasMaxLength(100)
-            .HasDefaultValueSql("NULL::character varying")
-            .HasColumnName("RememberToken");
-        builder.Property(e => e.UpdatedAt)
-            .HasColumnType("timestamp without time zone")
-            .HasColumnName("UpdatedAt");
-        builder.Property(e => e.UserName)
-            .IsRequired()
-            .HasMaxLength(50)
-            .HasColumnName("UserName");
-        
-        builder.HasKey(e => e.Id).HasName("Users_Id");
-
-        builder.HasIndex(x => x.Email).IsUnique();
-        
-        builder.HasIndex(e => e.SurName, "Idx_Users_SurName");
-
-        builder.HasIndex(e => e.Name, "Idx_Users_Name");
-
-        builder.HasIndex(e => e.Email, "Users_Email").IsUnique();
-
-        builder.HasIndex(e => e.UserName, "Users_UserName").IsUnique();
+            .HasDefaultValueSql("'NULL::character varying'::character varying");
+        entity.Property(e => e.SurName).HasMaxLength(50);
+        entity.Property(e => e.UpdatedAt).HasColumnType("timestamp without time zone");
+        entity.Property(e => e.UserName).HasMaxLength(50);
     }
 }

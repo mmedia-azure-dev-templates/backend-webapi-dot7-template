@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS web."Identifications"
     "UbcCanton" integer,
     "UbcParroquia" integer,
     "Notes" character varying(50) COLLATE pg_catalog."default",
-    CONSTRAINT Identifications_Id PRIMARY KEY ("Id"),
-    CONSTRAINT Identifications_Ndocumento_key UNIQUE ("Ndocument"),
-    CONSTRAINT Identifications_UserId_key UNIQUE ("UserId"),
-    CONSTRAINT "FK_UserId_Users" FOREIGN KEY ("UserId")
+    CONSTRAINT "Identifications_Id_pkey" PRIMARY KEY ("Id"),
+    CONSTRAINT "Identifications_Ndocumento_key" UNIQUE ("Ndocument"),
+    CONSTRAINT "Identifications_UserId_key" UNIQUE ("UserId"),
+    CONSTRAINT "Identifications_UserId_Users" FOREIGN KEY ("UserId")
         REFERENCES web."Users" ("Id") MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE

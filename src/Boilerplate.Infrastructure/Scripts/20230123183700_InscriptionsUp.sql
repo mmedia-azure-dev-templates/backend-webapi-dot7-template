@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS web."Inscriptions"
     "InscriptionDate" timestamp with time zone NOT NULL,
     "Applicant" integer NOT NULL,
     "Information" jsonb,
-    CONSTRAINT Inscriptions_Id_pkey PRIMARY KEY ("Id"),
-    CONSTRAINT Inscriptions_Applicant_key UNIQUE ("Applicant")
+    CONSTRAINT "Inscriptions_Id_pkey" PRIMARY KEY ("Id"),
+    CONSTRAINT "Inscriptions_Applicant_key" UNIQUE ("Applicant")
 )
 WITH (
     OIDS = FALSE
