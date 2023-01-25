@@ -27,6 +27,11 @@
     <PackageVersion Include="coverlet.collector" Version="3.2.0" />
     <PackageVersion Include="Respawn" Version="6.0.0" />
     <PackageVersion Include="Testcontainers" Version="2.3.0" />
+    <PackageVersion Include="Volo.Abp.Autofac" Version="7.0.1" />
+    <PackageVersion Include="Volo.Abp.Core" Version="7.0.1" />
+    <PackageVersion Include="Volo.Abp.Data" Version="7.0.1" />
+    <PackageVersion Include="Volo.Abp.Emailing" Version="7.0.1" />
+    <PackageVersion Include="Volo.Abp.MultiTenancy" Version="7.0.1" />
     <PackageVersion Include="xunit" Version="2.4.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
     <PackageVersion Include="AutoMapper" Version="12.0.1" />
@@ -42,7 +47,7 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
-    <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.2" />
+    <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.3" />
     <PackageVersion Include="OpenTelemetry.Exporter.Jaeger" Version="1.4.0-beta.3" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc9.9" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.9" />

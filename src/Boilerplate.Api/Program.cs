@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
+using Volo.Abp;
+using Volo.Abp.Emailing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +53,19 @@ if (builder.Environment.EnvironmentName != "Testing")
 
 // Add opentelemetry
 builder.AddOpenTemeletrySetup();
+
+// Add Abp framework
+using var application = await AbpApplicationFactory.CreateAsync<AbpSetup>();
+await application.InitializeAsync();
+// Sending emails using the IEmailSender service
+var emailsender = application.ServiceProvider.GetRequiredService<IEmailSender>();
+/*await emailsender.SendAsync(
+    to: "info@acme.com",
+    subject: "Hello World",
+    body: "My message body..."
+);*/
+//await application.ShutdownAsync();
+
 
 var app = builder.Build();
 
