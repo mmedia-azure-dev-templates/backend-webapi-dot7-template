@@ -12,11 +12,11 @@ public partial class Order : Entity<OrderId>
 
     public string Enterprise { get; set; } = null!;
 
-    public DateOnly GeneratedDate1 { get; set; }
+    public DateTime GeneratedDate1 { get; set; }
 
-    public DateOnly? GeneratedDate2 { get; set; }
+    public DateTime? GeneratedDate2 { get; set; }
 
-    public TimeOnly GeneratedHour1 { get; set; }
+    public DateTime GeneratedHour1 { get; set; }
 
     public int OrderNumber { get; set; }
 

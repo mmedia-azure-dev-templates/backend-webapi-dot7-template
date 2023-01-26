@@ -33,7 +33,7 @@ public partial class Postulant : Entity<PostulantId>
 
     public int CatCivilStatus { get; set; }
 
-    public DateOnly BirthDate { get; set; }
+    public DateTime BirthDate { get; set; }
 
     public int UbcProvincia { get; set; }
 

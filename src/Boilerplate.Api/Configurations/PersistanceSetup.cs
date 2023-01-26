@@ -14,14 +14,18 @@ public static class PersistanceSetup
     {
 
         services.AddScoped<ISession, Session>();
-        services.AddDbContext<ApplicationDbContext>(o =>
+        services.AddDbContext<IdentityLocalDbContext>(o =>
         {
-            o.UseNpgsql(configuration.GetConnectionString("PostgresConnection"), x => x.MigrationsHistoryTable("__EFMigrationsHistory", "web"));
+            o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
         });
-
         services.AddDefaultIdentity<IdentityUser>(
         options => options.SignIn.RequireConfirmedAccount = false)
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+        .AddEntityFrameworkStores<IdentityLocalDbContext>();
+        
+        services.AddDbContext<ApplicationDbContext>(o =>
+        {
+            o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
+        });
 
         return services;
     }

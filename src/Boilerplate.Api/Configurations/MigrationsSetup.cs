@@ -16,7 +16,7 @@ public static class MigrationsSetup
         var dbContext = scope.ServiceProvider.GetRequiredService<IContext>();
 
         logger.LogInformation("Running migrations...");
-        await dbContext.Database.MigrateAsync();
+        //await dbContext.Database.MigrateAsync();
         logger.LogInformation("Migrations applied succesfully");
     }
 }

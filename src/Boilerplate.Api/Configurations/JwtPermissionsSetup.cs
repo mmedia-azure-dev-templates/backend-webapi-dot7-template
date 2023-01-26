@@ -17,6 +17,7 @@ using AuthPermissions.AspNetCore;
 using RunMethodsSequentially;
 using AuthPermissions.AspNetCore.StartupServices;
 using Boilerplate.Infrastructure.Context;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Boilerplate.Api.Configurations;
 
@@ -94,7 +95,7 @@ public static class JwtPermissionsSetup
                 RefreshTokenExpires = new TimeSpan(1, 0, 0, 0) //Refresh token is valid for one day
             };
         })
-        .UsingEfCorePostgres(configuration.GetConnectionString("PostgresConnection")) //NOTE: This uses the same database as the individual accounts DB
+        .UsingEfCoreSqlServer(configuration.GetConnectionString("SqlServerConnection")) //NOTE: This uses the same database as the individual accounts DB
         .IndividualAccountsAuthentication()
         .AddSuperUserToIndividualAccounts()
         .RegisterFindUserInfoService<IndividualAccountUserLookup>()
@@ -103,7 +104,7 @@ public static class JwtPermissionsSetup
         .SetupAspNetCoreAndDatabase(options =>
         {
             //Migrate individual account database
-            options.RegisterServiceToRunInJob<StartupServiceMigrateAnyDbContext<ApplicationDbContext>>();
+            options.RegisterServiceToRunInJob<StartupServiceMigrateAnyDbContext<IdentityLocalDbContext>>();
             //Add demo users to the database
             options.RegisterServiceToRunInJob<StartupServicesIndividualAccountsAddDemoUsers>();
         });

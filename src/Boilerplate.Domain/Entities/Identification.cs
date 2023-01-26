@@ -27,11 +27,11 @@ public partial class Identification : Entity<IdentificationId>
 
     public int? CatCivilStatus { get; set; }
 
-    public DateOnly? BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
 
-    public DateOnly? EntryDate { get; set; }
+    public DateTime? EntryDate { get; set; }
 
-    public DateOnly? DepartureDate { get; set; }
+    public DateTime? DepartureDate { get; set; }
 
     public short Hired { get; set; }
 

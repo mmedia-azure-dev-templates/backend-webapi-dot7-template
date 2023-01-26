@@ -1,17 +1,10 @@
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
-using Boilerplate.Domain.Entities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Boilerplate.Domain.ClaimsChangeCode;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System;
-using System.Threading.Tasks;
-using System.Text;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,6 +79,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UsePermissionsChange();   //Example of updating the user's Permission claim when the database change in app using JWT Token for Authentication / Authorization
+app.UseAddEmailClaimToUsers();//Example of adding an extra Email 
 
 app.MapControllers()
    .RequireAuthorization();
