@@ -12,12 +12,13 @@ public partial class AbpTables : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20220124212104_AbpTablesUp.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20220124212104_AbpTablesUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
+        /*
         migrationBuilder.DropTable(
             name: "AbpAuditLogActions", schema: "web");
 
@@ -110,5 +111,6 @@ public partial class AbpTables : Migration
 
         migrationBuilder.DropTable(
             name: "OpenIddictApplications", schema: "web");
+        */
     }
 }

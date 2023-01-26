@@ -1,29 +1,27 @@
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
+using Boilerplate.Domain.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System;
-using Volo.Abp;
-using Volo.Abp.Emailing;
+using System.Threading.Tasks;
+using System.Text;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Controllers
-builder.Services
-    .AddControllers(options =>
-    {
-        options.AllowEmptyInputInBodyModelBinding = true;
-        options.Filters.Add<ValidationErrorResultFilter>();
-    })
-    .AddValidationSetup();
+
 
 // Authn / Authrz
-builder.Services.AddAuthSetup(builder.Configuration);
+//builder.Services.AddAuthSetup(builder.Configuration);
 
 // Swagger
-builder.Services.AddSwaggerSetup();
+//builder.Services.AddSwaggerSetup();
 
 // Persistence
 builder.Services.AddPersistenceSetup(builder.Configuration);
@@ -54,18 +52,20 @@ if (builder.Environment.EnvironmentName != "Testing")
 // Add opentelemetry
 builder.AddOpenTemeletrySetup();
 
-// Add Abp framework
-using var application = await AbpApplicationFactory.CreateAsync<AbpSetup>();
-await application.InitializeAsync();
-// Sending emails using the IEmailSender service
-var emailsender = application.ServiceProvider.GetRequiredService<IEmailSender>();
-/*await emailsender.SendAsync(
-    to: "info@acme.com",
-    subject: "Hello World",
-    body: "My message body..."
-);*/
-//await application.ShutdownAsync();
+// Add jwt
+builder.Services.AddJwtSetup(builder.Configuration);
 
+
+// Controllers
+builder.Services
+    .AddControllers(options =>
+    {
+        options.AllowEmptyInputInBodyModelBinding = true;
+        options.Filters.Add<ValidationErrorResultFilter>();
+    })
+    .AddValidationSetup();
+
+builder.Services.AddCacheSetup(builder.Environment);
 
 var app = builder.Build();
 

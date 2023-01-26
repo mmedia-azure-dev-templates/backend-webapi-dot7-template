@@ -5,6 +5,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!--    add your PackageVersion nodes here -->
+    <PackageVersion Include="AuthPermissions.AspNetCore" Version="4.1.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.2" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.2" />
+    <PackageVersion Include="Net.DistributedFileStoreCache" Version="2.0.0" />
     <PackageVersion Include="NewId" Version="3.0.3" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1" />
     <PackageVersion Include="StronglyTypedId" Version="1.0.0-beta06" />
@@ -31,7 +35,10 @@
     <PackageVersion Include="Volo.Abp.Core" Version="7.0.1" />
     <PackageVersion Include="Volo.Abp.Data" Version="7.0.1" />
     <PackageVersion Include="Volo.Abp.Emailing" Version="7.0.1" />
+    <PackageVersion Include="Volo.Abp.FeatureManagement.Application" Version="7.0.1" />
     <PackageVersion Include="Volo.Abp.MultiTenancy" Version="7.0.1" />
+    <PackageVersion Include="Volo.Abp.SettingManagement.Application" Version="7.0.1" />
+    <PackageVersion Include="Volo.Abp.TenantManagement.Application" Version="7.0.1" />
     <PackageVersion Include="xunit" Version="2.4.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
     <PackageVersion Include="AutoMapper" Version="12.0.1" />
