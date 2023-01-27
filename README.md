@@ -25,7 +25,7 @@ and technologies for a restful API in .net, making your work easier.
 3. Visit http://localhost:5000/api-docs or https://localhost:5001/api-docs to access the application's swagger.
 
 ## Docker
-1. Run ``docker-compose --env-file ../.env -f docker-compose.yml -f docker-compose.override.yml  up --build`` in the root directory, or, in visual studio, set the docker-compose project as startup and run. This should start the application and DB.
+1. Run ``docker-compose --env-file ../.env.jiban -f docker-compose.yml -f docker-compose.override.yml  up --build`` in the root directory, or, in visual studio, set the docker-compose project as startup and run. This should start the application and DB.
  - 1. For docker-compose, you should run this command on the root folder: ``dotnet dev-certs https -ep https/aspnetapp.pfx -p yourpassword``
 		Replace "yourpassword" with something else in this command and the docker-compose.override.yml file.
 This creates the https certificate.
