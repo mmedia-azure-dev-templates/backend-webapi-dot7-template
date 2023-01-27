@@ -12,6 +12,9 @@ services:
       - ConnectionStrings__SqlServerConnection=${SQLSERVER_CONNECTION_STRING}
       - Jaeger__AgentHost=jaeger
       - Jaeger__AgentPort=6831
+      - JwtData__SigningKey=${JWTDATA__SIGNINGKEY}
+      - JwtData__Issuer=https://localhost:44304
+      - JwtData__Audience=https://localhost:44304
     ports:
       - "80:80"
       - "443:443"
