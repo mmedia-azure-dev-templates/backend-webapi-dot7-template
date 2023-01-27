@@ -2,27 +2,19 @@ version: '3.6'
 
 
 services:
-  db-server:
-    ports:
-      - 1433:1433
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Yourpassword123
   boilerplate-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=${ENVIRONMENT}
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=payphone
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Development__Password=9ad95d42-8c96-4df6-872b-62dc06c6e6e3
       - Jaeger__AgentHost=jaeger
       - Jaeger__AgentPort=6831
-      - USER_SECRETS_ID=83093e71-d34c-405d-b8eb-442525b137fc
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./https:/https/:ro
-      - $HOME/AppData/Roaming/Microsoft/UserSecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
     networks:
       - localdev
