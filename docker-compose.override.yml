@@ -14,7 +14,10 @@ services:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=yourpassword
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-      - ConnectionStrings__DefaultConnection=Server=mssql;Database=Heroes;User=sa;Password=Yourpassword123;TrustServerCertificate=True;Encrypt=false
+      - ConnectionStrings__SqlServerConnection=Server=mssql;Database=Jiban;User=sa;Password=Yourpassword123;TrustServerCertificate=True;Encrypt=false
+      - JwtData__SigningKey=some-long-secret-key-that-is-NOT-in-your-appsetting-file
+      - JwtData__Issuer=https://localhost:44304
+      - JwtData__Audience=https://localhost:44304
       - Jaeger__AgentHost=jaeger
       - Jaeger__AgentPort=6831
     ports:
