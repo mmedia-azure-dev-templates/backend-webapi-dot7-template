@@ -12,10 +12,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=yourpassword
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=payphone
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Development__Password=9ad95d42-8c96-4df6-872b-62dc06c6e6e3
-      - ConnectionStrings__SqlServerConnection=Server=mssql;Database=Jiban;User=sa;Password=Yourpassword123;TrustServerCertificate=True;Encrypt=false
       - Jaeger__AgentHost=jaeger
       - Jaeger__AgentPort=6831
       - USER_SECRETS_ID=83093e71-d34c-405d-b8eb-442525b137fc
