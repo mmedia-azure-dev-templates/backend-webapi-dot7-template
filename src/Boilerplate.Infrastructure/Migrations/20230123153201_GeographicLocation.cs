@@ -11,12 +11,12 @@ public partial class GeographicLocation : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123153201_GeographicLocationUp.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123153201_GeographicLocationUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123153201_GeographicLocationDown.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123153201_GeographicLocationDown.sql"));
     }
 }

@@ -11,12 +11,12 @@ public partial class Payments : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123202720_PaymentsUp.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123202720_PaymentsUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123202720_PaymentsDown.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123202720_PaymentsDown.sql"));
     }
 }

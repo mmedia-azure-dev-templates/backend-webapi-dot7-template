@@ -11,12 +11,12 @@ public partial class Identifications : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230122165751_IdentificationsUp.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230122165751_IdentificationsUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230122165751_IdentificationsDown.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230122165751_IdentificationsDown.sql"));
     }
 }

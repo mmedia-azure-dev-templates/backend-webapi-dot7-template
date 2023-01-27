@@ -11,12 +11,12 @@ public partial class Catalogs : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123173953_CatalogsUp.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123173953_CatalogsUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123173953_CatalogsDown.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123173953_CatalogsDown.sql"));
     }
 }

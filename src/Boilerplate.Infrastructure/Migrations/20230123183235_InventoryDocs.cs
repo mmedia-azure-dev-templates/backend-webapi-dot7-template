@@ -11,12 +11,12 @@ public partial class InventoryDocs : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123183235_InventoryDocsUp.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123183235_InventoryDocsUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123183235_InventoryDocsDown.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123183235_InventoryDocsDown.sql"));
     }
 }

@@ -11,12 +11,12 @@ public partial class Postulants : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123165512_PostulantsUp.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123165512_PostulantsUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123165512_PostulantsDown.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123165512_PostulantsDown.sql"));
     }
 }

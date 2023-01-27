@@ -11,12 +11,12 @@ public partial class Inscriptions : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123183700_InscriptionsUp.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123183700_InscriptionsUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123183700_InscriptionsDown.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123183700_InscriptionsDown.sql"));
     }
 }

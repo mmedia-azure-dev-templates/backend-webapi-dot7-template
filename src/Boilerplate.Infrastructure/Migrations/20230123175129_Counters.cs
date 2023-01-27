@@ -11,12 +11,12 @@ public partial class Counters : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123175129_CountersUp.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123175129_CountersUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.Sql(Utils.GetRawSql("20230123175129_CountersDown.sql"));
+        //migrationBuilder.Sql(Utils.GetRawSql("20230123175129_CountersDown.sql"));
     }
 }
