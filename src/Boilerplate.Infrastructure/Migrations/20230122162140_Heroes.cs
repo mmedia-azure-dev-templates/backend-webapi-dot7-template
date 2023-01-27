@@ -14,7 +14,8 @@ public partial class Heroes : Migration
         migrationBuilder.CreateTable("Heroes",
         table => new
         {
-            Id = table.Column<long>(type: "serial", nullable: false),
+            Id = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
             Name = table.Column<string>("text", nullable: false),
             Nickname = table.Column<string>("text", nullable: true),
             Individuality = table.Column<string>("text", nullable: true),
