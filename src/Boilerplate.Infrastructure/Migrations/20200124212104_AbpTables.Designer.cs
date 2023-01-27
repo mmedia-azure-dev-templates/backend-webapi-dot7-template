@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Boilerplate.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("2022124212104_AbpTables")]
+    [Migration("2020124212104_AbpTables")]
     partial class AbpTables
     {
         /// <inheritdoc />
