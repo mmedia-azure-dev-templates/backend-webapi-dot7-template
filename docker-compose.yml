@@ -25,6 +25,8 @@ services:
       - db-server
     networks:
       - localdev
+    volumes:
+      - ./etc/wait-for.sh:/app/wait-for.sh
   jaeger:
     container_name: jaeger
     image: jaegertracing/all-in-one:latest
