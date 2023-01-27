@@ -9,6 +9,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=payphone
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Development__Password=9ad95d42-8c96-4df6-872b-62dc06c6e6e3
+      - ConnectionStrings__DefaultConnection=${SQLSERVER_CONNECTION_STRING}
       - Jaeger__AgentHost=jaeger
       - Jaeger__AgentPort=6831
     ports:
