@@ -19,8 +19,8 @@ services:
       - Jaeger__AgentPort=6831
       - USER_SECRETS_ID=83093e71-d34c-405d-b8eb-442525b137fc
     ports:
-      - "5000:80"
-      - "5001:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./https:/https/:ro
       - $HOME\AppData\Roaming\Microsoft\UserSecrets\$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
