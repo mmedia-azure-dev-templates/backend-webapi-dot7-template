@@ -1,14 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
 namespace Boilerplate.Infrastructure.Migrations;
 
-/// <inheritdoc />
-public partial class AspIdentity : Migration
+public partial class CreateIndivdualAccounts : Migration
 {
-    /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.CreateTable(
