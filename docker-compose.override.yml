@@ -23,6 +23,6 @@ services:
       - "5001:443"
     volumes:
       - ./https:/https/:ro
-      - /home/raul/Projects/UserSecrets/$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
+      - $HOME\AppData\Roaming\Microsoft\UserSecrets\$USER_SECRETS_ID:/root/.microsoft/usersecrets/$USER_SECRETS_ID
     networks:
       - localdev

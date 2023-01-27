@@ -10,8 +10,10 @@ services:
   db-server:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: mssql
-    networks:
-      - localdev
+    networks: 
+            localdev:
+                aliases: 
+                    - mssql  
     volumes:
       - sqlvolume:/var/opt/mssql      
   boilerplate-api:
@@ -23,10 +25,12 @@ services:
     container_name: boilerplate-api
     depends_on:
       - db-server
-    networks:
-      - localdev
     volumes:
       - ./etc/wait-for.sh:/app/wait-for.sh
+    networks: 
+            localdev:
+                aliases: 
+                    - boilerplate-api
   jaeger:
     container_name: jaeger
     image: jaegertracing/all-in-one:latest
