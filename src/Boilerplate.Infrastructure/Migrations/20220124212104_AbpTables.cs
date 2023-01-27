@@ -13,7 +13,7 @@ public partial class AbpTables : Migration
     protected override void Up(MigrationBuilder migrationBuilder)
     {
         //Legacy Application
-        //migrationBuilder.Sql(Utils.GetRawSql("20220124212104_AbpTablesUp.sql"));
+        migrationBuilder.Sql(Utils.GetRawSql("create schema web;"));
     }
 
     /// <inheritdoc />
