@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace AuthPermissions.DataLayer.Migrations
+namespace Boilerplate.Infrastructure.Migrations
 {
     public partial class Initial : Migration
     {

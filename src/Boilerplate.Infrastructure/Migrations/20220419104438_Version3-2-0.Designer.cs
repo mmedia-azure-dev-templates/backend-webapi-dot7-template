@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Boilerplate.Infrastructure.Migrations
+namespace AuthPermissions.DataLayer.Migrations
 {
     [DbContext(typeof(AuthPermissionsDbContext))]
-    [Migration("20220323172428_Version3")]
-    partial class Version3
+    [Migration("20220419104438_Version3-2-0")]
+    partial class Version320
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,7 +25,7 @@ namespace Boilerplate.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AuthPermissions.DataLayer.Classes.AuthUser", b =>
+            modelBuilder.Entity("AuthPermissions.BaseCode.DataLayer.Classes.AuthUser", b =>
                 {
                     b.Property<string>("UserId")
                         .HasMaxLength(256)
@@ -65,7 +65,7 @@ namespace Boilerplate.Infrastructure.Migrations
                     b.ToTable("AuthUsers", "authp");
                 });
 
-            modelBuilder.Entity("AuthPermissions.DataLayer.Classes.RefreshToken", b =>
+            modelBuilder.Entity("AuthPermissions.BaseCode.DataLayer.Classes.RefreshToken", b =>
                 {
                     b.Property<string>("TokenValue")
                         .HasMaxLength(50)
@@ -99,7 +99,7 @@ namespace Boilerplate.Infrastructure.Migrations
                     b.ToTable("RefreshTokens", "authp");
                 });
 
-            modelBuilder.Entity("AuthPermissions.DataLayer.Classes.RoleToPermissions", b =>
+            modelBuilder.Entity("AuthPermissions.BaseCode.DataLayer.Classes.RoleToPermissions", b =>
                 {
                     b.Property<string>("RoleName")
                         .HasMaxLength(100)
@@ -127,7 +127,7 @@ namespace Boilerplate.Infrastructure.Migrations
                     b.ToTable("RoleToPermissions", "authp");
                 });
 
-            modelBuilder.Entity("AuthPermissions.DataLayer.Classes.Tenant", b =>
+            modelBuilder.Entity("AuthPermissions.BaseCode.DataLayer.Classes.Tenant", b =>
                 {
                     b.Property<int>("TenantId")
                         .ValueGeneratedOnAdd()
@@ -140,7 +140,7 @@ namespace Boilerplate.Infrastructure.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("ROWVERSION");
 
-                    b.Property<string>("ConnectionName")
+                    b.Property<string>("DatabaseInfoName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("HasOwnDb")
@@ -174,7 +174,7 @@ namespace Boilerplate.Infrastructure.Migrations
                     b.ToTable("Tenants", "authp");
                 });
 
-            modelBuilder.Entity("AuthPermissions.DataLayer.Classes.UserToRole", b =>
+            modelBuilder.Entity("AuthPermissions.BaseCode.DataLayer.Classes.UserToRole", b =>
                 {
                     b.Property<string>("UserId")
                         .HasMaxLength(256)
@@ -216,33 +216,33 @@ namespace Boilerplate.Infrastructure.Migrations
                     b.ToTable("RoleToPermissionsTenant", "authp");
                 });
 
-            modelBuilder.Entity("AuthPermissions.DataLayer.Classes.AuthUser", b =>
+            modelBuilder.Entity("AuthPermissions.BaseCode.DataLayer.Classes.AuthUser", b =>
                 {
-                    b.HasOne("AuthPermissions.DataLayer.Classes.Tenant", "UserTenant")
+                    b.HasOne("AuthPermissions.BaseCode.DataLayer.Classes.Tenant", "UserTenant")
                         .WithMany()
                         .HasForeignKey("TenantId");
 
                     b.Navigation("UserTenant");
                 });
 
-            modelBuilder.Entity("AuthPermissions.DataLayer.Classes.Tenant", b =>
+            modelBuilder.Entity("AuthPermissions.BaseCode.DataLayer.Classes.Tenant", b =>
                 {
-                    b.HasOne("AuthPermissions.DataLayer.Classes.Tenant", "Parent")
+                    b.HasOne("AuthPermissions.BaseCode.DataLayer.Classes.Tenant", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentTenantId");
 
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("AuthPermissions.DataLayer.Classes.UserToRole", b =>
+            modelBuilder.Entity("AuthPermissions.BaseCode.DataLayer.Classes.UserToRole", b =>
                 {
-                    b.HasOne("AuthPermissions.DataLayer.Classes.RoleToPermissions", "Role")
+                    b.HasOne("AuthPermissions.BaseCode.DataLayer.Classes.RoleToPermissions", "Role")
                         .WithMany()
                         .HasForeignKey("RoleName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AuthPermissions.DataLayer.Classes.AuthUser", null)
+                    b.HasOne("AuthPermissions.BaseCode.DataLayer.Classes.AuthUser", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -253,25 +253,25 @@ namespace Boilerplate.Infrastructure.Migrations
 
             modelBuilder.Entity("RoleToPermissionsTenant", b =>
                 {
-                    b.HasOne("AuthPermissions.DataLayer.Classes.RoleToPermissions", null)
+                    b.HasOne("AuthPermissions.BaseCode.DataLayer.Classes.RoleToPermissions", null)
                         .WithMany()
                         .HasForeignKey("TenantRolesRoleName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AuthPermissions.DataLayer.Classes.Tenant", null)
+                    b.HasOne("AuthPermissions.BaseCode.DataLayer.Classes.Tenant", null)
                         .WithMany()
                         .HasForeignKey("TenantsTenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AuthPermissions.DataLayer.Classes.AuthUser", b =>
+            modelBuilder.Entity("AuthPermissions.BaseCode.DataLayer.Classes.AuthUser", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("AuthPermissions.DataLayer.Classes.Tenant", b =>
+            modelBuilder.Entity("AuthPermissions.BaseCode.DataLayer.Classes.Tenant", b =>
                 {
                     b.Navigation("Children");
                 });

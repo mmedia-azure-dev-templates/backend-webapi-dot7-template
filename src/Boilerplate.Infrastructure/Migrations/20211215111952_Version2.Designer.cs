@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AuthPermissions.DataLayer.Migrations
+namespace Boilerplate.Infrastructure.Migrations
 {
     [DbContext(typeof(AuthPermissionsDbContext))]
     [Migration("20211215111952_Version2")]

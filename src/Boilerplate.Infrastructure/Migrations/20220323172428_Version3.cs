@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace AuthPermissions.DataLayer.Migrations
+namespace Boilerplate.Infrastructure.Migrations
 {
     public partial class Version3 : Migration
     {

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace AuthPermissions.DataLayer.Migrations
+namespace Boilerplate.Infrastructure.Migrations
 {
     [DbContext(typeof(AuthPermissionsDbContext))]
     [Migration("20210707095141_Initial")]
