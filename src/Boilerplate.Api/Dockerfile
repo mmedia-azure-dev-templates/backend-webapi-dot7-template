@@ -32,7 +32,7 @@ COPY ["src/Boilerplate.Domain/Boilerplate.Domain.csproj", "src/Boilerplate.Domai
 COPY ["src/Boilerplate.Infrastructure/Boilerplate.Infrastructure.csproj", "src/Boilerplate.Infrastructure/"]
 COPY . .
 # Install Certificates
-COPY ["../Certs", "/src/Certs"]
+COPY ["./Certs", "/src/Certs"]
 WORKDIR "/src/src/Boilerplate.Api"
 
 FROM build AS publish
