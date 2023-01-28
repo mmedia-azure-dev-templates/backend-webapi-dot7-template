@@ -1,5 +1,14 @@
 {
   "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "boilerplate-api": "StartDebugging",
+        "db-server": "StartWithoutDebugging",
+        "jaeger": "StartWithoutDebugging"
+      }
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,

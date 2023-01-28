@@ -3,21 +3,11 @@ version: '3.6'
 
 services:
   boilerplate-api:
+    env_file:
+      - ../.env.jiban
     environment:
       - ASPNETCORE_ENVIRONMENT=${ENVIRONMENT}
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=payphone
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-      - ASPNETCORE_Kestrel__Development__Password=9ad95d42-8c96-4df6-872b-62dc06c6e6e3
-      - ConnectionStrings__SqlServerConnection=${SQLSERVER_CONNECTION_STRING}
-      - Jaeger__AgentHost=jaeger
-      - Jaeger__AgentPort=6831
-      - JwtData__SigningKey=${JWTDATA__SIGNINGKEY}
-      - JwtData__Issuer=https://localhost:44304
-      - JwtData__Audience=https://localhost:44304
-      - SuperAdmin__Password=Super@g1.com
-      - SuperAdmin__Email=Super@g1.com
-      - DemoUsers=${DEMO_USERS}
     ports:
       - "80:80"
       - "443:443"

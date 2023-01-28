@@ -8,7 +8,7 @@ networks:
 
 services:
   db-server:
-    image: ${SQLSERVER_IMAGE}
+    image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: mssql
     environment:
       - ACCEPT_EULA=Y

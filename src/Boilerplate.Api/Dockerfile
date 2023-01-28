@@ -25,7 +25,7 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["${SOURCE_SECRETS_PATH}", "${DESTINATION_SECRETS_PATH}"]
+COPY ["$SOURCE_SECRETS_PATH", "$DESTINATION_SECRETS_PATH"]
 COPY ["./Directory.Packages.props", "./"]
 COPY ["src/Boilerplate.Api/Boilerplate.Api.csproj", "src/Boilerplate.Api/"]
 COPY ["src/Boilerplate.Application/Boilerplate.Application.csproj", "src/Boilerplate.Application/"]
