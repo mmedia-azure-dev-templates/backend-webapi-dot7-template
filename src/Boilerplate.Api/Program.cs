@@ -2,14 +2,21 @@ using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
 using Boilerplate.Domain.ClaimsChangeCode;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Flag for testing inital .env.jiban
+var jibanInitial = Environment.GetEnvironmentVariable("JIBAN_INITIAL");
 
-
+if (string.IsNullOrEmpty(jibanInitial))
+{
+    throw new Exception(".env.jiban is not initialized !!!");
+}
 // Authn / Authrz
 //builder.Services.AddAuthSetup(builder.Configuration);
 
