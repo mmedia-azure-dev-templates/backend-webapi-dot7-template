@@ -15,6 +15,9 @@ services:
       - JwtData__SigningKey=${JWTDATA__SIGNINGKEY}
       - JwtData__Issuer=https://localhost:44304
       - JwtData__Audience=https://localhost:44304
+      - SuperAdmin__Password=Super@g1.com
+      - SuperAdmin__Email=Super@g1.com
+      - DemoUsers=${DEMO_USERS}
     ports:
       - "80:80"
       - "443:443"
