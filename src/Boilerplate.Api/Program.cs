@@ -11,11 +11,11 @@ using System;
 var builder = WebApplication.CreateBuilder(args);
 
 //Flag for testing inital .env.jiban
-var jibanInitial = Environment.GetEnvironmentVariable("JIBAN_INITIAL");
+var jibanInitial = builder.Configuration["JIBAN:Initial"];
 
 if (string.IsNullOrEmpty(jibanInitial))
 {
-    throw new Exception(".env.jiban is not initialized !!!");
+    throw new Exception("Not initialized check secrets.json or env.jiban !!!");
 }
 // Authn / Authrz
 //builder.Services.AddAuthSetup(builder.Configuration);

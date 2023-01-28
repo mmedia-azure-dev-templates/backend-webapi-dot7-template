@@ -3,8 +3,6 @@ version: '3.6'
 
 services:
   boilerplate-api:
-    env_file:
-      - ../.env.jiban
     environment:
       - ASPNETCORE_ENVIRONMENT=${ENVIRONMENT}
       - ASPNETCORE_URLS=https://+:443;http://+:80
