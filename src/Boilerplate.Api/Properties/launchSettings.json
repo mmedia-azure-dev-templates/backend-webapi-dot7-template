@@ -20,9 +20,14 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api-docs",
+      "launchUrl": "{Scheme}://api.mad.ec:{ServicePort}/api-docs",
       "publishAllPorts": true,
-      "useSSL": true
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "httpPort": 44369,
+      "useSSL": true,
+      "sslPort": 44361
     },
     "WSL": {
       "commandName": "WSL2",

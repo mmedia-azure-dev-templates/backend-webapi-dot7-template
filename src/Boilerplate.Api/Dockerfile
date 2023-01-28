@@ -17,8 +17,7 @@ RUN echo "DESTINATION_SECRETS_PATH: ${DESTINATION_SECRETS_PATH}"
 RUN echo "CUSTOMGID: ${SA_PASSWORD}"
 RUN echo "APACHE: ${SA_PASSWORD}"
 
-# Install cultures (same approach as Alpine SDK image)
-#RUN apk add --no-cache icu-libs
+
 
 # Disable the invariant mode (set in base image)
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
@@ -32,6 +31,8 @@ COPY ["src/Boilerplate.Application/Boilerplate.Application.csproj", "src/Boilerp
 COPY ["src/Boilerplate.Domain/Boilerplate.Domain.csproj", "src/Boilerplate.Domain/"]
 COPY ["src/Boilerplate.Infrastructure/Boilerplate.Infrastructure.csproj", "src/Boilerplate.Infrastructure/"]
 COPY . .
+# Install Certificates
+COPY ["../Certs", "/src/Certs"]
 WORKDIR "/src/src/Boilerplate.Api"
 
 FROM build AS publish
