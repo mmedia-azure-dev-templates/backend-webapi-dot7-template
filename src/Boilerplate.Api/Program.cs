@@ -11,7 +11,7 @@ using System;
 var builder = WebApplication.CreateBuilder(args);
 
 //Flag for testing inital .env.jiban
-var jibanInitial = builder.Configuration["JIBAN:Initial"];
+var jibanInitial = Environment.GetEnvironmentVariable("JIBAN__Initial");
 
 if (string.IsNullOrEmpty(jibanInitial))
 {
