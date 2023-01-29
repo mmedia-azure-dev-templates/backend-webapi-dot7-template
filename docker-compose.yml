@@ -6,12 +6,12 @@ networks:
 services:
   boilerplate-db:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: mssql
+    container_name: boilerplate-db
+    ports:
+      - 1433:1433
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=${SQLSERVER_PASSWORD}
-    ports:
-      - "1433:1433"
+      - SA_PASSWORD=Yourpassword123
     volumes:
       - sqlvolume:/var/opt/mssql
     networks: 
