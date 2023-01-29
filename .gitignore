@@ -362,4 +362,5 @@ tools/
 
 .idea/
 Certs/
+.env
 .env.jiban

@@ -3,6 +3,15 @@ version: '3.6'
 
 services:
   boilerplate-api:
+    build:
+      context: .
+      dockerfile: src/Boilerplate.Api/Dockerfile
+      args:
+        - SOURCE_SECRETS_PATH=${SOURCE_SECRETS_PATH}
+        - DESTINATION_SECRETS_PATH=${DESTINATION_SECRETS_PATH}
+        - JIBAN__Initial=${JIBAN__Initial}
+        - USER_SECRETS_ID=${USER_SECRETS_ID}
+        - ConnectionStrings__SqlServerConnection=${ConnectionStrings__SqlServerConnection}
     environment:
       - ASPNETCORE_ENVIRONMENT=${ENVIRONMENT}
       - ASPNETCORE_URLS=https://+:443;http://+:80
