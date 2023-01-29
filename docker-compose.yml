@@ -4,7 +4,7 @@ networks:
     name: production
 
 services:
-  mssql:
+  boilerplate-db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: mssql
     environment:
@@ -14,8 +14,10 @@ services:
       - "1433:1433"
     volumes:
       - sqlvolume:/var/opt/mssql
-    networks:
-      - production 
+    networks: 
+        production:
+            aliases: 
+                - boilerplate-db
   boilerplate-api:
     #entrypoint: ["./wait-for.sh", "mssql:1433", "-t", "120", "--", "dotnet", "Boilerplate.Api.dll"]
     image: boilerplate-api:${TAG}
