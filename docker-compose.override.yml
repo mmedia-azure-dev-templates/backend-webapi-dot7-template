@@ -3,22 +3,33 @@ version: '3.6'
 
 services:
   boilerplate-api:
+    image: boilerplate-api:${TAG}
     build:
       context: .
       dockerfile: src/Boilerplate.Api/Dockerfile
       args:
         - SOURCE_SECRETS_PATH=${SOURCE_SECRETS_PATH}
         - DESTINATION_SECRETS_PATH=${DESTINATION_SECRETS_PATH}
-        - JIBAN__Initial=${JIBAN__Initial}
         - USER_SECRETS_ID=${USER_SECRETS_ID}
         - ConnectionStrings__SqlServerConnection=${ConnectionStrings__SqlServerConnection}
     environment:
+      - SOURCE_SECRETS_PATH=${SOURCE_SECRETS_PATH}
+      - DESTINATION_SECRETS_PATH=${DESTINATION_SECRETS_PATH}
+      - USER_SECRETS_ID=${USER_SECRETS_ID}
       - ASPNETCORE_ENVIRONMENT=${ENVIRONMENT}
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - JIBAN__Initial=${JIBAN__Initial}
+      - ConnectionStrings__SqlServerConnection=${ConnectionStrings__SqlServerConnection}
+      - JwtData__SigningKey=jesuseselcamino
+      - JwtData__Issuer=https://localhost:44304
+      - JwtData__Audience=https://localhost:44304
+      - SuperAdmin__Password=${SuperAdminPassword}
+      - SuperAdmin__Email=${SuperAdminEmail}
+      - DemoUsers=${DemoUsers}
+      - Kestrel__Certificates__Default__Path=/src/Certs/ssl.cert
+      - Kestrel__Certificates__Default__KeyPath=/src/Certs/ssl.key
     ports:
       - "80:80"
       - "443:443"
-    volumes:
-      - ./https:/https/:ro
     networks:
-      - localdev
+      - production

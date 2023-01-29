@@ -1,34 +1,27 @@
-# docker-compose up -d
-# docker-compose down
-
 version: "3.6"
 networks:
-  localdev:
-    name: localdev
+  production:
+    name: production
 
 services:
-  db-server:
+  mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: mssql
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=${SQLSERVER_PASSWORD}
+      - SA_PASSWORD=Password123
     ports:
-      - 1433:1433
-    networks: 
-        localdev:
-            aliases: 
-                - mssql
+      - "1433:1433"
     volumes:
-      - sqlvolume:/var/opt/mssql      
+      - sqlvolume:/var/opt/mssql
+    networks:
+      - production 
   boilerplate-api:
     #entrypoint: ["./wait-for.sh", "mssql:1433", "-t", "120", "--", "dotnet", "Boilerplate.Api.dll"]
-    image: boilerplate-api:local
+    image: boilerplate-api:${TAG}
     container_name: boilerplate-api
-    depends_on:
-      - db-server
     networks: 
-        localdev:
+        production:
             aliases: 
                 - boilerplate-api
   jaeger:
@@ -38,7 +31,6 @@ services:
       - "6831:6831/udp"
       - "16686:16686"
     networks:
-      - localdev
-
+      - production
 volumes:
   sqlvolume:
