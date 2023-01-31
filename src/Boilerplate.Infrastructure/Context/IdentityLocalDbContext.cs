@@ -11,6 +11,7 @@ public class IdentityLocalDbContext : IdentityDbContext<ApplicationUser>
 {
     public IdentityLocalDbContext(DbContextOptions<IdentityLocalDbContext> options) : base(options) { }
 
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -28,7 +28,14 @@ internal static class ExtendAspNetUserExtension
         var user = await userManager.FindByEmailAsync(email);
         if (user != null)
             return user;
-        user = new ApplicationUser { UserName = email, Email = email };
+        user = new ApplicationUser
+        {
+            UserName = email,
+            Email = email,
+            FirstName = "Omar",
+            LastName = "Flores",
+            LastLogin = DateTime.Now
+        };
         var result = await userManager.CreateAsync(user, password);
         if (!result.Succeeded)
         {

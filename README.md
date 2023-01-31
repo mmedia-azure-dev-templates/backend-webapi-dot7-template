@@ -103,13 +103,13 @@ After that, you can pass the jwt on the lock (if using swagger) or via the Autho
 
 # Migrations
 1. To run migrations on this project, run the following command on the root folder: 
-	- ``dotnet ef migrations add InitialCreate --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\``
+	- ``dotnet ef migrations add AspNetUsers --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\ --context ApplicationDbContext``
 
 
 2. This command will set the entrypoint for the migration (the responsible to selecting the dbprovider { sqlserver, mysql, etc } and the connection string) and the selected project will be "Boilerplate.Infrastructure", which is where the dbcontext is.
 
 3. Rollback all migrations
-	- ``dotnet ef database update 0 --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\``
+	- ``dotnet ef database update 0 --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\ --context ApplicationDbContext``
 	
 4. Reverse Enginering Database (Remove Schema public)
 	- `` dotnet ef dbcontext scaffold "Host=172.16.20.4;Database=madsisqa;Username=raul.flores;Password=Per aspera$" Npgsql.EntityFrameworkCore.PostgreSQL --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\ --output-dir .\Reverse ``

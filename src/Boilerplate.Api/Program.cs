@@ -1,27 +1,17 @@
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
 using Boilerplate.Domain.ClaimsChangeCode;
+using Boilerplate.Infrastructure.Context;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
-
-//Flag for testing inital .env.jiban
-var jibanInitial = Environment.GetEnvironmentVariable("JIBAN__Initial");
-
-if (string.IsNullOrEmpty(jibanInitial))
-{
-    throw new Exception("Not initialized check secrets.json or env.jiban !!!");
-}
-// Authn / Authrz
-//builder.Services.AddAuthSetup(builder.Configuration);
-
-// Swagger
-//builder.Services.AddSwaggerSetup();
 
 // Persistence
 builder.Services.AddPersistenceSetup(builder.Configuration);
@@ -52,9 +42,11 @@ if (builder.Environment.EnvironmentName != "Testing")
 // Add opentelemetry
 builder.AddOpenTemeletrySetup();
 
+// Swagger
+builder.Services.AddSwaggerSetup();
+
 // Add jwt
 builder.Services.AddJwtSetup(builder.Configuration);
-
 
 // Controllers
 builder.Services
@@ -85,6 +77,7 @@ app.UseResponseCompression();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.UsePermissionsChange();   //Example of updating the user's Permission claim when the database change in app using JWT Token for Authentication / Authorization
