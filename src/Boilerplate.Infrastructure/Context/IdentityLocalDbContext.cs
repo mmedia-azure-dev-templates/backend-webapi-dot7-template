@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Boilerplate.Infrastructure.Context;
 
-public class IdentityLocalDbContext : IdentityDbContext
+public class IdentityLocalDbContext : IdentityDbContext<ApplicationUser>
 {
     public IdentityLocalDbContext(DbContextOptions<IdentityLocalDbContext> options) : base(options) { }
 

@@ -18,6 +18,15 @@ using RunMethodsSequentially;
 using AuthPermissions.AspNetCore.StartupServices;
 using Boilerplate.Infrastructure.Context;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Boilerplate.Infrastructure.Reverse;
+using Boilerplate.Api.Extends;
+using AuthPermissions.SupportCode.AddUsersServices.Authentication;
+using AuthPermissions.SupportCode.AddUsersServices;
+using AuthPermissions.BaseCode.SetupCode;
+using AuthPermissions.AdminCode;
 
 namespace Boilerplate.Api.Configurations;
 
@@ -96,17 +105,15 @@ public static class JwtPermissionsSetup
             };
         })
         .UsingEfCoreSqlServer(configuration.GetConnectionString("SqlServerConnection")) //NOTE: This uses the same database as the individual accounts DB
-        .IndividualAccountsAuthentication()
-        .AddSuperUserToIndividualAccounts()
-        .RegisterFindUserInfoService<IndividualAccountUserLookup>()
+        .IndividualAccountsAuthentication<ApplicationUser>()
+        .AddSuperUserToIndividualAccounts<ApplicationUser>()
+        .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()
         .AddRolesPermissionsIfEmpty(AppAuthSetupData.RolesDefinition)
         .AddAuthUsersIfEmpty(AppAuthSetupData.UsersRolesDefinition)
         .SetupAspNetCoreAndDatabase(options =>
         {
-            //Migrate individual account database
             options.RegisterServiceToRunInJob<StartupServiceMigrateAnyDbContext<IdentityLocalDbContext>>();
-            //Add demo users to the database
-            options.RegisterServiceToRunInJob<StartupServicesIndividualAccountsAddDemoUsers>();
+            options.RegisterServiceToRunInJob<ExtendStartupServicesIndividualAccountsAddDemoUsers>();
         });
 
         return services;

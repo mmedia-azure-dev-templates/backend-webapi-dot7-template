@@ -1,5 +1,6 @@
 ﻿using Boilerplate.Application.Auth;
 using Boilerplate.Domain.Auth.Interfaces;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,21 +13,20 @@ public static class PersistanceSetup
 {
     public static IServiceCollection AddPersistenceSetup(this IServiceCollection services, IConfiguration configuration)
     {
-
         services.AddScoped<ISession, Session>();
         services.AddDbContext<IdentityLocalDbContext>(o =>
         {
             o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
         });
-        services.AddDefaultIdentity<IdentityUser>(
-        options => options.SignIn.RequireConfirmedAccount = false)
-        .AddEntityFrameworkStores<IdentityLocalDbContext>();
-        
         services.AddDbContext<ApplicationDbContext>(o =>
         {
             o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
         });
-
+        services.AddDefaultIdentity<ApplicationUser>(
+        options => options.SignIn.RequireConfirmedAccount = false)
+        .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<ApplicationUser>>()
+        .AddEntityFrameworkStores<IdentityLocalDbContext>()
+        .AddDefaultTokenProviders();
         return services;
     }
 }
