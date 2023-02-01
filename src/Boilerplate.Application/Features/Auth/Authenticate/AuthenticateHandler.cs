@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Augh.Authenticate;
 
-public class AuthenticateHandler : IRequestHandler<AuthenticateRequest,GetAuthenticateResponse>
+public class AuthenticateHandler : IRequestHandler<AuthenticateRequest,OneOf<AuthenticateResponse, AuthenticateNotFound>>
 {
     private readonly IContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -29,26 +29,25 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest,GetAuthen
         _tokenBuilder = tokenBuilder;
     }
 
-    public async Task<GetAuthenticateResponse> Handle(AuthenticateRequest request, CancellationToken cancellationToken)
+    public async Task<OneOf<AuthenticateResponse, AuthenticateNotFound>> Handle(AuthenticateRequest request, CancellationToken cancellationToken)
     {
         //NOTE: The _signInManager.PasswordSignInAsync does not change the current ClaimsPrincipal - that only happens on the next access with the token
         var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
         if (!result.Succeeded)
         {
-            //return new AuthNotFound() { Message = "Email or Password incorrect"};
+            return new AuthenticateNotFound() { Message = "Email or Password incorrect"};
         }
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user == null)
         {
-            //return new AuthNotFound() { Message = "User not found" };
+            return new AuthenticateNotFound() { Message = "User not found" };
         }
         var token = await _tokenBuilder.GenerateJwtTokenAsync(user.Id);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new GetAuthenticateResponse()
+        return new AuthenticateResponse()
         {
             Token = token
-            
         };
 
         //var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == request.Email.ToLower(), cancellationToken);

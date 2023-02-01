@@ -43,9 +43,9 @@ public class UserController : ControllerBase
     [Route("authenticate")]
     [AllowAnonymous]
 
-    public async Task<ActionResult<GetAuthenticateResponse>> Authenticate([FromBody] AuthenticateRequest request)
+    public async Task<ActionResult<AuthenticateResponse>> Authenticate([FromBody] AuthenticateRequest request)
     {
-        return await _mediator.Send(request);
+        return Ok();//await _mediator.Send(request);
     }
 
 

@@ -17,6 +17,9 @@ using Boilerplate.Application.Features.Heroes;
 using Boilerplate.Application.Features.Augh;
 using Boilerplate.Application.Features.Auth;
 using OneOf;
+using Boilerplate.Application.Features.Heroes.GetHeroById;
+using Boilerplate.Domain.Entities.Common;
+using Microsoft.AspNetCore.Http;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -45,10 +48,15 @@ public class AuthenticateController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("authenticate")]
-    public async Task<GetAuthenticateResponse> Authenticate([FromQuery] AuthenticateRequest request)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(AuthenticateResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Authenticate([FromQuery] AuthenticateRequest request)
     {
-        return await _mediator.Send(request);
-        //return Ok();
+        var result = await _mediator.Send(request);
+        return result.Match<IActionResult>(
+            valid => Ok(valid),
+            notFound => NotFound()
+        );
     }
 
     /// <summary>

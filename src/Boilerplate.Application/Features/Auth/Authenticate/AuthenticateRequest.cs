@@ -4,7 +4,7 @@ using OneOf;
 
 namespace Boilerplate.Application.Features.Augh.Authenticate;
 
-public record AuthenticateRequest : IRequest<GetAuthenticateResponse>
+public record AuthenticateRequest : IRequest<OneOf<AuthenticateResponse,AuthenticateNotFound>>
 {
     public string Email { get; init; } = null!;
 
