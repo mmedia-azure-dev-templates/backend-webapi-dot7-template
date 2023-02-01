@@ -9,7 +9,6 @@ namespace Boilerplate.Infrastructure.Context;
 public class ApplicationDbContext : DbContext, IContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-    public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
     public virtual DbSet<Article> Articles { get; set; }
     
     public virtual DbSet<Catalog> Catalogs { get; set; }
@@ -35,8 +34,6 @@ public class ApplicationDbContext : DbContext, IContext
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-
-
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

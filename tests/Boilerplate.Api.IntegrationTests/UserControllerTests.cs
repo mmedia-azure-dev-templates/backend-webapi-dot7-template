@@ -205,8 +205,8 @@ public class UserControllerTests : BaseTest
         // Act
         var newUser = userFaker
             .RuleFor(x => x.Email, f => f.Internet.Email())
-            .RuleFor(x => x.Password, f=> f.Internet.Password())
-            .RuleFor(x => x.IsAdmin, _ => true)
+            //.RuleFor(x => x.Password, f=> f.Internet.Password())
+            //.RuleFor(x => x.IsAdmin, _ => true)
             .Generate();
         var response = await PostAsync<GetUserResponse>("/api/User", newUser);
 

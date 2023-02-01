@@ -1,5 +1,7 @@
-﻿using Boilerplate.Application.Common.Responses;
-using System.Threading.Tasks;
+﻿using AuthPermissions.AspNetCore.JwtTokenCode;
+using AuthPermissions;
+using Boilerplate.Application.Common.Responses;
+using Boilerplate.Application.Features.Augh;
 using Boilerplate.Application.Features.Augh.Authenticate;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Features.Users.CreateUser;
@@ -8,15 +10,15 @@ using Boilerplate.Application.Features.Users.GetUserById;
 using Boilerplate.Application.Features.Users.GetUsers;
 using Boilerplate.Application.Features.Users.UpdatePassword;
 using Boilerplate.Domain.Auth;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using ISession = Boilerplate.Domain.Auth.Interfaces.ISession;
-using Boilerplate.Application.Features.Augh;
-using Boilerplate.Application.Features.Auth;
-using OneOf;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -28,10 +30,23 @@ public class UserController : ControllerBase
     private readonly ISession _session;
     private readonly IMediator _mediator;
 
-    public UserController(ISession session, IMediator mediator)
+    public UserController(
+        ISession session, 
+        IMediator mediator, 
+        ITokenBuilder tokenBuilder, 
+        IClaimsCalculator claimsCalculator
+        )
     {
         _session = session;
         _mediator = mediator;
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<GetUserResponse>> CreateUser(CreateUserRequest request)
+    {
+        return await _mediator.Send(request);
     }
 
     /// <summary>
@@ -42,12 +57,6 @@ public class UserController : ControllerBase
     [HttpPost]
     [Route("authenticate")]
     [AllowAnonymous]
-
-    public async Task<ActionResult<AuthenticateResponse>> Authenticate([FromBody] AuthenticateRequest request)
-    {
-        return Ok();//await _mediator.Send(request);
-    }
-
 
     /// <summary>
     /// Returns all users in the database
@@ -79,15 +88,6 @@ public class UserController : ControllerBase
         return result.Match<IActionResult>(
             found => Ok(found),
             notFound => NotFound());
-    }
-
-    [Authorize(Roles = Roles.Admin)]
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GetUserResponse>> CreateUser(CreateUserRequest request)
-    {
-        var newAccount = await _mediator.Send(request);
-        return CreatedAtAction(nameof(GetUserById), new { id = newAccount.Id }, newAccount);
     }
 
     [HttpPatch("password")]

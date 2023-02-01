@@ -13,10 +13,10 @@ public class CreateUserValidator : AbstractValidator<CreateUserRequest>
             .MaximumLength(254)
             .EmailAddress();
 
-        RuleFor(x => x.Password)
+        /*RuleFor(x => x.Password)
             .NotEmpty()
             .MinimumLength(5)
-            .MaximumLength(255);
+            .MaximumLength(255);*/
         
     }
 }

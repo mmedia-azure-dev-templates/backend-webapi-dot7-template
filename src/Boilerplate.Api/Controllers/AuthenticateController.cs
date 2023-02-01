@@ -1,25 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using AuthPermissions;
+﻿using AuthPermissions;
 using AuthPermissions.AspNetCore.JwtTokenCode;
 using AuthPermissions.AspNetCore.Services;
-using AuthPermissions.BaseCode.CommonCode;
 using AuthPermissions.BaseCode.PermissionsCode;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Boilerplate.Application.Features.Augh;
+using Boilerplate.Application.Features.Augh.Authenticate;
 using Boilerplate.Domain.Entities;
 using MediatR;
-using Boilerplate.Application.Features.Heroes.GetAllHeroes;
-using Boilerplate.Application.Features.Augh.Authenticate;
-using Boilerplate.Application.Features.Heroes;
-using Boilerplate.Application.Features.Augh;
-using Boilerplate.Application.Features.Auth;
-using OneOf;
-using Boilerplate.Application.Features.Heroes.GetHeroById;
-using Boilerplate.Domain.Entities.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -63,14 +55,13 @@ public class AuthenticateController : ControllerBase
     /// DEMO ONLY: This will generate a JWT token for the user "Super@g1.com"
     /// </summary>
     /// <returns></returns>
-    [AllowAnonymous]
-    [HttpPost]
-    [Route("quickauthenticate")]
-    public async Task<ActionResult> QuickAuthenticate()
-    {
-        return Ok();
-        //return await Authenticate(new AuthenticateRequest { Email = "Super@g1.com", Password = "Super@g1.com" });
-    }
+    //[AllowAnonymous]
+    //[HttpPost]
+    //[Route("quickauthenticate")]
+    //public async Task<ActionResult> QuickAuthenticate()
+    //{
+    //    return (ActionResult)await Authenticate(new AuthenticateRequest { Email = "Super@g1.com", Password = "Super@g1.com" });
+    //}
 
     /// <summary>
     /// This checks you are a valid user and returns a JTW token and a Refresh token
@@ -97,13 +88,13 @@ public class AuthenticateController : ControllerBase
     /// DEMO ONLY: This will generate a JWT token and a Refresh token for the user "Super@g1.com"
     /// </summary>
     /// <returns></returns>
-    [AllowAnonymous]
-    [HttpPost]
-    [Route("quickauthenticatewithrefresh")]
-    public Task<ActionResult<TokenAndRefreshToken>> QuickAuthenticateWithRefresh()
-    {
-        return AuthenticateWithRefresh(new LoginUserModel { Email = "Super@g1.com", Password = "Super@g1.com" });
-    }
+    //[AllowAnonymous]
+    //[HttpPost]
+    //[Route("quickauthenticatewithrefresh")]
+    //public Task<ActionResult<TokenAndRefreshToken>> QuickAuthenticateWithRefresh()
+    //{
+    //    return AuthenticateWithRefresh(new LoginUserModel { Email = "Super@g1.com", Password = "Super@g1.com" });
+    //}
 
     /// <summary>
     /// This will refresh the JWT token using the provided Refresh token

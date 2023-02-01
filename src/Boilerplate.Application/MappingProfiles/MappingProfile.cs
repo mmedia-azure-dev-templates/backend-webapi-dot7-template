@@ -16,15 +16,17 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        // ApplicationUser Map
+        //CreateMap<ApplicationUser, GetUserResponse>().ForMember(dest => dest.Email, opt => opt.MapFrom(org => org.Email));
+        //CreateMap<CreateUserRequest, User>().ForMember(dest => dest.Role,
+        //    opt => opt.MapFrom(org => org.IsAdmin ? Roles.Admin : Roles.User));
+        //CreateMap<UpdatePasswordRequest, User>();
+
         // Hero Map
         CreateMap<Hero, GetHeroResponse>().ReverseMap();
         CreateMap<CreateHeroRequest, Hero>();
         CreateMap<UpdateHeroRequest, Hero>();
 
-        // User Map
-        CreateMap<User, GetUserResponse>().ForMember(dest => dest.IsAdmin, opt => opt.MapFrom(x => x.Role == Roles.Admin)).ReverseMap();
-        CreateMap<CreateUserRequest, User>().ForMember(dest => dest.Role,
-            opt => opt.MapFrom(org => org.IsAdmin ? Roles.Admin : Roles.User));
-        CreateMap<UpdatePasswordRequest, User>();
+        
     }
 }
