@@ -1,6 +1,6 @@
 ﻿using Boilerplate.Application.Common.Responses;
 using System.Threading.Tasks;
-using Boilerplate.Application.Features.Auth.Authenticate;
+using Boilerplate.Application.Features.Augh.Authenticate;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Features.Users.CreateUser;
 using Boilerplate.Application.Features.Users.DeleteUser;
@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ISession = Boilerplate.Domain.Auth.Interfaces.ISession;
+using Boilerplate.Application.Features.Augh;
+using Boilerplate.Application.Features.Auth;
+using OneOf;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -39,16 +42,10 @@ public class UserController : ControllerBase
     [HttpPost]
     [Route("authenticate")]
     [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(Jwt), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequest request)
+
+    public async Task<ActionResult<GetAuthenticateResponse>> Authenticate([FromBody] AuthenticateRequest request)
     {
-        var jwt = await _mediator.Send(request);
-        if (jwt == null)
-        {
-            return BadRequest(new { message = "Username or password is incorrect" });
-        }
-        return Ok(jwt);
+        return await _mediator.Send(request);
     }
 
 

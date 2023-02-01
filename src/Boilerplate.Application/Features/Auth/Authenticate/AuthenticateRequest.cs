@@ -1,9 +1,10 @@
-﻿using Boilerplate.Application.Common.Responses;
+﻿using Boilerplate.Application.Features.Auth;
 using MediatR;
+using OneOf;
 
-namespace Boilerplate.Application.Features.Auth.Authenticate;
+namespace Boilerplate.Application.Features.Augh.Authenticate;
 
-public record AuthenticateRequest : IRequest<Jwt?>
+public record AuthenticateRequest : IRequest<GetAuthenticateResponse>
 {
     public string Email { get; init; } = null!;
 

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Boilerplate.Application.Features.Auth.Authenticate;
+namespace Boilerplate.Application.Features.Augh.Authenticate;
 
 public class AuthenticateValidator : AbstractValidator<AuthenticateRequest>
 {

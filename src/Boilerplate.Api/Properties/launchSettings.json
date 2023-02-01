@@ -5,7 +5,6 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "boilerplate-api": "StartDebugging",
-        "db-server": "StartWithoutDebugging",
         "jaeger": "StartWithoutDebugging"
       }
     },
@@ -20,14 +19,14 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://api.mad.ec:{ServicePort}/api-docs",
+      "launchUrl": "{Scheme}://api.mad.ec/api-docs",
       "publishAllPorts": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "httpPort": 44369,
       "useSSL": true,
-      "sslPort": 44361
+      "sslPort": 443
     },
     "WSL": {
       "commandName": "WSL2",

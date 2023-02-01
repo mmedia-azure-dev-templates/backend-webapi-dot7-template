@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 using Boilerplate.Application.Common.Responses;
-using Boilerplate.Application.Features.Auth.Authenticate;
+using Boilerplate.Application.Features.Augh.Authenticate;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Features.Users.CreateUser;
 using Boilerplate.Application.Features.Users.GetUsers;

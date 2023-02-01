@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Boilerplate.Application.Features.Augh;
+using Boilerplate.Application.Features.Augh.Authenticate;
 using Boilerplate.Application.Features.Heroes;
 using Boilerplate.Application.Features.Heroes.CreateHero;
 using Boilerplate.Application.Features.Heroes.UpdateHero;

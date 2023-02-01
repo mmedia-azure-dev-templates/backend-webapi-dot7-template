@@ -2,14 +2,6 @@ version: '3.6'
 
 
 services:
-  boilerplate-db:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: boilerplate-db
-    ports:
-      - 1433:1433
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Yourpassword123
   boilerplate-api:
     image: boilerplate-api:${TAG}
     build:

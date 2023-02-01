@@ -10,6 +10,13 @@ using AuthPermissions.BaseCode.PermissionsCode;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Boilerplate.Domain.Entities;
+using MediatR;
+using Boilerplate.Application.Features.Heroes.GetAllHeroes;
+using Boilerplate.Application.Features.Augh.Authenticate;
+using Boilerplate.Application.Features.Heroes;
+using Boilerplate.Application.Features.Augh;
+using Boilerplate.Application.Features.Auth;
+using OneOf;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -17,12 +24,14 @@ namespace Boilerplate.Api.Controllers;
 [ApiController]
 public class AuthenticateController : ControllerBase
 {
+    private readonly IMediator _mediator;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenBuilder _tokenBuilder;
 
-    public AuthenticateController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator)
+    public AuthenticateController(IMediator mediator,SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator)
     {
+        _mediator = mediator;
         _signInManager = signInManager;
         _userManager = userManager;
         _tokenBuilder = tokenBuilder;
@@ -31,22 +40,15 @@ public class AuthenticateController : ControllerBase
     /// <summary>
     /// This checks you are a valid user and returns a JTW token
     /// </summary>
-    /// <param name="loginUser"></param>
+    /// <param name="request"></param>
     /// <returns></returns>
     [AllowAnonymous]
     [HttpPost]
     [Route("authenticate")]
-    public async Task<ActionResult> Authenticate(LoginUserModel loginUser)
+    public async Task<GetAuthenticateResponse> Authenticate([FromQuery] AuthenticateRequest request)
     {
-        //NOTE: The _signInManager.PasswordSignInAsync does not change the current ClaimsPrincipal - that only happens on the next access with the token
-        var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, false);
-        if (!result.Succeeded)
-        {
-            return BadRequest(new { message = "Username or password is incorrect" });
-        }
-        var user = await _userManager.FindByEmailAsync(loginUser.Email);
-
-        return Ok(await _tokenBuilder.GenerateJwtTokenAsync(user.Id));
+        return await _mediator.Send(request);
+        //return Ok();
     }
 
     /// <summary>
@@ -58,7 +60,8 @@ public class AuthenticateController : ControllerBase
     [Route("quickauthenticate")]
     public async Task<ActionResult> QuickAuthenticate()
     {
-        return await Authenticate(new LoginUserModel { Email = "Super@g1.com", Password = "Super@g1.com" });
+        return Ok();
+        //return await Authenticate(new AuthenticateRequest { Email = "Super@g1.com", Password = "Super@g1.com" });
     }
 
     /// <summary>

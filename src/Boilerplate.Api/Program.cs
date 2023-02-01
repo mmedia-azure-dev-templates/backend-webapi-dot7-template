@@ -1,15 +1,10 @@
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
 using Boilerplate.Domain.ClaimsChangeCode;
-using Boilerplate.Infrastructure.Context;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,7 +55,11 @@ builder.Services
 builder.Services.AddCacheSetup(builder.Environment);
 
 var app = builder.Build();
-
+app.UseCors(builder => builder
+       .AllowAnyHeader()
+       .AllowAnyMethod()
+       .AllowAnyOrigin()
+    );
 // Configure the HTTP request pipeline.
 app.UseResponseCompression();
 
