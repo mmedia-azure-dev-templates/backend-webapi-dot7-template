@@ -25,7 +25,6 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "https://+:44361",
                 "Kestrel:Certificates:Default:Path": "/src/Certs/ssl.cert",
                 "Kestrel:Certificates:Default:KeyPath": "/src/Certs/ssl.key",
             },
