@@ -25,7 +25,10 @@ and technologies for a restful API in .net, making your work easier.
 3. Visit http://localhost:5000/api-docs or https://localhost:5001/api-docs to access the application's swagger.
 
 ## Docker
-``docker compose --project-directory . -f docker-compose.yml -f docker-compose.override.yml  up --build --remove-orphans -d``
+## DEVELOPMENT
+``docker compose --env-file .env.development -f docker-compose.yml   up --build --remove-orphans -d``
+## PRODUCTION
+``docker compose --env-file .env.production -f docker-compose.yml -f docker-compose.override.yml up jiban-api --build --remove-orphans -d``
 1. Run ``docker-compose --env-file .env -f docker-compose.yml -f docker-compose.override.yml  up --build -d`` in 
 the root directory, or, in visual studio, set the docker-compose project as startup and run. This should start the application and DB.
  - 1. For docker-compose, you should run this command on the root folder: ``dotnet dev-certs https -ep https/aspnetapp.pfx -p yourpassword``

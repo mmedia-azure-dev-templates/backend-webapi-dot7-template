@@ -1,9 +1,10 @@
 version: '3.6'
-
-
+networks:
+  production:
+    name: production
 services:
-  boilerplate-api:
-    image: boilerplate-api:${TAG}
+  jiban-api:
+    image: jiban-api:${TAG}
     build:
       context: .
       dockerfile: src/Boilerplate.Api/Dockerfile
@@ -31,5 +32,13 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    networks:
+      - production
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"
     networks:
       - production
