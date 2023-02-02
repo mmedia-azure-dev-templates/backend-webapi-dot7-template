@@ -33,23 +33,18 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, GetUserRespo
         ApplicationUser user = new()
         {
             UserName = request.Email,
+            NormalizedUserName = request.Email.ToUpper(),
             Email = request.Email,
-            PasswordHash = BC.HashPassword("P@ssw0rd1982"),
+            NormalizedEmail = request.Email.ToUpper(),
+            PasswordHash = BC.HashPassword(request.Email),
             FirstName = request.FirstName,
             LastName = request.LastName,
             PhoneNumber = request.PhoneNumber,
-            LastLogin = DateTime.Now,
-            NormalizedEmail = request.Email.ToUpper(),
             LockoutEnabled = true,
+            LastLogin = DateTime.Now,
         };
-        
-        //var result = await _userManager.CreateAsync(user, "P@ssw0rd1982");
-        //if (!result.Succeeded)
-        //{
-        //    var errorDescriptions = string.Join("\n", result.Errors.Select(x => x.Description));
-        //    throw new InvalidOperationException(
-        //        $"Tried to add user {user.Email}, but failed. Errors:\n {errorDescriptions}");
-        //}
+
+        _context.ApplicationUsers.Add(user);
         await _context.SaveChangesAsync(cancellationToken);
         return _mapper.Map<GetUserResponse>(user);
     }

@@ -17,7 +17,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // ApplicationUser Map
-        //CreateMap<ApplicationUser, GetUserResponse>().ForMember(dest => dest.Email, opt => opt.MapFrom(org => org.Email));
+        CreateMap<ApplicationUser, GetUserResponse>().ForMember(dest => dest.Email, opt => opt.MapFrom(org => org.Email));
         //CreateMap<CreateUserRequest, User>().ForMember(dest => dest.Role,
         //    opt => opt.MapFrom(org => org.IsAdmin ? Roles.Admin : Roles.User));
         //CreateMap<UpdatePasswordRequest, User>();
