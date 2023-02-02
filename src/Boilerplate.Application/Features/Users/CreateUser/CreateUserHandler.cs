@@ -44,6 +44,29 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, GetUserRespo
             LastLogin = DateTime.Now,
         };
 
+        Identification identification = new()
+        {
+            UserId = user.Id,
+            CatTypeDocument = request.CatTypeDocument,
+            CatNacionality = request.CatNacionality,
+            Ndocument = request.Ndocument,
+            CatGender = request.CatGender,
+            CatCivilStatus = request.CatCivilStatus,
+            BirthDate = request.BirthDate,
+            EntryDate = request.EntryDate,
+            DepartureDate = request.DepartureDate,
+            Hired = request.Hired,
+            ImgUrl = request.ImgUrl,
+            CurriculumUrl = request.CurriculumUrl,
+            Mobile = request.Mobile,
+            Phone = request.Phone,
+            Address = request.Address,
+            UbcProvincia = request.UbcProvincia,
+            UbcCanton = request.UbcCanton,
+            UbcParroquia = request.UbcParroquia,
+            Notes = request.Notes,
+        };
+
         _context.ApplicationUsers.Add(user);
         await _context.SaveChangesAsync(cancellationToken);
         return _mapper.Map<GetUserResponse>(user);
