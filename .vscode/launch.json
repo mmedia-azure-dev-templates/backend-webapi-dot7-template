@@ -28,16 +28,6 @@
                 "ASPNETCORE_URLS": "https://+:44361",
                 "Kestrel:Certificates:Default:Path": "/src/Certs/ssl.cert",
                 "Kestrel:Certificates:Default:KeyPath": "/src/Certs/ssl.key",
-                "JwtData:SigningKey": "jesuseselcaminodiosesamor",
-                "JwtData:Issuer": "https://localhost:44304",
-                "JwtData:Audience": "https://localhost:44304",
-                "JIBAN:Initial": "forever young",
-                "ConnectionStrings:SqlServerConnection": "Server=172.16.20.67,1433;Database=Jiban;User Id=sa;Password=Yourpassword123;TrustServerCertificate=True",
-                "ConnectionStrings:PostgresConnection": "Host=172.16.20.4;Database=madsisqa;Username=raul.flores;Password=Per aspera$;",
-                "AllowedHosts": "*",
-                "httpPort": "44360",
-                "useSSL": "true",
-                "sslPort": "44361"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
