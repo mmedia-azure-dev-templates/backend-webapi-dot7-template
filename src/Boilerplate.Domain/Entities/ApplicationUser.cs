@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boilerplate.Domain.Entities;
+[Table("AspNetUsers", Schema = "dbo")]
 public class ApplicationUser : IdentityUser
 {
     public string? FirstName { get; set; }

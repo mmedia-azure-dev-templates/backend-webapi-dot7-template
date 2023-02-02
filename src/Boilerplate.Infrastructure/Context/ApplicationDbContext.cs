@@ -9,6 +9,9 @@ namespace Boilerplate.Infrastructure.Context;
 public class ApplicationDbContext : DbContext, IContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
+    public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
     public virtual DbSet<Article> Articles { get; set; }
     
     public virtual DbSet<Catalog> Catalogs { get; set; }

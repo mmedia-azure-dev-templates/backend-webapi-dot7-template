@@ -30,7 +30,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, GetUserRespo
     }
     public async Task<GetUserResponse> Handle(CreateUserRequest request, CancellationToken cancellationToken)
     {
-        ApplicationUser user = new ApplicationUser
+        ApplicationUser user = new()
         {
             UserName = request.Email,
             Email = request.Email,
@@ -39,22 +39,18 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, GetUserRespo
             LastName = request.LastName,
             PhoneNumber = request.PhoneNumber,
             LastLogin = DateTime.Now,
+            NormalizedEmail = request.Email.ToUpper(),
+            LockoutEnabled = true,
         };
-
-        //var manager = new UserManager<ApplicationUser>;
-        var result = await _userManager.CreateAsync(user, "P@ssw0rd1982");
-
-        if (!result.Succeeded)
-        {
-            var errorDescriptions = string.Join("\n", result.Errors.Select(x => x.Description));
-            throw new InvalidOperationException(
-                $"Tried to add user {user.Email}, but failed. Errors:\n {errorDescriptions}");
-        }
-        var resp = new GetUserResponse
-        {
-            Email = "raulidavid@hotmail.com"
-        };
+        
+        //var result = await _userManager.CreateAsync(user, "P@ssw0rd1982");
+        //if (!result.Succeeded)
+        //{
+        //    var errorDescriptions = string.Join("\n", result.Errors.Select(x => x.Description));
+        //    throw new InvalidOperationException(
+        //        $"Tried to add user {user.Email}, but failed. Errors:\n {errorDescriptions}");
+        //}
         await _context.SaveChangesAsync(cancellationToken);
-        return resp;
+        return _mapper.Map<GetUserResponse>(user);
     }
 }
