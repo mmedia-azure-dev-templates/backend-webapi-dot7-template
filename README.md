@@ -26,7 +26,7 @@ and technologies for a restful API in .net, making your work easier.
 
 ## Docker
 ## DEVELOPMENT
-``docker compose --env-file .env.development -f docker-compose.yml   up --build --remove-orphans -d``
+``docker compose --env-file .env.development up jiban-api-development --build --remove-orphans -d``
 ## PRODUCTION
 ``docker compose --env-file .env.production up  jiban-api-production --build --remove-orphans -d``
 1. Run ``docker-compose --env-file .env -f docker-compose.yml -f docker-compose.override.yml  up --build -d`` in 
