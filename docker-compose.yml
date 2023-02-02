@@ -40,6 +40,9 @@ services:
   jiban-api-development:
     env_file:
       - .env.development
+    environment:
+      - Kestrel__Certificates__Default__Path=/src/Certs/ssl.cert
+      - Kestrel__Certificates__Default__KeyPath=/src/Certs/ssl.key
     build:
       context: .
       dockerfile: src/Boilerplate.Api/Dockerfile.development
