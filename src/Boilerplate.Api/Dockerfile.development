@@ -1,0 +1,32 @@
+##See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+#
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+WORKDIR /app
+EXPOSE 44360
+EXPOSE 44361
+
+ARG SOURCE_SECRETS_PATH=${SOURCE_SECRETS_PATH} \
+    DESTINATION_SECRETS_PATH=${DESTINATION_SECRETS_PATH} \
+    JIBAN_Initial=${JIBAN__Initial} \
+    USER_SECRETS_ID=${USER_SECRETS_ID} \
+    ConnectionStrings__SqlServerConnection=${ConnectionStrings__SqlServerConnection} \
+    AMBIENTE=${AMBIENTE}
+
+#COMANDOS PARA SETEAR EL PROPIETARIO DEL DIRECTORIO
+RUN echo "SOURCE_SECRETS_PATH: ${SOURCE_SECRETS_PATH}"    
+RUN echo "DESTINATION_SECRETS_PATH: ${DESTINATION_SECRETS_PATH}"
+RUN echo "JIBAN_Initial: ${JIBAN__Initial}"
+RUN echo "USER_SECRETS_ID: ${USER_SECRETS_ID}"
+RUN echo "ConnectionStrings__SqlServerConnection: ${ConnectionStrings__SqlServerConnection}"
+
+RUN apt-get update && apt-get install -y apt-utils iputils-ping telnet vim wget
+RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb && apt-get update && apt-get install -y dotnet-sdk-7.0
+# Disable the invariant mode (set in base image)
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+WORKDIR /src
+COPY . .
+#CMD ["echo", "Development Successfully"] 
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+

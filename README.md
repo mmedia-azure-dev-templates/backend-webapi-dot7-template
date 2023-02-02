@@ -28,7 +28,7 @@ and technologies for a restful API in .net, making your work easier.
 ## DEVELOPMENT
 ``docker compose --env-file .env.development -f docker-compose.yml   up --build --remove-orphans -d``
 ## PRODUCTION
-``docker compose --env-file .env.production -f docker-compose.yml -f docker-compose.override.yml up jiban-api --build --remove-orphans -d``
+``docker compose --env-file .env.production up  jiban-api-production --build --remove-orphans -d``
 1. Run ``docker-compose --env-file .env -f docker-compose.yml -f docker-compose.override.yml  up --build -d`` in 
 the root directory, or, in visual studio, set the docker-compose project as startup and run. This should start the application and DB.
  - 1. For docker-compose, you should run this command on the root folder: ``dotnet dev-certs https -ep https/aspnetapp.pfx -p yourpassword``
