@@ -363,4 +363,5 @@ tools/
 .idea/
 Certs/
 .env
-.env.jiban
+.env.production
+.env.development
