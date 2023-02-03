@@ -21,7 +21,10 @@ public partial class Users : Migration
             type: "int",
             nullable: false,
             schema: "dbo"
-        );
+        ).Annotation("SqlServer:Identity", "1, 1");
+
+        migrationBuilder.Sql("SET IDENTITY_INSERT [dbo].[AspNetUsers] ON");
+
         migrationBuilder.AddColumn<string>(
             name: "FirstName",
             table: "AspNetUsers",
@@ -41,10 +44,13 @@ public partial class Users : Migration
         migrationBuilder.AddColumn<DateTime>(
             name: "LastLogin",
             table: "AspNetUsers",
-            schema: "dbo"
+            schema: "dbo",
+            nullable: true
         );
 
         migrationBuilder.Sql(Utils.GetRawSql("20230122144334_UsersUp.sql"));
+
+        migrationBuilder.Sql("SET IDENTITY_INSERT [dbo].[AspNetUsers] OFF");
     }
 
     /// <inheritdoc />
@@ -65,5 +71,7 @@ public partial class Users : Migration
         migrationBuilder.DropColumn(
             name: "LastLogin",
             table: "AspNetUsers");
+        
+        migrationBuilder.Sql(Utils.GetRawSql("20230122144334_UsersDown.sql"));
     }
 }
