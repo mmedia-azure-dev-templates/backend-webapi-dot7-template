@@ -1,4 +1,6 @@
-﻿using Boilerplate.Application.Common;
+﻿using AuthPermissions;
+using AuthPermissions.BaseCode.DataLayer.EfCode;
+using Boilerplate.Application.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +16,9 @@ public static class MigrationsSetup
         await using var scope = app.Services.CreateAsyncScope();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<IAssemblyMarker>>();
         var dbContext = scope.ServiceProvider.GetRequiredService<IContext>();
-
+        var authContext = scope.ServiceProvider.GetRequiredService<AuthPermissionsDbContext>();
         logger.LogInformation("Running migrations...");
+        await authContext.Database.MigrateAsync();
         await dbContext.Database.MigrateAsync();
         logger.LogInformation("Migrations applied succesfully");
     }
