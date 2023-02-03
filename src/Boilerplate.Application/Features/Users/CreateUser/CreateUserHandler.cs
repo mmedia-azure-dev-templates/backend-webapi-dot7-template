@@ -13,7 +13,7 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace Boilerplate.Application.Features.Users.CreateUser;
 
-public class CreateUserHandler : IRequestHandler<CreateUserRequest, GetUserResponse>
+public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest, GetUserResponse>
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
@@ -28,46 +28,50 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, GetUserRespo
         _signInManager = signInManager;
         _userManager = userManager;
     }
-    public async Task<GetUserResponse> Handle(CreateUserRequest request, CancellationToken cancellationToken)
+    public async Task<GetUserResponse> Handle(CreateUsersIdenticationsRequest request, CancellationToken cancellationToken)
     {
+        
         ApplicationUser user = new()
         {
-            UserName = request.Email,
-            NormalizedUserName = request.Email.ToUpper(),
-            Email = request.Email,
-            NormalizedEmail = request.Email.ToUpper(),
-            PasswordHash = BC.HashPassword(request.Email),
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            PhoneNumber = request.PhoneNumber,
+            LegacyId = 1,
+            UserName = request.User.Email,
+            NormalizedUserName = request.User.Email.ToUpper(),
+            Email = request.User.Email,
+            NormalizedEmail = request.User.Email.ToUpper(),
+            PasswordHash = BC.HashPassword(request.User.Email),
+            FirstName = request.User.FirstName,
+            LastName = request.User.LastName,
+            PhoneNumber = request.User.PhoneNumber,
             LockoutEnabled = true,
             LastLogin = DateTime.Now,
         };
 
+        string userId = _context.ApplicationUsers.Add(user).Entity.Id;
+
         Identification identification = new()
         {
-            UserId = user.Id,
-            CatTypeDocument = request.CatTypeDocument,
-            CatNacionality = request.CatNacionality,
-            Ndocument = request.Ndocument,
-            CatGender = request.CatGender,
-            CatCivilStatus = request.CatCivilStatus,
-            BirthDate = request.BirthDate,
-            EntryDate = request.EntryDate,
-            DepartureDate = request.DepartureDate,
-            Hired = request.Hired,
-            ImgUrl = request.ImgUrl,
-            CurriculumUrl = request.CurriculumUrl,
-            Mobile = request.Mobile,
-            Phone = request.Phone,
-            Address = request.Address,
-            UbcProvincia = request.UbcProvincia,
-            UbcCanton = request.UbcCanton,
-            UbcParroquia = request.UbcParroquia,
-            Notes = request.Notes,
+            UserId = 1,
+            CatTypeDocument = request.Identification.CatTypeDocument,
+            CatNacionality = request.Identification.CatNacionality,
+            Ndocument = request.Identification.Ndocument,
+            CatGender = request.Identification.CatGender,
+            CatCivilStatus = request.Identification.CatCivilStatus,
+            BirthDate = request.Identification.BirthDate,
+            EntryDate = request.Identification.EntryDate,
+            DepartureDate = request.Identification.DepartureDate,
+            Hired = request.Identification.Hired,
+            ImgUrl = request.Identification.ImgUrl,
+            CurriculumUrl = request.Identification.CurriculumUrl,
+            Mobile = request.Identification.Mobile,
+            Phone = request.Identification.Phone,
+            Address = request.Identification.Address,
+            UbcProvincia = request.Identification.UbcProvincia,
+            UbcCanton = request.Identification.UbcCanton,
+            UbcParroquia = request.Identification.UbcParroquia,
+            Notes = request.Identification.Notes,
         };
 
-        _context.ApplicationUsers.Add(user);
+        
         await _context.SaveChangesAsync(cancellationToken);
         return _mapper.Map<GetUserResponse>(user);
     }

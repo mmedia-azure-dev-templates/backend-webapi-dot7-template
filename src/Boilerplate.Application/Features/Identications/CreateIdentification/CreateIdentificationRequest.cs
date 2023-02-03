@@ -1,11 +1,9 @@
-using MediatR;
 using Boilerplate.Application.Features.Identications;
-using System;
 using Boilerplate.Domain.Entities.Common;
+using MediatR;
+using System;
 
-namespace Boilerplate.Application.Features.Identications.CreateIdentification;
-
-public record CreateIdentificationRequest : IRequest<IdenticationResponse>
+public record CreateIdentificationRequest : IRequest<IdentificationResponse>
 {
     public UserId UserId { get; init; }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Boilerplate.Infrastructure.Configuration;
+using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
 #nullable disable
@@ -13,6 +14,14 @@ public partial class Users : Migration
     {
         migrationBuilder.EnsureSchema(
             name: "dbo");
+        
+        migrationBuilder.AddColumn<int>(
+            name: "LegacyId",
+            table: "AspNetUsers",
+            type: "int",
+            nullable: false,
+            schema: "dbo"
+        );
         migrationBuilder.AddColumn<string>(
             name: "FirstName",
             table: "AspNetUsers",
@@ -34,17 +43,25 @@ public partial class Users : Migration
             table: "AspNetUsers",
             schema: "dbo"
         );
+
+        migrationBuilder.Sql(Utils.GetRawSql("20230122144334_UsersUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.DropColumn(
+            name: "LegacyId",
+            table: "AspNetUsers");
+        
+        migrationBuilder.DropColumn(
             name: "FirstName",
             table: "AspNetUsers");
+        
         migrationBuilder.DropColumn(
             name: "LastName",
             table: "AspNetUsers");
+        
         migrationBuilder.DropColumn(
             name: "LastLogin",
             table: "AspNetUsers");

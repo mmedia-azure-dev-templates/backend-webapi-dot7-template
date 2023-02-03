@@ -6,6 +6,7 @@ namespace Boilerplate.Domain.Entities;
 [Table("AspNetUsers", Schema = "dbo")]
 public class ApplicationUser : IdentityUser
 {
+    public int LegacyId { get; set; }
     public string? FirstName { get; set; }
 
     public string? LastName { get; set; }

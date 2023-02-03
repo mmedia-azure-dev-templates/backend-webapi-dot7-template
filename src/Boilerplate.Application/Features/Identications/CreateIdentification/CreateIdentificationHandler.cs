@@ -13,7 +13,7 @@ public class CreateIdentificationHandler : IRequestHandler<CreateIdentificationR
     private readonly IMapper _mapper;
     
     
-    public CreateHeroHandler(IMapper mapper, IContext context)
+    public CreateIdentificationHandler(IMapper mapper, IContext context)
     {
         _mapper = mapper;
         _context = context;
