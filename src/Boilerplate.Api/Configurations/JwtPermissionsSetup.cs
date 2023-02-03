@@ -66,7 +66,7 @@ public static class JwtPermissionsSetup
         })
         .UsingEfCoreSqlServer(configuration.GetConnectionString("SqlServerConnection")) //NOTE: This uses the same database as the individual accounts DB
         .IndividualAccountsAuthentication<ApplicationUser>()
-        .AddSuperUserToIndividualAccounts<ApplicationUser>()
+        //.AddSuperUserToIndividualAccounts<ApplicationUser>()
         .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()
         .AddRolesPermissionsIfEmpty(AppAuthSetupData.RolesDefinition)
         .AddAuthUsersIfEmpty(AppAuthSetupData.UsersRolesDefinition)
