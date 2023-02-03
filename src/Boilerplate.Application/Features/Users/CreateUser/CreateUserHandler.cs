@@ -46,11 +46,11 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
             LastLogin = DateTime.Now,
         };
 
-        string userId = _context.ApplicationUsers.Add(user).Entity.Id;
+        int legacyId = _context.ApplicationUsers.Add(user).Entity.LegacyId;
 
         Identification identification = new()
         {
-            UserId = 1,
+            UserId = legacyId,
             CatTypeDocument = request.Identification.CatTypeDocument,
             CatNacionality = request.Identification.CatNacionality,
             Ndocument = request.Identification.Ndocument,
@@ -71,7 +71,8 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
             Notes = request.Identification.Notes,
         };
 
-        
+        _context.Identifications.Add(identification);
+
         await _context.SaveChangesAsync(cancellationToken);
         return _mapper.Map<GetUserResponse>(user);
     }

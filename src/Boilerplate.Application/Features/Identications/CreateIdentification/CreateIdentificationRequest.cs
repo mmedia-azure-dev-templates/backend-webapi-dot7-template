@@ -5,7 +5,6 @@ using System;
 
 public record CreateIdentificationRequest : IRequest<IdentificationResponse>
 {
-    public UserId UserId { get; init; }
 
     public int CatTypeDocument { get; init; }
 

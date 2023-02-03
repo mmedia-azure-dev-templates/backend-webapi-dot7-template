@@ -44,7 +44,7 @@ public class UserController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<GetUserResponse>> CreateUser(CreateUserRequest request)
+    public async Task<ActionResult<GetUserResponse>> CreateUser(CreateUsersIdenticationsRequest request)
     {
         return await _mediator.Send(request);
     }
