@@ -33,45 +33,45 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
         
         ApplicationUser user = new()
         {
-            LegacyId = 1,
-            UserName = request.User.Email,
-            NormalizedUserName = request.User.Email.ToUpper(),
-            Email = request.User.Email,
-            NormalizedEmail = request.User.Email.ToUpper(),
-            PasswordHash = BC.HashPassword(request.User.Email),
-            FirstName = request.User.FirstName,
-            LastName = request.User.LastName,
-            PhoneNumber = request.User.PhoneNumber,
+            Id = Guid.NewGuid().ToString(),
+            UserName = request.Email,
+            NormalizedUserName = request.Email.ToUpper(),
+            Email = request.Email,
+            NormalizedEmail = request.Email.ToUpper(),
+            PasswordHash = BC.HashPassword(request.Email),
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            PhoneNumber = request.PhoneNumber,
             LockoutEnabled = true,
             LastLogin = DateTime.Now,
         };
 
         int legacyId = _context.ApplicationUsers.Add(user).Entity.LegacyId;
 
-        Identification identification = new()
-        {
-            UserId = legacyId,
-            CatTypeDocument = request.Identification.CatTypeDocument,
-            CatNacionality = request.Identification.CatNacionality,
-            Ndocument = request.Identification.Ndocument,
-            CatGender = request.Identification.CatGender,
-            CatCivilStatus = request.Identification.CatCivilStatus,
-            BirthDate = request.Identification.BirthDate,
-            EntryDate = request.Identification.EntryDate,
-            DepartureDate = request.Identification.DepartureDate,
-            Hired = request.Identification.Hired,
-            ImgUrl = request.Identification.ImgUrl,
-            CurriculumUrl = request.Identification.CurriculumUrl,
-            Mobile = request.Identification.Mobile,
-            Phone = request.Identification.Phone,
-            Address = request.Identification.Address,
-            UbcProvincia = request.Identification.UbcProvincia,
-            UbcCanton = request.Identification.UbcCanton,
-            UbcParroquia = request.Identification.UbcParroquia,
-            Notes = request.Identification.Notes,
-        };
+        // Identification identification = new()
+        // {
+        //     UserId = legacyId,
+        //     CatTypeDocument = request.CatTypeDocument,
+        //     CatNacionality = request.CatNacionality,
+        //     Ndocument = request.Ndocument,
+        //     CatGender = request.CatGender,
+        //     CatCivilStatus = request.CatCivilStatus,
+        //     BirthDate = request.BirthDate,
+        //     EntryDate = request.EntryDate,
+        //     DepartureDate = request.DepartureDate,
+        //     Hired = request.Hired,
+        //     ImgUrl = request.ImgUrl,
+        //     CurriculumUrl = request.CurriculumUrl,
+        //     Mobile = request.Mobile,
+        //     Phone = request.Phone,
+        //     Address = request.Address,
+        //     UbcProvincia = request.UbcProvincia,
+        //     UbcCanton = request.UbcCanton,
+        //     UbcParroquia = request.UbcParroquia,
+        //     Notes = request.Notes,
+        // };
 
-        _context.Identifications.Add(identification);
+        // _context.Identifications.Add(identification);
 
         await _context.SaveChangesAsync(cancellationToken);
         return _mapper.Map<GetUserResponse>(user);
