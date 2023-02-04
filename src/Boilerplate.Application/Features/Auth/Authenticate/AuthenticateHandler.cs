@@ -12,9 +12,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace Boilerplate.Application.Features.Augh.Authenticate;
+namespace Boilerplate.Application.Features.Auth.Authenticate;
 
-public class AuthenticateHandler : IRequestHandler<AuthenticateRequest,OneOf<AuthenticateResponse, AuthenticateNotFound>>
+public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, OneOf<AuthenticateResponse, AuthenticateNotFound>>
 {
     private readonly IContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -35,7 +35,7 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest,OneOf<Aut
         var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
         if (!result.Succeeded)
         {
-            return new AuthenticateNotFound() { Message = "Email or Password incorrect"};
+            return new AuthenticateNotFound() { Message = "Email or Password incorrect" };
         }
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user == null)

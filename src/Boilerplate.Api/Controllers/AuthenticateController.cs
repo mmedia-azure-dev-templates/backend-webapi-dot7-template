@@ -2,8 +2,8 @@
 using AuthPermissions.AspNetCore.JwtTokenCode;
 using AuthPermissions.AspNetCore.Services;
 using AuthPermissions.BaseCode.PermissionsCode;
-using Boilerplate.Application.Features.Augh;
-using Boilerplate.Application.Features.Augh.Authenticate;
+using Boilerplate.Application.Features.Auth;
+using Boilerplate.Application.Features.Auth.Authenticate;
 using Boilerplate.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

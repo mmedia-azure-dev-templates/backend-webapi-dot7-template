@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Augh;
+namespace Boilerplate.Application.Features.Auth;
 public record AuthenticateResponse
 {
     public string Token { get; init; } = null!;
