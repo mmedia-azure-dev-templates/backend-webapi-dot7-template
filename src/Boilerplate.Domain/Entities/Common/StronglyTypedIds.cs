@@ -68,10 +68,10 @@ public partial struct HeroId : ILong
     }
 }
 
-[StronglyTypedId]
-public partial struct IdentificationId : ILong
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Int)]
+public partial struct IdentificationId : IInt
 {
-    public static implicit operator IdentificationId(long identificationId)
+    public static implicit operator IdentificationId(int identificationId)
     {
         return new IdentificationId(identificationId);
     }
@@ -122,10 +122,10 @@ public partial struct ProductId : ILong
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Int)]
 public partial struct UserId : ILong
 {
-    public static implicit operator UserId(long userId)
+    public static implicit operator UserId(int userId)
     {
         return new UserId(userId);
     }

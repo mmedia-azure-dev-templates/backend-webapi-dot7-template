@@ -14,7 +14,7 @@ public partial class Identification : Entity<IdentificationId>
 {
     [Required]
     public override IdentificationId Id { get; set; }
-
+    
     public UserId UserId { get; set; }
 
     public int CatTypeDocument { get; set; }
@@ -52,6 +52,4 @@ public partial class Identification : Entity<IdentificationId>
     public int? UbcParroquia { get; set; }
 
     public string? Notes { get; set; }
-
-    public virtual User User { get; set; } = null!;
 }

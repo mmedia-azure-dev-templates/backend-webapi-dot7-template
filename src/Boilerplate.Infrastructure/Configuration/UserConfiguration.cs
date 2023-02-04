@@ -6,12 +6,11 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace Boilerplate.Infrastructure.Configuration;
 
-public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
+public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<ApplicationUser> entity)
+    public void Configure(EntityTypeBuilder<User> entity)
     {
         entity.Property(e => e.Id).HasConversion<UserId.EfCoreValueConverter>();
         entity.HasKey(x => x.Id);
-        entity.Property(e => e.LegacyId).ValueGeneratedOnAdd();
     }
 }

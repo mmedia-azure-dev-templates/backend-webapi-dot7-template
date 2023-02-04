@@ -2,11 +2,16 @@
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Heroes;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph;
 using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using BC = BCrypt.Net.BCrypt;
@@ -30,50 +35,62 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
     }
     public async Task<GetUserResponse> Handle(CreateUsersIdenticationsRequest request, CancellationToken cancellationToken)
     {
-        
-        ApplicationUser user = new()
+        using var transaction = _context.Database.BeginTransaction();
+
+        try
         {
-            Id = Guid.NewGuid().ToString(),
-            UserName = request.Email,
-            NormalizedUserName = request.Email.ToUpper(),
-            Email = request.Email,
-            NormalizedEmail = request.Email.ToUpper(),
-            PasswordHash = BC.HashPassword(request.Email),
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            PhoneNumber = request.PhoneNumber,
-            LockoutEnabled = true,
-            LastLogin = DateTime.Now,
-        };
+            var user = new ApplicationUser()
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = request.Email,
+                NormalizedUserName = request.Email.ToUpper(),
+                Email = request.Email,
+                NormalizedEmail = request.Email.ToUpper(),
+                PasswordHash = BC.HashPassword(request.Email),
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                PhoneNumber = request.PhoneNumber,
+                LockoutEnabled = true,
+                LastLogin = DateTime.Now,
+            };
 
-        int legacyId = _context.ApplicationUsers.Add(user).Entity.LegacyId;
+            _context.ApplicationUsers.Add(user);
 
-        // Identification identification = new()
-        // {
-        //     UserId = legacyId,
-        //     CatTypeDocument = request.CatTypeDocument,
-        //     CatNacionality = request.CatNacionality,
-        //     Ndocument = request.Ndocument,
-        //     CatGender = request.CatGender,
-        //     CatCivilStatus = request.CatCivilStatus,
-        //     BirthDate = request.BirthDate,
-        //     EntryDate = request.EntryDate,
-        //     DepartureDate = request.DepartureDate,
-        //     Hired = request.Hired,
-        //     ImgUrl = request.ImgUrl,
-        //     CurriculumUrl = request.CurriculumUrl,
-        //     Mobile = request.Mobile,
-        //     Phone = request.Phone,
-        //     Address = request.Address,
-        //     UbcProvincia = request.UbcProvincia,
-        //     UbcCanton = request.UbcCanton,
-        //     UbcParroquia = request.UbcParroquia,
-        //     Notes = request.Notes,
-        // };
+            await _context.SaveChangesAsync(cancellationToken);
 
-        // _context.Identifications.Add(identification);
+            Identification identification = new()
+            {
+                UserId = user.LegacyId,
+                CatTypeDocument = request.CatTypeDocument,
+                CatNacionality = request.CatNacionality,
+                Ndocument = request.Ndocument,
+                CatGender = request.CatGender,
+                CatCivilStatus = request.CatCivilStatus,
+                BirthDate = request.BirthDate,
+                EntryDate = request.EntryDate,
+                DepartureDate = request.DepartureDate,
+                Hired = request.Hired,
+                ImgUrl = request.ImgUrl,
+                CurriculumUrl = request.CurriculumUrl,
+                Mobile = request.Mobile,
+                Phone = request.Phone,
+                Address = request.Address,
+                UbcProvincia = request.UbcProvincia,
+                UbcCanton = request.UbcCanton,
+                UbcParroquia = request.UbcParroquia,
+                Notes = request.Notes,
+            };
 
-        await _context.SaveChangesAsync(cancellationToken);
-        return _mapper.Map<GetUserResponse>(user);
+            _context.Identifications.Add(identification);
+
+            await _context.SaveChangesAsync(cancellationToken);
+            transaction.Commit();
+            return _mapper.Map<GetUserResponse>(user);
+        }
+        catch (Exception)
+        {
+            transaction.Rollback();
+            throw;
+        }
     }
 }
