@@ -39,7 +39,7 @@ public class ExtendStartupServicesIndividualAccountsAddDemoUsers : IStartupServi
             foreach (var userEmail in demoUsers.Split(',').Select(x => x.Trim()))
             {
                 //NOTE: The password is the same as the user's Email
-                await userManager.CheckAddNewUserAsync(userEmail, userEmail);
+                //await userManager.CheckAddNewUserAsync(userEmail, userEmail);
             }
         }
 

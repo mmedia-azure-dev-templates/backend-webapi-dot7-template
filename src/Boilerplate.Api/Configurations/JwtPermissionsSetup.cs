@@ -2,9 +2,11 @@
 
 using AuthPermissions.AspNetCore.StartupServices;
 using AuthPermissions.BaseCode;
+using AuthPermissions.BaseCode.SetupCode;
 using Boilerplate.Api.Extends;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
+using Boilerplate.Infrastructure.Configuration;
 using Boilerplate.Infrastructure.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -50,6 +52,7 @@ public static class JwtPermissionsSetup
 
         services.RegisterAuthPermissions<Example2Permissions>(options =>
         {
+            options.TenantType = TenantTypes.SingleLevel;
             //This tells AuthP that you don't have multiple instances of your app running,
             //so it can run the startup services without a global lock
             options.UseLocksToUpdateGlobalResources = false;
@@ -67,6 +70,7 @@ public static class JwtPermissionsSetup
         .UsingEfCoreSqlServer(configuration.GetConnectionString("SqlServerConnection")) //NOTE: This uses the same database as the individual accounts DB
         .IndividualAccountsAuthentication<ApplicationUser>()
         //.AddSuperUserToIndividualAccounts<ApplicationUser>()
+        .RegisterTenantChangeService<InvoiceTenantChangeService>()
         .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()
         .AddRolesPermissionsIfEmpty(AppAuthSetupData.RolesDefinition)
         .AddAuthUsersIfEmpty(AppAuthSetupData.UsersRolesDefinition)

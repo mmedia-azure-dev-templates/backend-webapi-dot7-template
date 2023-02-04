@@ -14,7 +14,7 @@ public abstract class BaseTest : IAsyncLifetime
     
     public virtual async Task InitializeAsync()
     {
-        await TestingDatabase.SeedDatabase(App.CreateContext);
+       // await TestingDatabase.SeedDatabase(App.CreateContext);
     }
 
     public async Task DisposeAsync()

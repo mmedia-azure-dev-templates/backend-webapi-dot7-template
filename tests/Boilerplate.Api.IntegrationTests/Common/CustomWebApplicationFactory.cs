@@ -1,10 +1,13 @@
-﻿using Boilerplate.Application.Common;
+﻿using AuthPermissions.AspNetCore.GetDataKeyCode;
+using Boilerplate.Application.Common;
 using Boilerplate.Infrastructure.Context;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
 using EntityFramework.Exceptions.SqlServer;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,11 +36,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<IAssemblyMarker
     
     public HttpClient Client { get; private set; } = default!;
 
-    
-    public CustomWebApplicationFactory()
-    {
-    }
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
@@ -53,30 +51,21 @@ public class CustomWebApplicationFactory : WebApplicationFactory<IAssemblyMarker
             foreach (var descriptor in contextsDescriptor)
                 services.Remove(descriptor);
 
-            services.AddScoped(_ => CreateContext());
+            //services.AddScoped(_ => CreateContext());
         }).ConfigureLogging(o => o.AddFilter(loglevel => loglevel >= LogLevel.Error));
         base.ConfigureWebHost(builder);
     }
     
-    public IContext CreateContext()
-    {
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .EnableDetailedErrors()
-            .EnableSensitiveDataLogging()
-            .UseExceptionProcessor()
-            .UseSqlServer(_connString)
-            .Options;
-        return new ApplicationDbContext(options);
-    }
+    
 
     public async Task InitializeAsync()
     {
-        await _dbContainer.StartAsync();
-        _connString = $"{_dbContainer.ConnectionString};TrustServerCertificate=True";
-        Client = CreateClient();
-        await using var context = CreateContext();
-        //await context.Database.MigrateAsync();
-        await SetupRespawnerAsync();
+        //await _dbContainer.StartAsync();
+        //_connString = $"{_dbContainer.ConnectionString};TrustServerCertificate=True";
+        //Client = CreateClient();
+        //await using var context = CreateContext();
+        ////await context.Database.MigrateAsync();
+        //await SetupRespawnerAsync();
     }
 
     public async Task ResetDatabaseAsync()

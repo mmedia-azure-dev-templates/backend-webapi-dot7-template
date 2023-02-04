@@ -1,16 +1,8 @@
 ﻿using Boilerplate.Api.IntegrationTests.Common;
+using FluentAssertions;
 using System;
 using System.Net;
-using Boilerplate.Application.Common.Responses;
-using Boilerplate.Application.Features.Augh.Authenticate;
-using Boilerplate.Application.Features.Users;
-using Boilerplate.Application.Features.Users.CreateUser;
-using Boilerplate.Application.Features.Users.GetUsers;
-using Boilerplate.Application.Features.Users.UpdatePassword;
-using Boilerplate.Domain.Entities.Common;
-using FluentAssertions;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 
 namespace Boilerplate.Api.IntegrationTests;
 

@@ -1,7 +1,7 @@
 ﻿using AuthPermissions.AdminCode;
 using AuthPermissions.AspNetCore.AccessTenantData;
 using AuthPermissions.BaseCode.CommonCode;
-using Example3.MvcWebApp.IndividualAccounts.Models;
+using Boilerplate.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -27,31 +27,18 @@ public class TenantController : Controller
         var tenantNames = await SingleLevelTenantDto.TurnIntoDisplayFormat(_authTenantAdmin.QueryTenants())
             .OrderBy(x => x.TenantName)
             .ToListAsync();
-
-        ViewBag.Message = message;
-        return Ok();
-        //return View(tenantNames);
-    }
-
-    //[HasPermission(Example3Permissions.TenantCreate)]
-
-    [HttpGet]
-    [Route("create")]
-    public async Task<IActionResult> Create()
-    {
-        return Ok();
-        //return View(new SingleLevelTenantDto { AllPossibleRoleNames = await _authTenantAdmin.GetRoleNamesForTenantsAsync() });
+        return Ok(tenantNames);
     }
 
     [HttpPost]
     [Route("create")]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken]
     //[HasPermission(Example3Permissions.TenantCreate)]
     public async Task<IActionResult> Create(SingleLevelTenantDto input)
     {
         var status = await _authTenantAdmin.AddSingleTenantAsync(input.TenantName, input.TenantRolesName);
-
-        return Ok();
+        
+        return Ok(status);
         //return status.HasErrors
         //    ? RedirectToAction(nameof(ErrorDisplay),
         //        new { errorMessage = status.GetAllErrors() })
