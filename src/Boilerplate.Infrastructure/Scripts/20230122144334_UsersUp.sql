@@ -53,7 +53,7 @@ INSERT INTO [dbo].[AspNetUsers]
 			Email as Email, 
 			UPPER(Email) as NormalizedEmail,
 			0 as EmailConfirmed, 
-			'AQAAAAEAACcQAAAAEKBindrMCJd/linoDG3DIrcIgN7OClW5o0n2MiLTUM4pkDzKdjpDTfWG2glZY3UPnQ==',
+			'AQAAAAIAAYagAAAAEF/D8Rxkhv4Rhv9lpqbX1P6EVpitSOcBRo0fNLWmuSmEE4rD7ecZekv5/7/IQniINg==',
 			NEWID() as SecurityStamp,
 			NEWID() as ConcurrencyStamp,
 			null as PhoneNumber,
