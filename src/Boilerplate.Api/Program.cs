@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,7 @@ builder.Services
         options.AllowEmptyInputInBodyModelBinding = true;
         options.Filters.Add<ValidationErrorResultFilter>();
     })
+    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
     .AddValidationSetup();
 
 builder.Services.AddCacheSetup(builder.Environment);

@@ -272,7 +272,7 @@ public static class ExtendSetupExtensions
 
         //Admin services
         setupData.Services.AddTransient<IAuthRolesAdminService, AuthRolesAdminService>();
-        setupData.Services.AddTransient<IAuthTenantAdminService, AuthTenantAdminService>();
+        setupData.Services.AddTransient<IAuthTenantAdminService, ExtendAuthTenantAdminService>();
         setupData.Services.AddTransient<IAuthUsersAdminService, AuthUsersAdminService>();
         setupData.Services.AddTransient<IBulkLoadRolesService, BulkLoadRolesService>();
         setupData.Services.AddTransient<IBulkLoadTenantsService, BulkLoadTenantsService>();

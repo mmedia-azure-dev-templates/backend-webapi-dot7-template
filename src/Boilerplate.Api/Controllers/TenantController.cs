@@ -1,6 +1,6 @@
 ﻿using AuthPermissions.AdminCode;
-using AuthPermissions.AspNetCore.AccessTenantData;
-using AuthPermissions.BaseCode.CommonCode;
+//using AuthPermissions.AspNetCore.AccessTenantData;
+//using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -101,30 +101,7 @@ public class TenantController : Controller
     }
 
     //[HasPermission(Example3Permissions.TenantAccessData)]
-    [HttpGet]
-    [Route("startaccess")]
-    public async Task<IActionResult> StartAccess([FromServices] ILinkToTenantDataService service, int id)
-    {
-        var currentUser = User.GetUserIdFromUser();
-        var status = await service.StartLinkingToTenantDataAsync(currentUser, id);
-        return Ok();
-        //return status.HasErrors
-        //    ? RedirectToAction(nameof(ErrorDisplay),
-        //        new { errorMessage = status.GetAllErrors() })
-        //    : RedirectToAction(nameof(Index), new { message = status.Message });
-    }
-
-    [HttpGet]
-    [Route("stopaccess")]
-    public IActionResult StopAccess([FromServices] ILinkToTenantDataService service, bool gotoHome)
-    {
-        var currentUser = User.GetUserIdFromUser();
-        service.StopLinkingToTenant();
-        return Ok();
-        //return gotoHome 
-        //    ? RedirectToAction(nameof(Index), "Home") 
-        //    : RedirectToAction(nameof(Index), new { message = "Finished linking to tenant's data" });
-    }
+    
 
     //[HttpGet]
     //public ActionResult ErrorDisplay(string errorMessage)

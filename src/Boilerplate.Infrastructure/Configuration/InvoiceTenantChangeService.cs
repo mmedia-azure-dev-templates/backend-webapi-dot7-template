@@ -44,14 +44,14 @@ public class InvoiceTenantChangeService : ITenantChangeService
     /// <returns>Returns null if all OK, otherwise the create is rolled back and the return string is shown to the user</returns>
     public async Task<string> CreateNewTenantAsync(Tenant tenant)
     {
-        var newCompanyTenant = new CompanyTenant
-        {
-            DataKey = tenant.GetTenantDataKey(),
-            AuthPTenantId = tenant.TenantId,
-            CompanyName = tenant.TenantFullName
-        };
-        _context.Add(newCompanyTenant);
-        await _context.SaveChangesAsync();
+        //var newCompanyTenant = new CompanyTenant
+        //{
+        //    DataKey = tenant.GetTenantDataKey(),
+        //    AuthPTenantId = tenant.TenantId,
+        //    CompanyName = tenant.TenantFullName
+        //};
+        //_context.Add(newCompanyTenant);
+        //await _context.SaveChangesAsync();
 
         return null;
     }
@@ -108,14 +108,14 @@ public class InvoiceTenantChangeService : ITenantChangeService
     /// <returns>Returns null if all OK, otherwise the tenant name is rolled back and the return string is shown to the user</returns>
     public async Task<string> SingleTenantUpdateNameAsync(Tenant tenant)
     {
-        var companyTenant = await _context.Companies
+        /*var companyTenant = await _context.Companies
             .IgnoreQueryFilters()
             .SingleOrDefaultAsync(x => x.AuthPTenantId == tenant.TenantId);
         if (companyTenant != null)
         {
             companyTenant.CompanyName = tenant.TenantFullName;
             await _context.SaveChangesAsync();
-        }
+        }*/
 
         return null;
     }

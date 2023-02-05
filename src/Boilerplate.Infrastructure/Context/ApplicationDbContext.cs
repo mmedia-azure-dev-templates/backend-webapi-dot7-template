@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using System.Threading;
 using AuthPermissions.BaseCode.DataLayer.EfCode;
 using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Boilerplate.Infrastructure.Context;
 
-public class ApplicationDbContext : DbContext, IContext, IDataKeyFilterReadOnly
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext, IDataKeyFilterReadOnly
 {
     public string DataKey { get; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IGetDataKeyFromUser dataKeyFilter) : base(options) {
@@ -42,7 +44,6 @@ public class ApplicationDbContext : DbContext, IContext, IDataKeyFilterReadOnly
     public DbSet<CompanyTenant> Companies { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<LineItem> LineItems { get; set; }
-
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
         this.MarkWithDataKeyIfNeeded(DataKey);
@@ -65,7 +66,8 @@ public class ApplicationDbContext : DbContext, IContext, IDataKeyFilterReadOnly
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema("web");
+        base.OnModelCreating(modelBuilder);
+        //modelBuilder.HasDefaultSchema("web");
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             if (typeof(IDataKeyFilterReadWrite).IsAssignableFrom(entityType.ClrType))
@@ -87,6 +89,13 @@ public class ApplicationDbContext : DbContext, IContext, IDataKeyFilterReadOnly
                 }
             }
         }
+
+        //modelBuilder.Ignore<IdentityUserLogin<string>>();
+        //modelBuilder.Ignore<IdentityUserRole<string>>();
+        //modelBuilder.Ignore<IdentityUserClaim<string>>();
+        //modelBuilder.Ignore<IdentityUserToken<string>>();
+        //modelBuilder.Ignore<IdentityUser<string>>();
+        //modelBuilder.Ignore<ApplicationUser>();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationUserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentificationConfiguration).Assembly);

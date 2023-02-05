@@ -14,18 +14,18 @@ public static class PersistanceSetup
     public static IServiceCollection AddPersistenceSetup(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<ISession, Session>();
-        services.AddDbContext<IdentityLocalDbContext>(o =>
-        {
-            o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
-        });
         services.AddDbContext<ApplicationDbContext>(o =>
         {
             o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
         });
+
         services.AddDefaultIdentity<ApplicationUser>(
-        options => options.SignIn.RequireConfirmedAccount = false)
+        options => {
+            options.SignIn.RequireConfirmedEmail = false;
+            options.SignIn.RequireConfirmedPhoneNumber = false;
+        })
         .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<ApplicationUser>>()
-        .AddEntityFrameworkStores<IdentityLocalDbContext>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
         return services;
     }

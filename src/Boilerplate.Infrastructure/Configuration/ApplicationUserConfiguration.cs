@@ -11,7 +11,7 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
     public void Configure(EntityTypeBuilder<ApplicationUser> entity)
     {
         //entity.Property(e => e.LegacyId).HasConversion<UserId.EfCoreValueConverter>();
-        entity.HasKey(x => x.LegacyId);
+        //entity.HasKey(x => x.LegacyId);
         entity.Property(e => e.LegacyId).ValueGeneratedOnAdd();
     }
 }
