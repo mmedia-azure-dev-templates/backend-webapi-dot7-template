@@ -1,4 +1,6 @@
 {
-  "Cache": {},
+  "Cache": {
+    "AddEmailClaim-a49cf027-915b-4933-9fce-30def6d67037": "raul.flores@mad.ec"
+  },
   "TimeOuts": {}
 }

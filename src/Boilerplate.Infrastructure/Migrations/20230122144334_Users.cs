@@ -12,7 +12,9 @@ public partial class Users : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        //migrationBuilder.Sql(Utils.GetRawSql("20230122144334_UsersUp.sql"));
+        migrationBuilder.Sql("SET IDENTITY_INSERT [dbo].[AspNetUsers] ON");
+        migrationBuilder.Sql(Utils.GetRawSql("20230122144334_UsersUp.sql"));
+        migrationBuilder.Sql("SET IDENTITY_INSERT [dbo].[AspNetUsers] OFF");
     }
 
     /// <inheritdoc />
