@@ -47,7 +47,11 @@ public partial class AbpTables : Migration
                 TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                 LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                 LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                AccessFailedCount = table.Column<int>(type: "int", nullable: false),
+                LegacyId = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:Identity", "1, 1"),
+                FirstName = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                LastName = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                LastLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
             },
             constraints: table =>
             {
@@ -223,6 +227,21 @@ public partial class AbpTables : Migration
 
         migrationBuilder.DropTable(
             name: "AspNetUsers");
+        
+        migrationBuilder.DropColumn(
+            name: "LegacyId",
+            table: "AspNetUsers");
 
+        migrationBuilder.DropColumn(
+            name: "FirstName",
+            table: "AspNetUsers");
+
+        migrationBuilder.DropColumn(
+            name: "LastName",
+            table: "AspNetUsers");
+
+        migrationBuilder.DropColumn(
+            name: "LastLogin",
+            table: "AspNetUsers");
     }
 }

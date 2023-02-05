@@ -1,14 +1,17 @@
 ﻿using AuthPermissions;
-
+using AuthPermissions.AspNetCore.Services;
 using AuthPermissions.AspNetCore.StartupServices;
 using AuthPermissions.BaseCode;
 using AuthPermissions.BaseCode.SetupCode;
+using AuthPermissions.SupportCode.AddUsersServices.Authentication;
+using AuthPermissions.SupportCode.AddUsersServices;
 using Boilerplate.Api.Extends;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using Boilerplate.Infrastructure.Configuration;
 using Boilerplate.Infrastructure.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -69,15 +72,18 @@ public static class JwtPermissionsSetup
         })
         .UsingEfCoreSqlServer(configuration.GetConnectionString("SqlServerConnection")) //NOTE: This uses the same database as the individual accounts DB
         .IndividualAccountsAuthentication<ApplicationUser>()
+        //.RegisterAddClaimToUser<AddTenantNameClaim>()
+        //.RegisterAddClaimToUser<AddRefreshEveryMinuteClaim>()
         //.AddSuperUserToIndividualAccounts<ApplicationUser>()
         .RegisterTenantChangeService<InvoiceTenantChangeService>()
         .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()
-        .AddRolesPermissionsIfEmpty(AppAuthSetupData.RolesDefinition)
-        .AddAuthUsersIfEmpty(AppAuthSetupData.UsersRolesDefinition)
+        //.AddRolesPermissionsIfEmpty(AppAuthSetupData.RolesDefinition)
+        //.AddAuthUsersIfEmpty(AppAuthSetupData.UsersRolesDefinition)
+        //.RegisterAuthenticationProviderReader<SyncIndividualAccountUsers>()
         .SetupAspNetCoreAndDatabase(options =>
         {
-            options.RegisterServiceToRunInJob<StartupServiceMigrateAnyDbContext<IdentityLocalDbContext>>();
-            options.RegisterServiceToRunInJob<ExtendStartupServicesIndividualAccountsAddDemoUsers>();
+            //options.RegisterServiceToRunInJob<StartupServiceMigrateAnyDbContext<IdentityLocalDbContext>>();
+            //options.RegisterServiceToRunInJob<ExtendStartupServicesIndividualAccountsAddDemoUsers>();
         });
 
         return services;
