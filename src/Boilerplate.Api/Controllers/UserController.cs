@@ -6,6 +6,7 @@ using Boilerplate.Application.Features.Users.CreateUser;
 using Boilerplate.Application.Features.Users.DeleteUser;
 using Boilerplate.Application.Features.Users.GetUserById;
 using Boilerplate.Application.Features.Users.GetUsers;
+using Boilerplate.Application.Features.Users.Migration;
 using Boilerplate.Application.Features.Users.UpdatePassword;
 using Boilerplate.Domain.Auth;
 using Boilerplate.Domain.Entities.Common;
@@ -41,6 +42,15 @@ public class UserController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<GetUserResponse>> CreateUser(CreateUsersIdenticationsRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [Route("migrate-password")]
+    public async Task<ActionResult<UsersMigrationResponse>> MigratePassword(UsersMigrationRequest request)
     {
         return await _mediator.Send(request);
     }
