@@ -19,6 +19,7 @@ using RunMethodsSequentially;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Boilerplate.Api.Configurations;
 
@@ -48,9 +49,25 @@ public static class JwtPermissionsSetup
                     ValidAudience = jwtData.Audience,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtData.SigningKey)),
-                    ClockSkew = TimeSpan.Zero //The default is 5 minutes, but we want a quick expires
+                    ClockSkew = TimeSpan.Zero //The default is 5 minutes, but we want a quick expires for JTW refresh
+
+                };
+
+                //This code came from https://www.blinkingcaret.com/2018/05/30/refresh-tokens-in-asp-net-core-web-api/
+                //It returns a useful header if the JWT Token has expired
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
+        
 
         var tokenExpire = int.Parse(configuration.GetSection("JwtData:TokenExpire").Value!);
 
