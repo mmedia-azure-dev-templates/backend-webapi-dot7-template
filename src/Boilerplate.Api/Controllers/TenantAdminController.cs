@@ -4,6 +4,7 @@ using AuthPermissions.BaseCode.CommonCode;
 using AuthPermissions.SupportCode.AddUsersServices;
 using Boilerplate.Api.Common;
 using Boilerplate.Domain.PermissionsCode;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Boilerplate.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TenantAdminController : Controller
 {
     private readonly IAuthUsersAdminService _authUsersAdmin;

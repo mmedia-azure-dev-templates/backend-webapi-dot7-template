@@ -11,7 +11,8 @@ using Net.DistributedFileStoreCache;
 namespace Boilerplate.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
+[Authorize]
 public class ChangeRolesController : ControllerBase
 {
     private readonly IDistributedFileStoreCacheClass _fsCache;

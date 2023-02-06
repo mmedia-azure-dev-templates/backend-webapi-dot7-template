@@ -4,6 +4,7 @@ using AuthPermissions.AspNetCore;
 //using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -13,7 +14,8 @@ namespace Boilerplate.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TenantController : Controller
+//[Authorize]
+public class TenantController : ControllerBase
 {
     private readonly IAuthTenantAdminService _authTenantAdmin;
 
@@ -22,8 +24,9 @@ public class TenantController : Controller
         _authTenantAdmin = authTenantAdmin;
     }
 
-    [HasPermission(Example3Permissions.TenantList)]
+    
     [HttpGet]
+    [HasPermission(Example3Permissions.TenantList)]
     public async Task<IActionResult> Index(string message)
     {
         var tenantNames = await SingleLevelTenantDto.TurnIntoDisplayFormat(_authTenantAdmin.QueryTenants())
@@ -52,7 +55,8 @@ public class TenantController : Controller
     [Route("edit")]
     public async Task<IActionResult> Edit(int id)
     {
-        return View(await SingleLevelTenantDto.SetupForUpdateAsync(_authTenantAdmin, id));
+        return Ok();
+        //return View(await SingleLevelTenantDto.SetupForUpdateAsync(_authTenantAdmin, id));
     }
 
     [HttpPost]
