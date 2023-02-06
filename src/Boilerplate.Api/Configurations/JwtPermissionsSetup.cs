@@ -51,7 +51,8 @@ public static class JwtPermissionsSetup
                     ClockSkew = TimeSpan.Zero //The default is 5 minutes, but we want a quick expires
                 };
             });
-        
+
+        var tokenExpire = int.Parse(configuration.GetSection("JwtData:TokenExpire").Value!);
 
         services.RegisterAuthPermissions<Example2Permissions>(options =>
         {
@@ -66,7 +67,7 @@ public static class JwtPermissionsSetup
                 Issuer = jwtData.Issuer,
                 Audience = jwtData.Audience,
                 SigningKey = jwtData.SigningKey,
-                TokenExpires = new TimeSpan(0, 5, 0), //Quick Token expiration because we use a refresh token
+                TokenExpires = new TimeSpan(0, tokenExpire, 0), //Quick Token expiration because we use a refresh token
                 RefreshTokenExpires = new TimeSpan(1, 0, 0, 0) //Refresh token is valid for one day
             };
         })
