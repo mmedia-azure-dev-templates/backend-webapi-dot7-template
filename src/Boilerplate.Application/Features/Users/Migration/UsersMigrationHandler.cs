@@ -31,11 +31,11 @@ public class CreateUsersMigration : IRequestHandler<UsersMigrationRequest, Users
                 Message = "Password Migration Invalid"
             };
         }
-        var Emails = await _context.ApplicationUsers.Select(x => x.Email).ToListAsync(cancellationToken);
+        var Emails = await _context.ApplicationUsers.Select(x => new { x.Email, x.LegacyId }).Where(x=>x.LegacyId != 1).ToListAsync(cancellationToken);
 
         foreach (var email in Emails)
         {
-            var user = _context.ApplicationUsers.Single(x => x.Email == email);
+            var user = _context.ApplicationUsers.Single(x => x.Email == email.Email);
             user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, user.Email!);
             await _context.SaveChangesAsync(cancellationToken);
         }
