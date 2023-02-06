@@ -3,7 +3,7 @@ GO
 INSERT [authp].[RoleToPermissions] ([RoleName], [Description], [PackedPermissionsInRole], [RoleType]) VALUES (N'Role1', NULL, N'', 0)
 INSERT [authp].[RoleToPermissions] ([RoleName], [Description], [PackedPermissionsInRole], [RoleType]) VALUES (N'Role2', NULL, N'', 0)
 INSERT [authp].[RoleToPermissions] ([RoleName], [Description], [PackedPermissionsInRole], [RoleType]) VALUES (N'Role3', NULL, N'', 0)
-INSERT [authp].[RoleToPermissions] ([RoleName], [Description], [PackedPermissionsInRole], [RoleType]) VALUES (N'SuperRole', NULL, N'￿', 100)
+INSERT [authp].[RoleToPermissions] ([RoleName], [Description], [PackedPermissionsInRole], [RoleType]) VALUES (N'SuperAdmin', NULL, N'￿', 100)
 GO
 INSERT [authp].[AuthUsers] ([UserId], [Email], [UserName], [TenantId], [IsDisabled]) VALUES (N'0db1a0f4-3364-402f-accd-26446dc43132', N'p2@g1.com', N'P2@g1.com', NULL, 0)
 INSERT [authp].[AuthUsers] ([UserId], [Email], [UserName], [TenantId], [IsDisabled]) VALUES (N'64dc2241-dc53-4b41-bfcc-6145e1a79feb', N'p1@g1.com', N'P1@g1.com', NULL, 0)
@@ -17,7 +17,7 @@ INSERT [authp].[UserToRoles] ([UserId], [RoleName]) VALUES (N'9d3fc0b1-8002-44b7
 INSERT [authp].[UserToRoles] ([UserId], [RoleName]) VALUES (N'0db1a0f4-3364-402f-accd-26446dc43132', N'Role2')
 INSERT [authp].[UserToRoles] ([UserId], [RoleName]) VALUES (N'9d3fc0b1-8002-44b7-ba9b-daecdc28df7c', N'Role2')
 INSERT [authp].[UserToRoles] ([UserId], [RoleName]) VALUES (N'9d3fc0b1-8002-44b7-ba9b-daecdc28df7c', N'Role3')
-INSERT [authp].[UserToRoles] ([UserId], [RoleName]) VALUES (N'a49cf027-915b-4933-9fce-30def6d67037', N'SuperRole')
+INSERT [authp].[UserToRoles] ([UserId], [RoleName]) VALUES (N'a49cf027-915b-4933-9fce-30def6d67037', N'SuperAdmin')
 GO
 INSERT [dbo].[AspNetUsers] ([Id], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount], [LegacyId], [FirstName], [LastName], [LastLogin]) VALUES (N'0db1a0f4-3364-402f-accd-26446dc43132', N'P2@g1.com', N'P2@G1.COM', N'P2@g1.com', N'P2@G1.COM', 0, N'AQAAAAIAAYagAAAAEJuhWk9Z0Ip8/DrW02jH/xst7Ab4VYmbyyiRsPNSxRRofxpgNpHyegRT152rHrc0RA==', N'DOPNINPJDP4E23MAJDKQULGTZQJUVRIK', N'fef005bb-53e2-441a-9a3f-a3be6abf126d', NULL, 0, 0, NULL, 1, 0, 182, N'ROBERT PATRICIO', N'LOPEZ FREIRE', CAST(N'2023-02-03T14:04:41.4433043' AS DateTime2))
 INSERT [dbo].[AspNetUsers] ([Id], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount], [LegacyId], [FirstName], [LastName], [LastLogin]) VALUES (N'64dc2241-dc53-4b41-bfcc-6145e1a79feb', N'P1@g1.com', N'P1@G1.COM', N'P1@g1.com', N'P1@G1.COM', 0, N'AQAAAAIAAYagAAAAEBq3LqRQzlz7Iy0Os4WtK/QwlDpkJmxizrpZiYoAJPhQCa98aTqtAdgihJ87RkfO9w==', N'B7MGA3C2R4SQBCJODEDPA67ZAVOSICE7', N'54b1f45d-b83c-47b3-bf92-34f687e9712c', NULL, 0, 0, NULL, 1, 0, 2, N'ADRIANA BELEN', N'CHALCO CEVALLOS', CAST(N'2023-02-03T14:04:41.1679699' AS DateTime2))
