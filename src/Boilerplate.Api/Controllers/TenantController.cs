@@ -1,7 +1,9 @@
 ﻿using AuthPermissions.AdminCode;
+using AuthPermissions.AspNetCore;
 //using AuthPermissions.AspNetCore.AccessTenantData;
 //using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.PermissionsCode;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -20,7 +22,7 @@ public class TenantController : Controller
         _authTenantAdmin = authTenantAdmin;
     }
 
-    //[HasPermission(Example3Permissions.TenantList)]
+    [HasPermission(Example3Permissions.TenantList)]
     [HttpGet]
     public async Task<IActionResult> Index(string message)
     {
@@ -32,8 +34,8 @@ public class TenantController : Controller
 
     [HttpPost]
     [Route("create")]
-    //[ValidateAntiForgeryToken]
-    //[HasPermission(Example3Permissions.TenantCreate)]
+    [ValidateAntiForgeryToken]
+    [HasPermission(Example3Permissions.TenantCreate)]
     public async Task<IActionResult> Create(SingleLevelTenantDto input)
     {
         var status = await _authTenantAdmin.AddSingleTenantAsync(input.TenantName, input.TenantRolesName);
@@ -45,19 +47,18 @@ public class TenantController : Controller
         //    : RedirectToAction(nameof(Index), new { message = status.Message });
     }
 
-    //[HasPermission(Example3Permissions.TenantUpdate)]
+    [HasPermission(Example3Permissions.TenantUpdate)]
     [HttpGet]
     [Route("edit")]
     public async Task<IActionResult> Edit(int id)
     {
-        return Ok();
-        //return View(await SingleLevelTenantDto.SetupForUpdateAsync(_authTenantAdmin, id));
+        return View(await SingleLevelTenantDto.SetupForUpdateAsync(_authTenantAdmin, id));
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Route("edit")]
-    //[HasPermission(Example3Permissions.TenantUpdate)]
+    [HasPermission(Example3Permissions.TenantUpdate)]
     public async Task<IActionResult> Edit(SingleLevelTenantDto input)
     {
         var status = await _authTenantAdmin
@@ -69,7 +70,7 @@ public class TenantController : Controller
         //    : RedirectToAction(nameof(Index), new { message = status.Message });
     }
 
-    //[HasPermission(Example3Permissions.TenantDelete)]
+    [HasPermission(Example3Permissions.TenantDelete)]
     [HttpGet]
     [Route("delete")]
     public async Task<IActionResult> Delete(int id)
@@ -89,7 +90,7 @@ public class TenantController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Route("delete")]
-    //[HasPermission(Example3Permissions.TenantDelete)]
+    [HasPermission(Example3Permissions.TenantDelete)]
     public async Task<IActionResult> Delete(SingleLevelTenantDto input)
     {
         var status = await _authTenantAdmin.DeleteTenantAsync(input.TenantId);
