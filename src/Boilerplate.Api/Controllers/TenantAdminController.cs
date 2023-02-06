@@ -24,7 +24,7 @@ public class TenantAdminController : Controller
         _authUsersAdmin = authUsersAdmin;
     }
 
-    [HasPermission(Example3Permissions.UserRead)]
+    [HasPermission(DefaultPermissions.UserRead)]
     [HttpGet]
     public async Task<IActionResult> Index(string message)
     {
@@ -37,7 +37,7 @@ public class TenantAdminController : Controller
         return Ok();
     }
     
-    [HasPermission(Example3Permissions.UserRolesChange)]
+    [HasPermission(DefaultPermissions.UserRolesChange)]
     [HttpGet]
     [Route("edit-roles")]
     public async Task<ActionResult> EditRoles(string userId)
@@ -52,7 +52,7 @@ public class TenantAdminController : Controller
     
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [HasPermission(Example3Permissions.UserRolesChange)]
+    [HasPermission(DefaultPermissions.UserRolesChange)]
     [Route("edit-roles")]
     public async Task<ActionResult> EditRoles(SetupManualUserChange change)
     {
@@ -67,7 +67,7 @@ public class TenantAdminController : Controller
     }
 
 
-    [HasPermission(Example3Permissions.InviteUsers)]
+    [HasPermission(DefaultPermissions.InviteUsers)]
     [HttpGet]
     [Route("invite-user")]
     public async Task<ActionResult> InviteUser([FromServices] IInviteNewUserService inviteService)
@@ -81,7 +81,7 @@ public class TenantAdminController : Controller
         return View(setupInvite);
     }
 
-    [HasPermission(Example3Permissions.InviteUsers)]
+    [HasPermission(DefaultPermissions.InviteUsers)]
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Route("invite-user")]

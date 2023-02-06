@@ -71,7 +71,7 @@ public static class JwtPermissionsSetup
 
         var tokenExpire = int.Parse(configuration.GetSection("JwtData:TokenExpire").Value!);
 
-        services.RegisterAuthPermissions<Example3Permissions>(options =>
+        services.RegisterAuthPermissions<DefaultPermissions>(options =>
         {
             options.TenantType = TenantTypes.SingleLevel;
             //This tells AuthP that you don't have multiple instances of your app running,

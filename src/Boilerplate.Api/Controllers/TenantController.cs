@@ -26,7 +26,7 @@ public class TenantController : ControllerBase
 
     
     [HttpGet]
-    [HasPermission(Example3Permissions.TenantList)]
+    [HasPermission(DefaultPermissions.TenantList)]
     public async Task<IActionResult> Index(string message)
     {
         var tenantNames = await SingleLevelTenantDto.TurnIntoDisplayFormat(_authTenantAdmin.QueryTenants())
@@ -38,7 +38,7 @@ public class TenantController : ControllerBase
     [HttpPost]
     [Route("create")]
     [ValidateAntiForgeryToken]
-    [HasPermission(Example3Permissions.TenantCreate)]
+    [HasPermission(DefaultPermissions.TenantCreate)]
     public async Task<IActionResult> Create(SingleLevelTenantDto input)
     {
         var status = await _authTenantAdmin.AddSingleTenantAsync(input.TenantName, input.TenantRolesName);
@@ -50,7 +50,7 @@ public class TenantController : ControllerBase
         //    : RedirectToAction(nameof(Index), new { message = status.Message });
     }
 
-    [HasPermission(Example3Permissions.TenantUpdate)]
+    [HasPermission(DefaultPermissions.TenantUpdate)]
     [HttpGet]
     [Route("edit")]
     public async Task<IActionResult> Edit(int id)
@@ -62,7 +62,7 @@ public class TenantController : ControllerBase
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Route("edit")]
-    [HasPermission(Example3Permissions.TenantUpdate)]
+    [HasPermission(DefaultPermissions.TenantUpdate)]
     public async Task<IActionResult> Edit(SingleLevelTenantDto input)
     {
         var status = await _authTenantAdmin
@@ -74,7 +74,7 @@ public class TenantController : ControllerBase
         //    : RedirectToAction(nameof(Index), new { message = status.Message });
     }
 
-    [HasPermission(Example3Permissions.TenantDelete)]
+    [HasPermission(DefaultPermissions.TenantDelete)]
     [HttpGet]
     [Route("delete")]
     public async Task<IActionResult> Delete(int id)
@@ -94,7 +94,7 @@ public class TenantController : ControllerBase
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Route("delete")]
-    [HasPermission(Example3Permissions.TenantDelete)]
+    [HasPermission(DefaultPermissions.TenantDelete)]
     public async Task<IActionResult> Delete(SingleLevelTenantDto input)
     {
         var status = await _authTenantAdmin.DeleteTenantAsync(input.TenantId);

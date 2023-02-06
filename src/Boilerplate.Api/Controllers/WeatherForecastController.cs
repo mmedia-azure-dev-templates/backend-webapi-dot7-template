@@ -25,7 +25,7 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-    [HasPermission(Example2Permissions.Permission1)]
+    [HasPermission(DefaultPermissions.AnotherPermission)]
     [HttpGet]
     public IEnumerable<WeatherForecast> Get()
     {

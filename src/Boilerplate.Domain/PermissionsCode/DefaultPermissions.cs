@@ -11,7 +11,7 @@ namespace Boilerplate.Domain.PermissionsCode;
 /// Notice that there are lots of permissions - the idea is to have very detailed control over your software
 /// These permissions are combined to create a Role, which will be more human-focused
 /// </summary>
-public enum Example3Permissions : ushort //Must be ushort to work with AuthP
+public enum DefaultPermissions : ushort //Must be ushort to work with AuthP
 {
     NotSet = 0, //error condition
 
