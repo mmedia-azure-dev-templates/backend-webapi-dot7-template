@@ -68,11 +68,10 @@ app.UseResponseCompression();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwaggerSetup();
 }
 
 app.UseMiddleware(typeof(ExceptionHandlerMiddleware));
-
-app.UseSwaggerSetup();
 
 app.UseResponseCompression();
 app.UseHttpsRedirection();

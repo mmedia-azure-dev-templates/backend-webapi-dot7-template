@@ -129,8 +129,7 @@ public static class SwaggerSetup
             .UseSwaggerUI(c =>
             {
                 c.RoutePrefix = "api-docs";
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Example2.WebApiWithToken.IndividualAccounts v1");
-                //c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Jiban v1");
                 c.DocExpansion(DocExpansion.List);
                 c.DisplayRequestDuration();
             });
