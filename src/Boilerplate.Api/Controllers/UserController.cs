@@ -55,14 +55,6 @@ public class UserController : ControllerBase
         return await _mediator.Send(request);
     }
 
-    /// <summary>
-    /// Authenticates the user and returns the token information.
-    /// </summary>
-    /// <param name="request">Email and password information</param>
-    /// <returns>Token information</returns>
-    [HttpPost]
-    [Route("authenticate")]
-    [AllowAnonymous]
 
     /// <summary>
     /// Returns all users in the database

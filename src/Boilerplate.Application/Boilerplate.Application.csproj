@@ -10,10 +10,12 @@
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="BCrypt.Net-Next" />
     <PackageReference Include="FluentValidation" />
+    <PackageReference Include="MailKit" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="OneOf" />
+    <PackageReference Include="RazorEngineCore" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
   </ItemGroup>
 

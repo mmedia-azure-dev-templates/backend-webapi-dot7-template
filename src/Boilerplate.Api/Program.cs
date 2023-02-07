@@ -2,9 +2,11 @@ using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
 using Boilerplate.Domain.ClaimsChangeCode;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,8 +57,11 @@ builder.Services
     .AddValidationSetup();
 
 builder.Services.AddCacheSetup(builder.Environment);
-
+builder.Services.AddMailSetup(builder.Configuration);
+builder.Services.Configure<DataProtectionTokenProviderOptions>(o =>
+       o.TokenLifespan = TimeSpan.FromHours(4));
 var app = builder.Build();
+
 app.UseCors(builder => builder
        .AllowAnyHeader()
        .AllowAnyMethod()

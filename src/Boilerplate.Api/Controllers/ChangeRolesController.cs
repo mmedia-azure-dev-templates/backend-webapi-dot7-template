@@ -58,7 +58,6 @@ public class ChangeRolesController : ControllerBase
         return result.ToArray();
     }
 
-    [AllowAnonymous]
     [HttpGet]
     [Route("ListAllUsers")]
     public IEnumerable<string> ListAllUsers([FromServices] IAuthUsersAdminService usersAdmin)
@@ -78,7 +77,6 @@ public class ChangeRolesController : ControllerBase
         return result.ToArray();
     }
 
-    [AllowAnonymous]
     [HttpPost]
     [Route("Role2NonStandard")]
     public async Task<ActionResult> Role2NonStandard()
@@ -87,7 +85,6 @@ public class ChangeRolesController : ControllerBase
         return Ok();
     }
 
-    [AllowAnonymous]
     [HttpPost]
     [Route("Role2Standard")]
     public async Task<ActionResult> Role2Standard()
