@@ -9,8 +9,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity.UI.V5.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Api.Controllers;
@@ -23,13 +28,15 @@ public class AuthenticateController : ControllerBase
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenBuilder _tokenBuilder;
+    private readonly IEmailSender _emailSender;
 
-    public AuthenticateController(IMediator mediator,SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator)
+    public AuthenticateController(IMediator mediator,SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator, IEmailSender emailSender)
     {
         _mediator = mediator;
         _signInManager = signInManager;
         _userManager = userManager;
         _tokenBuilder = tokenBuilder;
+        _emailSender = emailSender;
     }
 
     /// <summary>
@@ -52,18 +59,6 @@ public class AuthenticateController : ControllerBase
     }
 
     /// <summary>
-    /// DEMO ONLY: This will generate a JWT token for the user "Super@g1.com"
-    /// </summary>
-    /// <returns></returns>
-    //[AllowAnonymous]
-    //[HttpPost]
-    //[Route("quickauthenticate")]
-    //public async Task<ActionResult> QuickAuthenticate()
-    //{
-    //    return (ActionResult)await Authenticate(new AuthenticateRequest { Email = "Super@g1.com", Password = "Super@g1.com" });
-    //}
-
-    /// <summary>
     /// This checks you are a valid user and returns a JTW token and a Refresh token
     /// </summary>
     /// <param name="loginUser"></param>
@@ -83,18 +78,6 @@ public class AuthenticateController : ControllerBase
 
         return Ok(await _tokenBuilder.GenerateTokenAndRefreshTokenAsync(user.Id));
     }
-
-    /// <summary>
-    /// DEMO ONLY: This will generate a JWT token and a Refresh token for the user "Super@g1.com"
-    /// </summary>
-    /// <returns></returns>
-    //[AllowAnonymous]
-    //[HttpPost]
-    //[Route("quickauthenticatewithrefresh")]
-    //public Task<ActionResult<TokenAndRefreshToken>> QuickAuthenticateWithRefresh()
-    //{
-    //    return AuthenticateWithRefresh(new LoginUserModel { Email = "Super@g1.com", Password = "Super@g1.com" });
-    //}
 
     /// <summary>
     /// This will refresh the JWT token using the provided Refresh token
@@ -140,6 +123,31 @@ public class AuthenticateController : ControllerBase
     public ActionResult<List<string>> GetUsersPermissions([FromServices] IUsersPermissionsService service)
     {
         return service.PermissionsFromUser(User);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordModel forgotPasswordModel)
+    {
+        var user = await _userManager.FindByEmailAsync(forgotPasswordModel.Input.Email);
+        if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+        {
+            // Don't reveal that the user does not exist or is not confirmed
+            return Ok("Custom Error Jiban");
+        }
+        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        var callbackUrl = Url.Page(
+                "/Account/ResetPassword",
+                pageHandler: null,
+                values: new { area = "Identity", code },
+                protocol: Request.Scheme)!;
+
+        await _emailSender.SendEmailAsync(
+            forgotPasswordModel.Input.Email,
+            "Reset Password",
+            $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+        return Ok("Email sent");
     }
 
 }
