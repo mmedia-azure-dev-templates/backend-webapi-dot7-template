@@ -21,6 +21,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Boilerplate.Domain\Boilerplate.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Auth\Register\" />
   </ItemGroup> 
 
 </Project>

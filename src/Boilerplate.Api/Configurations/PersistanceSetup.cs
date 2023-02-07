@@ -21,7 +21,7 @@ public static class PersistanceSetup
 
         services.AddDefaultIdentity<ApplicationUser>(
         options => {
-            options.SignIn.RequireConfirmedEmail = false;
+            options.SignIn.RequireConfirmedEmail = true;
             options.SignIn.RequireConfirmedPhoneNumber = false;
         })
         .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<ApplicationUser>>()

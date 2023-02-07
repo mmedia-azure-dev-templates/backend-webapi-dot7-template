@@ -5,6 +5,7 @@ using AuthPermissions.BaseCode.PermissionsCode;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.Authenticate;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Infrastructure.Reverse;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity.UI.V5.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Graph;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -30,7 +32,7 @@ public class AuthenticateController : ControllerBase
     private readonly ITokenBuilder _tokenBuilder;
     private readonly IEmailSender _emailSender;
 
-    public AuthenticateController(IMediator mediator,SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator, IEmailSender emailSender)
+    public AuthenticateController(IMediator mediator, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator, IEmailSender emailSender)
     {
         _mediator = mediator;
         _signInManager = signInManager;
@@ -126,10 +128,12 @@ public class AuthenticateController : ControllerBase
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ForgotPassword(ForgotPasswordModel forgotPasswordModel)
+    [AllowAnonymous]
+    [Route("resetpassword")]
+    public async Task<IActionResult> ForgotPassword(string email)
     {
-        var user = await _userManager.FindByEmailAsync(forgotPasswordModel.Input.Email);
+        var user = await _userManager.FindByEmailAsync(email);
+        var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
         if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
         {
             // Don't reveal that the user does not exist or is not confirmed
@@ -144,7 +148,7 @@ public class AuthenticateController : ControllerBase
                 protocol: Request.Scheme)!;
 
         await _emailSender.SendEmailAsync(
-            forgotPasswordModel.Input.Email,
+            email,
             "Reset Password",
             $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
         return Ok("Email sent");
