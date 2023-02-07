@@ -67,7 +67,6 @@ public class HeroController : ControllerBase
     {
         var newHero = await _mediator.Send(request);
         return CreatedAtAction(nameof(GetHeroById), new { id = newHero?.Id }, newHero);
-
     }
 
     /// <summary>

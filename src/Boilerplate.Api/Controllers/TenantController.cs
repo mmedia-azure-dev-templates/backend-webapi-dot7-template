@@ -14,7 +14,7 @@ namespace Boilerplate.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-//[Authorize]
+[Authorize]
 public class TenantController : ControllerBase
 {
     private readonly IAuthTenantAdminService _authTenantAdmin;
@@ -37,26 +37,16 @@ public class TenantController : ControllerBase
 
     [HttpPost]
     [Route("create")]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken]
     [HasPermission(DefaultPermissions.TenantCreate)]
     public async Task<IActionResult> Create(SingleLevelTenantDto input)
     {
         var status = await _authTenantAdmin.AddSingleTenantAsync(input.TenantName, input.TenantRolesName);
-        
         return Ok(status);
         //return status.HasErrors
         //    ? RedirectToAction(nameof(ErrorDisplay),
         //        new { errorMessage = status.GetAllErrors() })
         //    : RedirectToAction(nameof(Index), new { message = status.Message });
-    }
-
-    [HasPermission(DefaultPermissions.TenantUpdate)]
-    [HttpGet]
-    [Route("edit")]
-    public async Task<IActionResult> Edit(int id)
-    {
-        return Ok();
-        //return View(await SingleLevelTenantDto.SetupForUpdateAsync(_authTenantAdmin, id));
     }
 
     [HttpPost]
@@ -67,28 +57,11 @@ public class TenantController : ControllerBase
     {
         var status = await _authTenantAdmin
             .UpdateTenantNameAsync(input.TenantId, input.TenantName);
-        return Ok();
+        return Ok(status);
         //return status.HasErrors
         //    ? RedirectToAction(nameof(ErrorDisplay),
         //        new { errorMessage = status.GetAllErrors() })
         //    : RedirectToAction(nameof(Index), new { message = status.Message });
-    }
-
-    [HasPermission(DefaultPermissions.TenantDelete)]
-    [HttpGet]
-    [Route("delete")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var status = await _authTenantAdmin.GetTenantViaIdAsync(id);
-        //if (status.HasErrors)
-        //    return RedirectToAction(nameof(ErrorDisplay),
-        //        new { errorMessage = status.GetAllErrors() });
-        return Ok();
-        //return View(new SingleLevelTenantDto
-        //{
-        //    TenantId = id,
-        //    TenantName = status.Result.TenantFullName
-        //});
     }
 
     [HttpPost]
@@ -104,14 +77,4 @@ public class TenantController : ControllerBase
         //        new { errorMessage = status.GetAllErrors() })
         //    : RedirectToAction(nameof(Index), new { message = status.Message });
     }
-
-    //[HasPermission(Example3Permissions.TenantAccessData)]
-    
-
-    //[HttpGet]
-    //public ActionResult ErrorDisplay(string errorMessage)
-    //{
-    //    return Ok();
-    //    //return View((object)errorMessage);
-    //}
 }

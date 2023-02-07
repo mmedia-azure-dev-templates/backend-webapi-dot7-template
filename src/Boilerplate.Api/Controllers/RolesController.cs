@@ -14,7 +14,7 @@ namespace Boilerplate.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class RolesController : Controller
+public class RolesController : ControllerBase
 {
     private readonly IAuthRolesAdminService _authRolesAdmin;
 
@@ -32,9 +32,6 @@ public class RolesController : Controller
             _authRolesAdmin.QueryRoleToPermissions(userId)
                 .OrderBy(x => x.RoleType)
                 .ToListAsync();
-        
-        ViewBag.Message = message;
-
         return Ok(permissionDisplay);
     }
 
@@ -49,47 +46,17 @@ public class RolesController : Controller
     }
 
     [HasPermission(DefaultPermissions.RoleChange)]
-    [HttpGet]
-    [Route("edit")]
-    public async Task<IActionResult> Edit(string roleName)
-    {
-        var userId = User.GetUserIdFromUser();
-        var role = await
-            _authRolesAdmin.QueryRoleToPermissions(userId).SingleOrDefaultAsync(x => x.RoleName == roleName);
-        var permissionsDisplay = _authRolesAdmin.GetPermissionDisplay(false);
-        return Ok(role == null ? null : RoleCreateUpdateDto.SetupForCreateUpdate(role.RoleName, role.Description,
-            role.PermissionNames, permissionsDisplay, role.RoleType));
-    }
-
-    [HasPermission(DefaultPermissions.RoleChange)]
-    [HttpPost]
-    [ValidateAntiForgeryToken]
     [HttpPost]
     [Route("edit")]
     public async Task<IActionResult> Edit(RoleCreateUpdateDto input)
     {
         var status = await _authRolesAdmin
             .UpdateRoleToPermissionsAsync(input.RoleName, input.GetSelectedPermissionNames(), input.Description, input.RoleType);
-
-        if (status.HasErrors)
-            return RedirectToAction(nameof(ErrorDisplay),
-                new { errorMessage = status.GetAllErrors() });
-
-        return RedirectToAction(nameof(Index), new { message = status.Message });
-    }
-
-    [HasPermission(DefaultPermissions.RoleChange)]
-    [HttpGet]
-    [Route("create")]
-    public IActionResult Create()
-    {
-        var permissionsDisplay = _authRolesAdmin.GetPermissionDisplay(false);
-        return Ok(RoleCreateUpdateDto.SetupForCreateUpdate(null, null, null, permissionsDisplay));
+        return Ok(status);
     }
 
     [HasPermission(DefaultPermissions.RoleChange)]
     [HttpPost]
-    [ValidateAntiForgeryToken]
     [Route("create")]
     public async Task<IActionResult> Create(RoleCreateUpdateDto input)
     {
@@ -102,23 +69,7 @@ public class RolesController : Controller
 
         //return RedirectToAction(nameof(Index), new { message = status.Message });
     }
-    [HttpGet]
-    [Route("error-display")]
-    public ActionResult ErrorDisplay(string errorMessage)
-    {
-        return Ok();
-        //return View((object)errorMessage);
-    }
-
-    [HasPermission(DefaultPermissions.RoleChange)]
-    [HttpGet]
-    [Route("delete")]
-    public async Task<IActionResult> Delete(string roleName)
-    {
-        return Ok();
-        //return View(await MultiTenantRoleDeleteConfirmDto.FormRoleDeleteConfirmDtoAsync(roleName, _authRolesAdmin));
-    }
-
+    
     [HasPermission(DefaultPermissions.RoleChange)]
     [HttpPost]
     [ValidateAntiForgeryToken]

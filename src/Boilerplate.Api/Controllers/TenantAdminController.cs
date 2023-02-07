@@ -37,21 +37,7 @@ public class TenantAdminController : Controller
         return Ok();
     }
     
-    [HasPermission(DefaultPermissions.UserRolesChange)]
-    [HttpGet]
-    [Route("edit-roles")]
-    public async Task<ActionResult> EditRoles(string userId)
-    {
-        var status = await SetupManualUserChange.PrepareForUpdateAsync(userId, _authUsersAdmin);
-        if (status.HasErrors)
-            return Ok(status.GetAllErrors());
-            //new { errorMessage = status.GetAllErrors() });
-
-        return View(status.Result);
-    }
-    
     [HttpPost]
-    [ValidateAntiForgeryToken]
     [HasPermission(DefaultPermissions.UserRolesChange)]
     [Route("edit-roles")]
     public async Task<ActionResult> EditRoles(SetupManualUserChange change)
@@ -83,7 +69,6 @@ public class TenantAdminController : Controller
 
     [HasPermission(DefaultPermissions.InviteUsers)]
     [HttpPost]
-    [ValidateAntiForgeryToken]
     [Route("invite-user")]
     public async Task<ActionResult> InviteUser([FromServices] IInviteNewUserService inviteUserServiceService, InviteUserSetup data)
     {
