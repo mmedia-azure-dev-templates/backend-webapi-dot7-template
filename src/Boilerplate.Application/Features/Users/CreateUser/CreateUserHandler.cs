@@ -4,11 +4,16 @@ using Boilerplate.Application.Emails;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
+using Humanizer;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
+using OneOf.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BC = BCrypt.Net.BCrypt;
@@ -36,18 +41,20 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
     }
     public async Task<GetUserResponse> Handle(CreateUsersIdenticationsRequest request, CancellationToken cancellationToken)
     {
+        GetUserResponse userResponse = new GetUserResponse();
+
         using var transaction = _context.Database.BeginTransaction();
 
         try
         {
-            var user = new ApplicationUser()
+            ApplicationUser user = new ApplicationUser()
             {
                 Id = Guid.NewGuid().ToString(),
                 UserName = request.Email,
                 NormalizedUserName = request.Email.ToUpper(),
                 Email = request.Email,
                 NormalizedEmail = request.Email.ToUpper(),
-                PasswordHash = BC.HashPassword(request.Email),
+                PasswordHash = request.Password,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 PhoneNumber = request.PhoneNumber,
@@ -55,31 +62,64 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                 LastLogin = DateTime.Now,
             };
             
-            var result = await _userManager.CreateAsync(user, "Market2022$$");
-            await _context.SaveChangesAsync(cancellationToken);
-
-            if (result.Succeeded)
-            {
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                // Send an email with this link
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                //var callbackUrl = new { userId = user.Id, code = code };
-                //// Create MailData object
-                //MailData mailData = new MailDataWithAttachments(
-                //    from: "raul.flores@mad.ec",
-                //    displayName: "Cirilo",
-                //    to: new List<string> { 
-                //        user.Email
-                //    },
-                //    subject: "Confirm your account",
-                //    body: "Hola soy el body"
-                //    );
-                //bool sendResult = await _mail.SendWithAttachmentsAsync(mailData, new CancellationToken());
-                //await _mail.SendAsync(model.Email, "Confirm your account","Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
-                //await _signInManager.SignInAsync(user, isPersistent: false);
-                _logger.LogInformation(3, "User created a new account with password.");
-            }
+            var userStatus = await _userManager.CreateAsync(user, request.Password);
             
+            if (userStatus.Succeeded)
+            {
+                
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var callbackUrl = new { userId = user.Id, code = code };
+
+                MailData mailData = new MailData(
+                    user.Email,
+                    user.FirstName + " " + user.LastName,
+                    new List<string> {
+                        user.Email
+                    },
+                    null,
+                    null,
+                    null,
+                    null,
+                    "Confirm your account",
+                    "Hola soy el body",
+                    "Welcome"
+                   );
+
+                // Create MailData object
+                WelcomeMail welcomeMail = new WelcomeMail()
+                {
+                    Name = user.FirstName + " " + user.LastName,
+                    Email = user.Email,
+                    Code = code
+                };
+                
+                bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
+
+                if (emailStatus)
+                {
+                    userResponse.Message = "Email success!";
+                    _logger.LogInformation(3, "Email success!");
+                }
+                else
+                {
+                    userResponse.Message = "Email failed!";
+                    _logger.LogInformation(3, "Email failed!");
+                    throw new Exception("Email failed!");
+                }
+
+
+                //await _signInManager.SignInAsync(user, isPersistent: false);
+                //_logger.LogInformation(3, "User created a new account with password.");
+            }
+            else
+            {
+                List<IdentityError> errorList = userStatus.Errors.ToList();
+                var errors = string.Join(" | ", errorList.Select(e => e.Description));
+                _logger.LogInformation(3, "Error create user Identity");
+                throw new Exception(errors);
+            }
+
+            await _context.SaveChangesAsync(cancellationToken);
 
             //Identification identification = new()
             //{
@@ -108,12 +148,14 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
 
             //await _context.SaveChangesAsync(cancellationToken);
             transaction.Commit();
-            return _mapper.Map<GetUserResponse>(user);
+            userResponse.Transaction = true;
+            return userResponse;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             transaction.Rollback();
-            throw;
+            userResponse.Message = ex.Message;
+            return userResponse;
         }
     }
 }

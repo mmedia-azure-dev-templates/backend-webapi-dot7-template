@@ -22,8 +22,8 @@ public class MailData
     // Content
     public string Subject { get; }
     public string Body { get; }
-    public IFormFileCollection? Attachments { get; set; }
     public string Template { get; set; }
+    public IFormFileCollection? Attachments { get; set; }
     public object Data { get; set; }
 
     public MailData(
@@ -36,8 +36,8 @@ public class MailData
         string? replyToName = null,
         string subject= "", 
         string body = "",
+        string template = "",
         IFormFileCollection? attachments = null,
-        string template="",
         object? data=null)
     {
         From = from;
