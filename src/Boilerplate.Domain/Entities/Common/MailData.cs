@@ -8,35 +8,32 @@ namespace Boilerplate.Domain.Entities.Common;
 
 public class MailData
 {
-    public string From { get; }
     public string DisplayName { get; }
-    // Receiver
-    public List<string> To { get; }
-    public List<string> Bcc { get; }
-    public List<string> Cc { get; }
-
-    // Sender
-    public string? ReplyTo { get; }
-    public string? ReplyToName { get; }
-
-    // Content
     public string Subject { get; }
     public string Body { get; }
     public string Template { get; set; }
+    public List<string> To { get; }
+    public List<string>? Bcc { get; }
+    public List<string>? Cc { get; }
+    
+    // Sender
+    public string? ReplyTo { get; }
+    public string? ReplyToName { get; }
+    public string? From { get; }
     public IFormFileCollection? Attachments { get; set; }
-    public object Data { get; set; }
+    public object? Data { get; set; }
 
     public MailData(
         string from, 
         string displayName, 
         List<string> to, 
+        string subject= "", 
+        string body = "",
+        string template = "",
         List<string>? bcc = null,
         List<string>? cc = null,
         string? replyTo = null,
         string? replyToName = null,
-        string subject= "", 
-        string body = "",
-        string template = "",
         IFormFileCollection? attachments = null,
         object? data=null)
     {

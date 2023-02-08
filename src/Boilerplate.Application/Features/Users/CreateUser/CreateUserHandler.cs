@@ -76,10 +76,6 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                     new List<string> {
                         user.Email
                     },
-                    null,
-                    null,
-                    null,
-                    null,
                     "Confirm your account",
                     "Hola soy el body",
                     "Welcome"
