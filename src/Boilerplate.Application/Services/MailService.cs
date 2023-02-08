@@ -1,4 +1,6 @@
-﻿using Boilerplate.Domain.Entities.Common;
+﻿using Boilerplate.Application.Emails;
+using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -18,10 +20,12 @@ namespace Boilerplate.Application.Services;
 public class MailService : IMailService
 {
     private readonly MailSettings _settings;
+    private readonly IRazorViewToStringRenderer _razorViewToStringRenderer;
 
-    public MailService(IOptions<MailSettings> settings)
+    public MailService(IOptions<MailSettings> settings, IRazorViewToStringRenderer razorViewToStringRenderer)
     {
         _settings = settings.Value;
+        _razorViewToStringRenderer = razorViewToStringRenderer;
     }
 
     public async Task<bool> SendWithAttachmentsAsync(MailDataWithAttachments mailData, CancellationToken ct = default)
@@ -94,15 +98,16 @@ public class MailService : IMailService
 
             using var smtp = new SmtpClient();
 
-            if (_settings.UseSSL)
-            {
-                await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.SslOnConnect, ct);
-            }
-            else if (_settings.UseStartTls)
-            {
-                await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.StartTls, ct);
-            }
+            //if (_settings.UseSSL)
+            //{
+            //    await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.SslOnConnect, ct);
+            //}
+            //else if (_settings.UseStartTls)
+            //{
+            //    await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.StartTls, ct);
+            //}
 
+            await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.StartTls, ct);
             await smtp.AuthenticateAsync(_settings.UserName, _settings.Password, ct);
             await smtp.SendAsync(mail, ct);
             await smtp.DisconnectAsync(true, ct);
@@ -117,25 +122,21 @@ public class MailService : IMailService
         }
     }
 
-    public async Task<bool> SendAsync(MailData mailData, CancellationToken ct = default)
+    public async Task<bool> CreateEmailMessage<TModel>(MailData mailData, TModel model, CancellationToken ct = default)
     {
         try
         {
-            // Initialize a new instance of the MimeKit.MimeMessage class
-            var mail = new MimeMessage();
-
-            #region Sender / Receiver
-            // Sender
-            mail.From.Add(new MailboxAddress(_settings.DisplayName, mailData.From ?? _settings.From));
-            mail.Sender = new MailboxAddress(mailData.DisplayName ?? _settings.DisplayName, mailData.From ?? _settings.From);
+            MimeMessage message = new MimeMessage();
+            //Sender
+            message.From.Add(new MailboxAddress(_settings.DisplayName, mailData.From ?? _settings.From));
 
             // Receiver
             foreach (string mailAddress in mailData.To)
-                mail.To.Add(MailboxAddress.Parse(mailAddress));
+                message.To.Add(MailboxAddress.Parse(mailAddress));
 
             // Set Reply to if specified in mail data
             if (!string.IsNullOrEmpty(mailData.ReplyTo))
-                mail.ReplyTo.Add(new MailboxAddress(mailData.ReplyToName, mailData.ReplyTo));
+                message.ReplyTo.Add(new MailboxAddress(mailData.ReplyToName, mailData.ReplyTo));
 
             // BCC
             // Check if a BCC was supplied in the request
@@ -143,7 +144,7 @@ public class MailService : IMailService
             {
                 // Get only addresses where value is not null or with whitespace. x = value of address
                 foreach (string mailAddress in mailData.Bcc.Where(x => !string.IsNullOrWhiteSpace(x)))
-                    mail.Bcc.Add(MailboxAddress.Parse(mailAddress.Trim()));
+                    message.Bcc.Add(MailboxAddress.Parse(mailAddress.Trim()));
             }
 
             // CC
@@ -151,69 +152,43 @@ public class MailService : IMailService
             if (mailData.Cc != null)
             {
                 foreach (string mailAddress in mailData.Cc.Where(x => !string.IsNullOrWhiteSpace(x)))
-                    mail.Cc.Add(MailboxAddress.Parse(mailAddress.Trim()));
+                    message.Cc.Add(MailboxAddress.Parse(mailAddress.Trim()));
             }
-            #endregion
 
-            #region Content
+            string body = await _razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/" + mailData.Template + "View.cshtml", model);
+            if (string.IsNullOrEmpty(body))
+            {
+                throw new InvalidOperationException("Body is empty!");
+            }
 
-            // Add Content to Mime Message
-            var body = new BodyBuilder();
-            mail.Subject = mailData.Subject;
-            body.HtmlBody = mailData.Body;
-            mail.Body = body.ToMessageBody();
+            BodyBuilder bodyBuilder = new BodyBuilder { HtmlBody = string.Format("{0}", body) };
+            if (mailData.Attachments != null && mailData.Attachments.Any())
+            {
+                byte[] fileBytes;
+                foreach (var attachment in mailData.Attachments)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        attachment.CopyTo(ms);
+                        fileBytes = ms.ToArray();
+                    }
 
-            #endregion
+                    bodyBuilder.Attachments.Add(attachment.FileName, fileBytes, ContentType.Parse(attachment.ContentType));
+                }
+            }
 
-            #region Send Mail
-
+            message.Body = bodyBuilder.ToMessageBody();
             using var smtp = new SmtpClient();
-
-            if (_settings.UseSSL)
-            {
-                await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.SslOnConnect, ct);
-            }
-            else if (_settings.UseStartTls)
-            {
-                await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.StartTls, ct);
-            }
-
+            await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.StartTls, ct);
             await smtp.AuthenticateAsync(_settings.UserName, _settings.Password, ct);
-            await smtp.SendAsync(mail, ct);
+            await smtp.SendAsync(message, ct);
             await smtp.DisconnectAsync(true, ct);
 
             return true;
-            #endregion
-
         }
         catch (Exception)
         {
             return false;
         }
-    }
-
-    public string GetEmailTemplate<T>(string emailTemplate, T emailTemplateModel)
-    {
-        string mailTemplate = LoadTemplate(emailTemplate);
-
-        IRazorEngine razorEngine = new RazorEngine();
-        IRazorEngineCompiledTemplate modifiedMailTemplate = razorEngine.Compile(mailTemplate);
-
-        return modifiedMailTemplate.Run(emailTemplateModel);
-    }
-
-    public string LoadTemplate(string emailTemplate)
-    {
-        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-        string templateDir = Path.Combine(baseDir, "Files/MailTemplates");
-        string templatePath = Path.Combine(templateDir, $"{emailTemplate}.cshtml");
-
-        using FileStream fileStream = new FileStream(templatePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-        using StreamReader streamReader = new StreamReader(fileStream, Encoding.Default);
-
-        string mailTemplate = streamReader.ReadToEnd();
-        streamReader.Close();
-
-        return mailTemplate;
     }
 }

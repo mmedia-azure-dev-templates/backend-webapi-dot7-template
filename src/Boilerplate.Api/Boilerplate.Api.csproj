@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
     <UserSecretsId>83093e71-d34c-405d-b8eb-442525b137fc</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
@@ -16,6 +17,28 @@
     <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <DockerfileRunEnvironmentFiles>../../.env.development</DockerfileRunEnvironmentFiles>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Emails\ConfirmAccount\ConfirmAccountEmail.cshtml" />
+    <Content Remove="Views\Emails\DefaultView.cshtml" />
+    <Content Remove="Views\Emails\ErrorView.cshtml" />
+    <Content Remove="Views\Emails\Start.cshtml" />
+    <Content Remove="Views\Emails\_ViewStart.cshtml" />
+    <Content Remove="Views\Shared\DefaultLayout.cshtml" />
+    <Content Remove="Views\Shared\EmailButton.cshtml" />
+    <Content Remove="Views\Shared\EmailLayout.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Emails\ConfirmAccount\ConfirmAccountEmail.cshtml" />
+    <None Include="Views\Emails\DefaultView.cshtml" />
+    <None Include="Views\Emails\ErrorView.cshtml" />
+    <None Include="Views\Emails\Start.cshtml" />
+    <None Include="Views\Emails\_ViewStart.cshtml" />
+    <None Include="Views\Shared\DefaultLayout.cshtml" />
+    <None Include="Views\Shared\EmailButton.cshtml" />
+    <None Include="Views\Shared\EmailLayout.cshtml" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AuthPermissions.AspNetCore" />
@@ -57,6 +80,12 @@
     <ProjectReference Include="..\Boilerplate.Application\Boilerplate.Application.csproj" />
     <ProjectReference Include="..\Boilerplate.Domain\Boilerplate.Domain.csproj" />
     <ProjectReference Include="..\Boilerplate.Infrastructure\Boilerplate.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Emails\WelcomeView.cshtml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 

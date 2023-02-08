@@ -1,0 +1,16 @@
+﻿@using Boilerplate.Domain.Entities
+@model DefaultModel
+    
+
+@Html.Raw(Model.Content)
+    <p><b>Date:</b> @DateTime.Now</p>
+    @if (Model != null & Model.Data != null)
+    {
+        foreach (KeyValuePair<string, string> dictValue in Model.Data)
+        {
+<p><b>@dictValue.Key:</b> @Html.Raw(@dictValue.Value)</p>
+        }
+    }
+<br>
+<br>    
+<small><b>Importante:</b> Restablecer el proceso en la brevedad posible. </small>

@@ -1,6 +1,8 @@
 ﻿using Boilerplate.Application.Emails;
+using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -14,31 +16,22 @@ namespace Boilerplate.Api.Controllers;
 public class MailController : ControllerBase
 {
     private readonly IMailService _mail;
-
+    
     public MailController(IMailService mail)
     {
         _mail = mail;
     }
 
-    [HttpPost("sendmail")]
-    public async Task<ObjectResult> SendMailAsync(MailData mailData)
+    [HttpPost("notification")]
+    [AllowAnonymous]
+    public async Task<ObjectResult> SendNotification(MailData mailData)
     {
-        bool result = await _mail.SendAsync(mailData, new CancellationToken());
-
-        if (result)
+        WelcomeMail welcomeMail = new WelcomeMail()
         {
-            return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent.");
-        }
-        else
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
-        }
-    }
-
-    [HttpPost("sendemailwithattachment")]
-    public async Task<ObjectResult> SendMailWithAttachmentAsync([FromForm] MailDataWithAttachments mailData)
-    {
-        bool result = await _mail.SendWithAttachmentsAsync(mailData, new CancellationToken());
+            Name = "Raúl David Flores Serrano",
+            Email = "raul.flores@mad.ec"
+        };
+        bool result = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
 
         if (result)
         {
@@ -47,28 +40,6 @@ public class MailController : ControllerBase
         else
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail with attachment could not be sent.");
-        }
-    }
-
-    [HttpPost("sendemailusingtemplate")]
-    public async Task<ObjectResult> SendEmailUsingTemplate(WelcomeMail welcomeMail)
-    {
-        // Create MailData object
-        MailData mailData = new MailData(
-            new List<string> { welcomeMail.Email },
-            "Welcome to the MailKit Demo",
-            _mail.GetEmailTemplate("welcome", welcomeMail));
-
-
-        bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
-
-        if (sendResult)
-        {
-            return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent using template.");
-        }
-        else
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
         }
     }
 }

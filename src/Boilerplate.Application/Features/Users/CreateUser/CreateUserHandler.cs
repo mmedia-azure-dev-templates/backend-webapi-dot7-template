@@ -19,17 +19,15 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
-    /// <summary>
-    /// private readonly ILogger _logger;
-    /// </summary>
+    private readonly ILogger<CreateUserHandler> _logger;
     private readonly IMailService _mail;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
     
     
-    public CreateUserHandler(IContext context, IMapper mapper, /*ILogger logger,*/ IMailService mail , SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+    public CreateUserHandler(IContext context, IMapper mapper, ILogger<CreateUserHandler> logger, IMailService mail , SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
     {
-        //_logger = logger;
+        _logger = logger;
         _mapper = mapper;
         _context = context;
         _mail = mail;
@@ -65,22 +63,21 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                 // Send an email with this link
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var callbackUrl = new { userId = user.Id, code = code };
-                // Create MailData object
-                MailData mailData = new MailData(
-                    to: new List<string> { 
-                        user.Email
-                    },
-                    subject: "Confirm your account",
-                    body: "Hola soy el body",
-                    from: "raul.flores@mad.ec",
-                    displayName: "Cirilo"
-                    );
-                bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
-                var cirilo = 1;
+                //var callbackUrl = new { userId = user.Id, code = code };
+                //// Create MailData object
+                //MailData mailData = new MailDataWithAttachments(
+                //    from: "raul.flores@mad.ec",
+                //    displayName: "Cirilo",
+                //    to: new List<string> { 
+                //        user.Email
+                //    },
+                //    subject: "Confirm your account",
+                //    body: "Hola soy el body"
+                //    );
+                //bool sendResult = await _mail.SendWithAttachmentsAsync(mailData, new CancellationToken());
                 //await _mail.SendAsync(model.Email, "Confirm your account","Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
                 //await _signInManager.SignInAsync(user, isPersistent: false);
-                //_logger.LogInformation(3, "User created a new account with password.");
+                _logger.LogInformation(3, "User created a new account with password.");
             }
             
 
