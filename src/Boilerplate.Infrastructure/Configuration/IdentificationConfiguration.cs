@@ -15,7 +15,6 @@ public class IdentificationConfiguration : IEntityTypeConfiguration<Identificati
         entity.Property(e => e.Id).ValueGeneratedOnAdd();
         entity.Property(e => e.Id).HasConversion<IdentificationId.EfCoreValueConverter>();
         entity.Property(e => e.UserId).HasConversion<UserId.EfCoreValueConverter>();
-        entity.ToTable("Identifications", tb => tb.HasComment("TABLA HACE JOIN CON TABLA USERS AQUI SE ALMACENA LOS DATOS INFORMATIVOS DEL USUARIO"));
         entity.HasIndex(e => e.Ndocument, "Identifications_Ndocument_key").IsUnique();
         entity.HasIndex(e => e.UserId, "Identifications_UserId_key").IsUnique();
         entity.Property(e => e.Id).HasColumnName("Id");

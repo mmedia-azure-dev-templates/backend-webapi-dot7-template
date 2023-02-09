@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Mail\**" />
+    <EmbeddedResource Remove="Features\Mail\**" />
+    <None Remove="Features\Mail\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="BCrypt.Net-Next" />
     <PackageReference Include="FluentValidation" />
@@ -25,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Auth\Register\" />
-    <Folder Include="Features\Mail\" />
   </ItemGroup> 
 
 </Project>
