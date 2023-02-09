@@ -1,11 +1,9 @@
 ﻿using Boilerplate.Application.Emails;
-using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
