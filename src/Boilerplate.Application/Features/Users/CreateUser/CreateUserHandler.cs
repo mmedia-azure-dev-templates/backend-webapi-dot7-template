@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
-using System.Web;
+using static org.apache.zookeeper.KeeperException;
 
 namespace Boilerplate.Application.Features.Users.CreateUser;
 
@@ -25,38 +25,37 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
     private readonly IMapper _mapper;
     private readonly ILogger<CreateUserHandler> _logger;
     private readonly IMailService _mail;
-    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
 
 
-    public CreateUserHandler(IContext context, IMapper mapper, ILogger<CreateUserHandler> logger, IMailService mail, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+    public CreateUserHandler(IContext context, IMapper mapper, ILogger<CreateUserHandler> logger, IMailService mail, UserManager<ApplicationUser> userManager)
     {
         _logger = logger;
         _mapper = mapper;
         _context = context;
         _mail = mail;
-        _signInManager = signInManager;
         _userManager = userManager;
     }
     public async Task<GetUserResponse> Handle(CreateUsersIdenticationsRequest request, CancellationToken cancellationToken)
     {
         GetUserResponse userResponse = new GetUserResponse();
+
         using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
             try
             {
                 ApplicationUser user = new ApplicationUser()
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    //Id = Guid.NewGuid().ToString(),
                     UserName = request.Email,
-                    NormalizedUserName = request.Email.ToUpper(),
+                    //NormalizedUserName = request.Email.ToUpper(),
                     Email = request.Email,
-                    NormalizedEmail = request.Email.ToUpper(),
+                    //NormalizedEmail = request.Email.ToUpper(),
                     PasswordHash = request.Password,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     PhoneNumber = request.PhoneNumber,
-                    LockoutEnabled = true,
+                    //LockoutEnabled = true,
                     LastLogin = DateTime.Now,
                 };
 
@@ -64,6 +63,8 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                 if (result.Succeeded)
                 {
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+                    //var emailConfirmed = await _userManager.ConfirmEmailAsync(user, token);
                     var callbackUrl = new { token, email = user.Email };
 
                     MailData mailData = new MailData(

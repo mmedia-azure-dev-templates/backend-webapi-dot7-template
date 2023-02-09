@@ -79,7 +79,7 @@ SELECT [Id]
 	  ,0
 FROM [dbo].[AspNetUsers] where LegacyId not in (1,2,178,180,182)
 
-DECLARE @id INT = (SELECT ISNULL(MAX(Id),0) FROM web.Users);
+DECLARE @id INT = (SELECT ISNULL(MAX(LegacyId),0) FROM [dbo].[AspNetUsers]);
 Print (@id);
 DBCC checkident('dbo.AspNetUsers', reseed, @id);
 GO

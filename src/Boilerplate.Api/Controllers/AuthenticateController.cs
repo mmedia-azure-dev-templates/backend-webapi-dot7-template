@@ -160,6 +160,8 @@ public class AuthenticateController : ControllerBase
     [Route("confirmemail")]
     public async Task<IActionResult> ConfirmEmail(string token, string email)
     {
+        var bytes = WebEncoders.Base64UrlDecode(token);
+        token = Encoding.UTF8.GetString(bytes);
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
             return Ok("Error");

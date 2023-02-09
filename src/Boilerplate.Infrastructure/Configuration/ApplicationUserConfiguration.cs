@@ -1,6 +1,7 @@
 ﻿using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using BC = BCrypt.Net.BCrypt;
 
@@ -12,6 +13,6 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
     {
         //entity.Property(e => e.LegacyId).HasConversion<UserId.EfCoreValueConverter>();
         //entity.HasKey(x => x.LegacyId);
-        entity.Property(e => e.LegacyId).ValueGeneratedOnAdd();
+        entity.Property(e => e.LegacyId).ValueGeneratedOnAdd().Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore); ;
     }
 }
