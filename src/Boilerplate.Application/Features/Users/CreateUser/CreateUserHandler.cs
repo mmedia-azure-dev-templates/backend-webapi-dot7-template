@@ -6,13 +6,16 @@ using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Web;
 
 namespace Boilerplate.Application.Features.Users.CreateUser;
 
@@ -60,8 +63,8 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                 var result = await _userManager.CreateAsync(user, request.Password);
                 if (result.Succeeded)
                 {
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = new { userId = user.Id, code = code };
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = new { token, email = user.Email };
 
                     MailData mailData = new MailData(
                         user.Email,
@@ -79,7 +82,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                     {
                         Name = user.FirstName + " " + user.LastName,
                         Email = user.Email,
-                        Code = code
+                        Token = token
                     };
 
                     bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());

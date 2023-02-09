@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -154,4 +155,15 @@ public class AuthenticateController : ControllerBase
         return Ok("Email sent");
     }
 
+    [HttpGet]
+    [AllowAnonymous]
+    [Route("confirmemail")]
+    public async Task<IActionResult> ConfirmEmail(string token, string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return Ok("Error");
+        var result = await _userManager.ConfirmEmailAsync(user, token);
+        return Ok(result.Succeeded ? nameof(ConfirmEmail) : "Error");
+    }
 }
