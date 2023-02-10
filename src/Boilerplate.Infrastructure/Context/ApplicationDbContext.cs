@@ -1,12 +1,16 @@
-﻿using AuthPermissions.AspNetCore.GetDataKeyCode;
+﻿// https://www.johnaclee.com/blog/automatic-created-and-updated-dates-with-entity-framework
+using AuthPermissions.AspNetCore.GetDataKeyCode;
 using AuthPermissions.BaseCode.CommonCode;
 using AuthPermissions.BaseCode.DataLayer.EfCode;
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Implementations;
 using Boilerplate.Infrastructure.Configuration;
 using EntityFramework.Exceptions.SqlServer;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,9 +38,37 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext
         return base.SaveChanges(acceptAllChangesOnSuccess);
     }
 
+    public override int SaveChanges()
+    {
+        SetProperties();
+        return base.SaveChanges();
+    }
+
+    private void SetProperties()
+    {
+        foreach (var entity in ChangeTracker.Entries().Where(p => p.State == EntityState.Added))
+        {
+            var created = entity.Entity as IDateCreated;
+            if (created != null)
+            {
+                created.DateCreated = DateTime.Now;
+            }
+        }
+
+        foreach (var entity in ChangeTracker.Entries().Where(p => p.State == EntityState.Modified))
+        {
+            var updated = entity.Entity as IDateUpdated;
+            if (updated != null)
+            {
+                updated.DateUpdated = DateTime.Now;
+            }
+        }
+    }
+
     public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
         CancellationToken cancellationToken = default(CancellationToken))
     {
+        SetProperties();
         this.MarkWithDataKeyIfNeeded(DataKey);
         return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }

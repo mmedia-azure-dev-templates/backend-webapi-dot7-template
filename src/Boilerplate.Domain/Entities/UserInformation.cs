@@ -1,4 +1,5 @@
 ﻿using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Implementations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ namespace Boilerplate.Domain.Entities;
 /// TABLA HACE JOIN CON TABLA USERS AQUI SE ALMACENA LOS DATOS INFORMATIVOS DEL USUARIO
 /// </summary>
 [Table("UserInformations", Schema = "web")]
-public partial class UserInformation : Entity<IdentificationId>
+public partial class UserInformation : Entity<IdentificationId>, IDateCreatedAndUpdated
 {
     [Required]
     public override IdentificationId Id { get; set; }
@@ -55,4 +56,6 @@ public partial class UserInformation : Entity<IdentificationId>
     public int Parroquia { get; set; }
 
     public string? Notes { get; set; }
+    public DateTime DateCreated { get; set; }
+    public DateTime? DateUpdated { get; set; }
 }

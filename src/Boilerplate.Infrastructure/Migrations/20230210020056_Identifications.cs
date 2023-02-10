@@ -41,6 +41,8 @@ public partial class Identifications : Migration
             Canton = table.Column<int>(type: "int", nullable: false),
             Parroquia = table.Column<int>(type: "int", nullable: false),
             Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+            Dateupdated = table.Column<DateTime>(type: "datetime2", nullable: true),
         },
         constraints: table =>
         {

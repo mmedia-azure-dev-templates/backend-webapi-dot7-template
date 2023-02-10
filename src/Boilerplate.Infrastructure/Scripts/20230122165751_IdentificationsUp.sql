@@ -24,7 +24,9 @@ INSERT INTO [web].[UserInformations]
       ,[Provincia]
       ,[Canton]
       ,[Parroquia]
-      ,[Notes])
+      ,[Notes]
+      ,[DateCreated]
+      ,[DateUpdated])
      select 
 NEWID() as Id, 
 t1.Id as UserId
@@ -111,6 +113,8 @@ t1.Id as UserId
           WHEN [Notes] IS NULL THEN 'MARKET'
           ELSE [Notes]
         END AS Notes
+        , GETDATE()
+        , GETDATE()
 from dbo.AspNetUsers as t1
 join tmp.Identifications as t2
 on t1.LegacyId = t2.UserId
