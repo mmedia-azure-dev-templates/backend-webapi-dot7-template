@@ -1,86 +1,118 @@
--- Table: web."Identifications"
+USE [Jiban]
+GO
 
--- DROP TABLE IF EXISTS web."Identifications";
+INSERT INTO [web].[UserInformations]
+           ([Id]
+      ,[UserId]
+      ,[TypeDocument]
+      ,[Nacionality]
+      ,[Ndocument]
+      ,[Gender]
+      ,[CivilStatus]
+      ,[BirthDate]
+      ,[EntryDate]
+      ,[DepartureDate]
+      ,[Hired]
+      ,[ImgUrl]
+      ,[CurriculumUrl]
+      ,[Mobile]
+      ,[Phone]
+      ,[PrimaryStreet]
+      ,[SecondaryStreet]
+      ,[Numeration]
+      ,[Reference]
+      ,[Provincia]
+      ,[Canton]
+      ,[Parroquia]
+      ,[Notes])
+     select 
+NEWID() as Id, 
+t1.Id as UserId
+      ,
+        CASE
+                WHEN [CatTypeDocument] = 2 THEN 'Cedula'
+                WHEN [CatTypeDocument] = 3 THEN 'Ruc'
+                WHEN [CatTypeDocument] = 4 THEN 'Pasaporte'
+                WHEN [CatTypeDocument] = 18 THEN 'Dni'
+                ELSE 'Pasaporte'
+        END AS TypeDocument
+      ,
+      CASE
+                WHEN [CatNacionality] = 20 THEN 'Ecuatoriana'
+                WHEN [CatNacionality] = 21 THEN 'Cubana'
+                WHEN [CatNacionality] = 22 THEN 'Venezolana'
+                WHEN [CatNacionality] = 23 THEN 'Colombiana'
+                WHEN [CatNacionality] = 24 THEN 'Peruana'
+                WHEN [CatNacionality] = 25 THEN 'Boliviana'
+                WHEN [CatNacionality] = 35 THEN 'Francesa'
+                ELSE 'Ecuatoriana'
+        END AS Nacionality
 
-CREATE TABLE IF NOT EXISTS web."Identifications"
-(
-    "Id" serial NOT NULL,
-    "UserId" integer NOT NULL DEFAULT 0,
-    "CatTypeDocument" integer NOT NULL DEFAULT 0,
-    "CatNacionality" integer NOT NULL,
-    "Ndocument" character varying(15) COLLATE pg_catalog."default" NOT NULL,
-    "CatGender" integer,
-    "CatCivilStatus" integer,
-    "BirthDate" date,
-    "EntryDate" date,
-    "DepartureDate" date,
-    "Hired" smallint NOT NULL DEFAULT 0,
-    "ImgUrl" character varying(200) COLLATE pg_catalog."default",
-    "CurriculumUrl" character varying(200) COLLATE pg_catalog."default",
-    "Mobile" character varying(50) COLLATE pg_catalog."default",
-    "Phone" character varying(50) COLLATE pg_catalog."default",
-    "Address" character varying(200) COLLATE pg_catalog."default",
-    "UbcProvincia" integer,
-    "UbcCanton" integer,
-    "UbcParroquia" integer,
-    "Notes" character varying(50) COLLATE pg_catalog."default",
-    CONSTRAINT "Identifications_Id_pkey" PRIMARY KEY ("Id"),
-    CONSTRAINT "Identifications_Ndocumento_key" UNIQUE ("Ndocument"),
-    CONSTRAINT "Identifications_UserId_key" UNIQUE ("UserId"),
-    CONSTRAINT "Identifications_UserId_Users" FOREIGN KEY ("UserId")
-        REFERENCES web."Users" ("Id") MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
-COMMENT ON TABLE web."Identifications"
-    IS 'TABLA HACE JOIN CON TABLA USERS AQUI SE ALMACENA LOS DATOS INFORMATIVOS DEL USUARIO';
-
-insert into web."Identifications"
-(
-	"Id",
-	"UserId",
-	"CatTypeDocument",
-	"CatNacionality",
-	"Ndocument",
-	"CatGender",
-	"CatCivilStatus",
-	"BirthDate",
-	"EntryDate",
-	"DepartureDate",
-	"Hired",
-	"ImgUrl",
-	"CurriculumUrl",
-	"Mobile",
-	"Phone",
-	"Address",
-	"UbcProvincia",
-	"UbcCanton",
-	"UbcParroquia",
-	"Notes"
-)
-select 
-    "IDTID",
-	"USUID",
-	"CATTIPODOCUMENTO",
-	"CATNACIONALIDAD",
-	"IDTNDOCUMENTO",
-	"CATGENERO",
-	"CATESTADOCIVIL",
-	"IDTFECNACIMIENTO",
-	"IDTFECINGRESO",
-	"IDTFECSALIDA",
-	"IDTCONTRATADO",
-	"IDTIMGURL",
-	"IDTHOJAVIDAURL",
-	"IDTCELULAR",
-	"IDTTELEFONO",
-	"IDTDIRECCION",
-	"UBCPROVINCIA",
-	"UBCCANTON",
-	"UBCPARROQUIA",
-	"IDTNOTAS"
-    FROM  public.identificaciones;
+      ,[t2].[Ndocument]
+      ,
+        CASE
+                WHEN [CatGender] = 27 THEN 'Masculino'
+                WHEN [CatGender] = 28 THEN 'Femenino'
+                ELSE 'Masculino'
+        END AS Gender
+      ,
+        CASE
+                WHEN [CatCivilStatus] = 30 THEN 'Soltero'
+                WHEN [CatCivilStatus] = 31 THEN 'Casado'
+                WHEN [CatCivilStatus] = 32 THEN 'Divorciado'
+                WHEN [CatCivilStatus] = 43 THEN 'Viudo'
+                WHEN [CatCivilStatus] = 43 THEN 'Union Libre'
+                ELSE 'Soltero'
+        END AS CivilStatus
+      ,[t2].[BirthDate]
+      ,[t2].[EntryDate]
+      ,[t2].[DepartureDate]
+      ,[t2].[Hired]
+      ,[t2].[ImgUrl]
+      ,[t2].[CurriculumUrl]
+      ,[t2].[Mobile]
+      ,[t2].[Phone]
+      ,
+        CASE
+          WHEN [Address] IS NULL THEN 'Necesita registrar calle primaria'
+          ELSE [Address]
+        END AS PrimaryStreet
+      ,
+        CASE
+          WHEN [Address] IS NULL THEN 'Necesita registrar calle secundaria'
+          ELSE [Address]
+        END AS SecondaryStreet
+      ,
+        CASE
+          WHEN [Address] IS NULL THEN 'Necesita registrar numeracion'
+          ELSE [Address]
+        END AS Numeration
+      ,
+        CASE
+          WHEN [Address] IS NULL THEN 'Necesita registrar referencia'
+          ELSE [Address]
+        END AS Reference
+      ,
+        CASE
+          WHEN [UbcProvincia] IS NULL THEN 17
+          ELSE [UbcProvincia]
+        END AS UbcProvincia
+      ,
+        CASE
+          WHEN [UbcCanton] IS NULL THEN 203
+          ELSE [UbcCanton]
+        END AS UbcCanton
+      ,
+        CASE
+          WHEN [UbcParroquia] IS NULL THEN 1332
+          ELSE [UbcParroquia]
+        END AS UbcParroquia
+      ,CASE
+          WHEN [Notes] IS NULL THEN 'MARKET'
+          ELSE [Notes]
+        END AS Notes
+from dbo.AspNetUsers as t1
+join tmp.Identifications as t2
+on t1.LegacyId = t2.UserId
+order by t1.LegacyId
+GO

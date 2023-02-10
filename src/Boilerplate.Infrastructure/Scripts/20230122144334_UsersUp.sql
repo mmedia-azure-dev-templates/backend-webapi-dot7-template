@@ -47,7 +47,7 @@ INSERT INTO [dbo].[AspNetUsers]
            ,[LastName]
            ,[LastLogin])
      select 
-			NEWID() as Id, 
+			LOWER(NEWID()) as Id, 
 			Email as UserName,
 			UPPER(Email) as NormalizedUserName, 
 			Email as Email, 
