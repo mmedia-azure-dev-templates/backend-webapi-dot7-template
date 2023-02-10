@@ -56,6 +56,36 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                 };
 
                 var result = await _userManager.CreateAsync(user, request.Password);
+                
+
+                UserInformation userInformation = new()
+                {
+                    UserId = Guid.Parse(user.Id),
+                    TypeDocument = request.TypeDocument,
+                    Nacionality = request.Nacionality,
+                    Ndocument = request.Ndocument,
+                    Gender = request.Gender,
+                    CivilStatus = request.CivilStatus,
+                    BirthDate = request.BirthDate,
+                    EntryDate = request.EntryDate,
+                    DepartureDate = request.DepartureDate,
+                    Hired = request.Hired,
+                    ImgUrl = request.ImgUrl,
+                    CurriculumUrl = request.CurriculumUrl,
+                    Mobile = request.Mobile,
+                    Phone = request.Phone,
+                    PrimaryStreet = request.PrimaryStreet,
+                    SecondaryStreet = request.SecondaryStreet,
+                    Numeration = request.Numeration,
+                    Reference = request.Reference,
+                    Provincia = request.Provincia,
+                    Canton = request.Canton,
+                    Parroquia = request.Parroquia,
+                    Notes = request.Notes
+                };
+                _context.UserInformations.Add(userInformation);
+                await _context.SaveChangesAsync(cancellationToken);
+
                 if (result.Succeeded)
                 {
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -103,31 +133,6 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                     _logger.LogInformation(3, "Error create user Identity");
                     throw new Exception(errors);
                 }
-
-                Identification identification = new()
-                {
-                    UserId = user.LegacyId,
-                    CatTypeDocument = request.CatTypeDocument,
-                    CatNacionality = request.CatNacionality,
-                    Ndocument = request.Ndocument,
-                    CatGender = request.CatGender,
-                    CatCivilStatus = request.CatCivilStatus,
-                    BirthDate = request.BirthDate,
-                    EntryDate = request.EntryDate,
-                    DepartureDate = request.DepartureDate,
-                    Hired = request.Hired,
-                    ImgUrl = request.ImgUrl,
-                    CurriculumUrl = request.CurriculumUrl,
-                    Mobile = request.Mobile,
-                    Phone = request.Phone,
-                    Address = request.Address,
-                    UbcProvincia = request.UbcProvincia,
-                    UbcCanton = request.UbcCanton,
-                    UbcParroquia = request.UbcParroquia,
-                    Notes = request.Notes,
-                };
-                _context.Identifications.Add(identification);
-                await _context.SaveChangesAsync(cancellationToken);
                 scope.Complete();
                 userResponse.Transaction = true;
                 return userResponse;

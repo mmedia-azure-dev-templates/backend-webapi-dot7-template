@@ -36,5 +36,5 @@ public class User : Entity<UserId>
 
     public DateTime? DeletedAt { get; set; }
 
-    public virtual Identification? Identification { get; set; }
+    public virtual UserInformation? Identification { get; set; }
 }

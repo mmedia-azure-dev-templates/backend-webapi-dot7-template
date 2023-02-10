@@ -23,14 +23,14 @@ public static class TestingDatabase
     {
         new User()
         {
-            Id = 1,
+            Id = new Guid(),
             Password = BC.HashPassword("testpassword123"),
             Email = "admin@boilerplate.com",
             Role = "Admin"
         },
         new User()
         {
-            Id = 2,
+            Id = new Guid(),
             Password = BC.HashPassword("testpassword123"),
             Email = "user@boilerplate.com",
             Role = "User"

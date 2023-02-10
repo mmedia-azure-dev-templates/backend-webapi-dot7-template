@@ -7,21 +7,21 @@ using Boilerplate.Application.Features.Identications;
 
 namespace Boilerplate.Application.Features.Identications.CreateIdentification;
 
-public class CreateIdentificationHandler : IRequestHandler<CreateIdentificationRequest, IdentificationResponse?>
+public class CreateUserInformationHandler : IRequestHandler<CreateUserInformationRequest, UserInformationResponse?>
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
     
     
-    public CreateIdentificationHandler(IMapper mapper, IContext context)
+    public CreateUserInformationHandler(IMapper mapper, IContext context)
     {
         _mapper = mapper;
         _context = context;
     }
 
-    public async Task<IdentificationResponse?> Handle(CreateIdentificationRequest request, CancellationToken cancellationToken)
+    public async Task<UserInformationResponse?> Handle(CreateUserInformationRequest request, CancellationToken cancellationToken)
     {
-        return new IdentificationResponse();
+        return new UserInformationResponse();
         // var created = _mapper.Map<Domain.Entities.Hero>(request);
         // _context.Heroes.Add(created);
         // await _context.SaveChangesAsync(cancellationToken);

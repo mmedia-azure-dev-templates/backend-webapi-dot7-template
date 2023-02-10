@@ -9,23 +9,23 @@ namespace Boilerplate.Domain.Entities;
 /// <summary>
 /// TABLA HACE JOIN CON TABLA USERS AQUI SE ALMACENA LOS DATOS INFORMATIVOS DEL USUARIO
 /// </summary>
-[Table("Identifications", Schema = "web")]
-public partial class Identification : Entity<IdentificationId>
+[Table("UserInformations", Schema = "web")]
+public partial class UserInformation : Entity<IdentificationId>
 {
     [Required]
     public override IdentificationId Id { get; set; }
     
     public UserId UserId { get; set; }
 
-    public int CatTypeDocument { get; set; }
+    public string TypeDocument { get; set; }
 
-    public int CatNacionality { get; set; }
+    public string Nacionality { get; set; }
 
     public string Ndocument { get; set; } = null!;
 
-    public int? CatGender { get; set; }
+    public string Gender { get; set; }
 
-    public int? CatCivilStatus { get; set; }
+    public string CivilStatus { get; set; }
 
     public DateTime? BirthDate { get; set; }
 
@@ -43,13 +43,16 @@ public partial class Identification : Entity<IdentificationId>
 
     public string? Phone { get; set; }
 
-    public string? Address { get; set; }
+    public string PrimaryStreet { get; set; }
+    public string SecondaryStreet { get; set; }
+    public string Numeration { get; set; }
+    public string Reference { get; set; }
 
-    public int? UbcProvincia { get; set; }
+    public int Provincia { get; set; }
 
-    public int? UbcCanton { get; set; }
+    public int Canton { get; set; }
 
-    public int? UbcParroquia { get; set; }
+    public int Parroquia { get; set; }
 
     public string? Notes { get; set; }
 }

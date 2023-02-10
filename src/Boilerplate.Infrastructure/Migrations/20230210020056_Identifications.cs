@@ -1,5 +1,6 @@
 ﻿using Boilerplate.Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Graph.ExternalConnectors;
 using System;
 
 #nullable disable
@@ -47,6 +48,16 @@ public partial class Identifications : Migration
         });
 
         migrationBuilder.Sql(Utils.GetRawSql("20230122165751_IdentificationsUp.sql"));
+        migrationBuilder.AddForeignKey(
+            name: "FK_UserInformations_AspNetUsers_Id",
+            table: "UserInformations",
+            column: "UserId",
+            schema: "web",
+            principalSchema: "dbo",
+            principalTable: "AspNetUsers",
+            principalColumn: "Id",
+            onDelete: ReferentialAction.Cascade
+        );
     }
 
     /// <inheritdoc />

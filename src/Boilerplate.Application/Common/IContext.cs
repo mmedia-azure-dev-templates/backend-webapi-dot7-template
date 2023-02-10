@@ -11,7 +11,7 @@ public interface IContext : IAsyncDisposable, IDisposable
 {
     public DatabaseFacade Database { get; }
     public DbSet<ApplicationUser> ApplicationUsers { get; }
-    public DbSet<Identification> Identifications { get; }
+    public DbSet<UserInformation> UserInformations { get; }
     public DbSet<User> Users { get; }
     public DbSet<Hero> Heroes { get; }
     public DbSet<CompanyTenant> Companies { get; set; }

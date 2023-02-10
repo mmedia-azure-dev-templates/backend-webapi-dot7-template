@@ -2,7 +2,7 @@
 using System;
 
 [assembly: StronglyTypedIdDefaults(
-    backingType: StronglyTypedIdBackingType.Long,
+    backingType: StronglyTypedIdBackingType.Guid,
     converters: StronglyTypedIdConverter.SystemTextJson | StronglyTypedIdConverter.EfCoreValueConverter |
                 StronglyTypedIdConverter.Default | StronglyTypedIdConverter.TypeConverter,
     implementations: StronglyTypedIdImplementations.IEquatable | StronglyTypedIdImplementations.Default)]
@@ -14,7 +14,7 @@ public interface ILong { }
 public interface IInt { }
 public interface IString { }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct ArticleId : ILong
 {
     public static implicit operator ArticleId(long articleId)
@@ -23,7 +23,7 @@ public partial struct ArticleId : ILong
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct CatalogId : ILong
 {
     public static implicit operator CatalogId(long catalogId)
@@ -32,7 +32,7 @@ public partial struct CatalogId : ILong
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct ContactId : ILong
 {
     public static implicit operator ContactId(long contactId)
@@ -41,7 +41,7 @@ public partial struct ContactId : ILong
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct CounterId : ILong
 {
     public static implicit operator CounterId(long counterId)
@@ -50,7 +50,7 @@ public partial struct CounterId : ILong
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct GeographicLocationId : ILong
 {
     public static implicit operator GeographicLocationId(long geographicLocationId)
@@ -59,7 +59,7 @@ public partial struct GeographicLocationId : ILong
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct HeroId : ILong
 {
     public static implicit operator HeroId(long heroId)
@@ -68,16 +68,16 @@ public partial struct HeroId : ILong
     }
 }
 
-[StronglyTypedId(backingType: StronglyTypedIdBackingType.Int)]
-public partial struct IdentificationId : IInt
+[StronglyTypedId]
+public partial struct IdentificationId : IGuid
 {
-    public static implicit operator IdentificationId(int identificationId)
+    public static implicit operator IdentificationId(Guid identificationId)
     {
         return new IdentificationId(identificationId);
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct InscriptionId : ILong
 {
     public static implicit operator InscriptionId(long inscriptionId)
@@ -86,7 +86,7 @@ public partial struct InscriptionId : ILong
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct InventoryDocId : ILong
 {
     public static implicit operator InventoryDocId(long inventoryDocId)
@@ -95,7 +95,7 @@ public partial struct InventoryDocId : ILong
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct OrderId : ILong
 {
     public static implicit operator OrderId(long orderId)
@@ -104,7 +104,7 @@ public partial struct OrderId : ILong
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct PostulantId : ILong
 {
     public static implicit operator PostulantId(long postulantId)
@@ -113,7 +113,7 @@ public partial struct PostulantId : ILong
     }
 }
 
-[StronglyTypedId]
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct ProductId : ILong
 {
     public static implicit operator ProductId(long productId)
@@ -122,10 +122,10 @@ public partial struct ProductId : ILong
     }
 }
 
-[StronglyTypedId(backingType: StronglyTypedIdBackingType.Int)]
-public partial struct UserId : ILong
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct UserId : IGuid
 {
-    public static implicit operator UserId(int userId)
+    public static implicit operator UserId(Guid userId)
     {
         return new UserId(userId);
     }

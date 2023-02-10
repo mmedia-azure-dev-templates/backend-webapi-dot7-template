@@ -3,17 +3,17 @@ using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using System;
 
-public record CreateIdentificationRequest : IRequest<IdentificationResponse>
+public record CreateUserInformationRequest : IRequest<UserInformationResponse>
 {
-    public int CatTypeDocument { get; init; }
+    public int TypeDocument { get; init; }
 
-    public int CatNacionality { get; init; }
+    public int Nacionality { get; init; }
 
     public string Ndocument { get; init; } = null!;
 
-    public int? CatGender { get; init; }
+    public string Gender { get; init; }
 
-    public int? CatCivilStatus { get; init; }
+    public string CivilStatus { get; init; }
 
     public DateTime? BirthDate { get; init; }
 
@@ -31,13 +31,15 @@ public record CreateIdentificationRequest : IRequest<IdentificationResponse>
 
     public string? Phone { get; init; }
 
-    public string? Address { get; init; }
+    public string PrimaryStreet { get; init; }
+    public string SecondaryStreet { get; init; }
+    public string Numeration { get; init; }
+    public string Reference { get; init; }
+    public int Provincia { get; init; }
 
-    public int? UbcProvincia { get; init; }
+    public int Canton { get; init; }
 
-    public int? UbcCanton { get; init; }
-
-    public int? UbcParroquia { get; init; }
+    public int Parroquia { get; init; }
 
     public string? Notes { get; init; }
 }

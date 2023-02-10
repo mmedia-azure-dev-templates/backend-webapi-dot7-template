@@ -2,34 +2,41 @@
 using Boilerplate.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.Graph;
-using BC = BCrypt.Net.BCrypt;
 
 namespace Boilerplate.Infrastructure.Configuration;
 
-public class IdentificationConfiguration : IEntityTypeConfiguration<Identification>
+public class UserInformationConfiguration : IEntityTypeConfiguration<UserInformation>
 {
-    public void Configure(EntityTypeBuilder<Identification> entity)
+    public void Configure(EntityTypeBuilder<UserInformation> entity)
     {
-        entity.HasKey(e => e.Id).HasName("Identifications_Id");
+        entity.HasKey(e => e.Id).HasName("UserInformations_Id");
         entity.Property(e => e.Id).ValueGeneratedOnAdd();
         entity.Property(e => e.Id).HasConversion<IdentificationId.EfCoreValueConverter>();
         entity.Property(e => e.UserId).HasConversion<UserId.EfCoreValueConverter>();
-        entity.HasIndex(e => e.Ndocument, "Identifications_Ndocument_key").IsUnique();
-        entity.HasIndex(e => e.UserId, "Identifications_UserId_key").IsUnique();
+        entity.HasIndex(e => e.Ndocument, "UserInformations_Ndocument_key").IsUnique();
+        entity.HasIndex(e => e.UserId, "UserInformations_UserId_key").IsUnique();
         entity.Property(e => e.Id).HasColumnName("Id");
-        entity.Property(e => e.CatCivilStatus).HasColumnName("CatCivilStatus");
-        entity.Property(e => e.CatGender).HasColumnName("CatGender");
-        entity.Property(e => e.CatNacionality).HasColumnName("CatNacionality");
-        entity.Property(e => e.CatTypeDocument).HasColumnName("CatTypeDocument");
+        entity.Property(e => e.CivilStatus).HasColumnName("CivilStatus");
+        entity.Property(e => e.Gender).HasColumnName("Gender");
+        entity.Property(e => e.Nacionality).HasColumnName("Nacionality");
+        entity.Property(e => e.TypeDocument).HasColumnName("TypeDocument");
         entity.Property(e => e.Mobile)
             .HasMaxLength(50)
             .HasColumnName("Mobile");
         entity.Property(e => e.Hired)
             .HasColumnName("Hired");
-        entity.Property(e => e.Address)
-            .HasMaxLength(200)
-            .HasColumnName("Address");
+        entity.Property(e => e.PrimaryStreet)
+            .HasMaxLength(450)
+            .HasColumnName("PrimaryStreet");
+        entity.Property(e => e.SecondaryStreet)
+            .HasMaxLength(450)
+            .HasColumnName("SecondaryStreet");
+        entity.Property(e => e.Numeration)
+            .HasMaxLength(450)
+            .HasColumnName("Numeration");
+        entity.Property(e => e.Reference)
+            .HasMaxLength(450)
+            .HasColumnName("Reference");
         entity.Property(e => e.EntryDate).HasColumnName("EntryDate");
         entity.Property(e => e.BirthDate).HasColumnName("BirthDate");
         entity.Property(e => e.DepartureDate).HasColumnName("DepartureDate");
@@ -49,9 +56,9 @@ public class IdentificationConfiguration : IEntityTypeConfiguration<Identificati
         entity.Property(e => e.Phone)
             .HasMaxLength(50)
             .HasColumnName("Phone");
-        entity.Property(e => e.UbcCanton).HasColumnName("UbcCanton");
-        entity.Property(e => e.UbcParroquia).HasColumnName("UbcParroquia");
-        entity.Property(e => e.UbcProvincia).HasColumnName("UbcProvincia");
+        entity.Property(e => e.Canton).HasColumnName("Canton");
+        entity.Property(e => e.Parroquia).HasColumnName("Parroquia");
+        entity.Property(e => e.Provincia).HasColumnName("Provincia");
         entity.Property(e => e.UserId).HasColumnName("UserId");
     }
 }

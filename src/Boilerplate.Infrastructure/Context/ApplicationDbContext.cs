@@ -1,16 +1,14 @@
 ﻿using AuthPermissions.AspNetCore.GetDataKeyCode;
 using AuthPermissions.BaseCode.CommonCode;
+using AuthPermissions.BaseCode.DataLayer.EfCode;
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Infrastructure.Configuration;
 using EntityFramework.Exceptions.SqlServer;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Threading;
-using AuthPermissions.BaseCode.DataLayer.EfCode;
-using System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Boilerplate.Infrastructure.Context;
 
@@ -24,22 +22,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext
     }
 
     public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
-    public virtual DbSet<Identification> Identifications { get; set; }
-
-    public virtual DbSet<Article> Articles { get; set; }
-    
-    public virtual DbSet<Catalog> Catalogs { get; set; }
-    
-    public virtual DbSet<Contact> Contacts { get; set; }
-
-    public virtual DbSet<Counter> Counters { get; set; }
-    public virtual DbSet<GeographicLocation> GeographicLocations { get; set; }
+    public virtual DbSet<UserInformation> UserInformations { get; set; }
     public virtual DbSet<Hero> Heroes { get; set; }
-    public virtual DbSet<Inscription> Inscriptions { get; set; }
-    public virtual DbSet<InventoryDoc> InventoryDocs { get; set; }
-    public virtual DbSet<Order> Orders { get; set; }
-    public virtual DbSet<Postulant> Postulants { get; set; }
-    public virtual DbSet<Product> Products { get; set; }
     public virtual DbSet<User> Users { get; set; }
     public DbSet<CompanyTenant> Companies { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
@@ -92,6 +76,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationUserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentificationConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserInformationConfiguration).Assembly);
     }
 }
