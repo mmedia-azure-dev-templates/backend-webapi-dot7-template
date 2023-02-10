@@ -60,7 +60,6 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                 {
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-                    //var emailConfirmed = await _userManager.ConfirmEmailAsync(user, token);
                     var callbackUrl = new { token, email = user.Email };
 
                     MailData mailData = new MailData(
@@ -135,6 +134,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
             }
             catch (Exception ex)
             {
+                _logger.LogInformation(3, ex.Message);
                 userResponse.Message = ex.Message;
                 return userResponse;
             }
