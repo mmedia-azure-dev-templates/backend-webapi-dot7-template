@@ -46,16 +46,12 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
             {
                 ApplicationUser user = new ApplicationUser()
                 {
-                    //Id = Guid.NewGuid().ToString(),
                     UserName = request.Email,
-                    //NormalizedUserName = request.Email.ToUpper(),
                     Email = request.Email,
-                    //NormalizedEmail = request.Email.ToUpper(),
                     PasswordHash = request.Password,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     PhoneNumber = request.PhoneNumber,
-                    //LockoutEnabled = true,
                     LastLogin = DateTime.Now,
                 };
 
@@ -64,7 +60,6 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                 {
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-                    //var emailConfirmed = await _userManager.ConfirmEmailAsync(user, token);
                     var callbackUrl = new { token, email = user.Email };
 
                     MailData mailData = new MailData(
@@ -108,60 +103,41 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                     _logger.LogInformation(3, "Error create user Identity");
                     throw new Exception(errors);
                 }
+
+                Identification identification = new()
+                {
+                    UserId = user.LegacyId,
+                    CatTypeDocument = request.CatTypeDocument,
+                    CatNacionality = request.CatNacionality,
+                    Ndocument = request.Ndocument,
+                    CatGender = request.CatGender,
+                    CatCivilStatus = request.CatCivilStatus,
+                    BirthDate = request.BirthDate,
+                    EntryDate = request.EntryDate,
+                    DepartureDate = request.DepartureDate,
+                    Hired = request.Hired,
+                    ImgUrl = request.ImgUrl,
+                    CurriculumUrl = request.CurriculumUrl,
+                    Mobile = request.Mobile,
+                    Phone = request.Phone,
+                    Address = request.Address,
+                    UbcProvincia = request.UbcProvincia,
+                    UbcCanton = request.UbcCanton,
+                    UbcParroquia = request.UbcParroquia,
+                    Notes = request.Notes,
+                };
+                _context.Identifications.Add(identification);
+                await _context.SaveChangesAsync(cancellationToken);
                 scope.Complete();
                 userResponse.Transaction = true;
                 return userResponse;
             }
             catch (Exception ex)
             {
-                //transaction.Rollback();
+                _logger.LogInformation(3, ex.Message);
                 userResponse.Message = ex.Message;
                 return userResponse;
             }
         }
-
-        //using var transaction = _context.Database.BeginTransaction();
-
-
-
-
-
-        //await _context.SaveChangesAsync(cancellationToken);
-
-        //Identification identification = new()
-        //{
-        //    UserId = user.LegacyId,
-        //    CatTypeDocument = request.CatTypeDocument,
-        //    CatNacionality = request.CatNacionality,
-        //    Ndocument = request.Ndocument,
-        //    CatGender = request.CatGender,
-        //    CatCivilStatus = request.CatCivilStatus,
-        //    BirthDate = request.BirthDate,
-        //    EntryDate = request.EntryDate,
-        //    DepartureDate = request.DepartureDate,
-        //    Hired = request.Hired,
-        //    ImgUrl = request.ImgUrl,
-        //    CurriculumUrl = request.CurriculumUrl,
-        //    Mobile = request.Mobile,
-        //    Phone = request.Phone,
-        //    Address = request.Address,
-        //    UbcProvincia = request.UbcProvincia,
-        //    UbcCanton = request.UbcCanton,
-        //    UbcParroquia = request.UbcParroquia,
-        //    Notes = request.Notes,
-        //};
-
-        //_context.Identifications.Add(identification);
-
-        //await _context.SaveChangesAsync(cancellationToken);
-        //transaction.Commit();
-
-
-
-
-        //}
-
-
-
     }
 }

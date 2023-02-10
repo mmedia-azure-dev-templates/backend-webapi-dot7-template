@@ -24,6 +24,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext
     }
 
     public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public virtual DbSet<Identification> Identifications { get; set; }
 
     public virtual DbSet<Article> Articles { get; set; }
     
@@ -34,7 +35,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext
     public virtual DbSet<Counter> Counters { get; set; }
     public virtual DbSet<GeographicLocation> GeographicLocations { get; set; }
     public virtual DbSet<Hero> Heroes { get; set; }
-    public virtual DbSet<Identification> Identifications { get; set; }
     public virtual DbSet<Inscription> Inscriptions { get; set; }
     public virtual DbSet<InventoryDoc> InventoryDocs { get; set; }
     public virtual DbSet<Order> Orders { get; set; }
@@ -90,12 +90,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext
             }
         }
 
-        //modelBuilder.Ignore<IdentityUserLogin<string>>();
-        //modelBuilder.Ignore<IdentityUserRole<string>>();
-        //modelBuilder.Ignore<IdentityUserClaim<string>>();
-        //modelBuilder.Ignore<IdentityUserToken<string>>();
-        //modelBuilder.Ignore<IdentityUser<string>>();
-        //modelBuilder.Ignore<ApplicationUser>();
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationUserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentificationConfiguration).Assembly);
