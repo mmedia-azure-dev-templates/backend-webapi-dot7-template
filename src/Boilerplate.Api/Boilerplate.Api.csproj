@@ -6,6 +6,7 @@
     <UserSecretsId>83093e71-d34c-405d-b8eb-442525b137fc</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <DockerfileFile>Dockerfile.development</DockerfileFile>
     <Nullable>enable</Nullable>
     <LangVersion>11</LangVersion>
     <TieredPGO>true</TieredPGO>
