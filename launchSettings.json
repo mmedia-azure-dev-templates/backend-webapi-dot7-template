@@ -1,0 +1,18 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "jiban-api-development",
+      "composeLaunchUrl": "{Scheme}://api.mad.ec:{ServicePort}/api-docs",
+      "serviceActions": {
+        "jaeger-development": "DoNotStart",
+        "jaeger-production": "DoNotStart",
+        "jiban-api-development": "StartDebugging",
+        "jiban-api-production": "DoNotStart",
+        "jiban-db": "StartWithoutDebugging"
+      }
+    }
+  }
+}
