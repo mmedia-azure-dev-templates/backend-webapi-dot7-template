@@ -2,9 +2,12 @@
 using AuthPermissions.AspNetCore.JwtTokenCode;
 using AuthPermissions.AspNetCore.Services;
 using AuthPermissions.BaseCode.PermissionsCode;
+using Boilerplate.Application.Emails;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.Authenticate;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Implementations;
 using Boilerplate.Infrastructure.Reverse;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,9 +18,11 @@ using Microsoft.AspNetCore.Identity.UI.V5.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Graph;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -27,14 +32,16 @@ namespace Boilerplate.Api.Controllers;
 [ApiController]
 public class AuthenticateController : ControllerBase
 {
+    private readonly IMailService _mail;
     private readonly IMediator _mediator;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenBuilder _tokenBuilder;
     private readonly IEmailSender _emailSender;
 
-    public AuthenticateController(IMediator mediator, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator, IEmailSender emailSender)
+    public AuthenticateController(IMailService mail,IMediator mediator, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator, IEmailSender emailSender)
     {
+        _mail = mail;
         _mediator = mediator;
         _signInManager = signInManager;
         _userManager = userManager;
@@ -134,25 +141,98 @@ public class AuthenticateController : ControllerBase
     public async Task<IActionResult> ForgotPassword(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
-        var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
         if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
         {
             // Don't reveal that the user does not exist or is not confirmed
-            return Ok("Custom Error Jiban");
+            return Ok("Error Forgot Password");
         }
-        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        var callbackUrl = Url.Page(
-                "/Account/ResetPassword",
-                pageHandler: null,
-                values: new { area = "Identity", code },
-                protocol: Request.Scheme)!;
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+        var callbackUrl = new { token, email = user.Email };
+        MailData mailData = new MailData(
+            user.Email,
+            user.FirstName + " " + user.LastName,
+            new List<string> {
+                        user.Email
+            },
+            "Forgot Password",
+            "Hola soy el body",
+            "Welcome"
+           );
+        // Create MailData object
+        WelcomeMail welcomeMail = new WelcomeMail()
+        {
+            Name = user.FirstName + " " + user.LastName,
+            Email = user.Email,
+            Token = token
+        };
+        bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
 
-        await _emailSender.SendEmailAsync(
-            email,
-            "Reset Password",
-            $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-        return Ok("Email sent");
+        if (emailStatus)
+        {
+            return Ok("Email sent");
+        }
+        else
+        {
+            return Ok("Email failed!");
+        }
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
+    {
+        var user = await _userManager.FindByEmailAsync(resetPassword.Email);
+        if (user == null)
+            return Ok("Email failed!");
+
+        var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPassword.Token, resetPassword.Password);
+        if (!resetPassResult.Succeeded)
+        {
+            return Ok("Reset Password failed!");
+        }
+
+        return Ok("Reset Password success!");
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("generatetoken")]
+    public async Task<IActionResult> GenerateToken(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return Ok("Error");
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+        var callbackUrl = new { token, email = user.Email };
+        MailData mailData = new MailData(
+            user.Email,
+            user.FirstName + " " + user.LastName,
+            new List<string> {
+                        user.Email
+            },
+            "Confirm your account",
+            "Hola soy el body",
+            "Welcome"
+           );
+        // Create MailData object
+        WelcomeMail welcomeMail = new WelcomeMail()
+        {
+            Name = user.FirstName + " " + user.LastName,
+            Email = user.Email,
+            Token = token
+        };
+        bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
+
+        if (emailStatus)
+        {
+            return Ok("Email sent");
+        }
+        else
+        {
+           return Ok("Email failed!");
+        }
     }
 
     [HttpGet]
