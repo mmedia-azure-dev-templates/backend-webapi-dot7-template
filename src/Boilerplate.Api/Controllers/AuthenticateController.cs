@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Identity.UI.V5.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Graph;
+using NuGet.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -120,24 +121,9 @@ public class AuthenticateController : ControllerBase
         return Ok();
     }
 
-    /// <summary>
-    /// This returns the permission names for the current user (or null if not available)
-    /// This can be useful for your front-end to use the current user's Permissions to only expose links
-    /// that the user has access too.
-    /// You should call this after a login and when the JWT Token is refreshed
-    /// </summary>
-    /// <param name="service"></param>
-    /// <returns></returns>
-    [HttpGet]
-    [Route("getuserpermissions")]
-    public ActionResult<List<string>> GetUsersPermissions([FromServices] IUsersPermissionsService service)
-    {
-        return service.PermissionsFromUser(User);
-    }
-
     [HttpPost]
     [AllowAnonymous]
-    [Route("resetpassword")]
+    [Route("forgotpassword")]
     public async Task<IActionResult> ForgotPassword(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
@@ -156,8 +142,7 @@ public class AuthenticateController : ControllerBase
                         user.Email
             },
             "Forgot Password",
-            "Hola soy el body",
-            "Welcome"
+            "ForgotPassword"
            );
         // Create MailData object
         WelcomeMail welcomeMail = new WelcomeMail()
@@ -180,8 +165,10 @@ public class AuthenticateController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
+    [Route("resetpassword")]
     public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
     {
+        resetPassword.Token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(resetPassword.Token));
         var user = await _userManager.FindByEmailAsync(resetPassword.Email);
         if (user == null)
             return Ok("Email failed!");
@@ -213,7 +200,6 @@ public class AuthenticateController : ControllerBase
                         user.Email
             },
             "Confirm your account",
-            "Hola soy el body",
             "Welcome"
            );
         // Create MailData object
@@ -247,5 +233,20 @@ public class AuthenticateController : ControllerBase
             return Ok("Error");
         var result = await _userManager.ConfirmEmailAsync(user, token);
         return Ok(result.Succeeded ? nameof(ConfirmEmail) : "Error");
+    }
+
+    /// <summary>
+    /// This returns the permission names for the current user (or null if not available)
+    /// This can be useful for your front-end to use the current user's Permissions to only expose links
+    /// that the user has access too.
+    /// You should call this after a login and when the JWT Token is refreshed
+    /// </summary>
+    /// <param name="service"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("getuserpermissions")]
+    public ActionResult<List<string>> GetUsersPermissions([FromServices] IUsersPermissionsService service)
+    {
+        return service.PermissionsFromUser(User);
     }
 }

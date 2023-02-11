@@ -99,7 +99,6 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                         user.Email
                         },
                         "Confirm your account",
-                        "Hola soy el body",
                         "Welcome"
                        );
 

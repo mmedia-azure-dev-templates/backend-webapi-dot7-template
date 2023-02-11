@@ -10,7 +10,7 @@ public class MailData
 {
     public string DisplayName { get; }
     public string Subject { get; }
-    public string Body { get; }
+    //public string Body { get; }
     public string Template { get; set; }
     public List<string> To { get; }
     public List<string>? Bcc { get; }
@@ -28,7 +28,7 @@ public class MailData
         string displayName, 
         List<string> to, 
         string subject= "", 
-        string body = "",
+        //string body = "",
         string template = "",
         List<string>? bcc = null,
         List<string>? cc = null,
@@ -50,7 +50,7 @@ public class MailData
 
         // Content
         Subject = subject;
-        Body = body;
+        //Body = body;
         Attachments = attachments;
         Template = template;
         Data = data ?? new object();
