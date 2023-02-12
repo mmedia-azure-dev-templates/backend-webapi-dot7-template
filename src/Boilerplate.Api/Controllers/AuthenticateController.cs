@@ -192,7 +192,6 @@ public class AuthenticateController : ControllerBase
             return Ok("Error");
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-        var callbackUrl = new { token, email = user.Email };
         MailData mailData = new MailData(
             user.Email,
             user.FirstName + " " + user.LastName,
