@@ -2,30 +2,21 @@
 using AuthPermissions.AspNetCore.JwtTokenCode;
 using AuthPermissions.AspNetCore.Services;
 using AuthPermissions.BaseCode.PermissionsCode;
-using Boilerplate.Application.Emails;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.Authenticate;
+using Boilerplate.Application.Features.Auth.Confirm;
+using Boilerplate.Application.Features.Auth.Forgot;
+using Boilerplate.Application.Features.Auth.Reset;
 using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
-using Boilerplate.Infrastructure.Reverse;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Identity.UI.V5.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Graph;
-using NuGet.Common;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -87,7 +78,7 @@ public class AuthenticateController : ControllerBase
         }
         var user = await _userManager.FindByEmailAsync(loginUser.Email);
 
-        return Ok(await _tokenBuilder.GenerateTokenAndRefreshTokenAsync(user.Id));
+        return await _tokenBuilder.GenerateTokenAndRefreshTokenAsync(user.Id);
     }
 
     /// <summary>
@@ -124,115 +115,33 @@ public class AuthenticateController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("forgotpassword")]
-    public async Task<IActionResult> ForgotPassword(string email)
+    public async Task<ActionResult<ForgotResponse>> ForgotPassword(ForgotRequest request)
     {
-        var user = await _userManager.FindByEmailAsync(email);
-        if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-        {
-            // Don't reveal that the user does not exist or is not confirmed
-            return Ok("Error Forgot Password");
-        }
-        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-        var callbackUrl = new { token, email = user.Email };
-        MailData mailData = new MailData(
-            user.Email,
-            user.FirstName + " " + user.LastName,
-            new List<string> {
-                        user.Email
-            },
-            "Forgot Password",
-            "ForgotPassword"
-           );
-        // Create MailData object
-        WelcomeMail welcomeMail = new WelcomeMail()
-        {
-            Name = user.FirstName + " " + user.LastName,
-            Email = user.Email,
-            Token = token
-        };
-        bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
-
-        if (emailStatus)
-        {
-            return Ok("Email sent");
-        }
-        else
-        {
-            return Ok("Email failed!");
-        }
+        return await _mediator.Send(request);
     }
 
     [HttpPost]
     [AllowAnonymous]
     [Route("resetpassword")]
-    public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
+    public async Task<ActionResult<ResetResponse>> ResetPassword(ResetRequest request)
     {
-        resetPassword.Token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(resetPassword.Token));
-        var user = await _userManager.FindByEmailAsync(resetPassword.Email);
-        if (user == null)
-            return Ok("Email failed!");
-
-        var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPassword.Token, resetPassword.Password);
-        if (!resetPassResult.Succeeded)
-        {
-            return Ok("Reset Password failed!");
-        }
-
-        return Ok("Reset Password success!");
+        return await _mediator.Send(request);
     }
 
     [HttpPost]
     [AllowAnonymous]
     [Route("generatetoken")]
-    public async Task<IActionResult> GenerateToken(string email)
+    public async Task<ActionResult<GenerateResponse>> GenerateToken(GenerateRequest request)
     {
-        var user = await _userManager.FindByEmailAsync(email);
-        if (user == null)
-            return Ok("Error");
-        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-        var callbackUrl = new { token, email = user.Email };
-        MailData mailData = new MailData(
-            user.Email,
-            user.FirstName + " " + user.LastName,
-            new List<string> {
-                        user.Email
-            },
-            "Confirm your account",
-            "Welcome"
-           );
-        // Create MailData object
-        WelcomeMail welcomeMail = new WelcomeMail()
-        {
-            Name = user.FirstName + " " + user.LastName,
-            Email = user.Email,
-            Token = token
-        };
-        bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
-
-        if (emailStatus)
-        {
-            return Ok("Email sent");
-        }
-        else
-        {
-           return Ok("Email failed!");
-        }
+        return await _mediator.Send(request);
     }
 
     [HttpGet]
     [AllowAnonymous]
     [Route("confirmemail")]
-    public async Task<IActionResult> ConfirmEmail(string token, string email)
+    public async Task<ActionResult<ConfirmResponse>> ConfirmEmail(ConfirmRequest request)
     {
-        var bytes = WebEncoders.Base64UrlDecode(token);
-        token = Encoding.UTF8.GetString(bytes);
-        var user = await _userManager.FindByEmailAsync(email);
-        if (user == null)
-            return Ok("Error");
-        var result = await _userManager.ConfirmEmailAsync(user, token);
-        return Ok(result.Succeeded ? nameof(ConfirmEmail) : "Error");
+        return await _mediator.Send(request);
     }
 
     /// <summary>
