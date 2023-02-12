@@ -1,21 +1,14 @@
 ﻿using AuthPermissions;
-using AuthPermissions.AspNetCore.Services;
-using AuthPermissions.AspNetCore.StartupServices;
 using AuthPermissions.BaseCode;
 using AuthPermissions.BaseCode.SetupCode;
-using AuthPermissions.SupportCode.AddUsersServices.Authentication;
-using AuthPermissions.SupportCode.AddUsersServices;
 using Boilerplate.Api.Extends;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using Boilerplate.Infrastructure.Configuration;
-using Boilerplate.Infrastructure.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using RunMethodsSequentially;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -49,8 +42,7 @@ public static class JwtPermissionsSetup
                     ValidAudience = jwtData.Audience,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtData.SigningKey)),
-                    ClockSkew = TimeSpan.Zero //The default is 5 minutes, but we want a quick expires for JTW refresh
-
+                    ClockSkew = TimeSpan.FromMinutes(120) //TimeSpan.Zero //The default is 5 minutes, but we want a quick expires for JTW refresh
                 };
 
                 //This code came from https://www.blinkingcaret.com/2018/05/30/refresh-tokens-in-asp-net-core-web-api/

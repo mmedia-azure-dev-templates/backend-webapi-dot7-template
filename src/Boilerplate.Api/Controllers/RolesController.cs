@@ -2,10 +2,12 @@
 using AuthPermissions.AspNetCore;
 using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Api.Common;
+using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.PermissionsCode;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,14 +27,15 @@ public class RolesController : ControllerBase
 
     [HasPermission(DefaultPermissions.RoleRead)]
     [HttpGet]
-    public async Task<IActionResult> Index(string message)
+    public async Task<ActionResult<List<RoleWithPermissionNamesDto>>> Index(string message)
     {
         var userId = User.GetUserIdFromUser();
-        var permissionDisplay = await
+        List<RoleWithPermissionNamesDto> permissionDisplay = await
             _authRolesAdmin.QueryRoleToPermissions(userId)
                 .OrderBy(x => x.RoleType)
                 .ToListAsync();
-        return Ok(permissionDisplay);
+
+        return permissionDisplay;
     }
 
     [HasPermission(DefaultPermissions.PermissionRead)]
@@ -43,6 +46,18 @@ public class RolesController : ControllerBase
         var permissionDisplay = _authRolesAdmin.GetPermissionDisplay(false);
 
         return Ok(permissionDisplay);
+    }
+
+    [HasPermission(DefaultPermissions.RoleChange)]
+    [HttpGet]
+    [Route("edit")]
+    public async Task<ActionResult<RoleCreateUpdateDto>> Edit(string roleName)
+    {
+        var userId = User.GetUserIdFromUser();
+        var role = await _authRolesAdmin.QueryRoleToPermissions(userId).SingleOrDefaultAsync(x => x.RoleName == roleName);
+        var permissionsDisplay = _authRolesAdmin.GetPermissionDisplay(false);
+        RoleCreateUpdateDto roleCreateUpdate = RoleCreateUpdateDto.SetupForCreateUpdate(role.RoleName, role.Description, role.PermissionNames, permissionsDisplay, role.RoleType);
+        return roleCreateUpdate;
     }
 
     [HasPermission(DefaultPermissions.RoleChange)]
