@@ -41,6 +41,7 @@ public class UserController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [Route("createuser")]
     public async Task<ActionResult<GetUserResponse>> CreateUser(CreateUsersIdenticationsRequest request)
     {
         return await _mediator.Send(request);
@@ -64,6 +65,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(PaginatedList<GetUserResponse>), StatusCodes.Status200OK)]
     [Authorize(Roles = Roles.Admin)]
     [HttpGet]
+    [Route("getusers")]
     public async Task<ActionResult<PaginatedList<GetUserResponse>>> GetUsers([FromQuery] GetUsersRequest request)
     {
         return Ok(await _mediator.Send(request));

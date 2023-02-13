@@ -33,6 +33,7 @@ public class HeroController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpGet]
+    [Route("getheroes")]
     public async Task<ActionResult<PaginatedList<GetHeroResponse>>> GetHeroes([FromQuery] GetAllHeroesRequest request)
     {
         return Ok(await _mediator.Send(request));

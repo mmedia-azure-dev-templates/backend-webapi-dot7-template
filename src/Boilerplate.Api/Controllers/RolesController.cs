@@ -27,7 +27,8 @@ public class RolesController : ControllerBase
 
     [HasPermission(DefaultPermissions.RoleRead)]
     [HttpGet]
-    public async Task<ActionResult<List<RoleWithPermissionNamesDto>>> Index(string message)
+    [Route("list-roles")]
+    public async Task<ActionResult<List<RoleWithPermissionNamesDto>>> ListRoles()
     {
         var userId = User.GetUserIdFromUser();
         List<RoleWithPermissionNamesDto> permissionDisplay = await
