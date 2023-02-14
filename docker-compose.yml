@@ -51,8 +51,8 @@ services:
     depends_on:
       - jiban-db
     ports:
-      - "80:80"
-      - "443:443"
+      - ${PORT_HTTP}:${PORT_HTTP}
+      - ${PORT_HTTPS}:${PORT_HTTPS}
     networks: 
         Development:
             aliases: 
