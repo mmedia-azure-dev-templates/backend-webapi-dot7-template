@@ -10,6 +10,7 @@ using Boilerplate.Application.Features.Auth.Reset;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Implementations;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -143,6 +144,14 @@ public class AuthenticateController : ControllerBase
     {
         return await _mediator.Send(request);
     }
+
+    [HttpGet]
+    [Route("loggedin")]
+    public ActionResult<bool> LoggedIn()
+    {
+        return true;
+    }
+
 
     /// <summary>
     /// This returns the permission names for the current user (or null if not available)
