@@ -7,6 +7,7 @@ using Boilerplate.Domain.PermissionsCode;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StatusGeneric;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,11 +65,10 @@ public class RolesController : ControllerBase
     [HasPermission(DefaultPermissions.RoleChange)]
     [HttpPost]
     [Route("edit")]
-    public async Task<IActionResult> Edit(RoleCreateUpdateDto input)
+    public async Task<IStatusGeneric> Edit(RoleCreateUpdateDto input)
     {
-        var status = await _authRolesAdmin
-            .UpdateRoleToPermissionsAsync(input.RoleName, input.GetSelectedPermissionNames(), input.Description, input.RoleType);
-        return Ok(status);
+        var status = await _authRolesAdmin.UpdateRoleToPermissionsAsync(input.RoleName, input.GetSelectedPermissionNames(), input.Description, input.RoleType);
+        return status;
     }
 
     [HasPermission(DefaultPermissions.RoleChange)]
