@@ -1,6 +1,7 @@
 ﻿using AuthPermissions.AdminCode;
 using AuthPermissions.AspNetCore;
 using AuthPermissions.BaseCode.CommonCode;
+using AuthPermissions.BaseCode.PermissionsCode;
 using Boilerplate.Api.Common;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.PermissionsCode;
@@ -43,11 +44,10 @@ public class RolesController : ControllerBase
     [HasPermission(DefaultPermissions.PermissionRead)]
     [HttpGet]
     [Route("list-permissions")]
-    public IActionResult ListPermissions()
+    public ActionResult<List<PermissionDisplay>> ListPermissions()
     {
-        var permissionDisplay = _authRolesAdmin.GetPermissionDisplay(false);
-
-        return Ok(permissionDisplay);
+        List<PermissionDisplay> permissionDisplays = _authRolesAdmin.GetPermissionDisplay(false);
+        return permissionDisplays;
     }
 
     [HasPermission(DefaultPermissions.RoleChange)]

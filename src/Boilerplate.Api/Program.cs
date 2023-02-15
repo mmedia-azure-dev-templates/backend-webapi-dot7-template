@@ -53,14 +53,24 @@ builder.Services.AddScoped<IRazorViewToStringRenderer, RazorViewToStringRenderer
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers
-builder.Services
-    .AddControllers(options =>
-    {
-        options.AllowEmptyInputInBodyModelBinding = true;
-        options.Filters.Add<ValidationErrorResultFilter>();
-    })
-    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
-    .AddValidationSetup();
+builder.Services.AddControllersWithViews().AddJsonOptions(o => {
+    o.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    //o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+});
+//builder.Services
+//    .AddControllers(options =>
+//    {
+//        options.AllowEmptyInputInBodyModelBinding = true;
+//        options.Filters.Add<ValidationErrorResultFilter>();
+//    })
+//    .AddJsonOptions(x => {
+//        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+//        x.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+//        x.JsonSerializerOptions.PropertyNamingPolicy= null;
+//    })
+//    .AddValidationSetup();
 
 builder.Services.AddCacheSetup(builder.Environment);
 builder.Services.AddMailSetup(builder.Configuration);

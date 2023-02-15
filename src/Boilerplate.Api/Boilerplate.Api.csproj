@@ -62,6 +62,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <PackageReference Include="Net.DistributedFileStoreCache" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="NSwag.AspNetCore" />
     <PackageReference Include="OpenTelemetry.Exporter.Jaeger" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
@@ -72,9 +73,6 @@
     <PackageReference Include="Serilog.Exceptions" />
     <PackageReference Include="Serilog.Sinks.Async" />
     <PackageReference Include="Serilog.Sinks.Console" />
-    <PackageReference Include="Swashbuckle.AspNetCore" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Filters" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" />
   </ItemGroup>
 
   <ItemGroup>
