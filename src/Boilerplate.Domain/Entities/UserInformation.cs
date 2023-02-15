@@ -18,15 +18,15 @@ public partial class UserInformation : Entity<IdentificationId>, IDateCreatedAnd
     
     public UserId UserId { get; set; }
 
-    public string TypeDocument { get; set; }
+    public required string TypeDocument { get; set; }
 
-    public string Nacionality { get; set; }
+    public required string Nacionality { get; set; }
 
-    public string Ndocument { get; set; } = null!;
+    public required string Ndocument { get; set; }
 
-    public string Gender { get; set; }
+    public required string Gender { get; set; }
 
-    public string CivilStatus { get; set; }
+    public required string CivilStatus { get; set; }
 
     public DateTime? BirthDate { get; set; }
 
@@ -34,7 +34,7 @@ public partial class UserInformation : Entity<IdentificationId>, IDateCreatedAnd
 
     public DateTime? DepartureDate { get; set; }
 
-    public short Hired { get; set; }
+    public required short Hired { get; set; }
 
     public string? ImgUrl { get; set; }
 
@@ -44,16 +44,16 @@ public partial class UserInformation : Entity<IdentificationId>, IDateCreatedAnd
 
     public string? Phone { get; set; }
 
-    public string PrimaryStreet { get; set; }
-    public string SecondaryStreet { get; set; }
-    public string Numeration { get; set; }
-    public string Reference { get; set; }
+    public required string PrimaryStreet { get; set; }
+    public required string SecondaryStreet { get; set; }
+    public required string Numeration { get; set; }
+    public required string Reference { get; set; }
 
-    public int Provincia { get; set; }
+    public required int Provincia { get; set; }
 
-    public int Canton { get; set; }
+    public required int Canton { get; set; }
 
-    public int Parroquia { get; set; }
+    public required int Parroquia { get; set; }
 
     public string? Notes { get; set; }
     public DateTime DateCreated { get; set; }

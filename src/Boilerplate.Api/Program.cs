@@ -59,18 +59,6 @@ builder.Services.AddControllersWithViews().AddJsonOptions(o => {
     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     o.JsonSerializerOptions.PropertyNamingPolicy = null;
 });
-//builder.Services
-//    .AddControllers(options =>
-//    {
-//        options.AllowEmptyInputInBodyModelBinding = true;
-//        options.Filters.Add<ValidationErrorResultFilter>();
-//    })
-//    .AddJsonOptions(x => {
-//        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-//        x.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-//        x.JsonSerializerOptions.PropertyNamingPolicy= null;
-//    })
-//    .AddValidationSetup();
 
 builder.Services.AddCacheSetup(builder.Environment);
 builder.Services.AddMailSetup(builder.Configuration);
