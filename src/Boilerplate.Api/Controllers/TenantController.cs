@@ -1,5 +1,6 @@
 ﻿using AuthPermissions.AdminCode;
 using AuthPermissions.AspNetCore;
+using AuthPermissions.BaseCode.DataLayer.Classes;
 //using AuthPermissions.AspNetCore.AccessTenantData;
 //using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Domain.Entities;
@@ -50,10 +51,10 @@ public class TenantController : ControllerBase
     [HttpPost]
     [Route("create")]
     [HasPermission(DefaultPermissions.TenantCreate)]
-    public async Task<IActionResult> Create(SingleLevelTenantDto input)
+    public async Task<Tenant> Create(SingleLevelTenantDto input)
     {
         var status = await _authTenantAdmin.AddSingleTenantAsync(input.TenantName, input.TenantRolesName);
-        return Ok(status);
+        return status.Result;
     }
 
     [HttpPost]

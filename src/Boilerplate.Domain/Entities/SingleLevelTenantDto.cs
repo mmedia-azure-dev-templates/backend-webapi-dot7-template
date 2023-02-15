@@ -20,9 +20,9 @@ public class SingleLevelTenantDto
     [MaxLength(AuthDbConstants.TenantFullNameSize)]
     public string TenantName { get; set; }
 
-    public string DataKey { get; set; }
+    public string? DataKey { get; set; }
 
-    public List<string> TenantRolesName { get; set; }
+    public List<string>? TenantRolesName { get; set; }
 
     public List<string> AllPossibleRoleNames { get; set; }
 
