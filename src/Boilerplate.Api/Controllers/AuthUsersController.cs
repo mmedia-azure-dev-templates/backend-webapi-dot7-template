@@ -49,15 +49,12 @@ public class AuthUsersController : ControllerBase
     [HttpPost]
     [Route("edit")]
     [HasPermission(DefaultPermissions.UserChange)]
-    public async Task<ActionResult> Edit(SetupManualUserChange change)
+    public async Task<string> Edit(SetupManualUserChange change)
     {
         var status = await _authUsersAdmin.UpdateUserAsync(change.UserId,
             change.Email, change.UserName, change.RoleNames, change.TenantName);
 
-        if (status.HasErrors)
-            return RedirectToAction(nameof(ErrorDisplay),
-                new { errorMessage = status.GetAllErrors() });
-        return Ok(new { message = status.Message });
+        return status.Message;
     }
 
     [HasPermission(DefaultPermissions.UserSync)]
