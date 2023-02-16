@@ -1,4 +1,4 @@
-﻿namespace Boilerplate.Application.Emails;
+﻿namespace Boilerplate.Domain.Entities;
 
 public class WelcomeMail
 {

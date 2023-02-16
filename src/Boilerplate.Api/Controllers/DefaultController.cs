@@ -14,11 +14,11 @@ public class DefaultController : Controller
         return Ok("API SUCCESSFULLY STARTED");
     }
 
-    [HttpGet]
-    [Route("/Identity/Account/Login")]
-    [AllowAnonymous]
-    public IActionResult IdentityLogin()
-    {
-        return View("Account/Start");
-    }
+    //[HttpGet]
+    //[Route("/Identity/Account/Login")]
+    //[AllowAnonymous]
+    //public IActionResult IdentityLogin()
+    //{
+    //    return View("Account/Start");
+    //}
 }

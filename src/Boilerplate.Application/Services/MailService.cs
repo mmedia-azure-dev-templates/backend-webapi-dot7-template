@@ -1,17 +1,13 @@
-﻿using Boilerplate.Application.Emails;
-using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Common;
+﻿using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using RazorEngineCore;
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

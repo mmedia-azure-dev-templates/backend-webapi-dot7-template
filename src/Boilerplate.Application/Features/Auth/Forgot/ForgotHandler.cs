@@ -10,7 +10,6 @@ using System.Threading;
 using Boilerplate.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using MediatR;
-using Boilerplate.Application.Emails;
 using Boilerplate.Domain.Entities.Common;
 using Microsoft.AspNetCore.WebUtilities;
 using Boilerplate.Domain.Implementations;
