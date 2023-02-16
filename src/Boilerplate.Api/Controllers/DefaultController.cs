@@ -3,13 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Boilerplate.Api.Controllers;
 
-[Route("/")]
-[AllowAnonymous]
-public class DefaultController : ControllerBase
+
+public class DefaultController : Controller
 {
     [HttpGet]
+    [Route("/")]
+    [AllowAnonymous]
     public IActionResult Index()
     {
         return Ok("API SUCCESSFULLY STARTED");
+    }
+
+    [HttpGet]
+    [Route("/Identity/Account/Login")]
+    [AllowAnonymous]
+    public IActionResult IdentityLogin()
+    {
+        return View("Account/Start");
     }
 }
