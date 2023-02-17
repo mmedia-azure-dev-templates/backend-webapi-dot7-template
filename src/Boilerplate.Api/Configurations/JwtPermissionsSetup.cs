@@ -2,6 +2,8 @@
 using AuthPermissions.BaseCode;
 using AuthPermissions.BaseCode.SetupCode;
 using Boilerplate.Api.Extends;
+using Boilerplate.Application.Common;
+using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using Boilerplate.Infrastructure.Configuration;
@@ -82,8 +84,8 @@ public static class JwtPermissionsSetup
         })
         .UsingEfCoreSqlServer(configuration.GetConnectionString("SqlServerConnection")) //NOTE: This uses the same database as the individual accounts DB
         .IndividualAccountsAuthentication<ApplicationUser>()
-        //.RegisterAddClaimToUser<AddTenantNameClaim>()
-        //.RegisterAddClaimToUser<AddRefreshEveryMinuteClaim>()
+        .RegisterAddClaimToUser<AddTenantNameClaim>()
+        .RegisterAddClaimToUser<AddRefreshEveryMinuteClaim>()
         //.AddSuperUserToIndividualAccounts<ApplicationUser>()
         .RegisterTenantChangeService<InvoiceTenantChangeService>()
         .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()

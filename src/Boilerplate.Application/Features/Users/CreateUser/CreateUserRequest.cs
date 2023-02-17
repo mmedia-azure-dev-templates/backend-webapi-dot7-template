@@ -1,5 +1,4 @@
-﻿using Boilerplate.Application.Features.Identications;
-using MediatR;
+﻿using MediatR;
 using System;
 
 namespace Boilerplate.Application.Features.Users.CreateUser;

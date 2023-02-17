@@ -1,4 +1,4 @@
-using Boilerplate.Application.Features.Identications;
+using Boilerplate.Application.Features.UserInformations;
 using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using System;

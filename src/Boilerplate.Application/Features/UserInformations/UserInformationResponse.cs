@@ -2,7 +2,7 @@ using System;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 
-namespace Boilerplate.Application.Features.Identications;
+namespace Boilerplate.Application.Features.UserInformations;
 
 public record UserInformationResponse
 {

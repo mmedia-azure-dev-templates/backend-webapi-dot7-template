@@ -64,6 +64,7 @@ builder.Services.AddCacheSetup(builder.Environment);
 builder.Services.AddMailSetup(builder.Configuration);
 builder.Services.Configure<DataProtectionTokenProviderOptions>(o =>
        o.TokenLifespan = TimeSpan.FromHours(4));
+
 var app = builder.Build();
 
 app.UseCors(builder => builder
@@ -77,10 +78,10 @@ app.UseSwaggerAuthorizedMiddleware();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwaggerSetup();
 }
 
 app.UseMiddleware(typeof(ExceptionHandlerMiddleware));
+app.UseSwaggerSetup();
 app.UseResponseCompression();
 app.UseHttpsRedirection();
 app.UseAuthentication();

@@ -3,16 +3,15 @@ using Boilerplate.Application.Common;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using Boilerplate.Application.Features.Identications;
 
-namespace Boilerplate.Application.Features.Identications.CreateIdentification;
+namespace Boilerplate.Application.Features.UserInformations.CreateUserInformation;
 
 public class CreateUserInformationHandler : IRequestHandler<CreateUserInformationRequest, UserInformationResponse?>
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
-    
-    
+
+
     public CreateUserInformationHandler(IMapper mapper, IContext context)
     {
         _mapper = mapper;
