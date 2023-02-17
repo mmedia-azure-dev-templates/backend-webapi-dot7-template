@@ -88,17 +88,6 @@ public static class SwaggerSetup
         {
             settings.DocumentTitle = "Jiban Api Platform";
             settings.PersistAuthorization = true;
-            settings.TransformToExternalPath = (internalUiRoute, request) =>
-            {
-                if (internalUiRoute.StartsWith("/") == true && internalUiRoute.StartsWith(request.PathBase) == false)
-                {
-                    return request.PathBase + internalUiRoute;
-                }
-                else
-                {
-                    return internalUiRoute;
-                }
-            };
         });
         return app;
     }
