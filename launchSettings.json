@@ -5,7 +5,7 @@
       "commandVersion": "1.0",
       "composeLaunchAction": "LaunchBrowser",
       "composeLaunchServiceName": "jiban-api-development",
-      "composeLaunchUrl": "{Scheme}://api.mad.ec:{ServicePort}/swagger",
+      "composeLaunchUrl": "{Scheme}://api.mad.ec:{ServicePort}/swagger/index.html",
       "serviceActions": {
         "jaeger-development": "DoNotStart",
         "jaeger-production": "DoNotStart",

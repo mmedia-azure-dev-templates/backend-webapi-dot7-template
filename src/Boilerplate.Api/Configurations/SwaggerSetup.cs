@@ -3,8 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NSwag;
+using NSwag.AspNetCore;
 using NSwag.Generation.Processors.Security;
 using System.Linq;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace Boilerplate.Api.Configurations;
 
@@ -82,7 +84,22 @@ public static class SwaggerSetup
     public static IApplicationBuilder UseSwaggerSetup(this IApplicationBuilder app)
     {
         app.UseOpenApi();
-        app.UseSwaggerUi3();
+        app.UseSwaggerUi3(settings =>
+        {
+            settings.DocumentTitle = "Jiban Api Platform";
+            settings.PersistAuthorization = true;
+            settings.TransformToExternalPath = (internalUiRoute, request) =>
+            {
+                if (internalUiRoute.StartsWith("/") == true && internalUiRoute.StartsWith(request.PathBase) == false)
+                {
+                    return request.PathBase + internalUiRoute;
+                }
+                else
+                {
+                    return internalUiRoute;
+                }
+            };
+        });
         return app;
     }
 }
