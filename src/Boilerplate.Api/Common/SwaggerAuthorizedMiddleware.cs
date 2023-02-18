@@ -60,12 +60,11 @@ public class SwaggerAuthorizedMiddleware
 
                 if (hours > 1)
                 {
+                    user.LastLogin = DateTime.Now;
+                    await _userManager.UpdateAsync(user);
                     context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     return;
                 }
-
-                user.LastLogin = DateTime.Now;
-                await _userManager.UpdateAsync(user);
 
                 var status = await service.FindAuthUserByUserIdAsync(user.Id);
 
