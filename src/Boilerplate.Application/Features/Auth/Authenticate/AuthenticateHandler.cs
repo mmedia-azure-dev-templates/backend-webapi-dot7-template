@@ -1,12 +1,8 @@
 ﻿using AuthPermissions.AspNetCore.JwtTokenCode;
-using AutoMapper;
 using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Auth;
-using Boilerplate.Application.Features.Heroes;
 using Boilerplate.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using OneOf;
 using System.Threading;
 using System.Threading.Tasks;

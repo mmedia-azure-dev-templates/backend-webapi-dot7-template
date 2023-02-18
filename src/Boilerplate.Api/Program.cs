@@ -74,7 +74,7 @@ app.UseCors(builder => builder
     );
 // Configure the HTTP request pipeline.
 app.UseResponseCompression();
-//app.UseSwaggerAuthorizedMiddleware();
+app.UseSwaggerAuthorizedMiddleware();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
