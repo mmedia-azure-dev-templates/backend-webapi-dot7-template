@@ -137,6 +137,14 @@ public class AuthenticateController : ControllerBase
         return await _mediator.Send(request);
     }
 
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("generateconfirmation")]
+    public async Task<ActionResult<GenerateConfirmationResponse>> GenerateConfirmation(GenerateConfirmationRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
     [HttpGet]
     [AllowAnonymous]
     [Route("confirmemail")]

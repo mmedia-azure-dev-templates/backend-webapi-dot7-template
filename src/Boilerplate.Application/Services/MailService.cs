@@ -5,6 +5,7 @@ using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Razor.Templating.Core;
 using System;
 using System.IO;
 using System.Linq;
@@ -148,6 +149,7 @@ public class MailService : IMailService
             
 
             string body = await _razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/" + mailData.Template + "View.cshtml", model);
+            //var body = await RazorTemplateEngine.RenderAsync("/Views/Emails/" + mailData.Template + "View.cshtml", model);
             if (string.IsNullOrEmpty(body))
             {
                 throw new InvalidOperationException("Body is empty!");

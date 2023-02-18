@@ -17,27 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Emails\ConfirmAccount\ConfirmAccountEmail.cshtml" />
-    <Content Remove="Views\Emails\DefaultView.cshtml" />
-    <Content Remove="Views\Emails\ErrorView.cshtml" />
-    <Content Remove="Views\Emails\Start.cshtml" />
-    <Content Remove="Views\Emails\_ViewStart.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Areas\Identity\Pages\_ViewStart.cshtml" />
-    <None Include="Views\Emails\ConfirmAccount\ConfirmAccountEmail.cshtml" />
-    <None Include="Views\Emails\DefaultView.cshtml" />
-    <None Include="Views\Emails\ErrorView.cshtml" />
-    <None Include="Views\Emails\Start.cshtml" />
-    <None Include="Views\Emails\_ViewStart.cshtml" />
-    <None Include="Views\Shared\DefaultLayout.cshtml" />
-    <None Include="Views\Shared\EmailButton.cshtml" />
-    <None Include="Views\Shared\EmailLayout.cshtml" />
-    <None Include="Views\Shared\Error.cshtml" />
-    <None Include="Views\Shared\_Layout.cshtml" />
-    <None Include="Views\Shared\_LoginPartial.cshtml" />
-    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />

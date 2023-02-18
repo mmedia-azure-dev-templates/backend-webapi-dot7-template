@@ -24,6 +24,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="OneOf" />
+    <PackageReference Include="Razor.Templating.Core" />
     <PackageReference Include="RazorEngineCore" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
   </ItemGroup>

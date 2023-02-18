@@ -49,6 +49,7 @@ builder.Services.AddSwaggerSetup();
 builder.Services.AddJwtSetup(builder.Configuration);
 
 //Render Email Templates
+builder.Services.AddRazorPages();
 builder.Services.AddScoped<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
