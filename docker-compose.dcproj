@@ -4,11 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>7873047b-1b2d-40d8-aebe-587d2e3c201b</ProjectGuid>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://api.mad.ec:{ServicePort}/api-docs</DockerServiceUrl>
     <DockerComposeEnvFilePath>.env.development</DockerComposeEnvFilePath>
-    <DockerServiceName>boilerplate.api</DockerServiceName>
-    <DockerComposeBaseFilePath>docker-compose</DockerComposeBaseFilePath>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
