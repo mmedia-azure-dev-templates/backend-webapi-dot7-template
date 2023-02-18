@@ -50,25 +50,29 @@ public class SwaggerAuthorizedMiddleware
                 }
                 var user = await _userManager.FindByEmailAsync(userreq.Email);
 
-
-
-
-                user.LastLogin = DateTime.Now;
-                await _userManager.UpdateAsync(user);
-                //await _userManager
-
                 if (user == null)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     return;
                 }
 
+                var hours = Convert.ToInt32((DateTime.Now - user.LastLogin).Value.TotalHours);
+
+                if (hours > 1)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    return;
+                }
+
+                user.LastLogin = DateTime.Now;
+                await _userManager.UpdateAsync(user);
+
                 var status = await service.FindAuthUserByUserIdAsync(user.Id);
 
                 if (status.IsValid)
                 {
                     var isSuperAdmin = status.Result.UserRoles.Where(x => x.RoleName == "SuperAdmin").Count();
-                    
+
                     if (isSuperAdmin < 1)
                     {
                         context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
@@ -78,7 +82,7 @@ public class SwaggerAuthorizedMiddleware
 
                 await _next.Invoke(context).ConfigureAwait(false);
                 return;
-                
+
             }
             context.Response.Headers["WWW-Authenticate"] = "Basic";
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
