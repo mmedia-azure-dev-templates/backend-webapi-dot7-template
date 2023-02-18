@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using System.Net.Http.Headers;
-using System.Net;
-using System;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using System.Text;
+﻿using AuthPermissions.AdminCode;
 using Boilerplate.Application.Features.Auth.Authenticate;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Boilerplate.Domain.Entities;
-using AuthPermissions.AdminCode;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Boilerplate.Api.Common;
 // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
@@ -47,10 +46,35 @@ public class SwaggerAuthorizedMiddleware
                 if (!result.Succeeded)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    return;
                 }
                 var user = await _userManager.FindByEmailAsync(userreq.Email);
+
+
+
+
+                user.LastLogin = DateTime.Now;
+                await _userManager.UpdateAsync(user);
+                //await _userManager
+
+                if (user == null)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    return;
+                }
+
                 var status = await service.FindAuthUserByUserIdAsync(user.Id);
-                
+
+                if (status.IsValid)
+                {
+                    var isSuperAdmin = status.Result.UserRoles.Where(x => x.RoleName == "SuperAdmin").Count();
+                    
+                    if (isSuperAdmin < 1)
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        return;
+                    }
+                }
 
                 await _next.Invoke(context).ConfigureAwait(false);
                 return;
@@ -63,16 +87,6 @@ public class SwaggerAuthorizedMiddleware
         {
             await _next.Invoke(context).ConfigureAwait(false);
         }
-        ////Add your condition
-        //if (httpContext.Request.Path.StartsWithSegments("/swagger")
-        //    && !httpContext.User.Identity.IsAuthenticated)
-        //{
-        //    httpContext.Response.Redirect("/Identity/Account/Login");
-
-        //    return Task.CompletedTask;
-        //}
-        
-        //return _next(httpContext);
     }
 }
 
