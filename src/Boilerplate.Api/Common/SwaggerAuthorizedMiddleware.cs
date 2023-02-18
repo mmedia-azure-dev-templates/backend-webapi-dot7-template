@@ -10,24 +10,20 @@ using Boilerplate.Application.Features.Auth.Authenticate;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Boilerplate.Domain.Entities;
+using AuthPermissions.AdminCode;
 
 namespace Boilerplate.Api.Common;
 // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
 public class SwaggerAuthorizedMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public SwaggerAuthorizedMiddleware(RequestDelegate next, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+    public SwaggerAuthorizedMiddleware(RequestDelegate next)
     {
         _next = next;
-        _signInManager = signInManager;
-        _userManager = userManager;
-
     }
 
-    public async Task Invoke(HttpContext context)
+    public async Task Invoke(HttpContext context, SignInManager<ApplicationUser> _signInManager, UserManager<ApplicationUser> _userManager, IAuthUsersAdminService service)
     {
         if (context.Request.Path.StartsWithSegments("/swagger"))
         {
@@ -53,8 +49,9 @@ public class SwaggerAuthorizedMiddleware
                     context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 }
                 var user = await _userManager.FindByEmailAsync(userreq.Email);
-                //user.HasRole
+                var status = await service.FindAuthUserByUserIdAsync(user.Id);
                 
+
                 await _next.Invoke(context).ConfigureAwait(false);
                 return;
                 
