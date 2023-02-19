@@ -16,9 +16,4 @@ public class LineItem : IDataKeyFilterReadWrite
     public decimal TotalPrice { get; set; }
 
     public string DataKey { get; set; }
-
-    //----------------------------------------------
-    // relationships 
-
-    public int InvoiceId { get; set; }
 }
