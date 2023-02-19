@@ -24,7 +24,6 @@ public class InvoiceController : Controller
     }
 
     [HttpGet]
-    [AllowAnonymous]
     [Route("invoices")]
     public async Task<List<InvoiceSummaryDto>> Invoices()
     {
