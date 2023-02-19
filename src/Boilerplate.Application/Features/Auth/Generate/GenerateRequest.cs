@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Features.Auth.Reset;
+namespace Boilerplate.Application.Features.Auth.Generate;
 public class GenerateRequest : IRequest<GenerateResponse>
 {
     [Required]

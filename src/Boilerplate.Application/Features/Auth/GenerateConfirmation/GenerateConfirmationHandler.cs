@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Auth.Reset;
-public class GenerateConfirmationHandler: IRequestHandler<GenerateConfirmationRequest,GenerateConfirmationResponse>
+namespace Boilerplate.Application.Features.Auth.GenerateConfirmation;
+public class GenerateConfirmationHandler : IRequestHandler<GenerateConfirmationRequest, GenerateConfirmationResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMailService _mail;
@@ -31,7 +31,7 @@ public class GenerateConfirmationHandler: IRequestHandler<GenerateConfirmationRe
             generateResponse.Message = "Email not found!";
             return generateResponse;
         }
-            
+
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
         MailData mailData = new MailData(
@@ -58,7 +58,7 @@ public class GenerateConfirmationHandler: IRequestHandler<GenerateConfirmationRe
             generateResponse.Transaction = false;
             return generateResponse;
         }
-        
+
         generateResponse.Message = "Check your Email Inbox!";
         generateResponse.Transaction = true;
         return generateResponse;

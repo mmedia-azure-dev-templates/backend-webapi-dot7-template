@@ -64,6 +64,8 @@ public enum DefaultPermissions : ushort //Must be ushort to work with AuthP
     UserChangeTenant = 40_004,
     [Display(GroupName = "UserAdmin", Name = "Remove user", Description = "Can delete the user")]
     UserRemove = 40_005,
+    [Display(GroupName = "UserAdmin", Name = "Alter email", Description = "Can alter the email of user")]
+    UserEmailUpdate = 40_006,
 
     //41_000 - Roles admin
     [Display(GroupName = "RolesAdmin", Name = "Read Roles", Description = "Can list Role")]

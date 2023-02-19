@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Auth.Reset;
-public class GenerateHandler: IRequestHandler<GenerateRequest,GenerateResponse>
+namespace Boilerplate.Application.Features.Auth.Generate;
+public class GenerateHandler : IRequestHandler<GenerateRequest, GenerateResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMailService _mail;
@@ -31,7 +31,7 @@ public class GenerateHandler: IRequestHandler<GenerateRequest,GenerateResponse>
             generateResponse.Message = "Email not found!";
             return generateResponse;
         }
-            
+
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
         MailData mailData = new MailData(
@@ -57,7 +57,7 @@ public class GenerateHandler: IRequestHandler<GenerateRequest,GenerateResponse>
             generateResponse.Message = "Email failed!";
             return generateResponse;
         }
-        
+
         generateResponse.Message = "Email sent!";
         generateResponse.Transaction = true;
         return generateResponse;

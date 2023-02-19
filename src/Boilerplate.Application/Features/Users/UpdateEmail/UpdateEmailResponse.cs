@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Auth.GenerateConfirmation;
-public class GenerateConfirmationResponse
+namespace Boilerplate.Application.Features.Users.UpdateEmail;
+public class UpdateEmailResponse
 {
     public string Message { get; set; } = "";
     public bool Transaction { get; set; } = false!;

@@ -6,6 +6,8 @@ using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.Authenticate;
 using Boilerplate.Application.Features.Auth.Confirm;
 using Boilerplate.Application.Features.Auth.Forgot;
+using Boilerplate.Application.Features.Auth.Generate;
+using Boilerplate.Application.Features.Auth.GenerateConfirmation;
 using Boilerplate.Application.Features.Auth.Reset;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Implementations;

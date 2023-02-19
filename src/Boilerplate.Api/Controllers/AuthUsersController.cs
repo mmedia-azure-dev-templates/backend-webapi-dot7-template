@@ -2,7 +2,9 @@
 using AuthPermissions.AspNetCore;
 using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Api.Common;
+using Boilerplate.Application.Features.Users.UpdateEmail;
 using Boilerplate.Domain.PermissionsCode;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +21,12 @@ namespace Boilerplate.Api.Controllers;
 public class AuthUsersController : ControllerBase
 {
     private readonly IAuthUsersAdminService _authUsersAdmin;
+    private readonly IMediator _mediator;
 
-    public AuthUsersController(IAuthUsersAdminService authUsersAdmin)
+    public AuthUsersController(IAuthUsersAdminService authUsersAdmin, IMediator mediator)
     {
         _authUsersAdmin = authUsersAdmin;
+        _mediator = mediator;
     }
 
     // List users filtered by authUser tenant
@@ -94,19 +98,15 @@ public class AuthUsersController : ControllerBase
         return Ok(AuthUserDisplay.DisplayUserInfo(status.Result));
     }
 
-    // POST: AuthUsersController/Delete/5
-    //[HttpPost]
-    //[ValidateAntiForgeryToken]
-    //[HasPermission(DefaultPermissions.UserRemove)]
-    //public async Task<ActionResult> Delete(AuthIdAndChange input)
-    //{
-    //    var status = await _authUsersAdmin.DeleteUserAsync(input.UserId);
-    //    if (status.HasErrors)
-    //        return RedirectToAction(nameof(ErrorDisplay),
-    //            new { errorMessage = status.GetAllErrors() });
+    [HasPermission(DefaultPermissions.UserEmailUpdate)]
+    [HttpPost]
+    [Route("updateemail")]
+    public async Task<ActionResult> UpdateEmail(UpdateEmailRequest request)
+    {
+        return Ok(await _mediator.Send(request));
+    }
 
-    //    return RedirectToAction(nameof(Index), new { message = status.Message });
-    //}
+
     [HttpGet]
     [Route("errordisplay")]
     public ActionResult ErrorDisplay(string errorMessage)

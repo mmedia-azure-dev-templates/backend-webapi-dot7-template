@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Auth.Reset;
+namespace Boilerplate.Application.Features.Auth.Generate;
 public class GenerateResponse
 {
     public string Message { get; set; } = "";
