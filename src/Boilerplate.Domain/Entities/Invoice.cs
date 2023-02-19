@@ -5,9 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AuthPermissions.BaseCode.CommonCode;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boilerplate.Domain.Entities;
-
+[Table("Invoices", Schema = "web")]
 public class Invoice : IDataKeyFilterReadWrite
 {
     public int InvoiceId { get; set; }

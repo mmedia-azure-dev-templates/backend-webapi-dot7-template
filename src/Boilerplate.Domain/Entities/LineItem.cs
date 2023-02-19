@@ -2,9 +2,9 @@
 // Licensed under MIT license. See License.txt in the project root for license information.
 
 using AuthPermissions.BaseCode.CommonCode;
-
+using System.ComponentModel.DataAnnotations.Schema;
 namespace Boilerplate.Domain.Entities;
-
+[Table("LineItems", Schema = "web")]
 public class LineItem : IDataKeyFilterReadWrite
 {
     public int LineItemId { get; set; }

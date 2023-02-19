@@ -5,7 +5,7 @@ using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Graph;
+using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,6 +24,7 @@ public class InvoiceController : Controller
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [Route("invoices")]
     public async Task<List<InvoiceSummaryDto>> Invoices()
     {
@@ -36,7 +37,7 @@ public class InvoiceController : Controller
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    [Route("createinvoice")]
     [HasPermission(DefaultPermissions.InvoiceCreate)]
     public async Task<IActionResult> CreateInvoice(Invoice invoice)
     {
