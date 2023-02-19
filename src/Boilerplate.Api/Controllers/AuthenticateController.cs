@@ -150,7 +150,7 @@ public class AuthenticateController : ControllerBase
     [HttpGet]
     [AllowAnonymous]
     [Route("confirmemail")]
-    public async Task<ActionResult<ConfirmResponse>> ConfirmEmail(ConfirmRequest request)
+    public async Task<ActionResult<ConfirmResponse>> ConfirmEmail([FromQuery] ConfirmRequest request)
     {
         return await _mediator.Send(request);
     }

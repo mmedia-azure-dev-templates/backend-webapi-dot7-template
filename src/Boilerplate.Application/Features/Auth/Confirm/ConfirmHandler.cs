@@ -27,7 +27,7 @@ public class ConfirmHandler: IRequestHandler<ConfirmRequest, ConfirmResponse>
     public async Task<ConfirmResponse> Handle(ConfirmRequest request, CancellationToken cancellationToken)
     {
         ConfirmResponse confirmResponse = new ConfirmResponse();
-        var bytes = WebEncoders.Base64UrlDecode(request.Email);
+        var bytes = WebEncoders.Base64UrlDecode(request.Token);
         request.Token = Encoding.UTF8.GetString(bytes);
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user == null)
