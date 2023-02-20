@@ -81,8 +81,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware(typeof(ExceptionHandlerMiddleware));
-app.UseSwaggerAuthorizedMiddleware();
-app.UseSwaggerSetup();
 app.UseResponseCompression();
 app.UseHttpsRedirection();
 app.UseAuthentication();
@@ -93,5 +91,7 @@ app.UseAuthorization();
 app.UsePermissionsChange();   //Example of updating the user's Permission claim when the database change in app using JWT Token for Authentication / Authorization
 app.UseAddEmailClaimToUsers();//Example of adding an extra Email 
 app.MapControllers().RequireAuthorization();
+app.UseSwaggerAuthorizedMiddleware();
+app.UseSwaggerSetup();
 await app.Migrate();
 await app.RunAsync();
