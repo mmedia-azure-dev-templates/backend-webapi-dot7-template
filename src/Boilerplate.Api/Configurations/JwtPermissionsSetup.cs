@@ -6,7 +6,6 @@ using Boilerplate.Application.Common;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
-using Boilerplate.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +24,7 @@ public static class JwtPermissionsSetup
         // Configure Authentication using JWT token with refresh capability
         var jwtData = new JwtSetupData();
         configuration.Bind("JwtData", jwtData);
+
         //The solution to getting the nameidentifier claim to have the user's Id was found in https://stackoverflow.com/a/70315108/1434764
         JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
         services.AddAuthentication(auth =>
@@ -61,16 +61,14 @@ public static class JwtPermissionsSetup
                     }
                 };
             });
-        
+
 
         var tokenExpire = int.Parse(configuration.GetSection("JwtData:TokenExpire").Value!);
 
         services.RegisterAuthPermissions<DefaultPermissions>(options =>
         {
-            options.TenantType = TenantTypes.SingleLevel;
-            //This tells AuthP that you don't have multiple instances of your app running,
-            //so it can run the startup services without a global lock
             options.UseLocksToUpdateGlobalResources = false;
+            options.TenantType = TenantTypes.SingleLevel;
 
             //This sets up the JWT Token. The config is suitable for using the Refresh Token with your JWT Token
             options.ConfigureAuthPJwtToken = new AuthPJwtConfiguration
@@ -87,16 +85,12 @@ public static class JwtPermissionsSetup
         .RegisterAddClaimToUser<AddTenantNameClaim>()
         .RegisterAddClaimToUser<AddRefreshEveryMinuteClaim>()
         //.AddSuperUserToIndividualAccounts<ApplicationUser>()
-        .RegisterTenantChangeService<InvoiceTenantChangeService>()
+        //.RegisterTenantChangeService<InvoiceTenantChangeService>()
         .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()
         //.AddRolesPermissionsIfEmpty(AppAuthSetupData.RolesDefinition)
         //.AddAuthUsersIfEmpty(AppAuthSetupData.UsersRolesDefinition)
         //.RegisterAuthenticationProviderReader<SyncIndividualAccountUsers>()
-        .SetupAspNetCoreAndDatabase(options =>
-        {
-            //options.RegisterServiceToRunInJob<StartupServiceMigrateAnyDbContext<IdentityLocalDbContext>>();
-            //options.RegisterServiceToRunInJob<ExtendStartupServicesIndividualAccountsAddDemoUsers>();
-        });
+        .SetupAspNetCoreAndDatabase();
 
         return services;
     }
