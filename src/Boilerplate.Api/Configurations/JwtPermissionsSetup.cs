@@ -84,11 +84,7 @@ public static class JwtPermissionsSetup
         .IndividualAccountsAuthentication<ApplicationUser>()
         .RegisterAddClaimToUser<AddTenantNameClaim>()
         .RegisterAddClaimToUser<AddRefreshEveryMinuteClaim>()
-        //.AddSuperUserToIndividualAccounts<ApplicationUser>()
-        //.RegisterTenantChangeService<InvoiceTenantChangeService>()
         .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()
-        //.AddRolesPermissionsIfEmpty(AppAuthSetupData.RolesDefinition)
-        //.AddAuthUsersIfEmpty(AppAuthSetupData.UsersRolesDefinition)
         //.RegisterAuthenticationProviderReader<SyncIndividualAccountUsers>()
         .SetupAspNetCoreAndDatabase();
 
