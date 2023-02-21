@@ -13,6 +13,6 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
     {
         //entity.Property(e => e.LegacyId).HasConversion<UserId.EfCoreValueConverter>();
         //entity.HasKey(x => x.LegacyId);
-        entity.Property(e => e.LegacyId).ValueGeneratedOnAdd().Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore); ;
+        entity.Property(e => e.LegacyId).ValueGeneratedOnAdd().Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
     }
 }
