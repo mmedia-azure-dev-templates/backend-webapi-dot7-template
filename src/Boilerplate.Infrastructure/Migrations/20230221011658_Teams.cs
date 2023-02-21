@@ -1,4 +1,5 @@
 ﻿using System;
+using Boilerplate.Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -11,28 +12,12 @@ public partial class Teams : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.CreateTable(
-        schema: "web",
-        name: "Teams",
-        columns: table => new
-        {
-            Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-            UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-            //HyerarchyId = table.Column<HierarchyId>(type: "hierarchyid(50)", nullable: false),
-            //OldHyerarchyId = table.Column<string>(type: "nvarchar(50)", nullable: false),
-            DataKey = table.Column<string>(type: "nvarchar(450)", nullable: true),
-            DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-            Dateupdated = table.Column<DateTime>(type: "datetime2", nullable: true),
-        },
-        constraints: table =>
-        {
-            table.PrimaryKey("PK_UserInformations", x => x.Id);
-        });
+        migrationBuilder.Sql(Utils.GetRawSql("20230221011658_TeamsUp.sql"));
     }
 
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        
+        migrationBuilder.Sql("drop table [dbo].[Teams];");
     }
 }

@@ -16,7 +16,10 @@ public static class PersistanceSetup
         services.AddScoped<ISession, Session>();
         services.AddDbContext<ApplicationDbContext>(o =>
         {
-            o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
+            o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"),conf =>
+            {
+                conf.UseHierarchyId();
+            });
         });
 
 
