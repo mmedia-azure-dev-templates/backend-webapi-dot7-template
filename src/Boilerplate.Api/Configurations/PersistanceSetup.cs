@@ -19,6 +19,8 @@ public static class PersistanceSetup
             o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"));
         });
 
+
+
         services.AddDefaultIdentity<ApplicationUser>(
         options => {
             options.SignIn.RequireConfirmedEmail = true;
