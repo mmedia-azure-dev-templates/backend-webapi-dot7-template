@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Boilerplate.Domain.Entities;
-public class Team : IDateCreatedAndUpdated
+public class Team : Entity<TeamId>, IDateCreatedAndUpdated
 {
-    public Guid Id { get; set; }
+    public TeamId Id { get; set; }
     public UserId UserId { get; set; }
     public HierarchyId HierarchyId { get; set; }
     public HierarchyId OldHyerarchyId { get; set; }

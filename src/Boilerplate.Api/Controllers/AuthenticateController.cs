@@ -32,16 +32,14 @@ public class AuthenticateController : ControllerBase
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenBuilder _tokenBuilder;
-    private readonly IEmailSender _emailSender;
 
-    public AuthenticateController(IUsersPermissionsService djdjjd,IMailService mail,IMediator mediator, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator, IEmailSender emailSender)
+    public AuthenticateController(IMailService mail,IMediator mediator, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator)
     {
         _mail = mail;
         _mediator = mediator;
         _signInManager = signInManager;
         _userManager = userManager;
         _tokenBuilder = tokenBuilder;
-        _emailSender = emailSender;
     }
 
     /// <summary>

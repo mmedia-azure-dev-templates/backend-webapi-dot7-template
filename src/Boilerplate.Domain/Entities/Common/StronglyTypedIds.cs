@@ -130,3 +130,12 @@ public partial struct UserId : IGuid
         return new UserId(userId);
     }
 }
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct TeamId : IGuid
+{
+    public static implicit operator TeamId(Guid teamId)
+    {
+        return new TeamId(teamId);
+    }
+}
