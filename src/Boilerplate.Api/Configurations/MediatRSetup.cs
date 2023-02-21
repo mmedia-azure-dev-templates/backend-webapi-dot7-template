@@ -3,8 +3,6 @@ using Boilerplate.Application.Common.Behaviors;
 using Boilerplate.Application.Common.Handlers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.NetworkInformation;
-using System.Reflection;
 
 namespace Boilerplate.Api.Configurations;
 
