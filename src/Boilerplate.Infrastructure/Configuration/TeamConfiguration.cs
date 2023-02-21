@@ -9,6 +9,7 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
 {
     public void Configure(EntityTypeBuilder<Team> entity)
     {
+        entity.Property(e => e.Id).ValueGeneratedOnAdd();
         entity.Property(e => e.Id).HasConversion<TeamId.EfCoreValueConverter>();
         entity.Property(e => e.UserId).HasConversion<UserId.EfCoreValueConverter>();
     }

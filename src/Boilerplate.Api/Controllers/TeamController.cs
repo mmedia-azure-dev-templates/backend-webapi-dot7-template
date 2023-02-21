@@ -4,6 +4,7 @@ using Boilerplate.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -54,6 +55,58 @@ public class TeamController : ControllerBase
                 .Where(employee => employee.HierarchyId.IsDescendantOf(manager.HierarchyId))
                 .ToListAsync();
         return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("changeparent")]
+    public async Task<IActionResult> ChangeParent()
+    {
+        var oldManager = await _context.Teams.FindAsync(2);
+        var newManager = await _context.Teams.FindAsync(3);
+
+        var managees = await _context.Teams
+                .Where(e => e.HierarchyId != oldManager.HierarchyId
+                         && e.HierarchyId.IsDescendantOf(oldManager.HierarchyId))
+                .ToListAsync();
+
+        foreach (var employee in managees)
+        {
+            employee.OldHierarchyId = employee.HierarchyId;
+            employee.HierarchyId = employee.HierarchyId.GetReparentedValue(oldManager.HierarchyId, newManager.HierarchyId);
+        }
+
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
+
+    [HttpGet]
+    [Route("getdepthlevel")]
+    public async Task<IActionResult> GetDepthLevel()
+    {
+        var employee = await _context.Teams.FindAsync(6);
+
+        Console.WriteLine(employee.HierarchyId + " Level: " + employee.HierarchyId.GetLevel());
+        // /1/2/1/ Level: 3
+        var employeesOfLevel2 = await _context.Teams
+        .Where(e => e.HierarchyId.GetLevel() == 2)
+        .ToListAsync();
+        return Ok();
+    }
+
+    [HttpPost]
+    [Route("createroot")]
+    public async Task<IActionResult> CreateRoot()
+    {
+        var user = _context.ApplicationUsers.Where(x => x.Email == "raul.flores@mad.ec").FirstOrDefault();
+        Team root = new Team
+        {
+            UserId = new Guid (user.Id),
+            HierarchyId = HierarchyId.Parse("/"),
+            OldHierarchyId = HierarchyId.Parse("/"),
+        };
+        _context.Teams.Add(root);
+        await _context.SaveChangesAsync();
+        return Ok();
     }
 
     [HttpPost]
