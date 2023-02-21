@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Boilerplate.Domain.Entities.Common;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using NJsonSchema;
+using NJsonSchema.Generation.TypeMappers;
 using NSwag;
 using NSwag.AspNetCore;
 using NSwag.Generation.Processors.Security;
@@ -36,47 +39,51 @@ public static class SwaggerSetup
                 document.Info.Title = "Jiban Platform";
                 document.Info.Description = "Jiban Platform Web API";
             };
+
+            var allGuids = typeof(IGuid).Assembly.GetTypes().Where(type => typeof(IGuid).IsAssignableFrom(type) && !type.IsInterface).ToList();
+            foreach (var guid in allGuids)
+            {
+                config.TypeMappers.Add(
+                    new PrimitiveTypeMapper(
+                        guid,
+                        schema4 => { schema4.Type = JsonObjectType.String; schema4.Format = "uuid"; }
+                    )
+                );
+            }
+
+            var allLongs = typeof(ILong).Assembly.GetTypes().Where(type => typeof(ILong).IsAssignableFrom(type) && !type.IsInterface).ToList();
+            foreach (var allLong in allLongs)
+            {
+                config.TypeMappers.Add(
+                    new PrimitiveTypeMapper(
+                        allLong,
+                        schema4 => { schema4.Type = JsonObjectType.Integer; schema4.Format = "int64"; }
+                    )
+                );
+            }
+
+            var allInts = typeof(IInt).Assembly.GetTypes().Where(type => typeof(IInt).IsAssignableFrom(type) && !type.IsInterface).ToList();
+            foreach (var allInt in allInts)
+            {
+                config.TypeMappers.Add(
+                    new PrimitiveTypeMapper(
+                        allInt,
+                        schema4 => { schema4.Type = JsonObjectType.Integer; schema4.Format = "int32"; }
+                    )
+                );
+            }
+
+            var allStrings = typeof(IString).Assembly.GetTypes().Where(type => typeof(IString).IsAssignableFrom(type) && !type.IsInterface).ToList();
+            foreach (var allString in allStrings)
+            {
+                config.TypeMappers.Add(
+                    new PrimitiveTypeMapper(
+                        allString,
+                        schema4 => { schema4.Type = JsonObjectType.String; schema4.Format = "string"; }
+                    )
+                );
+            }
         });
-  
-
-      
-
-        //    c.AddSecurityDefinition("Bearer", securitySchema);
-
-        //    var securityRequirement = new OpenApiSecurityRequirement
-        //        {
-        //            { securitySchema, new[] { "Bearer" } }
-        //        };
-
-        //    c.AddSecurityRequirement(securityRequirement);
-
-        //    c.DescribeAllParametersInCamelCase();
-
-        //    // Maps all structured ids to the guid type to show correctly on swagger
-        //    var allGuids = typeof(IGuid).Assembly.GetTypes().Where(type => typeof(IGuid).IsAssignableFrom(type) && !type.IsInterface).ToList();
-        //    foreach (var guid in allGuids)
-        //    {
-        //        c.MapType(guid, () => new OpenApiSchema { Type = "string", Format = "uuid" });
-        //    }
-
-        //    var allLongs = typeof(ILong).Assembly.GetTypes().Where(type => typeof(ILong).IsAssignableFrom(type) && !type.IsInterface).ToList();
-        //    foreach (var allLong in allLongs)
-        //    {
-        //        c.MapType(allLong, () => new OpenApiSchema { Type = "integer", Format = "int64" });
-        //    }
-
-        //    var allInts = typeof(IInt).Assembly.GetTypes().Where(type => typeof(IInt).IsAssignableFrom(type) && !type.IsInterface).ToList();
-        //    foreach (var allInt in allInts)
-        //    {
-        //        c.MapType(allInt, () => new OpenApiSchema { Type = "integer", Format = "int32" });
-        //    }
-
-        //    var allStrings = typeof(IString).Assembly.GetTypes().Where(type => typeof(IString).IsAssignableFrom(type) && !type.IsInterface).ToList();
-        //    foreach (var allString in allStrings)
-        //    {
-        //        c.MapType(allString, () => new OpenApiSchema { Type = "string" });
-        //    }
-        //});
 
         return services;
     }

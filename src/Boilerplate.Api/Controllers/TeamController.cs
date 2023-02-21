@@ -1,6 +1,7 @@
 ﻿//https://www.meziantou.net/using-hierarchyid-with-entity-framework-core.htm
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -95,9 +96,9 @@ public class TeamController : ControllerBase
 
     [HttpPost]
     [Route("createroot")]
-    public async Task<IActionResult> CreateRoot()
+    public async Task<IActionResult> CreateRoot(string email)
     {
-        var user = _context.ApplicationUsers.Where(x => x.Email == "raul.flores@mad.ec").FirstOrDefault();
+        var user = await _context.ApplicationUsers.Where(x => x.Email == email).FirstOrDefaultAsync();
         Team root = new Team
         {
             UserId = new Guid (user.Id),
@@ -111,9 +112,15 @@ public class TeamController : ControllerBase
 
     [HttpPost]
     [Route("createchild")]
-    public async Task<IActionResult> CreateChild([FromBody] Team team)
+    public async Task<IActionResult> CreateChild(UserId managerId,UserId childId)
     {
-        _context.Teams.Add(team);
+        var manager = await _context.Teams.Where(x => x.UserId == managerId).FirstOrDefaultAsync();
+        var child = new Team 
+        { 
+            UserId = childId, 
+            HierarchyId = manager.HierarchyId.GetDescendant(null, null) 
+        };
+        _context.Teams.Add(child);
         await _context.SaveChangesAsync();
         return Ok();
     }
