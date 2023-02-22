@@ -72,7 +72,6 @@ public class TeamController : ControllerBase
 
         foreach (var employee in managees)
         {
-            employee.OldHierarchyId = employee.HierarchyId;
             employee.HierarchyId = employee.HierarchyId.GetReparentedValue(oldManager.HierarchyId, newManager.HierarchyId);
         }
 
@@ -103,7 +102,6 @@ public class TeamController : ControllerBase
         {
             UserId = user.Id,
             HierarchyId = HierarchyId.Parse("/"),
-            OldHierarchyId = HierarchyId.Parse("/"),
         };
         _context.Teams.Add(root);
         await _context.SaveChangesAsync();

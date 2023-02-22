@@ -14,7 +14,6 @@ public class Team : Entity<TeamId>, IDataKeyFilterReadWrite, IDateCreatedAndUpda
     public override TeamId Id { get; set; }
     public UserId UserId { get; set; }
     public HierarchyId HierarchyId { get; set; }
-    public HierarchyId OldHierarchyId { get; set; }
     public string DataKey { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
