@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boilerplate.Domain.Entities;
 [Table("AspNetUsers", Schema = "dbo")]
-public class ApplicationUser : IdentityUser
+public class ApplicationUser : IdentityUser<Guid>
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int LegacyId { get; set; }

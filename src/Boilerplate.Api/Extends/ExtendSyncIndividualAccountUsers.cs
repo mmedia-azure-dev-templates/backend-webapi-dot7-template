@@ -28,6 +28,6 @@ public class ExtendSyncIndividualAccountUsers : ISyncAuthenticationUsers
     public async Task<IEnumerable<SyncAuthenticationUser>> GetAllActiveUserInfoAsync()
     {
         return await _userManager.Users
-            .Select(x => new SyncAuthenticationUser(x.Id, x.Email, x.UserName)).ToListAsync();
+            .Select(x => new SyncAuthenticationUser(x.Id.ToString(), x.Email, x.UserName)).ToListAsync();
     }
 }

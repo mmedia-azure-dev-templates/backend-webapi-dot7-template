@@ -54,10 +54,10 @@ public static class ExtendSetupExtensions
     /// <param name="setupData"></param>
     /// <returns></returns>
     public static AuthSetupData IndividualAccountsAuthentication<TCustomIdentityUser>(this AuthSetupData setupData)
-        where TCustomIdentityUser : IdentityUser
+        where TCustomIdentityUser : ApplicationUser
     {
         setupData.Options.InternalData.AuthPAuthenticationType = AuthPAuthenticationTypes.IndividualAccounts;
-        setupData.Services.AddScoped<IUserClaimsPrincipalFactory<TCustomIdentityUser>, AddPermissionsToUserClaims<TCustomIdentityUser>>();
+        setupData.Services.AddScoped<IUserClaimsPrincipalFactory<TCustomIdentityUser>, Application.Services.AddPermissionsToUserClaims<TCustomIdentityUser>>();
 
         return setupData;
     }

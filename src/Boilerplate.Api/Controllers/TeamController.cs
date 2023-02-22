@@ -101,7 +101,7 @@ public class TeamController : ControllerBase
         var user = await _context.ApplicationUsers.Where(x => x.Email == email).FirstOrDefaultAsync();
         Team root = new Team
         {
-            UserId = new Guid (user.Id),
+            UserId = user.Id,
             HierarchyId = HierarchyId.Parse("/"),
             OldHierarchyId = HierarchyId.Parse("/"),
         };

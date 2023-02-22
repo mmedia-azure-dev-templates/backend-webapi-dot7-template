@@ -12,11 +12,9 @@ using Boilerplate.Application.Features.Auth.Reset;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Implementations;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -79,7 +77,7 @@ public class AuthenticateController : ControllerBase
         }
         var user = await _userManager.FindByEmailAsync(loginUser.Email);
 
-        return await _tokenBuilder.GenerateTokenAndRefreshTokenAsync(user.Id);
+        return await _tokenBuilder.GenerateTokenAndRefreshTokenAsync(user.Id.ToString());
     }
 
     /// <summary>

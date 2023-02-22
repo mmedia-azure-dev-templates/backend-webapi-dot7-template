@@ -1,6 +1,6 @@
 ﻿using Boilerplate.Domain.Entities.Common;
 
-namespace Boilerplate.Application.Features.Teams;
+namespace Boilerplate.Application.Features.Teams.Create;
 
 public record CreateTeamResponse
 {

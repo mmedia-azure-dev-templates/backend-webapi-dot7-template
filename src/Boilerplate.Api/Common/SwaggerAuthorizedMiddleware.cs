@@ -66,7 +66,7 @@ public class SwaggerAuthorizedMiddleware
                     return;
                 }
 
-                var status = await service.FindAuthUserByUserIdAsync(user.Id);
+                var status = await service.FindAuthUserByUserIdAsync(user.Id.ToString());
 
                 if (status.IsValid)
                 {

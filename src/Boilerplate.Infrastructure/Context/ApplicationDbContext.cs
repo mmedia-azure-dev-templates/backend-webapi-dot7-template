@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Boilerplate.Infrastructure.Context;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext, IDataKeyFilterReadOnly
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IContext, IDataKeyFilterReadOnly
 {
     public string DataKey { get; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IGetDataKeyFromUser dataKeyFilter) : base(options) {

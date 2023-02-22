@@ -59,7 +59,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
 
                 UserInformation userInformation = new()
                 {
-                    UserId = Guid.Parse(user.Id),
+                    UserId = user.Id,
                     TypeDocument = request.TypeDocument,
                     Nacionality = request.Nacionality,
                     Ndocument = request.Ndocument,
