@@ -54,10 +54,10 @@ public static class ExtendSetupExtensions
     /// <param name="setupData"></param>
     /// <returns></returns>
     public static AuthSetupData IndividualAccountsAuthentication<TCustomIdentityUser>(this AuthSetupData setupData)
-        where TCustomIdentityUser : IdentityUser
+        where TCustomIdentityUser : ApplicationUser
     {
         setupData.Options.InternalData.AuthPAuthenticationType = AuthPAuthenticationTypes.IndividualAccounts;
-        setupData.Services.AddScoped<IUserClaimsPrincipalFactory<TCustomIdentityUser>, AddPermissionsToUserClaims<TCustomIdentityUser>>();
+        setupData.Services.AddScoped<IUserClaimsPrincipalFactory<TCustomIdentityUser>, Application.Services.AddPermissionsToUserClaims<TCustomIdentityUser>>();
 
         return setupData;
     }
@@ -97,8 +97,7 @@ public static class ExtendSetupExtensions
     public static AuthSetupData AddSuperUserToIndividualAccounts(this AuthSetupData setupData)
     {
         setupData.CheckAuthorizationIsIndividualAccounts();
-        setupData.Options.InternalData.RunSequentiallyOptions
-            .RegisterServiceToRunInJob<StartupServiceIndividualAccountsAddSuperUser<ApplicationUser>>();
+        //setupData.Options.InternalData.RunSequentiallyOptions.RegisterServiceToRunInJob<StartupServiceIndividualAccountsAddSuperUser<ApplicationUser>>();
 
         return setupData;
     }
@@ -113,8 +112,7 @@ public static class ExtendSetupExtensions
         where TCustomIdentityUser : ApplicationUser, new()
     {
         setupData.CheckAuthorizationIsIndividualAccounts();
-        setupData.Options.InternalData.RunSequentiallyOptions
-            .RegisterServiceToRunInJob<StartupServiceIndividualAccountsAddSuperUser<TCustomIdentityUser>>();
+        //setupData.Options.InternalData.RunSequentiallyOptions.RegisterServiceToRunInJob<StartupServiceIndividualAccountsAddSuperUser<TCustomIdentityUser>>();
 
         return setupData;
     }

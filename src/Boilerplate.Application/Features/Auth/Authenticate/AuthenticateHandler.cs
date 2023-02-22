@@ -38,7 +38,7 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, OneOf<Au
         {
             return new AuthenticateNotFound() { Message = "User not found" };
         }
-        var token = await _tokenBuilder.GenerateJwtTokenAsync(user.Id);
+        var token = await _tokenBuilder.GenerateJwtTokenAsync(user.Id.ToString());
         await _context.SaveChangesAsync(cancellationToken);
 
         return new AuthenticateResponse()

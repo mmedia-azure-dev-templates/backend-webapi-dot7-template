@@ -33,6 +33,6 @@ public class ExtendIndividualAccountUserLookup : IFindUserInfoService
     public async Task<FindUserInfoResult> FindUserInfoAsync(string uniqueName)
     {
         ApplicationUser identityUser = await _userManager.FindByNameAsync(uniqueName);
-        return (identityUser == null) ? null : new FindUserInfoResult(identityUser.Id, identityUser.UserName);
+        return (identityUser == null) ? null : new FindUserInfoResult(identityUser.Id.ToString(), identityUser.UserName);
     }
 }

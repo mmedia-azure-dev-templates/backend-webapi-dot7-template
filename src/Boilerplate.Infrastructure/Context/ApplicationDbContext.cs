@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Boilerplate.Infrastructure.Context;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext, IDataKeyFilterReadOnly
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IContext, IDataKeyFilterReadOnly
 {
     public string DataKey { get; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IGetDataKeyFromUser dataKeyFilter) : base(options) {
@@ -27,6 +27,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext
 
     public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public virtual DbSet<UserInformation> UserInformations { get; set; }
+    public virtual DbSet<Team> Teams { get; set; }
     public virtual DbSet<Hero> Heroes { get; set; }
     public virtual DbSet<User> Users { get; set; }
     public DbSet<CompanyTenant> Companies { get; set; }
@@ -109,5 +110,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationUserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserInformationConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TeamConfiguration).Assembly);
     }
 }

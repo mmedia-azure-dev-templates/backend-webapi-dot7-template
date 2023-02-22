@@ -12,11 +12,9 @@ using Boilerplate.Application.Features.Auth.Reset;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Implementations;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -32,16 +30,14 @@ public class AuthenticateController : ControllerBase
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenBuilder _tokenBuilder;
-    private readonly IEmailSender _emailSender;
 
-    public AuthenticateController(IUsersPermissionsService djdjjd,IMailService mail,IMediator mediator, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator, IEmailSender emailSender)
+    public AuthenticateController(IMailService mail,IMediator mediator, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, IClaimsCalculator claimsCalculator)
     {
         _mail = mail;
         _mediator = mediator;
         _signInManager = signInManager;
         _userManager = userManager;
         _tokenBuilder = tokenBuilder;
-        _emailSender = emailSender;
     }
 
     /// <summary>
@@ -81,7 +77,7 @@ public class AuthenticateController : ControllerBase
         }
         var user = await _userManager.FindByEmailAsync(loginUser.Email);
 
-        return await _tokenBuilder.GenerateTokenAndRefreshTokenAsync(user.Id);
+        return await _tokenBuilder.GenerateTokenAndRefreshTokenAsync(user.Id.ToString());
     }
 
     /// <summary>

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Boilerplate.Infrastructure.Configuration;
 
-public class InvoiceTenantChangeService : ITenantChangeService
+public class JibanTenantChangeService : ITenantChangeService
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger _logger;
@@ -28,7 +28,7 @@ public class InvoiceTenantChangeService : ITenantChangeService
     /// </summary>
     public int DeletedTenantId { get; private set; }
 
-    public InvoiceTenantChangeService(ApplicationDbContext context, ILogger<InvoiceTenantChangeService> logger)
+    public JibanTenantChangeService(ApplicationDbContext context, ILogger<JibanTenantChangeService> logger)
     {
         _context = context;
         _logger = logger;

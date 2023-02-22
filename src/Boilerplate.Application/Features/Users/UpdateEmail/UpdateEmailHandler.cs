@@ -55,11 +55,11 @@ public class UpdateEmailHandler : IRequestHandler<UpdateEmailRequest, UpdateEmai
 
                 await _userManager.UpdateAsync(user);
 
-                var authpUser = await _authUsersAdminService.FindAuthUserByUserIdAsync(user.Id);
+                var authpUser = await _authUsersAdminService.FindAuthUserByUserIdAsync(user.Id.ToString());
 
                 if (authpUser != null)
                 {
-                    await _authUsersAdminService.UpdateUserAsync(user.Id, request.EmailReplace, request.EmailReplace);
+                    await _authUsersAdminService.UpdateUserAsync(user.Id.ToString(), request.EmailReplace, request.EmailReplace);
                 }
 
                 scope.Complete();
