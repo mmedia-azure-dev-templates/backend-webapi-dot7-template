@@ -6,6 +6,7 @@ using Boilerplate.Application.Common;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
+using Boilerplate.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -82,6 +83,7 @@ public static class JwtPermissionsSetup
         })
         .UsingEfCoreSqlServer(configuration.GetConnectionString("SqlServerConnection")) //NOTE: This uses the same database as the individual accounts DB
         .IndividualAccountsAuthentication<ApplicationUser>()
+        .RegisterTenantChangeService<JibanTenantChangeService>()
         .RegisterAddClaimToUser<AddTenantNameClaim>()
         .RegisterAddClaimToUser<AddRefreshEveryMinuteClaim>()
         .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()
