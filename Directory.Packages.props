@@ -12,6 +12,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="7.0.3" />
     <PackageVersion Include="Microsoft.SqlServer.Types" Version="160.1000.6" />
     <PackageVersion Include="Net.DistributedFileStoreCache" Version="2.0.0" />
     <PackageVersion Include="NewId" Version="4.0.1" />
