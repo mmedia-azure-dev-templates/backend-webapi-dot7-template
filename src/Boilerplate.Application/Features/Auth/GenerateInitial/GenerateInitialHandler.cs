@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Auth.Generate;
+namespace Boilerplate.Application.Features.Auth.GenerateInitial;
 public class GenerateInitialHandler : IRequestHandler<GenerateInitialRequest, GenerateInitialResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;

@@ -54,7 +54,8 @@ builder.Services.AddScoped<IRazorViewToStringRenderer, RazorViewToStringRenderer
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers
-builder.Services.AddControllersWithViews().AddJsonOptions(o => {
+builder.Services.AddControllersWithViews().AddJsonOptions(o =>
+{
     o.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

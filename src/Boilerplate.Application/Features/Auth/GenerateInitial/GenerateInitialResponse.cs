@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Auth.Generate;
+namespace Boilerplate.Application.Features.Auth.GenerateInitial;
 public class GenerateInitialResponse
 {
     public string Message { get; set; } = "";

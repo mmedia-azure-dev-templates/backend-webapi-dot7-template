@@ -1,5 +1,5 @@
-﻿using Boilerplate.Api.Resources;
-using LocalizeMessagesAndErrors;
+﻿using Boilerplate.Application.Services;
+using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,47 +13,33 @@ public static class LozalizationSetup
 {
     public static IServiceCollection AddLocalizationSetup(this IServiceCollection services)
     {
-
-        //Register the SimpleLocalizer with its own Resource file
-        //This is used for localization of simple messages
-        services.RegisterSimpleLocalizer<SharedResource>();
-
-        services.AddLocalization(options => options.ResourcesPath = "Resources");
-
-        //see https://learn.microsoft.com/es-us/aspnet/core/fundamestals/localization#localization-middleware
-        var supportedCultures = new[] { "es", "en" };
-        var localizationOptions = new RequestLocalizationOptions()
-            .SetDefaultCulture(supportedCultures[0])
-            .AddSupportedCultures(supportedCultures)
-            .AddSupportedUICultures(supportedCultures);
-
-
-        //This defines that the culture is selected by the culture cookie
-        localizationOptions.RequestCultureProviders = new List<IRequestCultureProvider>()
-        {
-            new CookieRequestCultureProvider(),
-            //new AcceptLanguageHeaderRequestCultureProvider(),
-            //new QueryStringRequestCultureProvider()
-        };
+        services.AddLocalization(options => options.ResourcesPath = "Resources");        
 
         services.Configure<RequestLocalizationOptions>(options =>
         {
-            List<CultureInfo> supportedCultures = new List<CultureInfo>
+            var supportedCultures = new List<CultureInfo>
             {
-                new ("es"),
-                new ("en"),
+                new CultureInfo("es-ES"),
+                new CultureInfo("en-US"),
+                        
             };
-            options.DefaultRequestCulture = new RequestCulture("es");
+            
+            options.DefaultRequestCulture = new RequestCulture(culture: supportedCultures[0], uiCulture: supportedCultures[0]);
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
+            options.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
 
-            options.RequestCultureProviders = new List<IRequestCultureProvider>()
-            {
-                new CookieRequestCultureProvider(),
-                new AcceptLanguageHeaderRequestCultureProvider(),
-                new QueryStringRequestCultureProvider()
-            };
+            //options.RequestCultureProviders = new List<IRequestCultureProvider>()
+            //{
+            //    //new CookieRequestCultureProvider(),
+            //    //new AcceptLanguageHeaderRequestCultureProvider(),
+            //    new QueryStringRequestCultureProvider(),
+            //    //new CustomRouteDataRequestCultureProvider()
+            //};
+
         });
+
+        services.AddScoped<ILocalizationService, LocalizationService>();
 
         return services;
     }
