@@ -10,21 +10,21 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Auth.Generate;
-public class GenerateHandler : IRequestHandler<GenerateRequest, GenerateResponse>
+public class GenerateInitialHandler : IRequestHandler<GenerateInitialRequest, GenerateInitialResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMailService _mail;
     private readonly IMediator _mediator;
-    public GenerateHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator)
+    public GenerateInitialHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator)
     {
         _userManager = userManager;
         _mail = mail;
         _mediator = mediator;
     }
 
-    public async Task<GenerateResponse> Handle(GenerateRequest request, CancellationToken cancellationToken)
+    public async Task<GenerateInitialResponse> Handle(GenerateInitialRequest request, CancellationToken cancellationToken)
     {
-        GenerateResponse generateResponse = new GenerateResponse();
+        GenerateInitialResponse generateResponse = new GenerateInitialResponse();
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user == null)
         {

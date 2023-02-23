@@ -129,7 +129,7 @@ public class AuthenticateController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("generatetoken")]
-    public async Task<ActionResult<GenerateResponse>> GenerateToken(GenerateRequest request)
+    public async Task<ActionResult<GenerateInitialResponse>> GenerateToken(GenerateInitialRequest request)
     {
         return await _mediator.Send(request);
     }

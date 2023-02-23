@@ -2,6 +2,7 @@
 using AuthPermissions.BaseCode;
 using AuthPermissions.BaseCode.SetupCode;
 using Boilerplate.Api.Extends;
+using Boilerplate.Api.Resources;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities;
@@ -88,6 +89,7 @@ public static class JwtPermissionsSetup
         .RegisterAddClaimToUser<AddRefreshEveryMinuteClaim>()
         .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()
         //.RegisterAuthenticationProviderReader<SyncIndividualAccountUsers>()
+        .SetupAuthPLocalization<SharedResource>(new[] { "es", "en" })
         .SetupAspNetCoreAndDatabase();
 
         return services;

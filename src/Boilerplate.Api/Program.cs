@@ -61,10 +61,16 @@ builder.Services.AddControllersWithViews().AddJsonOptions(o => {
     o.JsonSerializerOptions.PropertyNamingPolicy = null;
 });
 
+// Add Cache Setup
 builder.Services.AddCacheSetup(builder.Environment);
+
+// Add Email Setup
 builder.Services.AddMailSetup(builder.Configuration);
 builder.Services.Configure<DataProtectionTokenProviderOptions>(o =>
        o.TokenLifespan = TimeSpan.FromHours(4));
+
+// Add Localization
+builder.Services.AddLocalizationSetup();
 
 var app = builder.Build();
 
@@ -91,6 +97,7 @@ app.UseAuthorization();
 app.UsePermissionsChange();   //Example of updating the user's Permission claim when the database change in app using JWT Token for Authentication / Authorization
 app.UseAddEmailClaimToUsers();//Example of adding an extra Email 
 app.MapControllers().RequireAuthorization();
+app.UseLocalizationSetup();
 //app.UseSwaggerAuthorizedMiddleware();
 app.UseSwaggerSetup();
 await app.Migrate();
