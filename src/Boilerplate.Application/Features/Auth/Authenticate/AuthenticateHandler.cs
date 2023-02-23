@@ -1,5 +1,6 @@
 ﻿using AuthPermissions.AspNetCore.JwtTokenCode;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Auth.Authenticate;
 
-public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, OneOf<AuthenticateResponse, AuthenticateNotFound>>
+public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, AuthenticateResponse>
 {
     private readonly IContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -25,26 +26,42 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, OneOf<Au
         _tokenBuilder = tokenBuilder;
     }
 
-    public async Task<OneOf<AuthenticateResponse, AuthenticateNotFound>> Handle(AuthenticateRequest request, CancellationToken cancellationToken)
+    public async Task<AuthenticateResponse> Handle(AuthenticateRequest request, CancellationToken cancellationToken)
     {
+        AuthenticateResponse authenticateResponse = new AuthenticateResponse();
+
+        var user = await _userManager.FindByEmailAsync(request.Email);
+
+        if (user == null)
+        {
+            authenticateResponse.Message = "El email no existe";
+            return authenticateResponse;
+        }
+
+        if (user != null)
+        {
+            if (!user.EmailConfirmed)
+            {
+                authenticateResponse.Message = "El email no ha sido confirmado";
+                return authenticateResponse;
+            }
+
+        }
+
         //NOTE: The _signInManager.PasswordSignInAsync does not change the current ClaimsPrincipal - that only happens on the next access with the token
         var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
         if (!result.Succeeded)
         {
-            return new AuthenticateNotFound() { Message = "Email or Password incorrect" };
+            authenticateResponse.Message = "Credenciales no válidas !";
+            return authenticateResponse;
         }
-        var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user == null)
-        {
-            return new AuthenticateNotFound() { Message = "User not found" };
-        }
+        
         var token = await _tokenBuilder.GenerateJwtTokenAsync(user.Id.ToString());
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new AuthenticateResponse()
-        {
-            Token = token
-        };
+        authenticateResponse.Token = token;
+        authenticateResponse.Transaction = true;
+        return authenticateResponse;
 
         //var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == request.Email.ToLower(), cancellationToken);
         //if (user == null || !BC.Verify(request.Password, user.Password))

@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Features.Auth.Generate;
-public class GenerateRequest : IRequest<GenerateResponse>
+namespace Boilerplate.Application.Features.Auth.GenerateInitial;
+public class GenerateInitialRequest : IRequest<GenerateInitialResponse>
 {
     [Required]
     public string Password { get; set; }

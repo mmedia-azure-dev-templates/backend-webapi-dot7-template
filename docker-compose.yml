@@ -48,8 +48,6 @@ services:
       dockerfile: src/Boilerplate.Api/Dockerfile.development
     image: jiban-api-development:${TAG}
     container_name: jiban-api-development
-    depends_on:
-      - jiban-db
     ports:
       - ${PORT_HTTP}:${PORT_HTTP}
       - ${PORT_HTTPS}:${PORT_HTTPS}

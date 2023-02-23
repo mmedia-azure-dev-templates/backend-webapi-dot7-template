@@ -5,7 +5,6 @@ using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using Razor.Templating.Core;
 using System;
 using System.IO;
 using System.Linq;

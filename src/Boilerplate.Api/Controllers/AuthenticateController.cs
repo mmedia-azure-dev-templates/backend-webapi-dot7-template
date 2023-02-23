@@ -1,4 +1,5 @@
 ﻿using AuthPermissions;
+using AuthPermissions.AspNetCore;
 using AuthPermissions.AspNetCore.JwtTokenCode;
 using AuthPermissions.AspNetCore.Services;
 using AuthPermissions.BaseCode.PermissionsCode;
@@ -6,11 +7,13 @@ using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.Authenticate;
 using Boilerplate.Application.Features.Auth.Confirm;
 using Boilerplate.Application.Features.Auth.Forgot;
-using Boilerplate.Application.Features.Auth.Generate;
 using Boilerplate.Application.Features.Auth.GenerateConfirmation;
+using Boilerplate.Application.Features.Auth.GenerateInitial;
 using Boilerplate.Application.Features.Auth.Reset;
+using Boilerplate.Application.Features.Auth.UpdateEmail;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Implementations;
+using Boilerplate.Domain.PermissionsCode;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -48,15 +51,11 @@ public class AuthenticateController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("authenticate")]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(AuthenticateResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Authenticate([FromQuery] AuthenticateRequest request)
+    public async Task<AuthenticateResponse> Authenticate([FromQuery] AuthenticateRequest request)
     {
         var result = await _mediator.Send(request);
-        return result.Match<IActionResult>(
-            valid => Ok(valid),
-            notFound => NotFound()
-        );
+        return result;
     }
 
     /// <summary>
@@ -130,7 +129,7 @@ public class AuthenticateController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("generatetoken")]
-    public async Task<ActionResult<GenerateResponse>> GenerateToken(GenerateRequest request)
+    public async Task<ActionResult<GenerateInitialResponse>> GenerateToken(GenerateInitialRequest request)
     {
         return await _mediator.Send(request);
     }
@@ -149,6 +148,19 @@ public class AuthenticateController : ControllerBase
     public async Task<ActionResult<ConfirmResponse>> ConfirmEmail([FromQuery] ConfirmRequest request)
     {
         return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// This migration oldEmail to newEmail
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    [HasPermission(DefaultPermissions.UserEmailUpdate)]
+    [HttpPost]
+    [Route("updateemail")]
+    public async Task<ActionResult> UpdateEmail(UpdateEmailRequest request)
+    {
+        return Ok(await _mediator.Send(request));
     }
 
     [HttpGet]

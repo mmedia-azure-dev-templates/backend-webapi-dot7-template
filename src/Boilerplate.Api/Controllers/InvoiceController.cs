@@ -14,7 +14,7 @@ namespace Boilerplate.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class InvoiceController : Controller
+public class InvoiceController : ControllerBase
 {
     private readonly IContext _context;
 
