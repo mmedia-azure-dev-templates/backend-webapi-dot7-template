@@ -99,7 +99,10 @@ app.UsePermissionsChange();   //Example of updating the user's Permission claim 
 app.UseAddEmailClaimToUsers();//Example of adding an extra Email 
 app.MapControllers().RequireAuthorization();
 app.UseLocalizationSetup();
-//app.UseSwaggerAuthorizedMiddleware();
+if (app.Environment.IsProduction())
+{
+    app.UseSwaggerAuthorizedMiddleware();
+}
 app.UseSwaggerSetup();
 await app.Migrate();
 await app.RunAsync();
