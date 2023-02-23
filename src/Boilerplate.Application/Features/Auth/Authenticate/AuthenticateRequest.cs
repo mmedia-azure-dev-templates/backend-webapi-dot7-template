@@ -3,7 +3,7 @@ using OneOf;
 
 namespace Boilerplate.Application.Features.Auth.Authenticate;
 
-public record AuthenticateRequest : IRequest<OneOf<AuthenticateResponse, AuthenticateNotFound>>
+public record AuthenticateRequest : IRequest<AuthenticateResponse>
 {
     public string Email { get; init; } = null!;
 

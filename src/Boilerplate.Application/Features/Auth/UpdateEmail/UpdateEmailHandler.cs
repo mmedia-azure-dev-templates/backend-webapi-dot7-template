@@ -1,6 +1,5 @@
 ﻿using AuthPermissions.AdminCode;
 using AuthPermissions.AdminCode.Services;
-using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Features.Users.CreateUser;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
@@ -17,7 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Boilerplate.Application.Features.Users.UpdateEmail;
+namespace Boilerplate.Application.Features.Auth.UpdateEmail;
 public class UpdateEmailHandler : IRequestHandler<UpdateEmailRequest, UpdateEmailResponse>
 {
     private readonly ILogger<UpdateEmailHandler> _logger;

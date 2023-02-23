@@ -91,7 +91,7 @@ app.UseAuthorization();
 app.UsePermissionsChange();   //Example of updating the user's Permission claim when the database change in app using JWT Token for Authentication / Authorization
 app.UseAddEmailClaimToUsers();//Example of adding an extra Email 
 app.MapControllers().RequireAuthorization();
-app.UseSwaggerAuthorizedMiddleware();
+//app.UseSwaggerAuthorizedMiddleware();
 app.UseSwaggerSetup();
 await app.Migrate();
 await app.RunAsync();

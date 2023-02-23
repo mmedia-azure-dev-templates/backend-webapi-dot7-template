@@ -2,7 +2,7 @@
 using AuthPermissions.AspNetCore;
 using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Api.Common;
-using Boilerplate.Application.Features.Users.UpdateEmail;
+using Boilerplate.Application.Features.Auth.UpdateEmail;
 using Boilerplate.Domain.PermissionsCode;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,19 +18,19 @@ namespace Boilerplate.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class AuthUsersController : ControllerBase
+public class AuthpUsersController : ControllerBase
 {
     private readonly IAuthUsersAdminService _authUsersAdmin;
     private readonly IMediator _mediator;
 
-    public AuthUsersController(IAuthUsersAdminService authUsersAdmin, IMediator mediator)
+    public AuthpUsersController(IAuthUsersAdminService authUsersAdmin, IMediator mediator)
     {
         _authUsersAdmin = authUsersAdmin;
         _mediator = mediator;
     }
 
-    // List users filtered by authUser tenant
-    //[HasPermission(Example3Permissions.UserRead)] !!! Turned off so that I can list all the users
+    // List users filtered by authUser tenant !!! Turned off so that I can list all the users
+    [HasPermission(DefaultPermissions.UserRead)] 
     [HttpGet]
     [Route("authusers")]
     public async Task<List<AuthUserDisplay>> AuthUsers()
@@ -98,13 +98,7 @@ public class AuthUsersController : ControllerBase
         return Ok(AuthUserDisplay.DisplayUserInfo(status.Result));
     }
 
-    [HasPermission(DefaultPermissions.UserEmailUpdate)]
-    [HttpPost]
-    [Route("updateemail")]
-    public async Task<ActionResult> UpdateEmail(UpdateEmailRequest request)
-    {
-        return Ok(await _mediator.Send(request));
-    }
+    
 
 
     [HttpGet]

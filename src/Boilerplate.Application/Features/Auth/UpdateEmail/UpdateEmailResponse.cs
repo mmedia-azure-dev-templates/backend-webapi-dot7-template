@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Users.UpdateEmail;
+namespace Boilerplate.Application.Features.Auth.UpdateEmail;
 public class UpdateEmailResponse
 {
     public string Message { get; set; } = "";

@@ -8,5 +8,7 @@ using System.Threading.Tasks;
 namespace Boilerplate.Application.Features.Auth;
 public record AuthenticateResponse
 {
-    public string Token { get; init; } = null!;
+    public string Token { get; set; } = "";
+    public string Message { get; set; } = "";
+    public bool Transaction { get; set; } = false!;
 }
