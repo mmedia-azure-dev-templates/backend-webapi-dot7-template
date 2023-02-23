@@ -1,4 +1,5 @@
 ﻿//https://www.meziantou.net/using-hierarchyid-with-entity-framework-core.htm
+//https://www.mssqltips.com/sqlservertip/6048/sql-server-hierarchyid-data-type-overview-and-examples/
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
@@ -25,31 +26,31 @@ public class TeamController : ControllerBase
 
     [HttpGet]
     [Route("getparent")]
-    public async Task<IActionResult> GetParent()
+    public async Task<IActionResult> GetParent(UserId childId)
     {
-        var employee = await _context.Teams.FindAsync(2);
+        var child = await _context.Teams.Where(x => x.UserId == childId).FirstOrDefaultAsync();
 
-        var manager = await _context.Teams
-                .FirstOrDefaultAsync(e => e.HierarchyId == employee.HierarchyId.GetAncestor(1));
-        return Ok(manager);
+        var parent = await _context.Teams
+                .FirstOrDefaultAsync(e => e.HierarchyId == child.HierarchyId.GetAncestor(1));
+        return Ok(parent);
     }
 
     [HttpGet]
     [Route("getchildren")]
-    public async Task<IActionResult> GetChildren()
+    public async Task<IActionResult> GetChildren(UserId parentId)
     {
-        var manager = await _context.Teams.FindAsync(2);
-        var employees = await _context.Teams
-            .Where(employee => employee.HierarchyId.GetAncestor(1) == manager.HierarchyId)
+        var parent = await _context.Teams.Where(x => x.UserId == parentId).FirstOrDefaultAsync();
+        var childrens = await _context.Teams
+            .Where(x => x.HierarchyId.GetAncestor(1) == parent.HierarchyId)
             .ToListAsync();
-        return Ok(employees);
+        return Ok(childrens);
     }
 
     [HttpGet]
     [Route("getdescendants")]
-    public async Task<IActionResult> GetDescendants()
+    public async Task<IActionResult> GetDescendants(UserId parentId)
     {
-        var manager = await _context.Teams.FindAsync(2);
+        var manager = await _context.Teams.Where(x => x.UserId == parentId).FirstOrDefaultAsync();
 
         // Parent is considered its own descendant which means that this query returns the manager (Id = 2)
         var result = await _context.Teams
@@ -60,19 +61,19 @@ public class TeamController : ControllerBase
 
     [HttpGet]
     [Route("changeparent")]
-    public async Task<IActionResult> ChangeParent()
+    public async Task<IActionResult> ChangeParent(UserId oldParent, UserId newParent)
     {
-        var oldManager = await _context.Teams.FindAsync(2);
-        var newManager = await _context.Teams.FindAsync(3);
+        var oldManager = await _context.Teams.Where(x => x.UserId == oldParent).FirstOrDefaultAsync();
+        var newManager = await _context.Teams.Where(x => x.UserId == newParent).FirstOrDefaultAsync();
 
         var managees = await _context.Teams
                 .Where(e => e.HierarchyId != oldManager.HierarchyId
                          && e.HierarchyId.IsDescendantOf(oldManager.HierarchyId))
                 .ToListAsync();
 
-        foreach (var employee in managees)
+        foreach (var child in managees)
         {
-            employee.HierarchyId = employee.HierarchyId.GetReparentedValue(oldManager.HierarchyId, newManager.HierarchyId);
+            child.HierarchyId = child.HierarchyId.GetReparentedValue(oldManager.HierarchyId, newManager.HierarchyId);
         }
 
         await _context.SaveChangesAsync();
@@ -81,17 +82,34 @@ public class TeamController : ControllerBase
 
     [HttpGet]
     [Route("getdepthlevel")]
-    public async Task<IActionResult> GetDepthLevel()
+    public async Task<IActionResult> GetDepthLevel(UserId child)
     {
-        var employee = await _context.Teams.FindAsync(6);
+        var employee = await _context.Teams.Where(x => x.UserId == child).FirstOrDefaultAsync();
 
-        Console.WriteLine(employee.HierarchyId + " Level: " + employee.HierarchyId.GetLevel());
-        // /1/2/1/ Level: 3
-        var employeesOfLevel2 = await _context.Teams
-        .Where(e => e.HierarchyId.GetLevel() == 2)
-        .ToListAsync();
-        return Ok();
+        //Console.WriteLine(employee.HierarchyId + " Level: " + employee.HierarchyId.GetLevel());
+        return Ok(employee.HierarchyId + " Level: " + employee.HierarchyId.GetLevel());
     }
+
+    [HttpGet]
+    [Route("getalldepthlevel")]
+    public async Task<IActionResult> GetAllDepthLevel(int level)
+    {
+        var childsAllLevel = await _context.Teams
+        .Where(e => e.HierarchyId.GetLevel() == level)
+        .ToListAsync();
+        return Ok(childsAllLevel);
+    }
+
+    [HttpGet]
+    [Route("getallhierarchyid")]
+    public async Task<IActionResult> GetAllHierarchyId()
+    {
+        var result = await _context.Teams
+        .OrderBy(employee => employee.HierarchyId)
+        .ToListAsync();
+        return Ok(result);
+    }
+
 
     [HttpPost]
     [Route("createroot")]
