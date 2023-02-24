@@ -5,5 +5,5 @@ using System.Threading.Tasks;
 namespace Boilerplate.Domain.Implementations;
 public interface IMailService
 {
-    Task<bool> CreateEmailMessage<TModel>(MailData mailData,TModel mode, CancellationToken ct);
+    Task<bool> CreateEmailMessage<TModel>(MailStruct mailData,TModel mode, CancellationToken ct);
 }

@@ -2,6 +2,7 @@
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using OneOf;
@@ -17,24 +18,26 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, Authenti
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenBuilder _tokenBuilder;
+    private readonly ILocalizationService _locationService;
 
-    public AuthenticateHandler(IContext context, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder)
+    public AuthenticateHandler(IContext context, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, ILocalizationService localizationService)
     {
         _context = context;
         _signInManager = signInManager;
         _userManager = userManager;
         _tokenBuilder = tokenBuilder;
+        _locationService = localizationService;
     }
 
     public async Task<AuthenticateResponse> Handle(AuthenticateRequest request, CancellationToken cancellationToken)
     {
         AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-
+        
         var user = await _userManager.FindByEmailAsync(request.Email);
 
         if (user == null)
         {
-            authenticateResponse.Message = "El email no existe";
+            authenticateResponse.Message = _locationService.GetLocalizedHtmlString("EmailNotExist").Value;
             return authenticateResponse;
         }
 
@@ -42,7 +45,7 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, Authenti
         {
             if (!user.EmailConfirmed)
             {
-                authenticateResponse.Message = "El email no ha sido confirmado";
+                authenticateResponse.Message = _locationService.GetLocalizedHtmlString("EmailNotConfirmed").Value;
                 return authenticateResponse;
             }
 
@@ -52,7 +55,7 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, Authenti
         var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
         if (!result.Succeeded)
         {
-            authenticateResponse.Message = "Credenciales no válidas !";
+            authenticateResponse.Message = _locationService.GetLocalizedHtmlString("CredentialsNotValid").Value;
             return authenticateResponse;
         }
         
@@ -62,40 +65,5 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, Authenti
         authenticateResponse.Token = token;
         authenticateResponse.Transaction = true;
         return authenticateResponse;
-
-        //var user = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == request.Email.ToLower(), cancellationToken);
-        //if (user == null || !BC.Verify(request.Password, user.Password))
-        //{
-        //    return null;
-        //}
-
-        //var tokenHandler = new JwtSecurityTokenHandler();
-        //var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-        //var claims = new ClaimsIdentity(new Claim[]
-        //{
-        //new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        //new(ClaimTypes.Email, user.Email),
-        //new(ClaimTypes.Role, user.Role)
-        //});
-
-        //var expDate = DateTime.UtcNow.AddHours(1);
-
-        //var tokenDescriptor = new SecurityTokenDescriptor
-        //{
-        //    Subject = claims,
-        //    Expires = expDate,
-        //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-        //    Audience = _appSettings.Audience,
-        //    Issuer = _appSettings.Issuer
-        //};
-        //var token = tokenHandler.CreateToken(tokenDescriptor);
-        //await _context.SaveChangesAsync(cancellationToken);
-        //return _mapper.Map<AuthenticateResponse?>(token);
-
-        //return new Jwt
-        //{
-        //    Token = tokenHandler.WriteToken(token),
-        //    ExpDate = expDate
-        //};
     }
 }

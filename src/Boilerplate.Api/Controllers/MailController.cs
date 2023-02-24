@@ -1,5 +1,5 @@
-﻿using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Common;
+﻿using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Emails;
 using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,9 +22,9 @@ public class MailController : ControllerBase
 
     [HttpPost("notification")]
     [AllowAnonymous]
-    public async Task<ObjectResult> SendNotification(MailData mailData)
+    public async Task<ObjectResult> SendNotification(MailStruct mailData)
     {
-        WelcomeMail welcomeMail = new WelcomeMail()
+        WelcomeMailData welcomeMail = new WelcomeMailData()
         {
             Name = "Raúl David Flores Serrano",
             Email = "raul.flores@mad.ec"

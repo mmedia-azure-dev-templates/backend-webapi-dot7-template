@@ -118,7 +118,7 @@ public class MailService : IMailService
         }
     }
 
-    public async Task<bool> CreateEmailMessage<TModel>(MailData mailData, TModel model, CancellationToken ct = default)
+    public async Task<bool> CreateEmailMessage<TModel>(MailStruct mailData, TModel model, CancellationToken ct = default)
     {
         try
         {
@@ -147,7 +147,7 @@ public class MailService : IMailService
                 message.Cc.Add(MailboxAddress.Parse(mailAddress.Trim()));
             
 
-            string body = await _razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/" + mailData.Template + "View.cshtml", model);
+            string body = await _razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/" + mailData.Template + ".cshtml", model);
             //var body = await RazorTemplateEngine.RenderAsync("/Views/Emails/" + mailData.Template + "View.cshtml", model);
             if (string.IsNullOrEmpty(body))
             {

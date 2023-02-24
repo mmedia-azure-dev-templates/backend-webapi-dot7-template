@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Boilerplate.Domain.Entities.Common;
 
-public class MailData
+public class MailStruct
 {
     public string DisplayName { get; }
     public string Subject { get; }
@@ -23,7 +23,7 @@ public class MailData
     public IFormFileCollection? Attachments { get; set; }
     public object? Data { get; set; }
 
-    public MailData(
+    public MailStruct(
         string from, 
         string displayName, 
         List<string> to, 
