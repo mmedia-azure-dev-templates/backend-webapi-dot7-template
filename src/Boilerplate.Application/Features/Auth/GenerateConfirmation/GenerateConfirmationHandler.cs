@@ -1,5 +1,6 @@
 ﻿using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Emails;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -14,12 +15,13 @@ public class GenerateConfirmationHandler : IRequestHandler<GenerateConfirmationR
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMailService _mail;
-    private readonly IMediator _mediator;
-    public GenerateConfirmationHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator)
+    private readonly ILocalizationService _localizationService;
+
+    public GenerateConfirmationHandler(UserManager<ApplicationUser> userManager, IMailService mail, ILocalizationService localizationService)
     {
         _userManager = userManager;
         _mail = mail;
-        _mediator = mediator;
+        _localizationService = localizationService;
     }
 
     public async Task<GenerateConfirmationResponse> Handle(GenerateConfirmationRequest request, CancellationToken cancellationToken)
@@ -34,17 +36,17 @@ public class GenerateConfirmationHandler : IRequestHandler<GenerateConfirmationR
 
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-        MailData mailData = new MailData(
+        MailStruct mailData = new MailStruct(
             user.Email,
             user.FirstName + " " + user.LastName,
             new List<string> {
                         user.Email
             },
-            "Confirm your account",
-            "Welcome"
+            "Confirmar Email",
+            "ConfirmationView"
            );
-        // Create MailData object
-        WelcomeMail welcomeMail = new WelcomeMail()
+
+        ConfirmationMailData welcomeMail = new ConfirmationMailData()
         {
             Name = user.FirstName + " " + user.LastName,
             Email = user.Email,

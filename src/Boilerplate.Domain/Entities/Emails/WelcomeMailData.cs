@@ -1,6 +1,6 @@
-﻿namespace Boilerplate.Domain.Entities;
+﻿namespace Boilerplate.Domain.Entities.Emails;
 
-public class WelcomeMail
+public class WelcomeMailData
 {
     public string Name { get; set; }
     public string Email { get; set; }

@@ -2,6 +2,7 @@
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Emails;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -91,7 +92,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                     token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
                     var callbackUrl = new { token, email = user.Email };
 
-                    MailData mailData = new MailData(
+                    MailStruct mailData = new MailStruct(
                         user.Email,
                         user.FirstName + " " + user.LastName,
                         new List<string> {
@@ -102,7 +103,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                        );
 
                     // Create MailData object
-                    WelcomeMail welcomeMail = new WelcomeMail()
+                    WelcomeMailData welcomeMail = new WelcomeMailData()
                     {
                         Name = user.FirstName + " " + user.LastName,
                         Email = user.Email,

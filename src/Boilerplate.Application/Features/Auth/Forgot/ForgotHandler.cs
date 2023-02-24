@@ -13,6 +13,7 @@ using MediatR;
 using Boilerplate.Domain.Entities.Common;
 using Microsoft.AspNetCore.WebUtilities;
 using Boilerplate.Domain.Implementations;
+using Boilerplate.Domain.Entities.Emails;
 
 namespace Boilerplate.Application.Features.Auth.Forgot;
 public class ForgotHandler : IRequestHandler<ForgotRequest, ForgotResponse>
@@ -40,7 +41,7 @@ public class ForgotHandler : IRequestHandler<ForgotRequest, ForgotResponse>
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
-        MailData mailData = new MailData(
+        MailStruct mailData = new MailStruct(
             user.Email,
             user.FirstName + " " + user.LastName,
             new List<string> {
@@ -50,7 +51,7 @@ public class ForgotHandler : IRequestHandler<ForgotRequest, ForgotResponse>
             "ForgotPassword"
            );
         // Create MailData object
-        WelcomeMail welcomeMail = new WelcomeMail()
+        WelcomeMailData welcomeMail = new WelcomeMailData()
         {
             Name = user.FirstName + " " + user.LastName,
             Email = user.Email,
