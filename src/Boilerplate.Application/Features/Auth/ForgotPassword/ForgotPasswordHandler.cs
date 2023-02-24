@@ -27,7 +27,6 @@ public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, Forg
         _mediator = mediator;
         _localizationService = localizationService;
         _forgotPasswordResponse = (ForgotPasswordResponse?)forgotPasswordResponse;
-        _forgotPasswordResponse.InitDefault(_localizationService);
     }
 
     public async Task<ForgotPasswordResponse> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
