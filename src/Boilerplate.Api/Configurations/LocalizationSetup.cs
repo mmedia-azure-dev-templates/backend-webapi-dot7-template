@@ -1,5 +1,5 @@
-﻿using Boilerplate.Application.Services;
-using Boilerplate.Domain.Implementations;
+﻿using Boilerplate.Domain.Implementations;
+using Boilerplate.Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;

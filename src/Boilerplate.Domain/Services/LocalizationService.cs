@@ -1,10 +1,10 @@
-﻿using Boilerplate.Application.Resources;
-using Boilerplate.Domain.Implementations;
+﻿using Boilerplate.Domain.Implementations;
+using Boilerplate.Domain.Resources;
 using Microsoft.Extensions.Localization;
 using System.Reflection;
 
-namespace Boilerplate.Application.Services;
-public class LocalizationService: ILocalizationService
+namespace Boilerplate.Domain.Services;
+public class LocalizationService : ILocalizationService
 {
     private readonly IStringLocalizer _localizer;
 

@@ -5,8 +5,8 @@ using AuthPermissions.AspNetCore.Services;
 using AuthPermissions.BaseCode.PermissionsCode;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.Authenticate;
-using Boilerplate.Application.Features.Auth.Confirm;
-using Boilerplate.Application.Features.Auth.Forgot;
+using Boilerplate.Application.Features.Auth.ConfirmEmail;
+using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.GenerateConfirmation;
 using Boilerplate.Application.Features.Auth.GenerateInitial;
 using Boilerplate.Application.Features.Auth.Reset;
@@ -113,7 +113,7 @@ public class AuthenticateController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("forgotpassword")]
-    public async Task<ActionResult<ForgotResponse>> ForgotPassword([FromBody]ForgotRequest request)
+    public async Task<ForgotPasswordResponse> ForgotPassword([FromBody]ForgotPasswordRequest request)
     {
         return await _mediator.Send(request);
     }
@@ -128,8 +128,8 @@ public class AuthenticateController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    [Route("generatetoken")]
-    public async Task<ActionResult<GenerateInitialResponse>> GenerateToken(GenerateInitialRequest request)
+    [Route("generateinitialconfirmation")]
+    public async Task<ActionResult<GenerateInitialConfirmationResponse>> GenerateInitialConfirmation(GenerateInitialConfirmationRequest request)
     {
         return await _mediator.Send(request);
     }
@@ -142,10 +142,10 @@ public class AuthenticateController : ControllerBase
         return await _mediator.Send(request);
     }
 
-    [HttpGet]
+    [HttpPost]
     [AllowAnonymous]
     [Route("confirmemail")]
-    public async Task<ActionResult<ConfirmResponse>> ConfirmEmail([FromQuery] ConfirmRequest request)
+    public async Task<ActionResult<ConfirmEmailResponse>> ConfirmEmail([FromBody] ConfirmEmailRequest request)
     {
         return await _mediator.Send(request);
     }

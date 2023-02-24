@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Application.Features.Auth.GenerateInitial;
-public class GenerateInitialRequest : IRequest<GenerateInitialResponse>
+public class GenerateInitialConfirmationRequest : IRequest<GenerateInitialConfirmationResponse>
 {
     [Required]
     public string Password { get; set; }
