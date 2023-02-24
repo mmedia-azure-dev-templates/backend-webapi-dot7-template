@@ -1,7 +1,9 @@
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
+using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.ClaimsChangeCode;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -51,6 +53,8 @@ builder.Services.AddJwtSetup(builder.Configuration);
 //Render Email Templates
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
+builder.Services.AddScoped<ISweetAlert, SweetAlert>();
+builder.Services.AddScoped<IForgotPasswordResponse, ForgotPasswordResponse>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers

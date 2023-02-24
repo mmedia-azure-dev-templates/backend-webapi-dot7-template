@@ -14,31 +14,32 @@ using Boilerplate.Domain.Entities.Common;
 using Microsoft.AspNetCore.WebUtilities;
 using Boilerplate.Domain.Implementations;
 using Boilerplate.Domain.Entities.Emails;
+using Boilerplate.Domain.Entities.Enums;
 
-namespace Boilerplate.Application.Features.Auth.Forgot;
-public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, ForgotPasswordResponse>
+namespace Boilerplate.Application.Features.Auth.ForgotPassword;
+public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, IForgotPasswordResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMailService _mail;
     private readonly IMediator _mediator;
     private readonly ILocalizationService _localizationService;
-    public ForgotPasswordHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator, ILocalizationService localizationService)
+    private IForgotPasswordResponse _forgotPasswordResponse;
+    public ForgotPasswordHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator, ILocalizationService localizationService, IForgotPasswordResponse forgotPasswordResponse)
     {
         _userManager = userManager;
         _mail = mail;
         _mediator = mediator;
         _localizationService = localizationService;
+        _forgotPasswordResponse = forgotPasswordResponse;
     }
 
-    public async Task<ForgotPasswordResponse> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
+    public async Task<IForgotPasswordResponse> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
     {
-        ForgotPasswordResponse forgotResponse = new ForgotPasswordResponse(_localizationService);
+        _forgotPasswordResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTitleSuccess");
         var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+        if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
         {
-            // Don't reveal that the user does not exist or is not confirmed
-            
-            return forgotResponse;
+            return _forgotPasswordResponse;
         }
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
@@ -63,12 +64,12 @@ public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, Forg
 
         if (emailStatus)
         {
-            forgotResponse.Title = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTitleSuccess");
-            forgotResponse.Text = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTextSuccess");
-            forgotResponse.Icon = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess");
-            forgotResponse.Transaction = true;
+            _forgotPasswordResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTitleSuccess");
+            _forgotPasswordResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTextSuccess");
+            _forgotPasswordResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess").Value);
+            _forgotPasswordResponse.Transaction = true;
         }
-        
-        return forgotResponse;
+
+        return _forgotPasswordResponse;
     }
 }

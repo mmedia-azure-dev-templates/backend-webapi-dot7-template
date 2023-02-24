@@ -5,8 +5,8 @@ using AuthPermissions.AspNetCore.Services;
 using AuthPermissions.BaseCode.PermissionsCode;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.Authenticate;
-using Boilerplate.Application.Features.Auth.Confirm;
-using Boilerplate.Application.Features.Auth.Forgot;
+using Boilerplate.Application.Features.Auth.ConfirmEmail;
+using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.GenerateConfirmation;
 using Boilerplate.Application.Features.Auth.GenerateInitial;
 using Boilerplate.Application.Features.Auth.Reset;
@@ -113,7 +113,7 @@ public class AuthenticateController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("forgotpassword")]
-    public async Task<ActionResult<ForgotPasswordResponse>> ForgotPassword([FromBody]ForgotPasswordRequest request)
+    public async Task<IForgotPasswordResponse> ForgotPassword([FromBody]ForgotPasswordRequest request)
     {
         return await _mediator.Send(request);
     }

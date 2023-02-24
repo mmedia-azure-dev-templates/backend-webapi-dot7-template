@@ -1,18 +1,14 @@
-﻿using Boilerplate.Application.Features.Auth.Forgot;
-using Boilerplate.Domain.Entities;
+﻿using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Auth.Confirm;
-public class ConfirmEmailHandler: IRequestHandler<ConfirmEmailRequest, ConfirmEmailResponse>
+namespace Boilerplate.Application.Features.Auth.ConfirmEmail;
+public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailRequest, ConfirmEmailResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMailService _mail;
@@ -35,9 +31,9 @@ public class ConfirmEmailHandler: IRequestHandler<ConfirmEmailRequest, ConfirmEm
             confirmResponse.Message = "User not found!";
             return confirmResponse;
         }
-            
+
         var result = await _userManager.ConfirmEmailAsync(user, request.Token);
-        
+
         if (!result.Succeeded)
         {
             confirmResponse.Message = "Confirm email failed!";

@@ -1,25 +1,19 @@
-﻿using Boilerplate.Domain.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Implementations;
 
-namespace Boilerplate.Application.Features.Auth.Forgot;
-public record ForgotPasswordResponse
+namespace Boilerplate.Application.Features.Auth.ForgotPassword;
+public record ForgotPasswordResponse : IForgotPasswordResponse
 {
-    private readonly ILocalizationService _localizationService;
-    public string Text { get; set; } 
-    public string Title { get; set; }
-    public string Icon { get; set; }
+    public ISweetAlert SweetAlert { get; set; }
     public bool Transaction { get; set; } = false!;
 
-    public ForgotPasswordResponse(ILocalizationService localizationService)
+    public ForgotPasswordResponse(ISweetAlert sweetAlert)
     {
-        _localizationService = localizationService;
-        Text = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTextError").Value;
-        Title = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTitleError").Value;
-        Icon = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconError").Value;
+        SweetAlert = sweetAlert;
     }
-    
+
+    public bool getTransaction()
+    {
+        return Transaction;
+    }
 }
