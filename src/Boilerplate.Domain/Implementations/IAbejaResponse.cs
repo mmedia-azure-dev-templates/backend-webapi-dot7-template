@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Boilerplate.Domain.Implementations;
+
+public class EliasResponse
+{
+    public string nombre { get; set; } = "Elias";
+}
+
+public interface IAbejaResponse
+{
+    public EliasResponse _nombre { get; set; }
+}

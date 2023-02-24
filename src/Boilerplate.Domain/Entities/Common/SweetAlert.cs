@@ -5,12 +5,12 @@ using System;
 namespace Boilerplate.Domain.Entities.Common;
 public class SweetAlert: ISweetAlert
 {
-    private readonly ILocalizationService _localizationService;
+    private ILocalizationService _localizationService { get; set; }
     public string Text { get; set; }
     public string Title { get; set; }
     public SweetAlertIconType Icon { get; set; }
 
-    public SweetAlert(ILocalizationService localizationService)
+    public void InitDefault(ILocalizationService localizationService)
     {
         _localizationService = localizationService;
         Text = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTextError").Value;

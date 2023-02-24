@@ -1,41 +1,38 @@
-﻿using Boilerplate.Application.Features.Users.CreateUser;
-using Boilerplate.Application.Features.Users;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using Boilerplate.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
-using MediatR;
+﻿using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
-using Microsoft.AspNetCore.WebUtilities;
-using Boilerplate.Domain.Implementations;
 using Boilerplate.Domain.Entities.Emails;
 using Boilerplate.Domain.Entities.Enums;
+using Boilerplate.Domain.Implementations;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Auth.ForgotPassword;
-public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, IForgotPasswordResponse>
+public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, ForgotPasswordResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMailService _mail;
     private readonly IMediator _mediator;
     private readonly ILocalizationService _localizationService;
-    private IForgotPasswordResponse _forgotPasswordResponse;
-    public ForgotPasswordHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator, ILocalizationService localizationService, IForgotPasswordResponse forgotPasswordResponse)
+    public ForgotPasswordHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator, ILocalizationService localizationService)
     {
         _userManager = userManager;
         _mail = mail;
         _mediator = mediator;
         _localizationService = localizationService;
-        _forgotPasswordResponse = forgotPasswordResponse;
     }
 
-    public async Task<IForgotPasswordResponse> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
+    public async Task<ForgotPasswordResponse> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
     {
-        _forgotPasswordResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTitleSuccess");
+        ForgotPasswordResponse _forgotPasswordResponse = new ForgotPasswordResponse();
+        _forgotPasswordResponse.SweetAlert = new SweetAlert();
+        _forgotPasswordResponse.SweetAlert.InitDefault(_localizationService);
+
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
         {

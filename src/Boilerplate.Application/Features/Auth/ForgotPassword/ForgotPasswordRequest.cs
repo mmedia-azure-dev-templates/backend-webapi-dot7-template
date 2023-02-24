@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Auth.ForgotPassword;
-public record ForgotPasswordRequest : IRequest<IForgotPasswordResponse>
+public class ForgotPasswordRequest : IRequest<ForgotPasswordResponse>
 {
     public string Email { get; init; } = null!;
 }
