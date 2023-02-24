@@ -16,57 +16,57 @@ using Boilerplate.Domain.Implementations;
 using Boilerplate.Domain.Entities.Emails;
 
 namespace Boilerplate.Application.Features.Auth.Forgot;
-public class ForgotHandler : IRequestHandler<ForgotRequest, ForgotResponse>
+public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, ForgotPasswordResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMailService _mail;
     private readonly IMediator _mediator;
-    public ForgotHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator)
+    private readonly ILocalizationService _localizationService;
+    public ForgotPasswordHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator, ILocalizationService localizationService)
     {
         _userManager = userManager;
         _mail = mail;
         _mediator = mediator;
+        _localizationService = localizationService;
     }
 
-    public async Task<ForgotResponse> Handle(ForgotRequest request, CancellationToken cancellationToken)
+    public async Task<ForgotPasswordResponse> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
     {
-        ForgotResponse forgotResponse = new ForgotResponse();
+        ForgotPasswordResponse forgotResponse = new ForgotPasswordResponse(_localizationService);
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
         {
             // Don't reveal that the user does not exist or is not confirmed
-            forgotResponse.Message = "Error Forgot Password";
+            
             return forgotResponse;
         }
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
-        MailStruct mailData = new MailStruct(
+        MailStruct mailStruct = new MailStruct(
             user.Email,
             user.FirstName + " " + user.LastName,
             new List<string> {
                         user.Email
             },
-            "Forgot Password",
-            "ForgotPassword"
+            "Restableceer Password",
+            "ForgotPasswordView"
            );
-        // Create MailData object
-        WelcomeMailData welcomeMail = new WelcomeMailData()
+
+        ForgotPasswordMailData forgotPasswordMailData = new ForgotPasswordMailData()
         {
             Name = user.FirstName + " " + user.LastName,
             Email = user.Email,
             Token = token
         };
-        bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
+        bool emailStatus = await _mail.CreateEmailMessage(mailStruct, forgotPasswordMailData, new CancellationToken());
 
         if (emailStatus)
         {
-            forgotResponse.Message = "Email send!";
+            forgotResponse.Title = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTitleSuccess");
+            forgotResponse.Text = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTextSuccess");
+            forgotResponse.Icon = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess");
             forgotResponse.Transaction = true;
-        }
-        else
-        {
-            forgotResponse.Message = "Email failed!";
         }
         
         return forgotResponse;

@@ -113,7 +113,7 @@ public class AuthenticateController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [Route("forgotpassword")]
-    public async Task<ActionResult<ForgotResponse>> ForgotPassword([FromBody]ForgotRequest request)
+    public async Task<ActionResult<ForgotPasswordResponse>> ForgotPassword([FromBody]ForgotPasswordRequest request)
     {
         return await _mediator.Send(request);
     }
