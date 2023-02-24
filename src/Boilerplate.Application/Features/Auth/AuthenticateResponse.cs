@@ -1,14 +1,16 @@
 ﻿using Boilerplate.Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Boilerplate.Domain.Implementations;
 
 namespace Boilerplate.Application.Features.Auth;
-public record AuthenticateResponse
+public record AuthenticateResponse:IAuthenticateResponse
 {
     public string Token { get; set; } = "";
-    public string Message { get; set; } = "";
+
+    public SweetAlert SweetAlert { get; set; }
     public bool Transaction { get; set; } = false!;
+
+    public AuthenticateResponse(SweetAlert sweetAlert)
+    {
+        SweetAlert = sweetAlert;
+    }
 }

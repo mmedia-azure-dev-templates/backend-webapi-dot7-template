@@ -1,5 +1,6 @@
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
+using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.ClaimsChangeCode;
@@ -56,6 +57,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
 builder.Services.AddScoped<SweetAlert, SweetAlert>();
 builder.Services.AddScoped<IForgotPasswordResponse, ForgotPasswordResponse>();
+builder.Services.AddScoped<IAuthenticateResponse, AuthenticateResponse>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers

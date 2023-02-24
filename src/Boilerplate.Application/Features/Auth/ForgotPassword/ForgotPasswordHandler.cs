@@ -32,10 +32,18 @@ public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, Forg
     public async Task<ForgotPasswordResponse> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
+        if (user == null)
         {
             return _forgotPasswordResponse;
         }
+
+        if (!await _userManager.IsEmailConfirmedAsync(user))
+        {
+            _forgotPasswordResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("EmailNotConfirmed");
+            _forgotPasswordResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTextError");
+            return _forgotPasswordResponse;
+        }
+
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
