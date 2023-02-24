@@ -5,10 +5,10 @@ using Boilerplate.Domain.Services;
 namespace Boilerplate.Application.Features.Auth.ForgotPassword;
 public class ForgotPasswordResponse: IForgotPasswordResponse
 {
-    public ISweetAlert SweetAlert { get; set; }
+    public SweetAlert SweetAlert { get; set; }
     public bool Transaction { get; set; } = false!;
 
-    public ForgotPasswordResponse(ISweetAlert sweetAlert)
+    public ForgotPasswordResponse(SweetAlert sweetAlert)
     {
         SweetAlert = sweetAlert;
     }

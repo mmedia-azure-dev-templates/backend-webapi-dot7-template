@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 namespace Boilerplate.Domain.Implementations;
 public interface IForgotPasswordResponse
 {
-    public ISweetAlert SweetAlert { get; set; }
+    public SweetAlert SweetAlert { get; set; }
     public bool Transaction { get; set; }
 }
