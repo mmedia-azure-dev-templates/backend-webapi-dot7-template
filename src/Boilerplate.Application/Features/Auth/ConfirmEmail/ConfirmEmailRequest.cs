@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Auth.Confirm;
-public class ConfirmRequest: IRequest<ConfirmResponse>
+public class ConfirmEmailRequest: IRequest<ConfirmEmailResponse>
 {
     public string Token { get; set; } = "";
     public string Email { get; set; } = "";

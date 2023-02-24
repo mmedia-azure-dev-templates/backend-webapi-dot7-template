@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Auth.GenerateInitial;
-public class GenerateInitialResponse
+public class GenerateInitialConfirmationResponse
 {
     public string Message { get; set; } = "";
     public bool Transaction { get; set; } = false!;

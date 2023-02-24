@@ -12,21 +12,21 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Auth.Confirm;
-public class ConfirmHandler: IRequestHandler<ConfirmRequest, ConfirmResponse>
+public class ConfirmEmailHandler: IRequestHandler<ConfirmEmailRequest, ConfirmEmailResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMailService _mail;
     private readonly IMediator _mediator;
-    public ConfirmHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator)
+    public ConfirmEmailHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator)
     {
         _userManager = userManager;
         _mail = mail;
         _mediator = mediator;
     }
 
-    public async Task<ConfirmResponse> Handle(ConfirmRequest request, CancellationToken cancellationToken)
+    public async Task<ConfirmEmailResponse> Handle(ConfirmEmailRequest request, CancellationToken cancellationToken)
     {
-        ConfirmResponse confirmResponse = new ConfirmResponse();
+        ConfirmEmailResponse confirmResponse = new ConfirmEmailResponse();
         var bytes = WebEncoders.Base64UrlDecode(request.Token);
         request.Token = Encoding.UTF8.GetString(bytes);
         var user = await _userManager.FindByEmailAsync(request.Email);

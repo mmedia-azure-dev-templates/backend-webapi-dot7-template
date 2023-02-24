@@ -128,8 +128,8 @@ public class AuthenticateController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    [Route("generatetoken")]
-    public async Task<ActionResult<GenerateInitialResponse>> GenerateToken(GenerateInitialRequest request)
+    [Route("generateinitialconfirmation")]
+    public async Task<ActionResult<GenerateInitialConfirmationResponse>> GenerateInitialConfirmation(GenerateInitialConfirmationRequest request)
     {
         return await _mediator.Send(request);
     }
@@ -142,10 +142,10 @@ public class AuthenticateController : ControllerBase
         return await _mediator.Send(request);
     }
 
-    [HttpGet]
+    [HttpPost]
     [AllowAnonymous]
     [Route("confirmemail")]
-    public async Task<ActionResult<ConfirmResponse>> ConfirmEmail([FromQuery] ConfirmRequest request)
+    public async Task<ActionResult<ConfirmEmailResponse>> ConfirmEmail([FromBody] ConfirmEmailRequest request)
     {
         return await _mediator.Send(request);
     }
