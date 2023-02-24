@@ -55,7 +55,7 @@ builder.Services.AddJwtSetup(builder.Configuration);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
 builder.Services.AddScoped<ISweetAlert, SweetAlert>();
-//builder.Services.AddScoped<IForgotPasswordResponse, ForgotPasswordResponse>();
+builder.Services.AddScoped<IForgotPasswordResponse, ForgotPasswordResponse>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers

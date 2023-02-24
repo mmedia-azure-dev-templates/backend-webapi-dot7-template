@@ -1,8 +1,9 @@
 ﻿using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
+using Boilerplate.Domain.Services;
 
 namespace Boilerplate.Application.Features.Auth.ForgotPassword;
-public class ForgotPasswordResponse
+public class ForgotPasswordResponse: IForgotPasswordResponse
 {
     public SweetAlert SweetAlert { get; set; }
     public bool Transaction { get; set; } = false!;
@@ -12,8 +13,9 @@ public class ForgotPasswordResponse
     //    SweetAlert = sweetAlert;
     //}
 
-    public bool getTransaction()
+    public void InitDefault(ILocalizationService localizationService)
     {
-        return Transaction;
+        SweetAlert sweetAlert = new SweetAlert(localizationService);
+        SweetAlert = sweetAlert;
     }
 }

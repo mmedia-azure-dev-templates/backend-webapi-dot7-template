@@ -10,7 +10,7 @@ public class SweetAlert: ISweetAlert
     public string Title { get; set; }
     public SweetAlertIconType Icon { get; set; }
 
-    public void InitDefault(ILocalizationService localizationService)
+    public SweetAlert(ILocalizationService localizationService)
     {
         _localizationService = localizationService;
         Text = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTextError").Value;

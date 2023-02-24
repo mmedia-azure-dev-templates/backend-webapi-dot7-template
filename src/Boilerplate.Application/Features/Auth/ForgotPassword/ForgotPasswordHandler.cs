@@ -19,20 +19,19 @@ public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, Forg
     private readonly IMailService _mail;
     private readonly IMediator _mediator;
     private readonly ILocalizationService _localizationService;
-    public ForgotPasswordHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator, ILocalizationService localizationService)
+    private ForgotPasswordResponse _forgotPasswordResponse;
+    public ForgotPasswordHandler(UserManager<ApplicationUser> userManager, IMailService mail, IMediator mediator, ILocalizationService localizationService, IForgotPasswordResponse forgotPasswordResponse)
     {
         _userManager = userManager;
         _mail = mail;
         _mediator = mediator;
         _localizationService = localizationService;
+        _forgotPasswordResponse = (ForgotPasswordResponse?)forgotPasswordResponse;
+        _forgotPasswordResponse.InitDefault(_localizationService);
     }
 
     public async Task<ForgotPasswordResponse> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
     {
-        ForgotPasswordResponse _forgotPasswordResponse = new ForgotPasswordResponse();
-        _forgotPasswordResponse.SweetAlert = new SweetAlert();
-        _forgotPasswordResponse.SweetAlert.InitDefault(_localizationService);
-
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
         {
