@@ -3,10 +3,12 @@ using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using OneOf;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -63,6 +65,9 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, Authenti
         await _context.SaveChangesAsync(cancellationToken);
 
         _authenticateResponse.Token = token;
+        _authenticateResponse.SweetAlert.Title = _locationService.GetLocalizedHtmlString("AuthenticateResponseTitleSuccess").Value;
+        _authenticateResponse.SweetAlert.Text = _locationService.GetLocalizedHtmlString("AuthenticateResponseTitleSuccess").Value;
+        _authenticateResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _locationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess").Value);
         _authenticateResponse.Transaction = true;
         return _authenticateResponse;
     }
