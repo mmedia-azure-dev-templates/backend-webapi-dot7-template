@@ -3,6 +3,7 @@ using Boilerplate.Domain.Implementations;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
@@ -17,11 +18,18 @@ public class MailService : IMailService
 {
     private readonly MailSettings _settings;
     private readonly IRazorViewToStringRenderer _razorViewToStringRenderer;
+    private string _frontendUrl;
 
-    public MailService(IOptions<MailSettings> settings, IRazorViewToStringRenderer razorViewToStringRenderer)
+    public MailService(IOptions<MailSettings> settings, IRazorViewToStringRenderer razorViewToStringRenderer, IConfiguration configuration)
     {
         _settings = settings.Value;
         _razorViewToStringRenderer = razorViewToStringRenderer;
+        _frontendUrl = "Hola mundo";
+
+        //public MailSettings(IConfiguration configuration)
+        //{
+        //    FrontendUrl = configuration.GetSection("FRONTEND_URL").Value!;
+        //}
     }
 
     public async Task<bool> SendWithAttachmentsAsync(MailDataWithAttachments mailData, CancellationToken ct = default)
