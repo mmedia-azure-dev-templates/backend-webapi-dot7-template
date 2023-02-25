@@ -54,7 +54,6 @@ builder.Services.AddJwtSetup(builder.Configuration);
 
 //Render Email Templates
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
 builder.Services.AddScoped<SweetAlert, SweetAlert>();
 builder.Services.AddScoped<IForgotPasswordResponse, ForgotPasswordResponse>();
 builder.Services.AddScoped<IAuthenticateResponse, AuthenticateResponse>();

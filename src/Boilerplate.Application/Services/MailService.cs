@@ -1,4 +1,5 @@
-﻿using Boilerplate.Domain.Entities.Common;
+﻿//https://github.com/soundaranbu/Razor.Templating.Core
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -6,7 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Razor.Templating.Core;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -17,19 +20,14 @@ namespace Boilerplate.Application.Services;
 public class MailService : IMailService
 {
     private readonly MailSettings _settings;
-    private readonly IRazorViewToStringRenderer _razorViewToStringRenderer;
     private string _frontendUrl;
+    public Dictionary<string, object> _aditionalDataOrViewBag { get; set; }
 
-    public MailService(IOptions<MailSettings> settings, IRazorViewToStringRenderer razorViewToStringRenderer, IConfiguration configuration)
+    public MailService(IOptions<MailSettings> settings, IConfiguration configuration)
     {
         _settings = settings.Value;
-        _razorViewToStringRenderer = razorViewToStringRenderer;
-        _frontendUrl = "Hola mundo";
-
-        //public MailSettings(IConfiguration configuration)
-        //{
-        //    FrontendUrl = configuration.GetSection("FRONTEND_URL").Value!;
-        //}
+        _aditionalDataOrViewBag = new Dictionary<string, object>();
+        _aditionalDataOrViewBag["FRONTEND_URL"] = configuration.GetSection("FRONTEND_URL").Value!;
     }
 
     public async Task<bool> SendWithAttachmentsAsync(MailDataWithAttachments mailData, CancellationToken ct = default)
@@ -130,6 +128,7 @@ public class MailService : IMailService
     {
         try
         {
+            
             MimeMessage message = new MimeMessage();
 
             //Sender
@@ -153,10 +152,8 @@ public class MailService : IMailService
             // Check if a CC address was supplied in the request
             foreach (string mailAddress in mailData.Cc.Where(x => !string.IsNullOrWhiteSpace(x)))
                 message.Cc.Add(MailboxAddress.Parse(mailAddress.Trim()));
-            
 
-            string body = await _razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/" + mailData.Template + ".cshtml", model);
-            //var body = await RazorTemplateEngine.RenderAsync("/Views/Emails/" + mailData.Template + "View.cshtml", model);
+            string body = await RazorTemplateEngine.RenderAsync("/Views/Emails/" + mailData.Template + ".cshtml", model, _aditionalDataOrViewBag);
             if (string.IsNullOrEmpty(body))
             {
                 throw new InvalidOperationException("Body is empty!");
