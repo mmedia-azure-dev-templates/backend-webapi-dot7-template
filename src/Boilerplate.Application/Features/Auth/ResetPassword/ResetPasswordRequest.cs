@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Application.Features.Auth.Reset;
-public class ResetRequest : IRequest<ResetResponse>
+public class ResetPasswordRequest : IRequest<ResetPasswordResponse>
 {
     [Required]
     public string Password { get; set; }
