@@ -129,4 +129,28 @@
     <value>El email no existe</value>
     <comment>AuthController</comment>
   </data>
+  <data name="ForgotPasswordResponseIconError" xml:space="preserve">
+    <value>error</value>
+    <comment>ForgotPasswordResponse</comment>
+  </data>
+  <data name="ForgotPasswordResponseIconSuccess" xml:space="preserve">
+    <value>success</value>
+    <comment>ForgotPasswordResponse</comment>
+  </data>
+  <data name="ForgotPasswordResponseTextError" xml:space="preserve">
+    <value>Contacta a talento humano para más información</value>
+    <comment>ForgotPasswordResponse</comment>
+  </data>
+  <data name="ForgotPasswordResponseTextSuccess" xml:space="preserve">
+    <value>Por favor revisa tu bandeja de entrada o spam</value>
+    <comment>ForgotPasswordResponse</comment>
+  </data>
+  <data name="ForgotPasswordResponseTitleError" xml:space="preserve">
+    <value>Lo sentimos hubo un problema</value>
+    <comment>ForgotPasswordResponse</comment>
+  </data>
+  <data name="ForgotPasswordResponseTitleSuccess" xml:space="preserve">
+    <value>Excelente! Se ha enviado un correo de restablecimiento de contraseña</value>
+    <comment>ForgotPasswordResponse</comment>
+  </data>
 </root>

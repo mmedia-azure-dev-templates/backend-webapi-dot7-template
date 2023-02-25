@@ -1,10 +1,6 @@
-﻿using Boilerplate.Application.Resources;
-using Boilerplate.Domain.Implementations;
-using LocalizeMessagesAndErrors;
+﻿using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using System.Reflection;
 
 namespace Boilerplate.Api.Controllers;
 

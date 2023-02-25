@@ -1,5 +1,6 @@
 ﻿using AuthPermissions.AspNetCore.JwtTokenCode;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Implementations;
@@ -19,51 +20,50 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, Authenti
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenBuilder _tokenBuilder;
     private readonly ILocalizationService _locationService;
+    private AuthenticateResponse _authenticateResponse;
 
-    public AuthenticateHandler(IContext context, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, ILocalizationService localizationService)
+    public AuthenticateHandler(IContext context, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ITokenBuilder tokenBuilder, ILocalizationService localizationService, IAuthenticateResponse authenticateResponse)
     {
         _context = context;
         _signInManager = signInManager;
         _userManager = userManager;
         _tokenBuilder = tokenBuilder;
         _locationService = localizationService;
+        _authenticateResponse = (AuthenticateResponse?)authenticateResponse;
     }
 
     public async Task<AuthenticateResponse> Handle(AuthenticateRequest request, CancellationToken cancellationToken)
-    {
-        AuthenticateResponse authenticateResponse = new AuthenticateResponse();
-        
+    {        
         var user = await _userManager.FindByEmailAsync(request.Email);
-
+        _authenticateResponse.SweetAlert.Text = "";
         if (user == null)
         {
-            authenticateResponse.Message = _locationService.GetLocalizedHtmlString("EmailNotExist").Value;
-            return authenticateResponse;
+            _authenticateResponse.SweetAlert.Title = _locationService.GetLocalizedHtmlString("EmailNotExist").Value;
+            return _authenticateResponse;
         }
 
         if (user != null)
         {
             if (!user.EmailConfirmed)
             {
-                authenticateResponse.Message = _locationService.GetLocalizedHtmlString("EmailNotConfirmed").Value;
-                return authenticateResponse;
+                _authenticateResponse.SweetAlert.Title = _locationService.GetLocalizedHtmlString("EmailNotConfirmed").Value;
+                return _authenticateResponse;
             }
 
         }
 
-        //NOTE: The _signInManager.PasswordSignInAsync does not change the current ClaimsPrincipal - that only happens on the next access with the token
         var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
         if (!result.Succeeded)
         {
-            authenticateResponse.Message = _locationService.GetLocalizedHtmlString("CredentialsNotValid").Value;
-            return authenticateResponse;
+            _authenticateResponse.SweetAlert.Title = _locationService.GetLocalizedHtmlString("CredentialsNotValid").Value;
+            return _authenticateResponse;
         }
         
         var token = await _tokenBuilder.GenerateJwtTokenAsync(user.Id.ToString());
         await _context.SaveChangesAsync(cancellationToken);
 
-        authenticateResponse.Token = token;
-        authenticateResponse.Transaction = true;
-        return authenticateResponse;
+        _authenticateResponse.Token = token;
+        _authenticateResponse.Transaction = true;
+        return _authenticateResponse;
     }
 }

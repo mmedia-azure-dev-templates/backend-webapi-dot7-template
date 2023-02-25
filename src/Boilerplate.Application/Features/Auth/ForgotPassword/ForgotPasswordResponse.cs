@@ -1,15 +1,14 @@
 ﻿using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
+using Boilerplate.Domain.Services;
 
-namespace Boilerplate.Application.Features.Auth;
-public record AuthenticateResponse:IAuthenticateResponse
+namespace Boilerplate.Application.Features.Auth.ForgotPassword;
+public class ForgotPasswordResponse: IForgotPasswordResponse
 {
-    public string Token { get; set; } = "";
-
     public SweetAlert SweetAlert { get; set; }
     public bool Transaction { get; set; } = false!;
 
-    public AuthenticateResponse(SweetAlert sweetAlert)
+    public ForgotPasswordResponse(SweetAlert sweetAlert)
     {
         SweetAlert = sweetAlert;
     }
