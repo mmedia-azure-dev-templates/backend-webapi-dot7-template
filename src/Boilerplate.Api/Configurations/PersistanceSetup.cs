@@ -28,6 +28,11 @@ public static class PersistanceSetup
         options => {
             options.SignIn.RequireConfirmedEmail = true;
             options.SignIn.RequireConfirmedPhoneNumber = false;
+            options.Password.RequireDigit = false;
+            options.Password.RequiredLength = 6;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
         })
         .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<ApplicationUser>>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
