@@ -1,4 +1,5 @@
 ﻿using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,15 @@ public partial class UserInformation : Entity<IdentificationId>, IDateCreatedAnd
     
     public UserId UserId { get; set; }
 
-    public required string TypeDocument { get; set; }
+    public DocumentType TypeDocument { get; set; }
 
-    public required string Nacionality { get; set; }
+    public required NacionalityType Nacionality { get; set; }
 
     public required string Ndocument { get; set; }
 
-    public required string Gender { get; set; }
+    public required GenderType Gender { get; set; }
 
-    public required string CivilStatus { get; set; }
+    public required CivilStatusType CivilStatus { get; set; }
 
     public DateTime? BirthDate { get; set; }
 
@@ -34,7 +35,7 @@ public partial class UserInformation : Entity<IdentificationId>, IDateCreatedAnd
 
     public DateTime? DepartureDate { get; set; }
 
-    public required short Hired { get; set; }
+    public required bool Hired { get; set; }
 
     public string? ImgUrl { get; set; }
 

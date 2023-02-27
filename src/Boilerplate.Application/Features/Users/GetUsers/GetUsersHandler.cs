@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Users.GetUsers;
 
-public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<GetUserResponse>>
+public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<UserResponse>>
 {
     private readonly IContext _context;
 
@@ -22,11 +22,11 @@ public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<Ge
         _context = context;
     }
 
-    public async Task<PaginatedList<GetUserResponse>> Handle(GetUsersRequest request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<UserResponse>> Handle(GetUsersRequest request, CancellationToken cancellationToken)
     {
         var users = _context.Users
             .WhereIf(!string.IsNullOrEmpty(request.Email), x => EF.Functions.Like(x.Email, $"%{request.Email}%"))
             .WhereIf(request.IsAdmin, x => x.Role == Roles.Admin);
-        return await _mapper.ProjectTo<GetUserResponse>(users).ToPaginatedListAsync(request.CurrentPage, request.PageSize);
+        return await _mapper.ProjectTo<UserResponse>(users).ToPaginatedListAsync(request.CurrentPage, request.PageSize);
     }
 }

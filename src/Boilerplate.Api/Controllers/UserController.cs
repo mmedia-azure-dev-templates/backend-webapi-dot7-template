@@ -41,8 +41,8 @@ public class UserController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [Route("createuser")]
-    public async Task<ActionResult<GetUserResponse>> CreateUser(CreateUsersIdenticationsRequest request)
+    [Route("create")]
+    public async Task<ActionResult<UserResponse>> CreateUser(CreateUsersInformationsRequest request)
     {
         return await _mediator.Send(request);
     }
@@ -62,11 +62,11 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [ProducesResponseType(typeof(PaginatedList<GetUserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedList<UserResponse>), StatusCodes.Status200OK)]
     [Authorize(Roles = Roles.Admin)]
     [HttpGet]
     [Route("getusers")]
-    public async Task<ActionResult<PaginatedList<GetUserResponse>>> GetUsers([FromQuery] GetUsersRequest request)
+    public async Task<ActionResult<PaginatedList<UserResponse>>> GetUsers([FromQuery] GetUsersRequest request)
     {
         return Ok(await _mediator.Send(request));
     }
@@ -81,7 +81,7 @@ public class UserController : ControllerBase
     [HttpGet]
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserById(UserId id)
     {
         var result = await _mediator.Send(new GetUserByIdRequest(id));

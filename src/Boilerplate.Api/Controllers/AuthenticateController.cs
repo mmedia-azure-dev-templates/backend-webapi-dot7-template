@@ -9,7 +9,7 @@ using Boilerplate.Application.Features.Auth.ConfirmEmail;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.GenerateConfirmation;
 using Boilerplate.Application.Features.Auth.GenerateInitial;
-using Boilerplate.Application.Features.Auth.Reset;
+using Boilerplate.Application.Features.Auth.ResetPassword;
 using Boilerplate.Application.Features.Auth.UpdateEmail;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Implementations;

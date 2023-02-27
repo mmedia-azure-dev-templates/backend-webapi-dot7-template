@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Users.GetUserById;
 
-public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, OneOf<GetUserResponse, UserNotFound>>
+public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, OneOf<UserResponse, UserNotFound>>
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
@@ -19,11 +19,11 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, OneOf<GetU
         _context = context;
     }
 
-    public async Task<OneOf<GetUserResponse, UserNotFound>> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
+    public async Task<OneOf<UserResponse, UserNotFound>> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
     {
         var result = await _context.Users
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (result is null) return new UserNotFound();
-        return _mapper.Map<GetUserResponse>(result);
+        return _mapper.Map<UserResponse>(result);
     }
 }

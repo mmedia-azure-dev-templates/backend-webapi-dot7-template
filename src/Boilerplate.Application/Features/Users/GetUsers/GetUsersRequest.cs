@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Boilerplate.Application.Features.Users.GetUsers;
 
-public record GetUsersRequest : PaginatedRequest, IRequest<PaginatedList<GetUserResponse>>
+public record GetUsersRequest : PaginatedRequest, IRequest<PaginatedList<UserResponse>>
 {
     public string? Email { get; init; }
     public bool IsAdmin { get; init; }

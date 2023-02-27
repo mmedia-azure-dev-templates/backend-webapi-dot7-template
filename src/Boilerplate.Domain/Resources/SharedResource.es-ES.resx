@@ -150,4 +150,7 @@
   <data name="ResetPasswordResponseTitleSuccess" xml:space="preserve">
     <value>Excelente! Se ha restablecido el password</value>
   </data>
+  <data name="UserResponseTitleError" xml:space="preserve">
+    <value>Lo sentimos! hubo un problema al crear el usuario identity</value>
+  </data>
 </root>

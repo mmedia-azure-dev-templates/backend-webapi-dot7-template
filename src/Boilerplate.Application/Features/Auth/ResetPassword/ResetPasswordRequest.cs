@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace Boilerplate.Application.Features.Auth.Reset;
+namespace Boilerplate.Application.Features.Auth.ResetPassword;
 public class ResetPasswordRequest : IRequest<ResetPasswordResponse>
 {
     [Required]
