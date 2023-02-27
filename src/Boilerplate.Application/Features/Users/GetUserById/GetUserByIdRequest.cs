@@ -4,4 +4,4 @@ using OneOf;
 
 namespace Boilerplate.Application.Features.Users.GetUserById;
 
-public record GetUserByIdRequest(UserId Id) : IRequest<OneOf<GetUserResponse, UserNotFound>>;
+public record GetUserByIdRequest(UserId Id) : IRequest<OneOf<UserResponse, UserNotFound>>;

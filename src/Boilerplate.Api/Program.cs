@@ -2,7 +2,8 @@ using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
-using Boilerplate.Application.Features.Auth.Reset;
+using Boilerplate.Application.Features.Auth.ResetPassword;
+using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.ClaimsChangeCode;
 using Boilerplate.Domain.Entities.Common;
@@ -59,6 +60,7 @@ builder.Services.AddScoped<SweetAlert, SweetAlert>();
 builder.Services.AddScoped<IForgotPasswordResponse, ForgotPasswordResponse>();
 builder.Services.AddScoped<IAuthenticateResponse, AuthenticateResponse>();
 builder.Services.AddScoped<IResetPasswordResponse, ResetPasswordResponse>();
+builder.Services.AddScoped<IUserResponse, UserResponse>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers

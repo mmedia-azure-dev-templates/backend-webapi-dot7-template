@@ -1,5 +1,6 @@
 using Boilerplate.Application.Features.UserInformations;
 using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Enums;
 using MediatR;
 using System;
 
@@ -7,13 +8,13 @@ public record CreateUserInformationRequest : IRequest<UserInformationResponse>
 {
     public int TypeDocument { get; init; }
 
-    public int Nacionality { get; init; }
+    public NacionalityType Nacionality { get; init; }
 
     public string Ndocument { get; init; } = null!;
 
-    public string Gender { get; init; }
+    public GenderType Gender { get; init; }
 
-    public string CivilStatus { get; init; }
+    public CivilStatusType CivilStatus { get; init; }
 
     public DateTime? BirthDate { get; init; }
 
@@ -21,7 +22,7 @@ public record CreateUserInformationRequest : IRequest<UserInformationResponse>
 
     public DateTime? DepartureDate { get; init; }
 
-    public short Hired { get; init; }
+    public bool Hired { get; init; }
 
     public string? ImgUrl { get; init; }
 

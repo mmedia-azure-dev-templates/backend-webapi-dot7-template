@@ -12,7 +12,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // ApplicationUser Map
-        CreateMap<ApplicationUser, GetUserResponse>().ForMember(dest => dest.Message, opt => opt.MapFrom(org => org.Email));
+        //CreateMap<ApplicationUser, UserResponse>().ForMember(dest => dest.SweetAlert, opt => opt.MapFrom(org => org.Email));
         //CreateMap<CreateUserRequest, User>().ForMember(dest => dest.Role,
         //    opt => opt.MapFrom(org => org.IsAdmin ? Roles.Admin : Roles.User));
         //CreateMap<UpdatePasswordRequest, User>();

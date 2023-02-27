@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuthenticateResponseTitleSuccess" xml:space="preserve">
+    <value>Autenticación correcta</value>
+  </data>
   <data name="CredentialsNotValid" xml:space="preserve">
     <value>Credenciales no válidas !</value>
   </data>
@@ -146,5 +149,8 @@
   </data>
   <data name="ResetPasswordResponseTitleSuccess" xml:space="preserve">
     <value>Excelente! Se ha restablecido el password</value>
+  </data>
+  <data name="UserResponseTitleError" xml:space="preserve">
+    <value>Lo sentimos! hubo un problema al crear el usuario identity</value>
   </data>
 </root>

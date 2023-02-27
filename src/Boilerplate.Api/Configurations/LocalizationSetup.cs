@@ -27,16 +27,14 @@ public static class LozalizationSetup
             options.DefaultRequestCulture = new RequestCulture(culture: supportedCultures[0], uiCulture: supportedCultures[0]);
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
-            options.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
 
-            //options.RequestCultureProviders = new List<IRequestCultureProvider>()
-            //{
-            //    //new CookieRequestCultureProvider(),
-            //    //new AcceptLanguageHeaderRequestCultureProvider(),
-            //    new QueryStringRequestCultureProvider(),
-            //    //new CustomRouteDataRequestCultureProvider()
-            //};
-
+            options.RequestCultureProviders = new List<IRequestCultureProvider>()
+            {
+                //new CookieRequestCultureProvider(),
+                //new AcceptLanguageHeaderRequestCultureProvider(),
+                new QueryStringRequestCultureProvider(),
+                //new CustomRouteDataRequestCultureProvider()
+            };
         });
 
         services.AddScoped<ILocalizationService, LocalizationService>();

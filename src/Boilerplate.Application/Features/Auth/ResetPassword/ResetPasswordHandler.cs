@@ -11,8 +11,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Auth.Reset;
-public class ResetPasswordHandler: IRequestHandler<ResetPasswordRequest,ResetPasswordResponse>
+namespace Boilerplate.Application.Features.Auth.ResetPassword;
+public class ResetPasswordHandler : IRequestHandler<ResetPasswordRequest, ResetPasswordResponse>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private ResetPasswordResponse _resetPasswordResponse;
@@ -40,7 +40,7 @@ public class ResetPasswordHandler: IRequestHandler<ResetPasswordRequest,ResetPas
             _resetPasswordResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseTitleError").Value;
             return _resetPasswordResponse;
         }
-        
+
         _resetPasswordResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("ResetPasswordResponseTitleSuccess").Value;
         _resetPasswordResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess").Value);
         _resetPasswordResponse.Transaction = true;

@@ -15,31 +15,32 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
-using static org.apache.zookeeper.KeeperException;
 
 namespace Boilerplate.Application.Features.Users.CreateUser;
 
-public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest, GetUserResponse>
+public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest, UserResponse>
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
     private readonly ILogger<CreateUserHandler> _logger;
     private readonly IMailService _mail;
+    private readonly ILocalizationService _localizationService;
     private readonly UserManager<ApplicationUser> _userManager;
+    private UserResponse _userResponse;
 
 
-    public CreateUserHandler(IContext context, IMapper mapper, ILogger<CreateUserHandler> logger, IMailService mail, UserManager<ApplicationUser> userManager)
+    public CreateUserHandler(IContext context, IMapper mapper, ILogger<CreateUserHandler> logger, IMailService mail, UserManager<ApplicationUser> userManager, IUserResponse userResponse, ILocalizationService localizationService)
     {
         _logger = logger;
         _mapper = mapper;
         _context = context;
         _mail = mail;
         _userManager = userManager;
+        _userResponse = (UserResponse)userResponse;
+        _localizationService = localizationService;
     }
-    public async Task<GetUserResponse> Handle(CreateUsersIdenticationsRequest request, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(CreateUsersInformationsRequest request, CancellationToken cancellationToken)
     {
-        GetUserResponse userResponse = new GetUserResponse();
-
         using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
             try
@@ -48,15 +49,20 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                 {
                     UserName = request.Email,
                     Email = request.Email,
-                    PasswordHash = request.Password,
+                    PasswordHash = request.Ndocument,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     PhoneNumber = request.PhoneNumber,
                     LastLogin = DateTime.Now,
                 };
 
-                var result = await _userManager.CreateAsync(user, request.Password);
-                
+                var result = await _userManager.CreateAsync(user, request.Ndocument);
+
+                if (!result.Succeeded)
+                { 
+                    _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseTitleError").Value;
+                    return _userResponse;
+                }
 
                 UserInformation userInformation = new()
                 {
@@ -83,8 +89,8 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                     Parroquia = request.Parroquia,
                     Notes = request.Notes
                 };
-                _context.UserInformations.Add(userInformation);
-                await _context.SaveChangesAsync(cancellationToken);
+                var cirilo2 = _context.UserInformations.Add(userInformation);
+                var cirilo = await _context.SaveChangesAsync(cancellationToken);
 
                 if (result.Succeeded)
                 {
@@ -114,12 +120,12 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
 
                     if (emailStatus)
                     {
-                        userResponse.Message = "Email success!";
+                        _userResponse.SweetAlert.Text = "Email success!";
                         _logger.LogInformation(3, "Email success!");
                     }
                     else
                     {
-                        userResponse.Message = "Email failed!";
+                        _userResponse.SweetAlert.Text = "Email failed!";
                         _logger.LogInformation(3, "Email failed!");
                         throw new Exception("Email failed!");
                     }
@@ -133,14 +139,14 @@ public class CreateUserHandler : IRequestHandler<CreateUsersIdenticationsRequest
                     throw new Exception(errors);
                 }
                 scope.Complete();
-                userResponse.Transaction = true;
-                return userResponse;
+                _userResponse.Transaction = true;
+                return _userResponse;
             }
             catch (Exception ex)
             {
                 _logger.LogInformation(3, ex.Message);
-                userResponse.Message = ex.Message;
-                return userResponse;
+                _userResponse.SweetAlert.Text = ex.Message;
+                return _userResponse;
             }
         }
     }
