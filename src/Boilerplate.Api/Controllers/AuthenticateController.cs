@@ -52,7 +52,7 @@ public class AuthenticateController : ControllerBase
     [HttpPost]
     [Route("authenticate")]
     [ProducesResponseType(typeof(AuthenticateResponse), StatusCodes.Status200OK)]
-    public async Task<AuthenticateResponse> Authenticate([FromQuery] AuthenticateRequest request)
+    public async Task<AuthenticateResponse> Authenticate([FromBody] AuthenticateRequest request)
     {
         var result = await _mediator.Send(request);
         return result;
