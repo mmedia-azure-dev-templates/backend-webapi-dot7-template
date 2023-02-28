@@ -142,7 +142,7 @@
     <value>Por favor revisa tu bandeja de entrada o spam</value>
   </data>
   <data name="ForgotPasswordResponseTitleError" xml:space="preserve">
-    <value>Lo sentimos hubo un problema</value>
+    <value>Lo sentimos! hubo un problema</value>
   </data>
   <data name="ForgotPasswordResponseTitleSuccess" xml:space="preserve">
     <value>Excelente! Se ha enviado un correo de restablecimiento de password</value>
@@ -150,7 +150,13 @@
   <data name="ResetPasswordResponseTitleSuccess" xml:space="preserve">
     <value>Excelente! Se ha restablecido el password</value>
   </data>
+  <data name="UserResponseEmailError" xml:space="preserve">
+    <value>Lo sentimos! el email no pudo ser generado</value>
+  </data>
   <data name="UserResponseTitleError" xml:space="preserve">
     <value>Lo sentimos! hubo un problema al crear el usuario identity</value>
+  </data>
+  <data name="UserResponseTitleSuccess" xml:space="preserve">
+    <value>Usuario creado correctamente!</value>
   </data>
 </root>

@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Auth;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Emails;
+using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using OneOf.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,10 +59,10 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                     LastLogin = DateTime.Now,
                 };
 
-                var result = await _userManager.CreateAsync(user, request.Ndocument);
+                var resultUser = await _userManager.CreateAsync(user, request.Ndocument);
 
-                if (!result.Succeeded)
-                { 
+                if (!resultUser.Succeeded)
+                {
                     _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseTitleError").Value;
                     return _userResponse;
                 }
@@ -89,62 +92,54 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                     Parroquia = request.Parroquia,
                     Notes = request.Notes
                 };
-                var cirilo2 = _context.UserInformations.Add(userInformation);
-                var cirilo = await _context.SaveChangesAsync(cancellationToken);
 
-                if (result.Succeeded)
-                {
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-                    var callbackUrl = new { token, email = user.Email };
+                _context.UserInformations.Add(userInformation);
+                await _context.SaveChangesAsync(cancellationToken);
 
-                    MailStruct mailData = new MailStruct(
-                        user.Email,
-                        user.FirstName + " " + user.LastName,
-                        new List<string> {
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+                var callbackUrl = new { token, email = user.Email };
+
+                MailStruct mailData = new MailStruct(
+                    user.Email,
+                    user.FirstName + " " + user.LastName,
+                    new List<string> {
                         user.Email
-                        },
-                        "Confirm your account",
-                        "Welcome"
-                       );
+                    },
+                    "Confirm your account",
+                    "Welcome"
+                   );
 
-                    // Create MailData object
-                    WelcomeMailData welcomeMail = new WelcomeMailData()
-                    {
-                        Name = user.FirstName + " " + user.LastName,
-                        Email = user.Email,
-                        Token = token
-                    };
-
-                    bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
-
-                    if (emailStatus)
-                    {
-                        _userResponse.SweetAlert.Text = "Email success!";
-                        _logger.LogInformation(3, "Email success!");
-                    }
-                    else
-                    {
-                        _userResponse.SweetAlert.Text = "Email failed!";
-                        _logger.LogInformation(3, "Email failed!");
-                        throw new Exception("Email failed!");
-                    }
-
-                }
-                else
+                // Create MailData object
+                WelcomeMailData welcomeMail = new WelcomeMailData()
                 {
-                    List<IdentityError> errorList = result.Errors.ToList();
-                    var errors = string.Join(" | ", errorList.Select(e => e.Description));
-                    _logger.LogInformation(3, "Error create user Identity");
-                    throw new Exception(errors);
+                    Name = user.FirstName + " " + user.LastName,
+                    Email = user.Email,
+                    Token = token
+                };
+
+                bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
+
+                if (!emailStatus)
+                {
+                    _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value;
+                    _userResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value;
+                    _logger.LogInformation(3, _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value);
                 }
+
                 scope.Complete();
+                _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseTitleSuccess").Value;
+                _userResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("UserResponseTitleSuccess").Value;
+                _userResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess").Value);
                 _userResponse.Transaction = true;
                 return _userResponse;
             }
             catch (Exception ex)
             {
+                //List<IdentityError> errorList = result.Errors.ToList();
+                //var errors = string.Join(" | ", errorList.Select(e => e.Description));
                 _logger.LogInformation(3, ex.Message);
+                _userResponse.SweetAlert.Title = ex.Message;
                 _userResponse.SweetAlert.Text = ex.Message;
                 return _userResponse;
             }
