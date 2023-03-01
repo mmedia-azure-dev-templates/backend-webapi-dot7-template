@@ -4,28 +4,60 @@ using Boilerplate.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
+namespace Boilerplate.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230301231024_GeographicLocations")]
+    partial class GeographicLocations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Boilerplate.Domain.Entities.ApplicationRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
             modelBuilder.Entity("Boilerplate.Domain.Entities.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -310,15 +342,12 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
 
             modelBuilder.Entity("Boilerplate.Domain.Entities.GeographicLocation", b =>
                 {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("GeographicLocationId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -327,18 +356,12 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                     b.Property<int?>("Parent")
                         .HasColumnType("int");
 
-                    b.Property<short>("Parroquia")
-                        .HasColumnType("smallint");
+                    b.Property<int>("Parroquia")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id")
-                        .HasName("GeographicLocation_Id_pkey");
+                    b.HasKey("Id");
 
-                    b.HasIndex("GeographicLocationId");
-
-                    b.ToTable("GeographicLocation", "web", t =>
-                        {
-                            t.HasComment("TABLA CON LA DISTRIBUCION GEOGR�FICA DEL ECUADOR PROVINCIAS, CANTONES, PARROQUIAS");
-                        });
+                    b.ToTable("GeographicLocations", "web");
                 });
 
             modelBuilder.Entity("Boilerplate.Domain.Entities.Hero", b =>
@@ -776,6 +799,38 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                         });
                 });
 
+            modelBuilder.Entity("Boilerplate.Domain.Entities.Team", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DataKey")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<HierarchyId>("HierarchyId")
+                        .IsRequired()
+                        .HasColumnType("hierarchyid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DataKey");
+
+                    b.ToTable("Teams", "web");
+                });
+
             modelBuilder.Entity("Boilerplate.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -875,8 +930,8 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Gender");
 
-                    b.Property<short>("Hired")
-                        .HasColumnType("smallint")
+                    b.Property<bool>("Hired")
+                        .HasColumnType("bit")
                         .HasColumnName("Hired");
 
                     b.Property<string>("ImgUrl")
@@ -963,34 +1018,7 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                     b.ToTable("UserInformations", "web");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1004,9 +1032,8 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1015,7 +1042,7 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1029,9 +1056,8 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -1040,7 +1066,7 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
@@ -1053,9 +1079,8 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -1064,13 +1089,13 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -1079,10 +1104,10 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
@@ -1105,13 +1130,6 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                     b.HasOne("Boilerplate.Domain.Entities.Catalog", null)
                         .WithMany("InverseParent")
                         .HasForeignKey("CatalogId");
-                });
-
-            modelBuilder.Entity("Boilerplate.Domain.Entities.GeographicLocation", b =>
-                {
-                    b.HasOne("Boilerplate.Domain.Entities.GeographicLocation", null)
-                        .WithMany("InverseParent")
-                        .HasForeignKey("GeographicLocationId");
                 });
 
             modelBuilder.Entity("Boilerplate.Domain.Entities.LineItem", b =>
@@ -1150,16 +1168,16 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Boilerplate.Domain.Entities.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("Boilerplate.Domain.Entities.ApplicationUser", null)
                         .WithMany()
@@ -1168,7 +1186,7 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("Boilerplate.Domain.Entities.ApplicationUser", null)
                         .WithMany()
@@ -1177,9 +1195,9 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Boilerplate.Domain.Entities.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1192,7 +1210,7 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("Boilerplate.Domain.Entities.ApplicationUser", null)
                         .WithMany()
@@ -1209,11 +1227,6 @@ namespace Boilerplate.Infrastructure.Migrations.ApplicationDb
             modelBuilder.Entity("Boilerplate.Domain.Entities.Contact", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("Boilerplate.Domain.Entities.GeographicLocation", b =>
-                {
-                    b.Navigation("InverseParent");
                 });
 
             modelBuilder.Entity("Boilerplate.Domain.Entities.Invoice", b =>
