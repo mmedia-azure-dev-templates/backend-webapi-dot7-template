@@ -1,7 +1,10 @@
 ﻿using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Reflection.Emit;
 
 namespace Boilerplate.Infrastructure.Configuration;
 
@@ -16,10 +19,18 @@ public class UserInformationConfiguration : IEntityTypeConfiguration<UserInforma
         entity.HasIndex(e => e.Ndocument, "UserInformations_Ndocument_key").IsUnique();
         entity.HasIndex(e => e.UserId, "UserInformations_UserId_key").IsUnique();
         entity.Property(e => e.Id).HasColumnName("Id");
-        entity.Property(e => e.CivilStatus).HasColumnName("CivilStatus");
-        entity.Property(e => e.Gender).HasColumnName("Gender");
-        entity.Property(e => e.Nacionality).HasColumnName("Nacionality");
-        entity.Property(e => e.TypeDocument).HasColumnName("TypeDocument");
+        entity.Property(e => e.CivilStatus).HasColumnName("CivilStatus").HasConversion(
+            v => v.ToString(),
+            v => (CivilStatusType)Enum.Parse(typeof(CivilStatusType), v));
+        entity.Property(e => e.Gender).HasColumnName("Gender").HasConversion(
+            v => v.ToString(),
+            v => (GenderType)Enum.Parse(typeof(GenderType), v));
+        entity.Property(e => e.Nacionality).HasColumnName("Nacionality").HasConversion(
+            v => v.ToString(),
+            v => (NacionalityType)Enum.Parse(typeof(NacionalityType), v));
+        entity.Property(e => e.TypeDocument).HasColumnName("TypeDocument").HasConversion(
+            v => v.ToString(),
+            v => (IdentificationType)Enum.Parse(typeof(IdentificationType), v));
         entity.Property(e => e.Mobile)
             .HasMaxLength(50)
             .HasColumnName("Mobile");
