@@ -27,6 +27,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 
     public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public virtual DbSet<UserInformation> UserInformations { get; set; }
+    public virtual DbSet<GeographicLocation> GeographicLocations { get; set; }
     public virtual DbSet<Team> Teams { get; set; }
     public virtual DbSet<Hero> Heroes { get; set; }
     public virtual DbSet<User> Users { get; set; }
@@ -111,5 +112,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserInformationConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(TeamConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(GeographicLocationConfiguration).Assembly);
     }
 }
