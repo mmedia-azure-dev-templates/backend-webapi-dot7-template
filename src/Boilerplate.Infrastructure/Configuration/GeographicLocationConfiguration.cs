@@ -10,7 +10,5 @@ public class GeographicLocationConfiguration : IEntityTypeConfiguration<Geograph
     public void Configure(EntityTypeBuilder<GeographicLocation> entity)
     {
         entity.Property(e => e.Id).HasConversion<GeographicLocationId.EfCoreValueConverter>();
-        entity.HasKey(e => e.Id).HasName("GeographicLocation_Id_pkey");
-        entity.ToTable("GeographicLocation", "web", tb => tb.HasComment("TABLA CON LA DISTRIBUCION GEOGR�FICA DEL ECUADOR PROVINCIAS, CANTONES, PARROQUIAS"));
     }
 }

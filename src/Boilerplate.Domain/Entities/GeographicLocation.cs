@@ -1,12 +1,14 @@
 ﻿using Boilerplate.Domain.Entities.Common;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boilerplate.Domain.Entities;
 
 /// <summary>
 /// TABLA CON LA DISTRIBUCION GEOGR�FICA DEL ECUADOR PROVINCIAS, CANTONES, PARROQUIAS
 /// </summary>
+[Table("GeographicLocation", Schema = "web")]
 public partial class GeographicLocation : Entity<GeographicLocationId>
 {
     [Required]
