@@ -2,6 +2,7 @@
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Application.Features.Users.CreateUser;
 
@@ -15,11 +16,12 @@ public record CreateUserRequest : IRequest<UserResponse>
 
 public record CreateUsersInformationsRequest : IRequest<UserResponse>
 {
+    [EmailAddress]
     public string Email { get; init; } = null!;
     public string FirstName { get; init; } = null!;
     public string LastName { get; init; } = null!;
     public string PhoneNumber { get; init; } = null!;
-    public DocumentType TypeDocument { get; init; }
+    public IdentificationType TypeDocument { get; init; }
     public NacionalityType Nacionality { get; init; }
     public string Ndocument { get; init; } = null!;
     public GenderType Gender { get; init; }
@@ -36,9 +38,9 @@ public record CreateUsersInformationsRequest : IRequest<UserResponse>
     public string SecondaryStreet { get; init; }
     public string Numeration { get; init; }
     public string Reference { get; init; }
-
     public int Provincia { get; init; }
     public int Canton { get; init; }
     public int Parroquia { get; init; }
     public string? Notes { get; init; }
+    public string ImageProfile { get; set; }
 }

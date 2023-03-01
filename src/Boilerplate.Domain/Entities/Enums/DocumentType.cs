@@ -5,14 +5,11 @@ using System.Text.Json.Serialization;
 
 namespace Boilerplate.Domain.Entities.Enums;
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum DocumentType
+public enum IdentificationType
 {
     [EnumMember(Value = "Cedula")]
     [Display(Name = "Cedula")]
     Cedula,
-    [EnumMember(Value = "Dni")]
-    [Display(Name = "Dni")]
-    Dni,
     [EnumMember(Value = "Pasaporte")]
     [Display(Name = "Pasaporte")]
     Passport
