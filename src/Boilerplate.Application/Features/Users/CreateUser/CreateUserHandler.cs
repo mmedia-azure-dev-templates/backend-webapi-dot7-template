@@ -55,7 +55,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                     PasswordHash = request.Ndocument,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
-                    PhoneNumber = request.PhoneNumber,
+                    PhoneNumber = request.Mobile,
                     LastLogin = DateTime.Now,
                 };
 
@@ -70,19 +70,19 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                 UserInformation userInformation = new()
                 {
                     UserId = user.Id,
-                    TypeDocument = request.TypeDocument,
-                    Nacionality = request.Nacionality,
+                    TypeDocument = request.IdentificationType,
+                    Nacionality = request.NacionalityType,
                     Ndocument = request.Ndocument,
-                    Gender = request.Gender,
-                    CivilStatus = request.CivilStatus,
+                    Gender = request.GenderType,
+                    CivilStatus = request.CivilStatusType,
                     BirthDate = request.BirthDate,
-                    EntryDate = request.EntryDate,
-                    DepartureDate = request.DepartureDate,
-                    Hired = request.Hired,
-                    ImgUrl = request.ImgUrl,
-                    CurriculumUrl = request.CurriculumUrl,
+                    //EntryDate = request.EntryDate,
+                    //DepartureDate = request.DepartureDate,
+                    Hired = false,
+                    //ImgUrl = request.ImgUrl,
+                    //CurriculumUrl = request.CurriculumUrl,
                     Mobile = request.Mobile,
-                    Phone = request.Phone,
+                    //Phone = request.Phone,
                     PrimaryStreet = request.PrimaryStreet,
                     SecondaryStreet = request.SecondaryStreet,
                     Numeration = request.Numeration,
@@ -90,7 +90,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                     Provincia = request.Provincia,
                     Canton = request.Canton,
                     Parroquia = request.Parroquia,
-                    Notes = request.Notes
+                    //Notes = request.Notes
                 };
 
                 _context.UserInformations.Add(userInformation);
