@@ -25,10 +25,19 @@ public class FilesController : ControllerBase
         _session = session;
     }
 
+    [HttpPost("imageprofilebase64")]
+    public async Task<IActionResult> ImgeProfileBase64(string base64File)
+    {
+        string bucketFolderRelative = "users/" + _session.UserId.ToString();
+        await _awsS3Service.UploadFileBase64Async(base64File, bucketFolderRelative, "fotoperfil.jpg");
+        return Ok();
+    }
+
     [HttpPost("imageprofile")]
     public async Task<IActionResult> ImgeProfile(IFormFile file)
     {
-        await _awsS3Service.UploadFileAsync(file);
+        string bucketFolderRelative = "users/"+_session.UserId.ToString();
+        await _awsS3Service.UploadFileAsync(file, bucketFolderRelative, "fotoperfil.jpg");
         return Ok();
     }
 

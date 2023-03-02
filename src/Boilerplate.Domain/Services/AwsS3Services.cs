@@ -7,6 +7,10 @@ using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using System.IO;
+using System.Net.Http;
+using System;
+using System.Text.RegularExpressions;
 
 namespace Boilerplate.Domain.Services;
 public class AwsS3Service : IAwsS3Service
@@ -22,7 +26,7 @@ public class AwsS3Service : IAwsS3Service
         
     }
 
-    public async Task<AmazonObject> UploadFileAsync(IFormFile file)
+    public async Task<AmazonObject> UploadFileAsync(IFormFile file, string bucketFolderRelative,string fileName)
     {
         var response = new AmazonObject();
         var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, _awsS3Configuration.BucketName);
@@ -31,16 +35,36 @@ public class AwsS3Service : IAwsS3Service
 
         var request = new PutObjectRequest()
         {
-            BucketName = _awsS3Configuration.BucketName,
-            Key = string.IsNullOrEmpty(_awsS3Configuration.BucketFolder) ? file.FileName : $"{_awsS3Configuration.BucketFolder?.TrimEnd('/')}/{file.FileName}",
+            BucketName = $"{_awsS3Configuration.BucketName}",
+            Key = $"{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}", //$"{file.FileName}",
             InputStream = file.OpenReadStream()
         };
         request.Metadata.Add("Content-Type", file.ContentType);
         await _s3Client.PutObjectAsync(request);
 
-        
         return response;
-        //return Ok($"File {_awsS3Configuration.BucketFolder}/{file.FileName} uploaded to S3 successfully!");
+    }
+
+    public async Task<AmazonObject> UploadFileBase64Async(string base64File, string bucketFolderRelative, string fileName)
+    {
+        var response = new AmazonObject();
+        var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, _awsS3Configuration.BucketName);
+        if (!bucketExists) return response; //return NotFound($"Bucket {_awsS3Configuration.BucketName} does not exist.");
+        Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
+        base64File = regex.Replace(base64File, string.Empty);
+        using (var inputStream = new MemoryStream(Convert.FromBase64String(base64File)))
+        {
+            var request = new PutObjectRequest()
+            {
+                InputStream = inputStream,
+                //ContentType = "application/pdf",
+                BucketName = $"{_awsS3Configuration.BucketName}",
+                Key = $"{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}",
+                CannedACL = S3CannedACL.BucketOwnerFullControl
+            };
+            await _s3Client.PutObjectAsync(request);
+        }
+        return response;
     }
 
     //public async Task<AmazonObject> UploadFileAsync(AmazonObjectToUpload amazonObjectToUpload)
