@@ -9,6 +9,7 @@ using Boilerplate.Application.Services;
 using Boilerplate.Domain.ClaimsChangeCode;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
+using Boilerplate.Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.DotNet.Scaffolding.Shared;
@@ -57,8 +58,7 @@ builder.Services.AddSwaggerSetup();
 builder.Services.AddJwtSetup(builder.Configuration);
 
 // Add AWS S3
-builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
-builder.Services.AddAWSService<IAmazonS3>();
+builder.Services.AddAwsS3Setup(builder.Configuration);
 
 //Render Email Templates
 builder.Services.AddRazorPages();
