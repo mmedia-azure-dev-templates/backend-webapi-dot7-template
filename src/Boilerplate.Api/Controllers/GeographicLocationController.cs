@@ -1,5 +1,6 @@
 ﻿using AuthPermissions.AspNetCore.JwtTokenCode;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.GeographicLocation;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Microsoft.AspNetCore.Authorization;
@@ -24,25 +25,64 @@ public class GeographicLocationController : ControllerBase
 
     [HttpGet]
     [Route("provincias")]
-    public async Task<List<GeographicLocation>> Provincias()
+    public async Task<List<GeographicLocationResponse>> Provincias()
     {
         var result = await _context.GeographicLocations.Where(x => x.Parent == null).Where(x => x.Parroquia == 0).OrderBy(x => x.Name).ToListAsync();
-        return result;
+        var respuesta = new List<GeographicLocationResponse>();
+        foreach (var item in result)
+        {
+            respuesta.Add(new GeographicLocationResponse
+            {
+                Id = item.Id,
+                Code = item.Code,
+                Name = item.Name,
+                Parent = item.Parent,
+                Parroquia = item.Parroquia
+            });
+        }
+
+        return respuesta;
     }
 
     [HttpGet]
     [Route("cantones")]
-    public async Task<List<GeographicLocation>> Cantones([FromQuery] GeographicLocationId cantonId)
+    public async Task<List<GeographicLocationResponse>> Cantones([FromQuery] GeographicLocationId cantonId)
     {
         var result = await _context.GeographicLocations.Where(x => x.Parent == cantonId.Value).OrderBy(x => x.Name).ToListAsync();
-        return result;
+        var respuesta = new List<GeographicLocationResponse>();
+        foreach (var item in result)
+        {
+            respuesta.Add(new GeographicLocationResponse
+            {
+                Id = item.Id,
+                Code = item.Code,
+                Name = item.Name,
+                Parent = item.Parent,
+                Parroquia = item.Parroquia
+            });
+        }
+
+        return respuesta;
     }
 
     [HttpGet]
     [Route("parroquias")]
-    public async Task<List<GeographicLocation>> Parroquias([FromQuery]GeographicLocationId parroquiaId)
+    public async Task<List<GeographicLocationResponse>> Parroquias([FromQuery]GeographicLocationId parroquiaId)
     {
         var result = await _context.GeographicLocations.Where(x => x.Parent == parroquiaId.Value).Where(x=>x.Parroquia==1).OrderBy(x => x.Name).ToListAsync();
-        return result;
+        var respuesta = new List<GeographicLocationResponse>();
+        foreach (var item in result)
+        {
+            respuesta.Add(new GeographicLocationResponse
+            {
+                Id = item.Id,
+                Code = item.Code,
+                Name = item.Name,
+                Parent = item.Parent,
+                Parroquia = item.Parroquia
+            });
+        }
+
+        return respuesta;
     }
 }
