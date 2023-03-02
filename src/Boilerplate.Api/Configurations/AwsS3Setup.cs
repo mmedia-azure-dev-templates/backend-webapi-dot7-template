@@ -2,6 +2,7 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Boilerplate.Domain.Implementations;
+using Boilerplate.Domain.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,8 @@ public static class AwsS3Setup
         var options = configuration.GetAWSOptions();
         services.AddDefaultAWSOptions(options);
         services.AddAWSService<IAmazonS3>();
+        services.AddSingleton<IAwsS3Configuration, AwsS3ConfigurationServices>();
+        services.AddScoped<IAwsS3Service, AwsS3Service>();
         return services;
     }
 }

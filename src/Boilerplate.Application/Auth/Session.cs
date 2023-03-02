@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Security.Claims;
-using ISession = Boilerplate.Domain.Auth.Interfaces.ISession;
+using ISession = Boilerplate.Domain.Implementations.ISession;
 
 namespace Boilerplate.Application.Auth;
 

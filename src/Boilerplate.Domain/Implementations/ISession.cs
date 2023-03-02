@@ -1,7 +1,7 @@
 ﻿using Boilerplate.Domain.Entities.Common;
 using System;
 
-namespace Boilerplate.Domain.Auth.Interfaces;
+namespace Boilerplate.Domain.Implementations;
 
 public interface ISession
 {

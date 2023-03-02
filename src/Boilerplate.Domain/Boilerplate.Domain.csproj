@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AuthPermissions.AspNetCore" />
+    <PackageReference Include="AWSSDK.S3" />
     <PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="NewId" />

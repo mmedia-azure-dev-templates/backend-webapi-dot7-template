@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,9 +15,11 @@ namespace Boilerplate.Api.Controllers;
 public class FilesController : ControllerBase
 {
     private readonly IAmazonS3 _s3Client;
-    public FilesController(IAmazonS3 s3Client)
+    private readonly IAwsS3Service _awsS3Service;
+    public FilesController(IAmazonS3 s3Client, IAwsS3Service awsS3Service)
     {
         _s3Client = s3Client;
+        _awsS3Service = awsS3Service;
     }
     [HttpPost("upload")]
     public async Task<IActionResult> UploadFileAsync(IFormFile file, string bucketName, string? prefix)
@@ -31,6 +34,8 @@ public class FilesController : ControllerBase
         };
         request.Metadata.Add("Content-Type", file.ContentType);
         await _s3Client.PutObjectAsync(request);
+        
+           
         return Ok($"File {prefix}/{file.FileName} uploaded to S3 successfully!");
     }
 
