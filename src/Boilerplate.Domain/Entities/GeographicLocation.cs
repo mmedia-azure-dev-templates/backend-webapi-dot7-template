@@ -9,7 +9,7 @@ namespace Boilerplate.Domain.Entities;
 /// TABLA CON LA DISTRIBUCION GEOGR�FICA DEL ECUADOR PROVINCIAS, CANTONES, PARROQUIAS
 /// </summary>
 [Table("GeographicLocations", Schema = "web")]
-public partial class GeographicLocation : Entity<GeographicLocationId>
+public class GeographicLocation : Entity<GeographicLocationId>
 {
     [Required]
     public override GeographicLocationId Id { get; set; }
