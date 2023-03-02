@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,19 +27,17 @@ public class FilesController : ControllerBase
     }
 
     [HttpPost("imageprofilebase64")]
-    public async Task<IActionResult> ImgeProfileBase64(string base64File)
+    public async Task<AmazonObject> ImgeProfileBase64(string base64File)
     {
         string bucketFolderRelative = "users/" + _session.UserId.ToString();
-        await _awsS3Service.UploadFileBase64Async(base64File, bucketFolderRelative, "fotoperfil.jpg");
-        return Ok();
+        return await _awsS3Service.UploadFileBase64Async(base64File, bucketFolderRelative, "fotoperfil.jpg");
     }
 
     [HttpPost("imageprofile")]
-    public async Task<IActionResult> ImgeProfile(IFormFile file)
+    public async Task<AmazonObject> ImgeProfile(IFormFile file)
     {
         string bucketFolderRelative = "users/"+_session.UserId.ToString();
-        await _awsS3Service.UploadFileAsync(file, bucketFolderRelative, "fotoperfil.jpg");
-        return Ok();
+        return await _awsS3Service.UploadFileAsync(file, bucketFolderRelative, "fotoperfil.jpg");
     }
 
     [HttpPost("upload")]
