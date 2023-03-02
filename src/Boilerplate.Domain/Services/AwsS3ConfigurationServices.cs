@@ -12,7 +12,6 @@ public class AwsS3ConfigurationServices : IAwsS3Configuration
         _configuration = configuration;
         BucketName = _configuration["AWS_BUCKET"]!;
         BucketFolder = _configuration["AWS_FOLDER"]!;
-        BucketFolderRelative = "";
         Region = _configuration["AWS_REGION"]!;
         AwsAccessKey = _configuration["AWS_ACCESS_KEY_ID"]!;
         AwsSecretAccessKey = _configuration["AWS_SECRET_ACCESS_KEY"]!;
@@ -21,7 +20,6 @@ public class AwsS3ConfigurationServices : IAwsS3Configuration
 
     public string BucketName { get; set; }
     public string BucketFolder { get; set; }
-    public string BucketFolderRelative { get; set; }
     public string Region { get; set; }
     public string AwsAccessKey { get; set; }
     public string AwsSecretAccessKey { get; set; }

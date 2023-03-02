@@ -13,6 +13,5 @@ public interface IAwsS3Configuration
     string AwsSessionToken { get; set; }
     string BucketName { get; set; }
     string BucketFolder { get; set; }
-    string BucketFolderRelative { get; set; }
     string Region { get; set; }
 }
