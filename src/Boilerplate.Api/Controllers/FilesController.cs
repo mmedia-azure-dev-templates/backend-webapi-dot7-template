@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using ISession = Boilerplate.Domain.Implementations.ISession;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -16,11 +17,21 @@ public class FilesController : ControllerBase
 {
     private readonly IAmazonS3 _s3Client;
     private readonly IAwsS3Service _awsS3Service;
-    public FilesController(IAmazonS3 s3Client, IAwsS3Service awsS3Service)
+    private readonly ISession _session;
+    public FilesController(IAmazonS3 s3Client, IAwsS3Service awsS3Service,ISession session)
     {
         _s3Client = s3Client;
         _awsS3Service = awsS3Service;
+        _session = session;
     }
+
+    [HttpPost("imageprofile")]
+    public async Task<IActionResult> ImgeProfile(IFormFile file)
+    {
+        await _awsS3Service.UploadFileAsync(file);
+        return Ok();
+    }
+
     [HttpPost("upload")]
     public async Task<IActionResult> UploadFileAsync(IFormFile file, string bucketName, string? prefix)
     {

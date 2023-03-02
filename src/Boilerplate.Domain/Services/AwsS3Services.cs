@@ -14,13 +14,10 @@ public class AwsS3Service : IAwsS3Service
     //https://stackoverflow.com/questions/61919704/get-url-of-uploaded-s3-object-net
     private readonly IAmazonS3 _s3Client;
     private readonly IAwsS3Configuration _awsS3Configuration;
-    private readonly ISession _session;
 
-    public AwsS3Service(IAwsS3Configuration awsS3Configuration, ISession session)
+    public AwsS3Service(IAwsS3Configuration awsS3Configuration)
     {
         _awsS3Configuration = awsS3Configuration;
-        _session = session;
-        _awsS3Configuration.BucketFolderRelative = _session.UserId.ToString();
         _s3Client = new AmazonS3Client(_awsS3Configuration.AwsAccessKey, _awsS3Configuration.AwsSecretAccessKey, RegionEndpoint.GetBySystemName(_awsS3Configuration.Region));
         
     }
