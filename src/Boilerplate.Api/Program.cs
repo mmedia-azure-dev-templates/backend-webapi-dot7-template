@@ -1,3 +1,4 @@
+using Amazon.S3;
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
 using Boilerplate.Application.Features.Auth;
@@ -11,6 +12,7 @@ using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.DotNet.Scaffolding.Shared;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -53,6 +55,10 @@ builder.Services.AddSwaggerSetup();
 
 // Add jwt
 builder.Services.AddJwtSetup(builder.Configuration);
+
+// Add AWS S3
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
 
 //Render Email Templates
 builder.Services.AddRazorPages();
