@@ -34,4 +34,5 @@ public record CreateUsersInformationsRequest : IRequest<UserResponse>
     public int Provincia { get; init; }
     public int Canton { get; init; }
     public int Parroquia { get; init; }
+    public string ImageProfile { get; init; }
 }

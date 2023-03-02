@@ -56,7 +56,6 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     PhoneNumber = request.Mobile,
-                    LastLogin = DateTime.Now,
                 };
 
                 var resultUser = await _userManager.CreateAsync(user, request.Ndocument);
@@ -66,6 +65,8 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                     _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseTitleError").Value;
                     return _userResponse;
                 }
+
+
 
                 UserInformation userInformation = new()
                 {
