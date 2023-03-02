@@ -48,7 +48,7 @@ public class AwsS3Service : IAwsS3Service
         response.ObjectUrl = $"https://{_awsS3Configuration.BucketName}.s3.amazonaws.com/{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}";
         // S3Uri
         //https://mad-storage.s3.amazonaws.com/devempresas/users/a49cf027-915b-4933-9fce-30def6d67037/fotoperfil.jpg
-        response.S3Uri = $"s3://{_awsS3Configuration.BucketFolder}.s3.amazonaws.com/{bucketFolderRelative}/{fileName}";
+        response.S3Uri = $"s3://{_awsS3Configuration.BucketName}/{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}";
         return response;
     }
 
@@ -76,7 +76,7 @@ public class AwsS3Service : IAwsS3Service
         response.ObjectUrl = $"https://{_awsS3Configuration.BucketName}.s3.amazonaws.com/{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}";
         // S3Uri
         //https://mad-storage.s3.amazonaws.com/devempresas/users/a49cf027-915b-4933-9fce-30def6d67037/fotoperfil.jpg
-        response.S3Uri = $"s3://{_awsS3Configuration.BucketFolder}.s3.amazonaws.com/{bucketFolderRelative}/{fileName}";
+        response.S3Uri = $"s3://{_awsS3Configuration.BucketName}/{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}";
         return response;
     }
 
