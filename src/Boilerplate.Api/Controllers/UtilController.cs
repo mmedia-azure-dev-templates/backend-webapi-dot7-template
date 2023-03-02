@@ -1,4 +1,4 @@
-﻿using ISession = Boilerplate.Domain.Auth.Interfaces.ISession;
+﻿using ISession = Boilerplate.Domain.Implementations.ISession;
 using Boilerplate.Application.Features.Utils.GeneratePassword;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

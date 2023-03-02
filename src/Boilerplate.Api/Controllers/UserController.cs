@@ -8,14 +8,13 @@ using Boilerplate.Application.Features.Users.GetUserById;
 using Boilerplate.Application.Features.Users.GetUsers;
 using Boilerplate.Application.Features.Users.Migration;
 using Boilerplate.Application.Features.Users.UpdatePassword;
-using Boilerplate.Domain.Auth;
 using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using ISession = Boilerplate.Domain.Auth.Interfaces.ISession;
+using ISession = Boilerplate.Domain.Implementations.ISession;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -63,7 +62,7 @@ public class UserController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [ProducesResponseType(typeof(PaginatedList<UserResponse>), StatusCodes.Status200OK)]
-    [Authorize(Roles = Roles.Admin)]
+    //[Authorize(Roles = Roles.Admin)]
     [HttpGet]
     [Route("getusers")]
     public async Task<ActionResult<PaginatedList<UserResponse>>> GetUsers([FromQuery] GetUsersRequest request)
@@ -77,7 +76,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="id">The user's ID</param>
     /// <returns></returns>
-    [Authorize(Roles = Roles.Admin)]
+    //[Authorize(Roles = Roles.Admin)]
     [HttpGet]
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -98,7 +97,7 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
-    [Authorize(Roles = Roles.Admin)]
+    //[Authorize(Roles = Roles.Admin)]
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteUser(UserId id)

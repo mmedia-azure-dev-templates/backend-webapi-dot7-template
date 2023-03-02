@@ -64,7 +64,7 @@ public static class JwtPermissionsSetup
             });
 
 
-        var tokenExpire = int.Parse(configuration.GetSection("JwtData:TokenExpire").Value!);
+        var tokenExpire = int.Parse(configuration["JwtData:TokenExpire"]!);
 
         services.RegisterAuthPermissions<DefaultPermissions>(options =>
         {

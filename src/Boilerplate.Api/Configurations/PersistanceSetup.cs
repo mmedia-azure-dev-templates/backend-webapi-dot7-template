@@ -1,6 +1,6 @@
 ﻿using Boilerplate.Application.Auth;
-using Boilerplate.Domain.Auth.Interfaces;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Implementations;
 using Boilerplate.Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
