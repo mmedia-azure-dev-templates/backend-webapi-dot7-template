@@ -63,6 +63,8 @@
     <PackageReference Include="AuthPermissions.AspNetCore" />
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" />
+    <PackageReference Include="AWSSDK.S3" />
     <PackageReference Include="Ben.Demystifier" />
     <PackageReference Include="FluentValidation.AspNetCore" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
