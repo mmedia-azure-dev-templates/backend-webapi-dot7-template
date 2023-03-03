@@ -39,11 +39,13 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    //[ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [Route("create")]
     public async Task<ActionResult<UserResponse>> CreateUser(CreateUsersInformationsRequest request)
     {
-        return await _mediator.Send(request);
+        UserResponse response = await _mediator.Send(request);
+        return response.Transaction == false ? Ok(response) : Created("", response);
     }
 
     [HttpPost]

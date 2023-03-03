@@ -114,7 +114,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                         user.Email
                     },
                     "Confirm your account",
-                    "Welcome"
+                    "WelcomeView"
                    );
 
                 // Create MailData object
