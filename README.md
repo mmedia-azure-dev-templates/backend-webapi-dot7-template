@@ -108,6 +108,10 @@ After that, you can pass the jwt on the lock (if using swagger) or via the Autho
 3. Change the dockerfile and docker-compose.yml to your new csproj/folder names.
 3. Give this repo a star!
 
+#Only Docker Compose Remote Debugging
+1. ``dotnet run --project src/Boilerplate.Api/Boilerplate.Api.csproj``
+2. ``dotnet build WebApiBoilerplate.sln``
+
 # Migrations
 1. To run migrations on this project, run the following command on the root folder: 
 	- ``dotnet ef migrations add AspNetUsers --startup-project .\src\Boilerplate.Api\ --project .\src\Boilerplate.Infrastructure\ --context ApplicationDbContext``
