@@ -36,10 +36,10 @@ public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailRequest, ConfirmE
 
         if (!result.Succeeded)
         {
-            confirmResponse.Message = "Confirm email failed!";
+            confirmResponse.Message = "Lo sentimos! email no pudo ser confirmado";
             return confirmResponse;
         }
-        confirmResponse.Message = "Confirm email success!";
+        confirmResponse.Message = "Excelente! email ha sido confirmado";
         confirmResponse.Transaction = true;
         return confirmResponse;
     }

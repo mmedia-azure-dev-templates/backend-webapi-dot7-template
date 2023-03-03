@@ -29,10 +29,11 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
     private readonly IMailService _mail;
     private readonly ILocalizationService _localizationService;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IAwsS3Service _awsS3Service;
     private UserResponse _userResponse;
 
 
-    public CreateUserHandler(IContext context, IMapper mapper, ILogger<CreateUserHandler> logger, IMailService mail, UserManager<ApplicationUser> userManager, IUserResponse userResponse, ILocalizationService localizationService)
+    public CreateUserHandler(IContext context, IMapper mapper, ILogger<CreateUserHandler> logger, IMailService mail, UserManager<ApplicationUser> userManager, IUserResponse userResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service)
     {
         _logger = logger;
         _mapper = mapper;
@@ -41,6 +42,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
         _userManager = userManager;
         _userResponse = (UserResponse)userResponse;
         _localizationService = localizationService;
+        _awsS3Service = awsS3Service;
     }
     public async Task<UserResponse> Handle(CreateUsersInformationsRequest request, CancellationToken cancellationToken)
     {
@@ -50,8 +52,8 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
             {
                 ApplicationUser user = new ApplicationUser()
                 {
-                    UserName = request.Email,
-                    Email = request.Email,
+                    UserName = request.Email.ToString(),
+                    Email = request.Email.ToString(),
                     PasswordHash = request.Ndocument,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
@@ -66,8 +68,12 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                     return _userResponse;
                 }
 
-
-
+                AmazonObject objectImageProfile = await _awsS3Service.UploadFileBase64Async(request.ImageProfile, "users/" + user.Id.ToString(), "fotoperfil.jpg");
+                if (objectImageProfile.ObjectUrl == null)
+                {
+                    _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseTitleError").Value;
+                    return _userResponse;
+                }
                 UserInformation userInformation = new()
                 {
                     UserId = user.Id,
@@ -80,7 +86,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                     //EntryDate = request.EntryDate,
                     //DepartureDate = request.DepartureDate,
                     Hired = false,
-                    //ImgUrl = request.ImgUrl,
+                    ImgUrl = objectImageProfile.ObjectUrl,
                     //CurriculumUrl = request.CurriculumUrl,
                     Mobile = request.Mobile,
                     //Phone = request.Phone,
@@ -108,7 +114,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                         user.Email
                     },
                     "Confirm your account",
-                    "Welcome"
+                    "WelcomeView"
                    );
 
                 // Create MailData object
@@ -126,6 +132,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                     _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value;
                     _userResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value;
                     _logger.LogInformation(3, _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value);
+                    return _userResponse;
                 }
 
                 scope.Complete();
