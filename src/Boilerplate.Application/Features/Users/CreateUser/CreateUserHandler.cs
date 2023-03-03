@@ -52,8 +52,8 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
             {
                 ApplicationUser user = new ApplicationUser()
                 {
-                    UserName = request.Email,
-                    Email = request.Email,
+                    UserName = request.Email.ToString(),
+                    Email = request.Email.ToString(),
                     PasswordHash = request.Ndocument,
                     FirstName = request.FirstName,
                     LastName = request.LastName,

@@ -1,6 +1,7 @@
 ﻿using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
+using Microsoft.Graph;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,8 +17,7 @@ public record CreateUserRequest : IRequest<UserResponse>
 
 public record CreateUsersInformationsRequest : IRequest<UserResponse>
 {
-    [EmailAddress]
-    public string Email { get; init; } = null!;
+    public EmailAddress Email { get; init; } = null!;
     public string FirstName { get; init; } = null!;
     public string LastName { get; init; } = null!;
     public IdentificationType IdentificationType { get; init; }

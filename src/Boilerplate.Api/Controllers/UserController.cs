@@ -2,6 +2,7 @@
 using AuthPermissions.AspNetCore.JwtTokenCode;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Features.Users;
+using Boilerplate.Application.Features.Users.AvailableUser;
 using Boilerplate.Application.Features.Users.CreateUser;
 using Boilerplate.Application.Features.Users.DeleteUser;
 using Boilerplate.Application.Features.Users.GetUserById;
@@ -13,6 +14,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Graph;
+using org.apache.zookeeper.data;
 using System.Threading.Tasks;
 using ISession = Boilerplate.Domain.Implementations.ISession;
 
@@ -97,6 +100,20 @@ public class UserController : ControllerBase
     {            
         await _mediator.Send(request with { Id = _session.UserId });
         return NoContent();
+    }
+
+    [HttpPost("availableemail")]
+    [AllowAnonymous]
+    public async Task<AvailableUserEmailResponse> AvailableEmail(AvailableUserEmailRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpPost("availabledocument")]
+    [AllowAnonymous]
+    public async Task<AvailableUserNdocumentResponse> AvailableDocument(AvailableUserNdocumentRequest request)
+    {
+        return await _mediator.Send(request);
     }
 
     //[Authorize(Roles = Roles.Admin)]
