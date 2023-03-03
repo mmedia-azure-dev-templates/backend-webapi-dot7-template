@@ -39,7 +39,7 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    //[ProducesResponseType(StatusCodes.Status201Created)]
     [Route("create")]
     public async Task<ActionResult<UserResponse>> CreateUser(CreateUsersInformationsRequest request)
     {

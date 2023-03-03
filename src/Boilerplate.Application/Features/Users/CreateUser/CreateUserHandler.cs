@@ -69,7 +69,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                 }
 
                 AmazonObject objectImageProfile = await _awsS3Service.UploadFileBase64Async(request.ImageProfile, "users/" + user.Id.ToString(), "fotoperfil.jpg");
-                if (objectImageProfile == null)
+                if (objectImageProfile.ObjectUrl == null)
                 {
                     _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseTitleError").Value;
                     return _userResponse;
@@ -132,6 +132,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                     _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value;
                     _userResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value;
                     _logger.LogInformation(3, _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value);
+                    return _userResponse;
                 }
 
                 scope.Complete();
