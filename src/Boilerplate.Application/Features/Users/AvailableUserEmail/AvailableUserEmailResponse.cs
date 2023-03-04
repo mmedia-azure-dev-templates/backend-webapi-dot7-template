@@ -8,4 +8,5 @@ namespace Boilerplate.Application.Features.Users.AvailableUser;
 public class AvailableUserEmailResponse
 {
     public bool IsAvailable { get; set; }
+    public string Message { get; set; }
 }
