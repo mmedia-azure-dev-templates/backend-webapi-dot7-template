@@ -17,7 +17,6 @@ public record CreateUserRequest : IRequest<UserResponse>
 
 public record CreateUsersInformationsRequest : IRequest<UserResponse>
 {
-    [EmailAddress]
     public string Email { get; init; } = null!;
     public string FirstName { get; init; } = null!;
     public string LastName { get; init; } = null!;
