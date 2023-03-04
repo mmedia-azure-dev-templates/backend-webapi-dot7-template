@@ -25,12 +25,21 @@ public class AvailableUserEmailHandler : IRequestHandler<AvailableUserEmailReque
     {
         AvailableUserEmailResponse availableUserResponse = new AvailableUserEmailResponse();
         availableUserResponse.IsAvailable = true;
+        availableUserResponse.Message = "Email is available";
 
         var userEmail = await _context.ApplicationUsers.Where(x => x.Email == request.EmailAddress).FirstOrDefaultAsync();
         var authpEmail = await _authUsersAdminService.FindAuthUserByEmailAsync(request.EmailAddress.ToString());
-        if (userEmail != null || authpEmail.IsValid)
+        if (userEmail != null)
         {
             availableUserResponse.IsAvailable = false;
+            availableUserResponse.Message = "Identity Email already exists";
+
+        }
+
+        if (authpEmail.IsValid)
+        {
+            availableUserResponse.IsAvailable = false;
+            availableUserResponse.Message = "Authp Email already exists";
         }
 
         return availableUserResponse;
