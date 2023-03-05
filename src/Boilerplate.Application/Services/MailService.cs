@@ -132,7 +132,7 @@ public class MailService : IMailService
             MimeMessage message = new MimeMessage();
 
             //Sender
-            message.From.Add(new MailboxAddress(_settings.DisplayName, mailData.From ?? _settings.From));
+            message.From.Add(new MailboxAddress(_settings.DisplayName, _settings.From));
             message.Sender = new MailboxAddress(mailData.DisplayName ?? _settings.DisplayName, mailData.From ?? _settings.From);
             // Receiver
             foreach (string mailAddress in mailData.To)
