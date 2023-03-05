@@ -10,7 +10,7 @@ public enum IdentificationType
     [EnumMember(Value = "Cedula")]
     [Display(Name = "Cedula")]
     Cedula,
-    [EnumMember(Value = "Pasaporte")]
+    [EnumMember(Value = "Passport")]
     [Display(Name = "Pasaporte")]
     Passport
 }
