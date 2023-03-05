@@ -36,7 +36,6 @@ public class GenerateInitialConfirmationHandler : IRequestHandler<GenerateInitia
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
         MailStruct mailData = new MailStruct(
-            user.Email,
             user.FirstName + " " + user.LastName,
             new List<string> {
                         user.Email

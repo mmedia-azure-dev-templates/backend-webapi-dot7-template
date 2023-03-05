@@ -108,7 +108,6 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                 var callbackUrl = new { token, email = user.Email };
 
                 MailStruct mailData = new MailStruct(
-                    user.Email,
                     user.FirstName + " " + user.LastName,
                     new List<string> {
                         user.Email

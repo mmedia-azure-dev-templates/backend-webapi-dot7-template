@@ -48,7 +48,6 @@ public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, Forg
         token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
         MailStruct mailStruct = new MailStruct(
-            user.Email,
             user.FirstName + " " + user.LastName,
             new List<string> {
                         user.Email

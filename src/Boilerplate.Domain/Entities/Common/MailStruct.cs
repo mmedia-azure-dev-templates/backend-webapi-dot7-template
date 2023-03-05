@@ -24,7 +24,6 @@ public class MailStruct
     public object? Data { get; set; }
 
     public MailStruct(
-        string from, 
         string displayName, 
         List<string> to, 
         string subject= "", 
@@ -37,7 +36,6 @@ public class MailStruct
         IFormFileCollection? attachments = null,
         object? data=null)
     {
-        From = from;
         DisplayName = displayName;
         
         // Receiver
