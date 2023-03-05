@@ -18,10 +18,10 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserRequest, OneOf<bool, 
 
     public async Task<OneOf<bool, UserNotFound>> Handle(DeleteUserRequest request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users
+        var user = await _context.ApplicationUsers
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (user is null) return new UserNotFound();
-        _context.Users.Remove(user!);
+        _context.ApplicationUsers.Remove(user!);
         return await _context.SaveChangesAsync(cancellationToken) > 0;
     }
 }
