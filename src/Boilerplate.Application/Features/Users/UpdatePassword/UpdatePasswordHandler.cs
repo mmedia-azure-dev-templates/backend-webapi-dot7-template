@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using BC = BCrypt.Net.BCrypt;
 
 namespace Boilerplate.Application.Features.Users.UpdatePassword;
 
@@ -20,15 +19,15 @@ public class UpdatePasswordHandler : IRequestHandler<UpdatePasswordRequest, User
         _context = context;
     }
 
-
     public async Task<UserResponse> Handle(UpdatePasswordRequest request, CancellationToken cancellationToken)
     {
-        // Guaranteed to be valid, because it comes from the session.
-        var originalUser = await _context.Users
-            .FirstAsync(x => x.Id == request.Id, cancellationToken);
-        originalUser.Password = BC.HashPassword(request.Password);
-        _context.Users.Update(originalUser);
-        await _context.SaveChangesAsync(cancellationToken);
-        return _mapper.Map<UserResponse>(originalUser);
+        throw new System.NotImplementedException();
+       // // Guaranteed to be valid, because it comes from the session.
+       // var originalUser = await _context.ApplicationUsers
+       //     .FirstAsync(x => x.Id == request.Id, cancellationToken);
+       //// originalUser.Password = BC.HashPassword(request.Password);
+       // _context.ApplicationUsers.Update(originalUser);
+       // await _context.SaveChangesAsync(cancellationToken);
+       // return _mapper.Map<UserResponse>(originalUser);
     }
 }

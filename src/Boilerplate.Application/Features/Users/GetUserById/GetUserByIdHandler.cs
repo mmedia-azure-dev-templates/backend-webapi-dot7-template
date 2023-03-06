@@ -2,13 +2,14 @@
 using Boilerplate.Application.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using OneOf;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Users.GetUserById;
 
-public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, OneOf<UserResponse, UserNotFound>>
+public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, GetUserByIdResponse>
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
@@ -19,11 +20,20 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, OneOf<User
         _context = context;
     }
 
-    public async Task<OneOf<UserResponse, UserNotFound>> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
+    public async Task<GetUserByIdResponse> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
     {
-        var result = await _context.Users
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-        if (result is null) return new UserNotFound();
-        return _mapper.Map<UserResponse>(result);
+        GetUserByIdResponse response = new GetUserByIdResponse();
+        var result = await (from applicationUser in _context.ApplicationUsers.AsNoTracking()
+                            join userInformation in _context.UserInformations.AsNoTracking() on applicationUser.Id equals userInformation.UserId
+                            where userInformation.UserId == request.Id
+                            select new
+                            {
+                                applicationUser,
+                                userInformation,
+                            }).FirstOrDefaultAsync(cancellationToken);
+
+        response.userInformation = result.userInformation;
+        response.applicationUser = result.applicationUser;
+        return response;
     }
 }

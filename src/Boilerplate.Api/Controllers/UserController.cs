@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Graph;
 using org.apache.zookeeper.data;
+using System;
 using System.Threading.Tasks;
 using ISession = Boilerplate.Domain.Implementations.ISession;
 
@@ -79,19 +80,16 @@ public class UserController : ControllerBase
     /// <summary>
     /// Get one user by id from the database
     /// </summary>
-    /// <param name="id">The user's ID</param>
+    /// <param name="userId">The user's ID</param>
     /// <returns></returns>
     //[Authorize(Roles = Roles.Admin)]
     [HttpGet]
-    [Route("{id}")]
+    [Route("getuserbyid")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetUserById(UserId id)
+    public async Task<GetUserByIdResponse> GetUserById([FromQuery]UserId userId)
     {
-        var result = await _mediator.Send(new GetUserByIdRequest(id));
-        return result.Match<IActionResult>(
-            found => Ok(found),
-            notFound => NotFound());
+        return await _mediator.Send(new GetUserByIdRequest(userId));
     }
 
     [HttpPatch("password")]

@@ -23,7 +23,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<Us
 
     public async Task<PaginatedList<UserResponse>> Handle(GetUsersRequest request, CancellationToken cancellationToken)
     {
-        var users = _context.Users
+        var users = _context.ApplicationUsers
             .WhereIf(!string.IsNullOrEmpty(request.Email), x => EF.Functions.Like(x.Email, $"%{request.Email}%"))
             //.WhereIf(request.IsAdmin, x => x.Role == Roles.Admin);
             ;
