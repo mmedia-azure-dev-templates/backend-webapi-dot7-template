@@ -1,9 +1,11 @@
 ﻿using Boilerplate.Application.Auth;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using Boilerplate.Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +18,7 @@ public static class PersistanceSetup
         services.AddScoped<ISession, Session>();
         services.AddDbContext<ApplicationDbContext>(o =>
         {
+            o.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>(); // add this line
             o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"),conf =>
             {
                 conf.UseHierarchyId();

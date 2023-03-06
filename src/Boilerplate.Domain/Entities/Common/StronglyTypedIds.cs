@@ -1,4 +1,5 @@
-﻿using StronglyTypedIds;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using StronglyTypedIds;
 using System;
 
 [assembly: StronglyTypedIdDefaults(
@@ -77,6 +78,19 @@ public partial struct IdentificationId : IGuid
     }
 }
 
+public readonly partial struct IdentificationId
+{
+    // Not shown: the OrderId implementation and other converters
+
+    public class StronglyTypedIdEfValueConverter : ValueConverter<IdentificationId, Guid>
+    {
+        public StronglyTypedIdEfValueConverter(ConverterMappingHints mappingHints = null)
+            : base(id => id.Value, value => new IdentificationId(value), mappingHints)
+        {
+        }
+    }
+}
+
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct InscriptionId : ILong
 {
@@ -128,6 +142,19 @@ public partial struct UserId : IGuid
     public static implicit operator UserId(Guid userId)
     {
         return new UserId(userId);
+    }
+}
+
+public readonly partial struct UserId
+{
+    // Not shown: the OrderId implementation and other converters
+
+    public class StronglyTypedIdEfValueConverter : ValueConverter<UserId, Guid>
+    {
+        public StronglyTypedIdEfValueConverter(ConverterMappingHints mappingHints = null)
+            : base(id => id.Value, value => new UserId(value), mappingHints)
+        {
+        }
     }
 }
 

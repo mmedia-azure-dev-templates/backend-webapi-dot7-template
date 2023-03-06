@@ -11,32 +11,32 @@ using System.Threading;
 using System.Threading.Tasks;
 using static StackExchange.Redis.Role;
 using ISession = Boilerplate.Domain.Implementations.ISession;
-namespace Boilerplate.Application.Features.Users.GetUserById;
+namespace Boilerplate.Application.Features.Users.GetUserByToken;
 
-public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, GetUserByIdResponse>
+public class GetUserByTokenHandler : IRequestHandler<GetUserByTokenRequest, GetUserByTokenResponse>
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
     private readonly ISession _session;
 
-    public GetUserByIdHandler(IMapper mapper, IContext context, ISession session)
+    public GetUserByTokenHandler(IMapper mapper, IContext context, ISession session)
     {
         _mapper = mapper;
         _context = context;
         _session = session;
     }
 
-    public async Task<GetUserByIdResponse> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
+    public async Task<GetUserByTokenResponse> Handle(GetUserByTokenRequest request, CancellationToken cancellationToken)
     {
         var result = await (from applicationUser in _context.ApplicationUsers.AsNoTracking()
                             join userInformation in _context.UserInformations.AsNoTracking() on applicationUser.Id equals userInformation.UserId
-                            where userInformation.UserId == request.UserId
+                            where userInformation.UserId == _session.UserId
                             select new
                             {
                                 applicationUser,
                                 userInformation,
                             }).FirstOrDefaultAsync(cancellationToken);
-        
-        return _mapper.Map<GetUserByIdResponse>((result.applicationUser,result.userInformation));
+
+        return _mapper.Map<GetUserByTokenResponse>((result.applicationUser, result.userInformation));
     }
 }

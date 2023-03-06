@@ -12,11 +12,11 @@ public static class TestingDatabase
 {
     public static async Task SeedDatabase(Func<IContext> contextFactory)
     {
-        await using var db = contextFactory();
-        await db.Users.ExecuteDeleteAsync();
-        db.Heroes.AddRange(GetSeedingHeroes);
-        db.Users.AddRange(GetSeedingUsers);
-        await db.SaveChangesAsync();
+        //await using var db = contextFactory();
+        //await db.Users.ExecuteDeleteAsync();
+        //db.Heroes.AddRange(GetSeedingHeroes);
+        //db.Users.AddRange(GetSeedingUsers);
+        //await db.SaveChangesAsync();
     }
 
     public static readonly User[] GetSeedingUsers = new[]

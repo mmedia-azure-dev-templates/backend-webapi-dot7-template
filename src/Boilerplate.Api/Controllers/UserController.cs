@@ -2,10 +2,12 @@
 using AuthPermissions.AspNetCore.JwtTokenCode;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Features.Users;
-using Boilerplate.Application.Features.Users.AvailableUser;
+using Boilerplate.Application.Features.Users.AvailableUserDocument;
+using Boilerplate.Application.Features.Users.AvailableUserEmail;
 using Boilerplate.Application.Features.Users.CreateUser;
 using Boilerplate.Application.Features.Users.DeleteUser;
 using Boilerplate.Application.Features.Users.GetUserById;
+using Boilerplate.Application.Features.Users.GetUserByToken;
 using Boilerplate.Application.Features.Users.GetUsers;
 using Boilerplate.Application.Features.Users.Migration;
 using Boilerplate.Application.Features.Users.UpdatePassword;
@@ -16,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Graph;
 using org.apache.zookeeper.data;
+using System;
 using System.Threading.Tasks;
 using ISession = Boilerplate.Domain.Implementations.ISession;
 
@@ -79,19 +82,29 @@ public class UserController : ControllerBase
     /// <summary>
     /// Get one user by id from the database
     /// </summary>
-    /// <param name="id">The user's ID</param>
     /// <returns></returns>
     //[Authorize(Roles = Roles.Admin)]
     [HttpGet]
-    [Route("{id}")]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetUserById(UserId id)
+    [Route("getuserbytoken")]
+    [ProducesResponseType(typeof(GetUserByTokenResponse), StatusCodes.Status200OK)]
+    public async Task<GetUserByTokenResponse> GetUser()
     {
-        var result = await _mediator.Send(new GetUserByIdRequest(id));
-        return result.Match<IActionResult>(
-            found => Ok(found),
-            notFound => NotFound());
+        return await _mediator.Send(new GetUserByTokenRequest());
+    }
+
+    /// <summary>
+    /// Get one user by id from the database
+    /// </summary>
+    /// <param name="request">The user's ID</param>
+    /// <returns></returns>
+    //[Authorize(Roles = Roles.Admin)]
+    [HttpGet]
+    [Route("getuserbyid")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(GetUserByIdResponse), StatusCodes.Status200OK)]
+    public async Task<GetUserByIdResponse> GetUser([FromQuery]GetUserByIdRequest request)
+    {
+        return await _mediator.Send(request);
     }
 
     [HttpPatch("password")]
