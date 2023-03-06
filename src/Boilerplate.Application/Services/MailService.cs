@@ -20,7 +20,6 @@ namespace Boilerplate.Application.Services;
 public class MailService : IMailService
 {
     private readonly MailSettings _settings;
-    private string _frontendUrl;
     public Dictionary<string, object> _aditionalDataOrViewBag { get; set; }
 
     public MailService(IOptions<MailSettings> settings, IConfiguration configuration)
