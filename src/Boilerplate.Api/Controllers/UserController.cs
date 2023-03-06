@@ -2,10 +2,12 @@
 using AuthPermissions.AspNetCore.JwtTokenCode;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Features.Users;
-using Boilerplate.Application.Features.Users.AvailableUser;
+using Boilerplate.Application.Features.Users.AvailableUserDocument;
+using Boilerplate.Application.Features.Users.AvailableUserEmail;
 using Boilerplate.Application.Features.Users.CreateUser;
 using Boilerplate.Application.Features.Users.DeleteUser;
 using Boilerplate.Application.Features.Users.GetUserById;
+using Boilerplate.Application.Features.Users.GetUserByToken;
 using Boilerplate.Application.Features.Users.GetUsers;
 using Boilerplate.Application.Features.Users.Migration;
 using Boilerplate.Application.Features.Users.UpdatePassword;
@@ -80,16 +82,14 @@ public class UserController : ControllerBase
     /// <summary>
     /// Get one user by id from the database
     /// </summary>
-    /// <param name="userId">The user's ID</param>
     /// <returns></returns>
     //[Authorize(Roles = Roles.Admin)]
     [HttpGet]
     [Route("getuser")]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(GetUserByIdResponse), StatusCodes.Status200OK)]
-    public async Task<GetUserByIdResponse> GetUser()
+    [ProducesResponseType(typeof(GetUserByTokenResponse), StatusCodes.Status200OK)]
+    public async Task<GetUserByTokenResponse> GetUser()
     {
-        return await _mediator.Send(new GetUserByIdRequest());
+        return await _mediator.Send(new GetUserByTokenRequest());
     }
 
     /// <summary>

@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static StackExchange.Redis.Role;
 using ISession = Boilerplate.Domain.Implementations.ISession;
-namespace Boilerplate.Application.Features.Users.GetUserById;
+namespace Boilerplate.Application.Features.Users.GetUserByToken;
 
 public class GetUserByTokenHandler : IRequestHandler<GetUserByTokenRequest, GetUserByTokenResponse>
 {
@@ -36,7 +36,7 @@ public class GetUserByTokenHandler : IRequestHandler<GetUserByTokenRequest, GetU
                                 applicationUser,
                                 userInformation,
                             }).FirstOrDefaultAsync(cancellationToken);
-        
-        return _mapper.Map<GetUserByIdResponse>((result.applicationUser,result.userInformation));
+
+        return _mapper.Map<GetUserByTokenResponse>((result.applicationUser, result.userInformation));
     }
 }

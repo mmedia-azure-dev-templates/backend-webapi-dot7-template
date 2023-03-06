@@ -8,5 +8,5 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Users.AvailableUser;
+namespace Boilerplate.Application.Features.Users.AvailableUserEmail;
 public record AvailableUserEmailRequest(string EmailAddress) : IRequest<AvailableUserEmailResponse>;

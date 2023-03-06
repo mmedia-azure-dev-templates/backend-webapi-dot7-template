@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Users.GetUserById;
+namespace Boilerplate.Application.Features.Users.GetUserByToken;
 public class GetUserByTokenResponse
 {
     public Guid Id { get; set; }

@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Users.AvailableUser;
+namespace Boilerplate.Application.Features.Users.AvailableUserEmail;
 public class AvailableUserEmailHandler : IRequestHandler<AvailableUserEmailRequest, AvailableUserEmailResponse>
 {
     private readonly IContext _context;
