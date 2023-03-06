@@ -6,11 +6,10 @@ using System;
 namespace Boilerplate.Application.Features.Users.GetUserById;
 
 public class GetUserByIdRequest:IRequest<GetUserByIdResponse> {
+    public UserId UserId { get; set; }
 
-    public UserId Id { get; init; }
-    public GetUserByIdRequest(UserId id)
+    public GetUserByIdRequest(UserId userId)
     {
-        Id = id;
+        UserId = userId;
     }
-    //(UserId Id) : IRequest<OneOf<UserResponse, UserNotFound>>;
 }

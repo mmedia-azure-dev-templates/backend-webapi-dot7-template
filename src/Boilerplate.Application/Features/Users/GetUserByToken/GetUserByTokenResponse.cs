@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Users.GetUserById;
-public class GetUserByIdResponse
+public class GetUserByTokenResponse
 {
     public Guid Id { get; set; }
     public UserId UserId { get; set; }

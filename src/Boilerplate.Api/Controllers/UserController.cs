@@ -84,10 +84,25 @@ public class UserController : ControllerBase
     /// <returns></returns>
     //[Authorize(Roles = Roles.Admin)]
     [HttpGet]
+    [Route("getuser")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(GetUserByIdResponse), StatusCodes.Status200OK)]
+    public async Task<GetUserByIdResponse> GetUser()
+    {
+        return await _mediator.Send(new GetUserByIdRequest());
+    }
+
+    /// <summary>
+    /// Get one user by id from the database
+    /// </summary>
+    /// <param name="userId">The user's ID</param>
+    /// <returns></returns>
+    //[Authorize(Roles = Roles.Admin)]
+    [HttpGet]
     [Route("getuserbyid")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
-    public async Task<GetUserByIdResponse> GetUserById([FromQuery]UserId userId)
+    [ProducesResponseType(typeof(GetUserByIdResponse), StatusCodes.Status200OK)]
+    public async Task<GetUserByIdResponse> GetUser(UserId userId)
     {
         return await _mediator.Send(new GetUserByIdRequest(userId));
     }
