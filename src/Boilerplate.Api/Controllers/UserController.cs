@@ -85,7 +85,7 @@ public class UserController : ControllerBase
     /// <returns></returns>
     //[Authorize(Roles = Roles.Admin)]
     [HttpGet]
-    [Route("getuser")]
+    [Route("getuserbytoken")]
     [ProducesResponseType(typeof(GetUserByTokenResponse), StatusCodes.Status200OK)]
     public async Task<GetUserByTokenResponse> GetUser()
     {
@@ -95,16 +95,16 @@ public class UserController : ControllerBase
     /// <summary>
     /// Get one user by id from the database
     /// </summary>
-    /// <param name="userId">The user's ID</param>
+    /// <param name="request">The user's ID</param>
     /// <returns></returns>
     //[Authorize(Roles = Roles.Admin)]
     [HttpGet]
     [Route("getuserbyid")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(GetUserByIdResponse), StatusCodes.Status200OK)]
-    public async Task<GetUserByIdResponse> GetUser(UserId userId)
+    public async Task<GetUserByIdResponse> GetUser([FromQuery]GetUserByIdRequest request)
     {
-        return await _mediator.Send(new GetUserByIdRequest(userId));
+        return await _mediator.Send(request);
     }
 
     [HttpPatch("password")]
