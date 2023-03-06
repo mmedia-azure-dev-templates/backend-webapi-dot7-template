@@ -14,8 +14,12 @@ public class UserInformationConfiguration : IEntityTypeConfiguration<UserInforma
     {
         entity.HasKey(e => e.Id).HasName("UserInformations_Id");
         entity.Property(e => e.Id).ValueGeneratedOnAdd();
-        entity.Property(e => e.Id).HasConversion<IdentificationId.EfCoreValueConverter>();
-        entity.Property(e => e.UserId).HasConversion<UserId.EfCoreValueConverter>();
+        //entity.Property(e => e.Id).HasConversion<IdentificationId.EfCoreValueConverter>();
+        //entity.Property(e => e.UserId).HasConversion<UserId.EfCoreValueConverter>();
+        //entity.Property(e => e.Id)
+        //.HasConversion(id => id.Value, value => new IdentificationId(value));
+        //entity.Property(e => e.UserId)
+        //.HasConversion(id => id.Value, value => new UserId(value));
         entity.HasIndex(e => e.Ndocument, "UserInformations_Ndocument_key").IsUnique();
         entity.HasIndex(e => e.UserId, "UserInformations_UserId_key").IsUnique();
         entity.Property(e => e.Id).HasColumnName("Id");

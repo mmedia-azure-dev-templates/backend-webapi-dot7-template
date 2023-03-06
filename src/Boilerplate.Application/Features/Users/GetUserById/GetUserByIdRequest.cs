@@ -7,8 +7,8 @@ namespace Boilerplate.Application.Features.Users.GetUserById;
 
 public class GetUserByIdRequest:IRequest<GetUserByIdResponse> {
 
-    public Guid Id { get; init; }
-    public GetUserByIdRequest(Guid id)
+    public UserId Id { get; init; }
+    public GetUserByIdRequest(UserId id)
     {
         Id = id;
     }

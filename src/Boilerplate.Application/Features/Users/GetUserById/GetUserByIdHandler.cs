@@ -2,6 +2,7 @@
 using Boilerplate.Application.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,16 +22,18 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, GetUserByI
 
     public async Task<GetUserByIdResponse> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
     {
-        var hola = new GetUserByIdResponse();
+        GetUserByIdResponse response = new GetUserByIdResponse();
         var result = await (from applicationUser in _context.ApplicationUsers.AsNoTracking()
-                            join userInformation in _context.UserInformations.AsNoTracking() on applicationUser.Id equals userInformation.Id
+                            join userInformation in _context.UserInformations.AsNoTracking() on applicationUser.Id equals userInformation.UserId
                             where userInformation.UserId == request.Id
                             select new
                             {
-                                applicationUser = applicationUser.UserName,
-                                userInformation = userInformation.Gender,
+                                applicationUser,
+                                userInformation,
                             }).FirstOrDefaultAsync(cancellationToken);
 
-        return hola;
+        response.userInformation = result.userInformation;
+        response.applicationUser = result.applicationUser;
+        return response;
     }
 }

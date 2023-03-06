@@ -87,7 +87,7 @@ public class UserController : ControllerBase
     [Route("getuserbyid")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
-    public async Task<GetUserByIdResponse> GetUserById([FromQuery]Guid userId)
+    public async Task<GetUserByIdResponse> GetUserById([FromQuery]UserId userId)
     {
         return await _mediator.Send(new GetUserByIdRequest(userId));
     }
