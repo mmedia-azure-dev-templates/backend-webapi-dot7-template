@@ -1,9 +1,11 @@
 ﻿using AuthPermissions.AdminCode;
 using AuthPermissions.AspNetCore;
 using AuthPermissions.BaseCode.CommonCode;
+using AuthPermissions.BaseCode.DataLayer.Classes.SupportTypes;
 using AuthPermissions.BaseCode.PermissionsCode;
 using Boilerplate.Api.Common;
 using Boilerplate.Application.Features.Users;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -67,23 +69,20 @@ public class RolesController : ControllerBase
     [Route("edit")]
     public async Task<IStatusGeneric> Edit(RoleCreateUpdateDto input)
     {
-        var status = await _authRolesAdmin.UpdateRoleToPermissionsAsync(input.RoleName, input.GetSelectedPermissionNames(), input.Description, input.RoleType);
-        return status;
+        return await _authRolesAdmin.UpdateRoleToPermissionsAsync(input.RoleName, input.GetSelectedPermissionNames(), input.Description, input.RoleType);
     }
 
     [HasPermission(DefaultPermissions.RoleChange)]
     [HttpPost]
     [Route("create")]
-    public async Task<IActionResult> Create(RoleCreateUpdateDto input)
+    public async Task<CustomStatusGeneric> Create(RoleCreateUpdateDto input)
     {
-        var status = await _authRolesAdmin
-            .CreateRoleToPermissionsAsync(input.RoleName, input.GetSelectedPermissionNames(), input.Description, input.RoleType);
-        return Ok(status);
-        //if (status.HasErrors)
-        //    return RedirectToAction(nameof(ErrorDisplay),
-        //        new { errorMessage = status.GetAllErrors() });
-
-        //return RedirectToAction(nameof(Index), new { message = status.Message });
+        IStatusGeneric statusGeneric = await _authRolesAdmin.CreateRoleToPermissionsAsync(input.RoleName, input.GetSelectedPermissionNames(), input.Description, input.RoleType);
+        var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
+        CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
+        customStatusGeneric.IsValid = statusGeneric.IsValid;
+        customStatusGeneric.Message = statusGeneric.IsValid? statusGeneric.Message : errors;
+        return customStatusGeneric;
     }
     
     [HasPermission(DefaultPermissions.RoleChange)]
