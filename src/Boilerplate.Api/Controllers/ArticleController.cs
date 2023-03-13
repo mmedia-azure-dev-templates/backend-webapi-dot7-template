@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using MediatR;
 using Boilerplate.Application.Features.Articles.GetArticleById;
+using Boilerplate.Application.Features.Articles.ArticleCreate;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -27,6 +28,13 @@ public class ArticleController : ControllerBase
     [HttpGet]
     [Route("article")]
     public async Task<PaginatedList<ArticleSearchResponse>> GetUsers([FromQuery] ArticleSearchRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpPost]
+    [Route("create")]
+    public async Task<ActionResult<ArticleCreateResponse>> CreateArticle(ArticleCreateRequest request)
     {
         return await _mediator.Send(request);
     }
