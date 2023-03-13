@@ -1,6 +1,7 @@
 using Amazon.S3;
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
+using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.ResetPassword;
@@ -67,6 +68,7 @@ builder.Services.AddScoped<IForgotPasswordResponse, ForgotPasswordResponse>();
 builder.Services.AddScoped<IAuthenticateResponse, AuthenticateResponse>();
 builder.Services.AddScoped<IResetPasswordResponse, ResetPasswordResponse>();
 builder.Services.AddScoped<IUserResponse, UserResponse>();
+builder.Services.AddScoped<IArticleCreateResponse, ArticleCreateResponse>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers
