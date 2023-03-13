@@ -1,12 +1,15 @@
-﻿using Boilerplate.Domain.Entities.Common;
+﻿using AuthPermissions.BaseCode.CommonCode;
+using Boilerplate.Domain.Entities.Common;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Domain.Entities;
 
-public partial class Article : Entity<ArticleId>
+public class Article : Entity<ArticleId>, IDataKeyFilterReadWrite
 {
     [Required]
     public override ArticleId Id { get; set; }
+    public string DataKey { get; set; }
 
     public int? Provider { get; set; }
 
@@ -14,7 +17,7 @@ public partial class Article : Entity<ArticleId>
 
     public string? Abrevia { get; set; }
 
-    public string? Name { get; set; }
+    public string? Display { get; set; }
 
     public decimal Cost { get; set; }
 

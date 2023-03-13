@@ -29,6 +29,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public virtual DbSet<UserInformation> UserInformations { get; set; }
     public virtual DbSet<GeographicLocation> GeographicLocations { get; set; }
     public virtual DbSet<Team> Teams { get; set; }
+    public virtual DbSet<Article> Articles { get; set; }
     public virtual DbSet<Hero> Heroes { get; set; }
     public virtual DbSet<User> Users { get; set; }
     public DbSet<CompanyTenant> Companies { get; set; }
