@@ -34,9 +34,9 @@ t1.Id as UserId
         CASE
                 WHEN [CatTypeDocument] = 2 THEN 'Cedula'
                 WHEN [CatTypeDocument] = 3 THEN 'Ruc'
-                WHEN [CatTypeDocument] = 4 THEN 'Pasaporte'
+                WHEN [CatTypeDocument] = 4 THEN 'Passport'
                 WHEN [CatTypeDocument] = 18 THEN 'Dni'
-                ELSE 'Pasaporte'
+                ELSE 'Passport'
         END AS TypeDocument
       ,
       CASE
@@ -53,18 +53,17 @@ t1.Id as UserId
       ,[t2].[Ndocument]
       ,
         CASE
-                WHEN [CatGender] = 27 THEN 'Masculino'
-                WHEN [CatGender] = 28 THEN 'Femenino'
-                ELSE 'Masculino'
+                WHEN [CatGender] = 27 THEN 'Male'
+                WHEN [CatGender] = 28 THEN 'Female'
+                ELSE 'Male'
         END AS Gender
       ,
         CASE
-                WHEN [CatCivilStatus] = 30 THEN 'Soltero'
-                WHEN [CatCivilStatus] = 31 THEN 'Casado'
-                WHEN [CatCivilStatus] = 32 THEN 'Divorciado'
-                WHEN [CatCivilStatus] = 43 THEN 'Viudo'
-                WHEN [CatCivilStatus] = 43 THEN 'Union Libre'
-                ELSE 'Soltero'
+                WHEN [CatCivilStatus] = 30 THEN 'Single'
+                WHEN [CatCivilStatus] = 31 THEN 'Married'
+                WHEN [CatCivilStatus] = 32 THEN 'Divorced'
+                WHEN [CatCivilStatus] = 43 THEN 'Widower'
+                ELSE 'Single'
         END AS CivilStatus
       ,[t2].[BirthDate]
       ,[t2].[EntryDate]
