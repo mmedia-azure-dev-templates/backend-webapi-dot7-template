@@ -71,15 +71,15 @@ INSERT INTO [dbo].[AspNetUsers]
 GO
 
 
-INSERT [authp].[AuthUsers] ([UserId], [Email], [UserName], [TenantId], [IsDisabled]) 
-SELECT [Id]
-      ,[UserName]
-      ,[NormalizedUserName]
-      ,null
-	  ,0
-FROM [dbo].[AspNetUsers] where LegacyId not in (1,2,178,180,182)
+--INSERT [authp].[AuthUsers] ([UserId], [Email], [UserName], [TenantId], [IsDisabled]) 
+--SELECT [Id]
+--      ,[UserName]
+--      ,[NormalizedUserName]
+--      ,null
+--	  ,0
+--FROM [dbo].[AspNetUsers] where LegacyId not in (1,2,178,180,182)
 
-DECLARE @id INT = (SELECT ISNULL(MAX(LegacyId),0) FROM [dbo].[AspNetUsers]);
-Print (@id);
-DBCC checkident('dbo.AspNetUsers', reseed, @id);
-GO
+--DECLARE @id INT = (SELECT ISNULL(MAX(LegacyId),0) FROM [dbo].[AspNetUsers]);
+--Print (@id);
+--DBCC checkident('dbo.AspNetUsers', reseed, @id);
+--GO

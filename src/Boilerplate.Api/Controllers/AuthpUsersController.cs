@@ -3,6 +3,7 @@ using AuthPermissions.AspNetCore;
 using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Api.Common;
 using Boilerplate.Application.Features.Auth.UpdateEmail;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -73,9 +74,14 @@ public class AuthpUsersController : ControllerBase
     [Route("authuserssync")]
     [HasPermission(DefaultPermissions.UserSync)]
     //NOTE: the input be called "data" because we are using JavaScript to send that info back
-    public async Task<IStatusGeneric> SyncUsers(IEnumerable<SyncAuthUserWithChange> data)
+    public async Task<CustomStatusGeneric> SyncUsers(IEnumerable<SyncAuthUserWithChange> data)
     {
-        return await _authUsersAdmin.ApplySyncChangesAsync(data);
+        IStatusGeneric statusGeneric = await _authUsersAdmin.ApplySyncChangesAsync(data);
+        var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
+        CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
+        customStatusGeneric.IsValid = statusGeneric.IsValid;
+        customStatusGeneric.Message = statusGeneric.IsValid ? statusGeneric.Message : errors;
+        return customStatusGeneric;
     }
 
     // GET: AuthUsersController/Delete/5
