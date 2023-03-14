@@ -1,24 +1,25 @@
 ﻿using AuthPermissions;
+using AuthPermissions.AspNetCore;
 using AuthPermissions.AspNetCore.JwtTokenCode;
+using Boilerplate.Api.Common;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Features.Users.AvailableUserDocument;
 using Boilerplate.Application.Features.Users.AvailableUserEmail;
 using Boilerplate.Application.Features.Users.CreateUser;
 using Boilerplate.Application.Features.Users.DeleteUser;
+using Boilerplate.Application.Features.Users.EditUser;
 using Boilerplate.Application.Features.Users.GetUserById;
 using Boilerplate.Application.Features.Users.GetUserByToken;
 using Boilerplate.Application.Features.Users.GetUsers;
 using Boilerplate.Application.Features.Users.Migration;
 using Boilerplate.Application.Features.Users.UpdatePassword;
 using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.PermissionsCode;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Graph;
-using org.apache.zookeeper.data;
-using System;
 using System.Threading.Tasks;
 using ISession = Boilerplate.Domain.Implementations.ISession;
 
@@ -52,6 +53,14 @@ public class UserController : ControllerBase
     {
         UserResponse response = await _mediator.Send(request);
         return response.Transaction == false ? Ok(response) : Created("", response);
+    }
+
+    [HasPermission(DefaultPermissions.UserChange)]
+    [HttpPut]
+    [Route("edit")]
+    public async Task<EditUserResponse> Edit([FromBody]EditUserRequest request)
+    {
+        return await _mediator.Send(request);
     }
 
     [HttpPost]
