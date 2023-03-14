@@ -82,14 +82,10 @@ public class AuthpUsersController : ControllerBase
     [HasPermission(DefaultPermissions.UserRemove)]
     [HttpGet]
     [Route("delete")]
-    public async Task<ActionResult> Delete(string userId)
+    public async Task<AuthUserDisplay> Delete(string userId)
     {
         var status = await _authUsersAdmin.FindAuthUserByUserIdAsync(userId);
-        if (status.HasErrors)
-            return RedirectToAction(nameof(ErrorDisplay),
-                new { errorMessage = status.GetAllErrors() });
-
-        return Ok(AuthUserDisplay.DisplayUserInfo(status.Result));
+        return AuthUserDisplay.DisplayUserInfo(status.Result);
     }
 
     
