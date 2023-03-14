@@ -1,9 +1,10 @@
 ﻿using Boilerplate.Domain.Entities.Enums;
+using Boilerplate.Domain.Implementations;
 using System;
 
 namespace Boilerplate.Application.Features.Users.EditUser;
 
-public record EditUserResponse
+public record EditUserResponse: IEditUserResponse
 {
     public string Email { get; init; } = null!;
     public string FirstName { get; init; } = null!;

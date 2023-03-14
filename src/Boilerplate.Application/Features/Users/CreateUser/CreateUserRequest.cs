@@ -1,19 +1,8 @@
 ﻿using Boilerplate.Domain.Entities.Enums;
-using Boilerplate.Domain.Implementations;
 using MediatR;
-using Microsoft.Graph;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Application.Features.Users.CreateUser;
-
-public record CreateUserRequest : IRequest<UserResponse>
-{
-    public string Email { get; init; } = null!;  
-    public string FirstName { get; init; } = null!;
-    public string LastName { get; init; } = null!;
-    public string PhoneNumber { get; init; } = null!;
-}
 
 public record CreateUsersInformationsRequest : IRequest<UserResponse>
 {

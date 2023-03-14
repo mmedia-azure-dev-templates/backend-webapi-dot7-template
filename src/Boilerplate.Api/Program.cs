@@ -6,6 +6,7 @@ using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.ResetPassword;
 using Boilerplate.Application.Features.Users;
+using Boilerplate.Application.Features.Users.EditUser;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.ClaimsChangeCode;
 using Boilerplate.Domain.Entities.Common;
@@ -68,6 +69,7 @@ builder.Services.AddScoped<IForgotPasswordResponse, ForgotPasswordResponse>();
 builder.Services.AddScoped<IAuthenticateResponse, AuthenticateResponse>();
 builder.Services.AddScoped<IResetPasswordResponse, ResetPasswordResponse>();
 builder.Services.AddScoped<IUserResponse, UserResponse>();
+builder.Services.AddScoped<IEditUserResponse, EditUserResponse>();
 builder.Services.AddScoped<IArticleCreateResponse, ArticleCreateResponse>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 

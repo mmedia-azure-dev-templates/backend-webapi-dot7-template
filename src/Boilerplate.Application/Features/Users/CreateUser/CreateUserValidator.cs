@@ -2,7 +2,7 @@
 
 namespace Boilerplate.Application.Features.Users.CreateUser;
 
-public class CreateUserValidator : AbstractValidator<CreateUserRequest>
+public class CreateUserValidator : AbstractValidator<CreateUsersInformationsRequest>
 {
     public CreateUserValidator()
     {
