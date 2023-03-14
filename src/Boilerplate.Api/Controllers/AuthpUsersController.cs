@@ -73,14 +73,9 @@ public class AuthpUsersController : ControllerBase
     [Route("authuserssync")]
     [HasPermission(DefaultPermissions.UserSync)]
     //NOTE: the input be called "data" because we are using JavaScript to send that info back
-    public async Task<ActionResult> SyncUsers(IEnumerable<SyncAuthUserWithChange> data)
+    public async Task<IStatusGeneric> SyncUsers(IEnumerable<SyncAuthUserWithChange> data)
     {
-        var status = await _authUsersAdmin.ApplySyncChangesAsync(data);
-        if (status.HasErrors)
-            return RedirectToAction(nameof(ErrorDisplay),
-                new { errorMessage = status.GetAllErrors() });
-
-        return Ok(new { message = status.Message });
+        return await _authUsersAdmin.ApplySyncChangesAsync(data);
     }
 
     // GET: AuthUsersController/Delete/5
