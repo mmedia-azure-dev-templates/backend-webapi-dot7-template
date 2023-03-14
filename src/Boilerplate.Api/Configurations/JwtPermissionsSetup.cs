@@ -87,7 +87,7 @@ public static class JwtPermissionsSetup
         .RegisterAddClaimToUser<AddTenantNameClaim>()
         .RegisterAddClaimToUser<AddRefreshEveryMinuteClaim>()
         .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()
-        //.RegisterAuthenticationProviderReader<SyncIndividualAccountUsers>()
+        .RegisterAuthenticationProviderReader<ExtendSyncIndividualAccountUsers>()
         .SetupAspNetCoreAndDatabase();
 
         return services;
