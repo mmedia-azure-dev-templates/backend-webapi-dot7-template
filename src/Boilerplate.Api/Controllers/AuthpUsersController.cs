@@ -64,10 +64,9 @@ public class AuthpUsersController : ControllerBase
     [HasPermission(DefaultPermissions.UserSync)]
     [HttpGet]
     [Route("authuserssync")]
-    public async Task<ActionResult> SyncUsers()
+    public async Task<List<SyncAuthUserWithChange>> SyncUsers()
     {
-        var syncChanges = await _authUsersAdmin.SyncAndShowChangesAsync();
-        return Ok(syncChanges);
+        return await _authUsersAdmin.SyncAndShowChangesAsync();
     }
 
     [HttpPost]
