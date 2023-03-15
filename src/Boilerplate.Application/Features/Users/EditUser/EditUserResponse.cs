@@ -1,10 +1,10 @@
 ﻿using Boilerplate.Domain.Entities.Enums;
-using MediatR;
+using Boilerplate.Domain.Implementations;
 using System;
 
-namespace Boilerplate.Application.Features.Users.CreateUser;
+namespace Boilerplate.Application.Features.Users.EditUser;
 
-public record CreateUsersInformationsRequest : IRequest<UserResponse>
+public record EditUserResponse: IEditUserResponse
 {
     public string Email { get; init; } = null!;
     public string FirstName { get; init; } = null!;
