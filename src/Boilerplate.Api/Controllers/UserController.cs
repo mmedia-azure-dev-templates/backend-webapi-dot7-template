@@ -138,8 +138,8 @@ public class UserController : ControllerBase
         return await _mediator.Send(request);
     }
 
-    //[Authorize(Roles = Roles.Admin)]
-    [HttpDelete("{id}")]
+    [HttpDelete]
+    [Route("delete")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteUser(UserId id)
     {
