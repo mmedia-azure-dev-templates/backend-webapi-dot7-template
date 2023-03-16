@@ -4,6 +4,7 @@ using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Api.Common;
 using Boilerplate.Application.Features.Auth.UpdateEmail;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.PermissionsCode;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -88,10 +89,14 @@ public class AuthpUsersController : ControllerBase
     [HasPermission(DefaultPermissions.UserRemove)]
     [HttpGet]
     [Route("delete")]
-    public async Task<AuthUserDisplay> Delete(string userId)
+    public async Task<CustomStatusGeneric> Delete(UserId userId)
     {
-        var status = await _authUsersAdmin.FindAuthUserByUserIdAsync(userId);
-        return AuthUserDisplay.DisplayUserInfo(status.Result);
+        IStatusGeneric statusGeneric = await _authUsersAdmin.DeleteUserAsync(userId.ToString());
+        var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
+        CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
+        customStatusGeneric.IsValid = statusGeneric.IsValid;
+        customStatusGeneric.Message = statusGeneric.IsValid ? statusGeneric.Message : errors;
+        return customStatusGeneric;
     }
 
     

@@ -13,6 +13,9 @@ using System;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Web;
+using System.Net;
+using Azure.Core;
+using System.Collections.Generic;
 
 namespace Boilerplate.Domain.Services;
 public class AwsS3Service : IAwsS3Service
@@ -99,134 +102,38 @@ public class AwsS3Service : IAwsS3Service
     //    }
     //}
 
-    //public async Task<bool> DeleteFileAsync(string fileName, string versionId = "")
-    //{
+    public async Task<DeleteObjectResponse> DeleteFileAsync(string bucketFolderRelative, string fileName)
+    {
+        var request = new DeleteObjectRequest()
+        {
+            BucketName = $"{_awsS3Configuration.BucketName}",
+            Key = $"{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}",
+        };
+        return await _s3Client.DeleteObjectAsync(request);
+    }
 
-    //    try
-    //    {
-    //        DeleteObjectRequest request = new DeleteObjectRequest
-    //        {
-    //            BucketName = $"{_bucketName}{_bucketFolder}",
-    //            Key = fileName
-    //        };
-    //        if (!string.IsNullOrEmpty(versionId))
-    //            request.VersionId = versionId;
+    public async Task<DeleteObjectsResponse> DeletePathAsync(string bucketFolderRelative)
+    {
+        var request = new ListObjectsRequest
+        {
+            BucketName = $"{_awsS3Configuration.BucketName}",
+            Prefix = $"{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}",
+        };
 
-    //        await _awsS3Client.DeleteObjectAsync(request);
+        var response = await _s3Client.ListObjectsAsync(request);
+        var keys = new List<KeyVersion>();
+        foreach (var item in response.S3Objects)
+        {
+            // Here you can provide VersionId as well.
+            keys.Add(new KeyVersion { Key = item.Key });
+        }
 
-    //        return true;
+        var multiObjectDeleteRequest = new DeleteObjectsRequest()
+        {
+            BucketName = $"{_awsS3Configuration.BucketName}",
+            Objects = keys
+        };
 
-    //    }
-    //    catch (Exception)
-    //    {
-    //        throw;
-    //    }
-    //}
-
-    ///// <summary>
-    ///// Upload Amazon Object
-    ///// </summary>
-    ///// <param name="amazonObjectToUpload">Requested object file</param>
-    ///// <param name="binaryFile">Binary file</param>
-    ///// <returns></returns>
-    //private async Task<AmazonObject> UploadAmazonObjectAsync(AmazonObjectToUpload amazonObjectToUpload, byte[] binaryFile)
-    //{
-    //    var fileTransferUtility = new TransferUtility(_awsS3Client);
-
-    //    var key = $"{amazonObjectToUpload.Prefix}{amazonObjectToUpload.FormFile.FileName}";
-    //    using (MemoryStream memoryStream = new MemoryStream(binaryFile))
-    //    {
-    //        await fileTransferUtility.UploadAsync(memoryStream, $"{_bucketName}{_bucketFolder}", key);
-
-    //        var retVal = await _awsS3Client.GetObjectAsync($"{_bucketName}{_bucketFolder}", key);
-
-    //        var result = new AmazonObject
-    //        {
-    //            ETag = retVal.ETag,
-    //            BucketName = _bucketName,
-    //            Key = retVal.Key,
-    //            LastModified = retVal.LastModified,
-    //            Owner = null,
-    //            Size = binaryFile.Length,
-    //            Name = amazonObjectToUpload.FormFile.FileName,
-    //            File = true,
-    //            Prefix = amazonObjectToUpload.Prefix,
-    //            ObjectUrl = $"https://{_bucketName}.s3.us-east-2.amazonaws.com{_bucketFolder}/{amazonObjectToUpload.Prefix}{amazonObjectToUpload.FormFile.FileName}",
-    //            S3Uri = $"s3://{_bucketFolder}{_bucketName}/{amazonObjectToUpload.Prefix}{amazonObjectToUpload.FormFile.FileName}"
-    //        };
-
-    //        return result;
-    //    }
-    //}
-
-
-    ///// <summary>
-    ///// Upload File to Amazon Web Service
-    ///// </summary>
-    ///// <param name="fileName">Name of file to upload</param>
-    ///// <param name="prefix">Spcific prefix</param>
-    ///// <param name="binaryFile">Array of binary data</param>
-    ///// <returns></returns>
-    //public async Task<AmazonObject> UploadFileAmazonAsync(string fileName, string prefix, byte[] binaryFile)
-    //{
-    //    var fileTransferUtility = new TransferUtility(_awsS3Client);
-
-    //    var key = $"{prefix}{fileName}";
-    //    using (MemoryStream memoryStream = new MemoryStream(binaryFile))
-    //    {
-    //        await fileTransferUtility.UploadAsync(memoryStream, $"{_bucketName}{_bucketFolder}", key);
-
-    //        var retVal = await _awsS3Client.GetObjectAsync($"{_bucketName}{_bucketFolder}", key);
-
-    //        var result = new AmazonObject
-    //        {
-    //            ETag = retVal.ETag,
-    //            BucketName = _bucketName,
-    //            Key = retVal.Key,
-    //            LastModified = retVal.LastModified,
-    //            Owner = null,
-    //            Size = binaryFile.Length,
-    //            Name = fileName,
-    //            File = true,
-    //            Prefix = prefix,
-    //            ObjectUrl = $"https://{_bucketName}.s3.us-east-2.amazonaws.com{_bucketFolder}/{prefix}{fileName}",
-    //            S3Uri = $"s3://{_bucketFolder}{_bucketName}/{prefix}{fileName}"
-    //        };
-
-    //        return result;
-    //    }
-    //}
-    //public async Task<byte[]> GetFileAmazonAsyc(string filename)
-    //{
-    //    try
-    //    {
-    //        GetObjectRequest getObjectRequest = new GetObjectRequest();
-    //        getObjectRequest.BucketName = _bucketName;
-    //        getObjectRequest.Key = filename;
-    //        byte[] binaryFile = null;
-    //        GetObjectResponse response = await _awsS3Client.GetObjectAsync(getObjectRequest);
-    //        using (Stream responseStream = response.ResponseStream)
-    //        {
-
-    //            byte[] buffer = new byte[16 * 1024];
-    //            using (MemoryStream ms = new MemoryStream())
-    //            {
-    //                int read;
-    //                while ((read = responseStream.Read(buffer, 0, buffer.Length)) > 0)
-    //                {
-    //                    ms.Write(buffer, 0, read);
-    //                }
-    //                binaryFile = ms.ToArray();
-
-    //                return binaryFile;
-    //            }
-    //        }
-    //        return binaryFile;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        throw ex;
-    //    };
-
-    //}
+        return  await _s3Client.DeleteObjectsAsync(multiObjectDeleteRequest);
+    }
 }

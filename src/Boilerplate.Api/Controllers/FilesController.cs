@@ -96,12 +96,18 @@ public class FilesController : ControllerBase
         return File(s3Object.ResponseStream, s3Object.Headers.ContentType);
     }
 
-    [HttpDelete("delete")]
+    [HttpDelete("deletefile")]
     public async Task<IActionResult> DeleteFileAsync(string bucketName, string key)
     {
         var bucketExists = await _s3Client.DoesS3BucketExistAsync(bucketName);
         if (!bucketExists) return NotFound($"Bucket {bucketName} does not exist");
         await _s3Client.DeleteObjectAsync(bucketName, key);
         return NoContent();
+    }
+
+    [HttpDelete("deletepath")]
+    public async Task<DeleteObjectsResponse> DeletePathAsync(string bucketFolderRelative)
+    {
+        return await _awsS3Service.DeletePathAsync(bucketFolderRelative);
     }
 }
