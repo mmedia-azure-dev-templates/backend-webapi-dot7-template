@@ -1,4 +1,5 @@
-﻿using Boilerplate.Application.Common;
+﻿using Amazon.S3.Model;
+using Boilerplate.Application.Common;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserRequest, OneOf<bool, 
 
         if (user is null) return new UserNotFound();
 
-        _awsS3Service.DeleteFileAsync("users/" + user.Id.ToString(), "fotoperfil.jpg");
+        DeleteObjectsResponse deleteObjectsResponse = await _awsS3Service.DeletePathAsync("users/" + user.Id.ToString());
 
         _context.ApplicationUsers.Remove(user!);
         return await _context.SaveChangesAsync(cancellationToken) > 0;
