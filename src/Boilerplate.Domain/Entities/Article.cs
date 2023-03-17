@@ -7,7 +7,6 @@ namespace Boilerplate.Domain.Entities;
 
 public class Article : Entity<ArticleId>, IDataKeyFilterReadWrite
 {
-    [Required]
     public override ArticleId Id { get; set; }
     public string DataKey { get; set; }
 

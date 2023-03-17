@@ -29,7 +29,7 @@ public class ArticleSearchHandler : IRequestHandler<ArticleSearchRequest, Pagina
             .WhereIf(!string.IsNullOrEmpty(request.Display), x => EF.Functions.Like(x.Display!, $"%{request.Display}%"))
             ;
         return await _mapper.ProjectTo<ArticleSearchResponse>(heroes)
-            //.OrderBy(x => x.Display)
+            .OrderBy(x => x.Sku)
             .ToPaginatedListAsync(request.CurrentPage, request.PageSize);
     }
 }

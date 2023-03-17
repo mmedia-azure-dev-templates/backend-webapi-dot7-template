@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Boilerplate.Application.Features.Articles.ArticleCreate;
+using Boilerplate.Application.Features.Articles.GetArticleById;
 using Boilerplate.Application.Features.Heroes;
 using Boilerplate.Application.Features.Heroes.CreateHero;
 using Boilerplate.Application.Features.Heroes.UpdateHero;
@@ -72,6 +74,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DateUpdated, opt => opt.MapFrom(src => src.userInformation.DateUpdated))
             ;
         // Hero Map
+        CreateMap<Article, ArticleSearchResponse>();
+        CreateMap<Article, ArticleSearchResponse>().ReverseMap();
         CreateMap<Hero, GetHeroResponse>().ReverseMap();
         CreateMap<CreateHeroRequest, Hero>();
         CreateMap<UpdateHeroRequest, Hero>();
