@@ -1,6 +1,6 @@
 ﻿namespace Boilerplate.Application.Common.Requests;
 
-public record PaginatedRequest
+public class PaginatedRequest
 {
     public int CurrentPage { get; init; } = 1;
 

@@ -70,6 +70,8 @@ public static class JwtPermissionsSetup
         {
             options.UseLocksToUpdateGlobalResources = false;
             options.TenantType = TenantTypes.SingleLevel;
+            options.LinkToTenantType = LinkToTenantTypes.OnlyAppUsers;
+            options.EncryptionKey = "sadafdwesEEEED1rxsaASV";
 
             //This sets up the JWT Token. The config is suitable for using the Refresh Token with your JWT Token
             options.ConfigureAuthPJwtToken = new AuthPJwtConfiguration

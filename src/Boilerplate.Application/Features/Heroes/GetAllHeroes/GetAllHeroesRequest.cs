@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Boilerplate.Application.Features.Heroes.GetAllHeroes;
 
-public record GetAllHeroesRequest : PaginatedRequest, IRequest<PaginatedList<GetHeroResponse>>
+public class GetAllHeroesRequest : PaginatedRequest, IRequest<PaginatedList<GetHeroResponse>>
 {
     public string? Name { get; init; }
     public string? Nickname { get; init; }

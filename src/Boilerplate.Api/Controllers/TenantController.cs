@@ -1,5 +1,7 @@
 ﻿using AuthPermissions.AdminCode;
 using AuthPermissions.AspNetCore;
+using AuthPermissions.AspNetCore.AccessTenantData;
+using AuthPermissions.BaseCode.CommonCode;
 using AuthPermissions.BaseCode.DataLayer.Classes;
 //using AuthPermissions.AspNetCore.AccessTenantData;
 //using AuthPermissions.BaseCode.CommonCode;
@@ -84,5 +86,26 @@ public class TenantController : ControllerBase
         //    ? RedirectToAction(nameof(ErrorDisplay),
         //        new { errorMessage = status.GetAllErrors() })
         //    : RedirectToAction(nameof(Index), new { message = status.Message });
+    }
+
+    [HasPermission(DefaultPermissions.TenantAccessData)]
+    [HttpGet]
+    [Route("startAccess")]
+    public async Task<IActionResult> StartAccess([FromServices] ILinkToTenantDataService service, int id)
+    {
+        var currentUser = User.GetUserIdFromUser();
+        var status = await service.StartLinkingToTenantDataAsync(currentUser, id);
+
+        return Ok(status);
+    }
+
+    [HttpGet]
+    [Route("stopAccess")]
+    public IActionResult StopAccess([FromServices] ILinkToTenantDataService service, bool gotoHome)
+    {
+        var currentUser = User.GetUserIdFromUser();
+        service.StopLinkingToTenant();
+
+        return Ok();
     }
 }
