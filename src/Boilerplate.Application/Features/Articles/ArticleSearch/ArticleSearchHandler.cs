@@ -4,7 +4,6 @@ using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Extensions;
 using Boilerplate.Application.Features.Articles.GetArticleById;
-using Boilerplate.Application.Features.Heroes;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

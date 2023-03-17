@@ -53,7 +53,7 @@ public class JibanTenantChangeService : ITenantChangeService
         //_context.Add(newCompanyTenant);
         //await _context.SaveChangesAsync();
 
-        return null;
+        return await Task.FromResult<string>("");
     }
 
     /// <summary>
@@ -97,7 +97,7 @@ public class JibanTenantChangeService : ITenantChangeService
             return "There was a system-level problem - see logs for more detail";
         }
 
-        return null;
+        return await Task.FromResult<string>("");
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ public class JibanTenantChangeService : ITenantChangeService
             await _context.SaveChangesAsync();
         }*/
 
-        return null;
+        return await Task.FromResult<string>("");
     }
 
 

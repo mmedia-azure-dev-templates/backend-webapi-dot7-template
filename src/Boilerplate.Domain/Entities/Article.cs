@@ -1,10 +1,10 @@
 ﻿using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Domain.Entities.Common;
-using System;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boilerplate.Domain.Entities;
 
+[Table("Articles", Schema = "web")]
 public class Article : Entity<ArticleId>, IDataKeyFilterReadWrite
 {
     public override ArticleId Id { get; set; }
@@ -12,11 +12,11 @@ public class Article : Entity<ArticleId>, IDataKeyFilterReadWrite
 
     public int? Provider { get; set; }
 
-    public string? Sku { get; set; }
+    public string Sku { get; set; }
 
     public string? Abrevia { get; set; }
 
-    public string? Display { get; set; }
+    public string Display { get; set; }
 
     public decimal Cost { get; set; }
 
