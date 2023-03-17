@@ -30,7 +30,9 @@ public partial class Articles : Migration
                 Brand = table.Column<int>(type: "int", nullable: true),
                 Notes = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                 Meta = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                Discontinued = table.Column<bool>(type: "bit", nullable: true)
+                Discontinued = table.Column<bool>(type: "bit", nullable: true),
+                DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
+                Dateupdated = table.Column<DateTime>(type: "datetime2", nullable: true),
             },
             constraints: table =>
             {
