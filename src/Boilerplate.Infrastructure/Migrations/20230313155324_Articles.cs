@@ -20,7 +20,7 @@ public partial class Articles : Migration
             schema: "web",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                 DataKey = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: false),
                 Provider = table.Column<int>(type: "int", nullable: true),
                 Sku = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
@@ -30,7 +30,9 @@ public partial class Articles : Migration
                 Brand = table.Column<int>(type: "int", nullable: true),
                 Notes = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                 Meta = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                Discontinued = table.Column<bool>(type: "bit", nullable: true)
+                Discontinued = table.Column<bool>(type: "bit", nullable: true),
+                DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
+                Dateupdated = table.Column<DateTime>(type: "datetime2", nullable: true),
             },
             constraints: table =>
             {

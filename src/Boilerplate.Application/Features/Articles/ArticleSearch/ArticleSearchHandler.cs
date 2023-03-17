@@ -4,7 +4,6 @@ using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Extensions;
 using Boilerplate.Application.Features.Articles.GetArticleById;
-using Boilerplate.Application.Features.Heroes;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -29,7 +28,7 @@ public class ArticleSearchHandler : IRequestHandler<ArticleSearchRequest, Pagina
             .WhereIf(!string.IsNullOrEmpty(request.Display), x => EF.Functions.Like(x.Display!, $"%{request.Display}%"))
             ;
         return await _mapper.ProjectTo<ArticleSearchResponse>(heroes)
-            //.OrderBy(x => x.Display)
+            .OrderBy(x => x.Sku)
             .ToPaginatedListAsync(request.CurrentPage, request.PageSize);
     }
 }

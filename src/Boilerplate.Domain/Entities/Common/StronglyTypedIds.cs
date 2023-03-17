@@ -15,10 +15,10 @@ public interface ILong { }
 public interface IInt { }
 public interface IString { }
 
-[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
-public partial struct ArticleId : ILong
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct ArticleId : IGuid
 {
-    public static implicit operator ArticleId(long articleId)
+    public static implicit operator ArticleId(Guid articleId)
     {
         return new ArticleId(articleId);
     }

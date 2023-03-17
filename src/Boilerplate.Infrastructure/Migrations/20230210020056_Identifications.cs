@@ -18,7 +18,7 @@ public partial class Identifications : Migration
         name: "UserInformations",
         columns: table => new
         {
-            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
             UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
             TypeDocument = table.Column<string>(type: "nvarchar(50)", nullable: false),
             Nacionality = table.Column<string>(type: "nvarchar(50)", nullable: false),
