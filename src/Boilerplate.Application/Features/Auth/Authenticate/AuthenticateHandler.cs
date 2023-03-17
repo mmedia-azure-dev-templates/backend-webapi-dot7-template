@@ -60,11 +60,12 @@ public class AuthenticateHandler : IRequestHandler<AuthenticateRequest, Authenti
             _authenticateResponse.SweetAlert.Title = _locationService.GetLocalizedHtmlString("CredentialsNotValid").Value;
             return _authenticateResponse;
         }
-        
-        var token = await _tokenBuilder.GenerateJwtTokenAsync(user.Id.ToString());
+
+        var token = await _tokenBuilder.GenerateTokenAndRefreshTokenAsync(user.Id.ToString());
         await _context.SaveChangesAsync(cancellationToken);
 
-        _authenticateResponse.Token = token;
+        _authenticateResponse.Token = token.Token;
+        _authenticateResponse.RefreshToken = token.RefreshToken;
         _authenticateResponse.SweetAlert.Title = _locationService.GetLocalizedHtmlString("AuthenticateResponseTitleSuccess").Value;
         _authenticateResponse.SweetAlert.Text = _locationService.GetLocalizedHtmlString("AuthenticateResponseTitleSuccess").Value;
         _authenticateResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _locationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess").Value);

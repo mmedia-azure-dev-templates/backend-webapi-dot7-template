@@ -5,7 +5,7 @@ namespace Boilerplate.Application.Features.Auth;
 public record AuthenticateResponse:IAuthenticateResponse
 {
     public string Token { get; set; } = "";
-
+    public string RefreshToken { get; set; } = "";
     public SweetAlert SweetAlert { get; set; }
     public bool Transaction { get; set; } = false!;
 
