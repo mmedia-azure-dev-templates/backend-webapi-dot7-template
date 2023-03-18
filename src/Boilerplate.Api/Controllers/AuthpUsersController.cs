@@ -1,7 +1,9 @@
 ﻿using AuthPermissions.AdminCode;
 using AuthPermissions.AspNetCore;
 using AuthPermissions.BaseCode.CommonCode;
+using AuthPermissions.BaseCode.DataLayer.EfCode;
 using Boilerplate.Api.Common;
+using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Auth.UpdateEmail;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
@@ -9,7 +11,10 @@ using Boilerplate.Domain.PermissionsCode;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph;
+using org.apache.zookeeper.data;
 using StatusGeneric;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +29,13 @@ public class AuthpUsersController : ControllerBase
 {
     private readonly IAuthUsersAdminService _authUsersAdmin;
     private readonly IMediator _mediator;
+    private readonly AuthPermissionsDbContext _context;
 
-    public AuthpUsersController(IAuthUsersAdminService authUsersAdmin, IMediator mediator)
+    public AuthpUsersController(IAuthUsersAdminService authUsersAdmin, IMediator mediator, AuthPermissionsDbContext context)
     {
         _authUsersAdmin = authUsersAdmin;
         _mediator = mediator;
+        _context = context;
     }
 
     // List users filtered by authUser tenant !!! Turned off so that I can list all the users
@@ -57,8 +64,31 @@ public class AuthpUsersController : ControllerBase
     [HasPermission(DefaultPermissions.UserChange)]
     public async Task<string> Edit(SetupManualUserChange change)
     {
-        var status = await _authUsersAdmin.UpdateUserAsync(change.UserId,
-            change.Email, change.UserName, change.RoleNames, change.TenantName);
+        var isSuperAdmin = change.RoleNames.Contains("SuperAdmin");
+        if (isSuperAdmin)
+        {
+
+            var authUser = await _context.AuthUsers.Where(item => item.UserId == change.UserId).FirstOrDefaultAsync();
+            var authTenant = await _context.Tenants.Where(item => item.TenantFullName == change.TenantName.Trim()).FirstOrDefaultAsync();
+
+            if (authUser != null && authTenant != null)
+            {
+                //var commandText = "UPDATE authp.AuthUsers SET TenantId = @NewTenantId WHERE UserId = @MyId";
+                var NewTenantId = authTenant.TenantId;
+                var UserId = authUser.UserId;
+                object[] paramItems = new object[]
+                {
+                    new SqlParameter("@paramEmail", NewTenantId),
+                    new SqlParameter("@paramName",UserId)
+                };
+                int items = _context.Database.ExecuteSqlRaw
+                    ("UPDATE authp.AuthUsers SET TenantId = @paramEmail WHERE [UserId] = @paramName", paramItems);
+                //_context.AuthUsers.FromSqlRaw("UPDATE authp.AuthUsers SET TenantId={NewTenantId} WHERE UserId={UserId}");
+
+                return "Tenant Super Admin Actualizado Correctamente!";
+            }
+        }
+        var status = await _authUsersAdmin.UpdateUserAsync(change.UserId, change.Email, change.UserName, change.RoleNames, change.TenantName);
 
         return status.Message;
     }
