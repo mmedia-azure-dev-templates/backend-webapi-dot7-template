@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph;
 using org.apache.zookeeper.data;
 using StatusGeneric;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -124,7 +125,7 @@ public class AuthpUsersController : ControllerBase
 
             object[] paramItems = new object[]
             {
-                    new SqlParameter("@tenantId", tenantId),
+                    new SqlParameter("@tenantId", tenantId == null ? DBNull.Value : tenantId),
                     new SqlParameter("@UserId",status.Result.UserId)
             };
             int items = _context.Database.ExecuteSqlRaw
