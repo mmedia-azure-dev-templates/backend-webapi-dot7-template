@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph;
 using org.apache.zookeeper.data;
 using StatusGeneric;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,32 +65,7 @@ public class AuthpUsersController : ControllerBase
     [HasPermission(DefaultPermissions.UserChange)]
     public async Task<string> Edit(SetupManualUserChange change)
     {
-        var isSuperAdmin = change.RoleNames.Contains("SuperAdmin");
-        if (isSuperAdmin)
-        {
-
-            var authUser = await _context.AuthUsers.Where(item => item.UserId == change.UserId).FirstOrDefaultAsync();
-            var authTenant = await _context.Tenants.Where(item => item.TenantFullName == change.TenantName.Trim()).FirstOrDefaultAsync();
-
-            if (authUser != null && authTenant != null)
-            {
-                //var commandText = "UPDATE authp.AuthUsers SET TenantId = @NewTenantId WHERE UserId = @MyId";
-                var NewTenantId = authTenant.TenantId;
-                var UserId = authUser.UserId;
-                object[] paramItems = new object[]
-                {
-                    new SqlParameter("@paramEmail", NewTenantId),
-                    new SqlParameter("@paramName",UserId)
-                };
-                int items = _context.Database.ExecuteSqlRaw
-                    ("UPDATE authp.AuthUsers SET TenantId = @paramEmail WHERE [UserId] = @paramName", paramItems);
-                //_context.AuthUsers.FromSqlRaw("UPDATE authp.AuthUsers SET TenantId={NewTenantId} WHERE UserId={UserId}");
-
-                return "Tenant Super Admin Actualizado Correctamente!";
-            }
-        }
         var status = await _authUsersAdmin.UpdateUserAsync(change.UserId, change.Email, change.UserName, change.RoleNames, change.TenantName);
-
         return status.Message;
     }
 
@@ -129,7 +105,38 @@ public class AuthpUsersController : ControllerBase
         return customStatusGeneric;
     }
 
-    
+    [HasPermission(DefaultPermissions.AccessAll)]
+    [HttpPost]
+    [Route("settenantsuperadmin")]
+    public async Task<string> SetTenantSuperAdmin(int? tenantId)
+    {
+        var status = await _authUsersAdmin.FindAuthUserByUserIdAsync(User.Claims.GetUserIdFromClaims().ToString());
+
+        if (status.IsValid)
+        {
+            var isSuperAdmin = status.Result.UserRoles.Where(x => x.RoleName == "SuperAdmin").Count();
+
+            if (isSuperAdmin == 0)
+            {
+                return "No tienes el rol Super Admin :(";
+            }
+
+            //var commandText = "UPDATE authp.AuthUsers SET TenantId = @NewTenantId WHERE UserId = @MyId";
+
+            object[] paramItems = new object[]
+            {
+                    new SqlParameter("@tenantId", tenantId == null ? DBNull.Value : tenantId),
+                    new SqlParameter("@UserId",status.Result.UserId)
+            };
+            int items = _context.Database.ExecuteSqlRaw
+                ("UPDATE authp.AuthUsers SET TenantId = @tenantId WHERE [UserId] = @UserId", paramItems);
+            //_context.AuthUsers.FromSqlRaw("UPDATE authp.AuthUsers SET TenantId={NewTenantId} WHERE UserId={UserId}");
+
+            return "Tenant Super Admin Actualizado Correctamente!";
+        }
+
+        return status.Message;
+    }
 
 
     [HttpGet]
