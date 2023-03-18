@@ -59,27 +59,6 @@ public class AuthenticateController : ControllerBase
     }
 
     /// <summary>
-    /// This checks you are a valid user and returns a JTW token and a Refresh token
-    /// </summary>
-    /// <param name="loginUser"></param>
-    /// <returns></returns>
-    [AllowAnonymous]
-    [HttpPost]
-    [Route("authenticatewithrefresh")]
-    public async Task<ActionResult<TokenAndRefreshToken>> AuthenticateWithRefresh(LoginUserModel loginUser)
-    {
-        //NOTE: The _signInManager.PasswordSignInAsync does not change the current ClaimsPrincipal - that only happens on the next access with the token
-        var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, false);
-        if (!result.Succeeded)
-        {
-            return BadRequest(new { message = "Username or password is incorrect" });
-        }
-        var user = await _userManager.FindByEmailAsync(loginUser.Email);
-
-        return await _tokenBuilder.GenerateTokenAndRefreshTokenAsync(user.Id.ToString());
-    }
-
-    /// <summary>
     /// This will refresh the JWT token using the provided Refresh token
     /// </summary>
     /// <param name="tokenAndRefresh"></param>
