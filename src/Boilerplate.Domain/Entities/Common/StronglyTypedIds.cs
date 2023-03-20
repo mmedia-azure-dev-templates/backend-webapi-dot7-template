@@ -198,3 +198,28 @@ public partial struct CustomerId : IGuid
         return new CustomerId(customerId);
     }
 }
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
+public partial struct CustomCounter : ILong
+{
+    public static implicit operator CustomCounter(long customCounter)
+    {
+        return new CustomCounter(customCounter);
+    }
+}
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
+public partial struct OrderNumber : ILong
+{
+    public static implicit operator OrderNumber(long orderNumber)
+    {
+        return new OrderNumber(orderNumber);
+    }
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct UserPaid : IGuid
+{
+    public static implicit operator UserPaid(Guid userPaid)
+    {
+        return new UserPaid(userPaid);
+    }
+}

@@ -4,6 +4,8 @@ using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.ResetPassword;
+using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
+using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Features.Users.EditUser;
 using Boilerplate.Domain.ClaimsChangeCode;
@@ -66,6 +68,8 @@ builder.Services.AddScoped<IResetPasswordResponse, ResetPasswordResponse>();
 builder.Services.AddScoped<IUserResponse, UserResponse>();
 builder.Services.AddScoped<IEditUserResponse, EditUserResponse>();
 builder.Services.AddScoped<IArticleCreateResponse, ArticleCreateResponse>();
+builder.Services.AddScoped<IOrderCreateResponse, OrderCreateResponse>();
+builder.Services.AddScoped<IOrderItemCreateResponse, OrderItemCreateResponse>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers

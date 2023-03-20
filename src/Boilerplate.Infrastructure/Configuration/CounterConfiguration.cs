@@ -11,9 +11,7 @@ public class CounterConfiguration : IEntityTypeConfiguration<Counter>
     {
         entity.Property(e => e.Id).HasConversion<CounterId.EfCoreValueConverter>();
         entity.HasKey(e => e.Id).HasName("Counters_Id_pkey");
-
-        entity.ToTable("Counters", "web", tb => tb.HasComment("TABLA DE CONTADORES DE ORDENES DEL SISTEMA"));
-
+        entity.Property(e => e.CustomCounter).HasConversion<CustomCounter.EfCoreValueConverter>();
         entity.Property(e => e.Slug).HasMaxLength(50);
     }
 }

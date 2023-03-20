@@ -1,18 +1,14 @@
-﻿using AuthPermissions.BaseCode.CommonCode;
+﻿using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
-using Boilerplate.Domain.Implementations;
-using Microsoft.Graph.ExternalConnectors;
+using MediatR;
+using Microsoft.Graph;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
-namespace Boilerplate.Domain.Entities;
-
-[Table("Orders", Schema = "web")]
-public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUpdated
+namespace Boilerplate.Application.Features.Orders.OrderCreate;
+public class OrderCreateRequest: IRequest<OrderCreateResponse>
 {
-    public override OrderId Id { get; set; }
-    public string DataKey { get; set; }
     public AgreegmentPaymentType AgreegmentPaymentType { get; set; }
     public OrderStatusType OrderStatusType { get; set; }
     public OrderNumber OrderNumber { get; set; }
@@ -35,8 +31,7 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
     public bool? PaidState { get; set; }
     public string? Dispatch { get; set; }
     public string? Extras { get; set; }
+    public List<OrderItemCreateRequest> OrderItemsCreateRequest { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
-    //public virtual Contact? Contact { get; set; }
-    //public virtual User User { get; set; } = null!;
 }
