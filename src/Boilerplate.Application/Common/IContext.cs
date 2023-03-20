@@ -14,6 +14,7 @@ public interface IContext : IAsyncDisposable, IDisposable
     public DbSet<UserInformation> UserInformations { get; }
     public DbSet<GeographicLocation> GeographicLocations { get; set; }
     public DbSet<Article> Articles { get; }
+    public DbSet<OrderItem> OrderItems { get; }
     public DbSet<Team> Teams { get; }
     public DbSet<User> Users { get; }
     public DbSet<Hero> Heroes { get; }

@@ -80,8 +80,6 @@ public partial struct IdentificationId : IGuid
 
 public readonly partial struct IdentificationId
 {
-    // Not shown: the OrderId implementation and other converters
-
     public class StronglyTypedIdEfValueConverter : ValueConverter<IdentificationId, Guid>
     {
         public StronglyTypedIdEfValueConverter(ConverterMappingHints mappingHints = null)
@@ -147,8 +145,6 @@ public partial struct UserId : IGuid
 
 public readonly partial struct UserId
 {
-    // Not shown: the OrderId implementation and other converters
-
     public class StronglyTypedIdEfValueConverter : ValueConverter<UserId, Guid>
     {
         public StronglyTypedIdEfValueConverter(ConverterMappingHints mappingHints = null)
@@ -164,5 +160,14 @@ public partial struct TeamId : IGuid
     public static implicit operator TeamId(Guid teamId)
     {
         return new TeamId(teamId);
+    }
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct OrderItemId : IGuid
+{
+    public static implicit operator OrderItemId(Guid orderItemId)
+    {
+        return new OrderItemId(orderItemId);
     }
 }
