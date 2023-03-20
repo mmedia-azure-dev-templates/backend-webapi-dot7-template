@@ -1,35 +1,25 @@
-﻿using Boilerplate.Domain.Entities.Common;
+﻿using AuthPermissions.BaseCode.CommonCode;
+using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Implementations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Boilerplate.Domain.Entities;
 
-public partial class Order : Entity<OrderId>
+public partial class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUpdated
 {
-    [Required]
     public override OrderId Id { get; set; }
 
-    public string Enterprise { get; set; } = null!;
-
-    public DateTime GeneratedDate1 { get; set; }
-
-    public DateTime? GeneratedDate2 { get; set; }
-
-    public DateTime GeneratedHour1 { get; set; }
+    public string DataKey { get; set; }
 
     public int OrderNumber { get; set; }
 
     public decimal? Credit { get; set; }
     
-    public UserId UserId { get; set; }
-
-    public ContactId ContactId { get; set; }
-
-    public int? Assigned { get; set; }
-
-    public char? PersonType { get; set; }
-
+    public UserGenerated UserGenerated { get; set; }
+    public UserAssigned UserAssigned { get; set; }
+    public CustomerId CustomerId { get; set; }
     public decimal CashAdvance { get; set; }
 
     public decimal SubTotal { get; set; }
@@ -69,4 +59,6 @@ public partial class Order : Entity<OrderId>
     public virtual Contact? Contact { get; set; }
 
     public virtual User User { get; set; } = null!;
+    public DateTime DateCreated { get; set; }
+    public DateTime? DateUpdated { get; set; }
 }

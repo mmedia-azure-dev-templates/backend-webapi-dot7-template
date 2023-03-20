@@ -171,3 +171,30 @@ public partial struct OrderItemId : IGuid
         return new OrderItemId(orderItemId);
     }
 }
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct UserGenerated : IGuid
+{
+    public static implicit operator UserGenerated(Guid userGenerated)
+    {
+        return new UserGenerated(userGenerated);
+    }
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct UserAssigned : IGuid
+{
+    public static implicit operator UserAssigned(Guid userAssigned)
+    {
+        return new UserAssigned(userAssigned);
+    }
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct CustomerId : IGuid
+{
+    public static implicit operator CustomerId(Guid customerId)
+    {
+        return new CustomerId(customerId);
+    }
+}
