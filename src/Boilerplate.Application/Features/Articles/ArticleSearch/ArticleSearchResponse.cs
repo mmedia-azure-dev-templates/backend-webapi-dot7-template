@@ -28,4 +28,6 @@ public class ArticleSearchResponse
     public string? Meta { get; set; }
 
     public bool? Discontinued { get; set; }
+
+    public bool IsSelected { get; set; }
 }

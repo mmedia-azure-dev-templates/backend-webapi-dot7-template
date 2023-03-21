@@ -1,0 +1,16 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
+namespace Boilerplate.Domain.Entities.Enums;
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum AgreegmentPaymentType
+{
+    [Display(Name = "Pago de Contado")]
+    CashPayment,
+    [Display(Name = "Crédito Directo")]
+    DirectCredit,
+    [Display(Name = "FCME")]
+    Fcme,
+    [Display(Name = "Tarjeta Crédito")]
+    CreditCard,
+}

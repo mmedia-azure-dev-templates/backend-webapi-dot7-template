@@ -1,0 +1,36 @@
+﻿using Boilerplate.Application.Features.OrderItems.OrderItemById;
+using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
+using Boilerplate.Application.Features.Users;
+using Boilerplate.Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+
+namespace Boilerplate.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+public class OrderController : ControllerBase
+{
+    private readonly IMediator _mediator;
+    public OrderController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    [HttpGet]
+    [Route("getorderitem")]
+    public async Task<OrderItemByIdResponse> GetOrderItem(OrderItemByIdRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpPost]
+    [Route("orderitemcreate")]
+    public async Task<OrderItemCreateResponse> OrderItemCreate(OrderItemCreateRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+}

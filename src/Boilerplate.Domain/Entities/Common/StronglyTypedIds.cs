@@ -80,8 +80,6 @@ public partial struct IdentificationId : IGuid
 
 public readonly partial struct IdentificationId
 {
-    // Not shown: the OrderId implementation and other converters
-
     public class StronglyTypedIdEfValueConverter : ValueConverter<IdentificationId, Guid>
     {
         public StronglyTypedIdEfValueConverter(ConverterMappingHints mappingHints = null)
@@ -147,8 +145,6 @@ public partial struct UserId : IGuid
 
 public readonly partial struct UserId
 {
-    // Not shown: the OrderId implementation and other converters
-
     public class StronglyTypedIdEfValueConverter : ValueConverter<UserId, Guid>
     {
         public StronglyTypedIdEfValueConverter(ConverterMappingHints mappingHints = null)
@@ -164,5 +160,66 @@ public partial struct TeamId : IGuid
     public static implicit operator TeamId(Guid teamId)
     {
         return new TeamId(teamId);
+    }
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct OrderItemId : IGuid
+{
+    public static implicit operator OrderItemId(Guid orderItemId)
+    {
+        return new OrderItemId(orderItemId);
+    }
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct UserGenerated : IGuid
+{
+    public static implicit operator UserGenerated(Guid userGenerated)
+    {
+        return new UserGenerated(userGenerated);
+    }
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct UserAssigned : IGuid
+{
+    public static implicit operator UserAssigned(Guid userAssigned)
+    {
+        return new UserAssigned(userAssigned);
+    }
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct CustomerId : IGuid
+{
+    public static implicit operator CustomerId(Guid customerId)
+    {
+        return new CustomerId(customerId);
+    }
+}
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
+public partial struct CustomCounter : ILong
+{
+    public static implicit operator CustomCounter(long customCounter)
+    {
+        return new CustomCounter(customCounter);
+    }
+}
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
+public partial struct OrderNumber : ILong
+{
+    public static implicit operator OrderNumber(long orderNumber)
+    {
+        return new OrderNumber(orderNumber);
+    }
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct UserPaid : IGuid
+{
+    public static implicit operator UserPaid(Guid userPaid)
+    {
+        return new UserPaid(userPaid);
     }
 }

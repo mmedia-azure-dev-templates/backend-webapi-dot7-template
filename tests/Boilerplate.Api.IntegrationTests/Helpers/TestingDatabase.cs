@@ -19,23 +19,23 @@ public static class TestingDatabase
         //await db.SaveChangesAsync();
     }
 
-    public static readonly User[] GetSeedingUsers = new[]
-    {
-        new User()
-        {
-            Id = new Guid(),
-            Password = BC.HashPassword("testpassword123"),
-            Email = "admin@boilerplate.com",
-            Role = "Admin"
-        },
-        new User()
-        {
-            Id = new Guid(),
-            Password = BC.HashPassword("testpassword123"),
-            Email = "user@boilerplate.com",
-            Role = "User"
-        }
-    };
+    //public static readonly User[] GetSeedingUsers = new[]
+    //{
+    //    new User()
+    //    {
+    //        Id = new Guid(),
+    //        Password = BC.HashPassword("testpassword123"),
+    //        Email = "admin@boilerplate.com",
+    //        Role = "Admin"
+    //    },
+    //    new User()
+    //    {
+    //        Id = new Guid(),
+    //        Password = BC.HashPassword("testpassword123"),
+    //        Email = "user@boilerplate.com",
+    //        Role = "User"
+    //    }
+    //};
 
     public static readonly List<Hero> GetSeedingHeroes =
         new()
