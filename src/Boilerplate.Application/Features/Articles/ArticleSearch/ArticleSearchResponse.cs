@@ -19,6 +19,8 @@ public class ArticleSearchResponse
 
     public string? Display { get; set; }
 
+    public int Quantity { get; set; }
+
     public decimal Cost { get; set; }
 
     public int? Brand { get; set; }
