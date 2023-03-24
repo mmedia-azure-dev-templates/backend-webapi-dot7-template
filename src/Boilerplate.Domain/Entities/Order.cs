@@ -13,7 +13,7 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
 {
     public override OrderId Id { get; set; }
     public string DataKey { get; set; }
-    public AgreegmentPaymentType AgreegmentPaymentType { get; set; }
+    public PaymentMethodsType AgreegmentPaymentType { get; set; }
     public OrderStatusType OrderStatusType { get; set; }
     public OrderNumber OrderNumber { get; set; }
     public decimal? Credit { get; set; }

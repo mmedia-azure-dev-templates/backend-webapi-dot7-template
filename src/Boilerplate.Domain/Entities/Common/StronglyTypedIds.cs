@@ -107,10 +107,10 @@ public partial struct InventoryDocId : ILong
     }
 }
 
-[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
-public partial struct OrderId : ILong
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct OrderId : IGuid
 {
-    public static implicit operator OrderId(long orderId)
+    public static implicit operator OrderId(Guid orderId)
     {
         return new OrderId(orderId);
     }
@@ -221,5 +221,14 @@ public partial struct UserPaid : IGuid
     public static implicit operator UserPaid(Guid userPaid)
     {
         return new UserPaid(userPaid);
+    }
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct PaymentMethodId : IGuid
+{
+    public static implicit operator PaymentMethodId(Guid paymentMethodId)
+    {
+        return new PaymentMethodId(paymentMethodId);
     }
 }
