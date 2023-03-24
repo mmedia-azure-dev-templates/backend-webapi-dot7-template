@@ -3,14 +3,13 @@ using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Extensions;
-using Boilerplate.Application.Features.Articles.GetArticleById;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Articles.GetArticleByCode;
+namespace Boilerplate.Application.Features.Articles.ArticleSearch;
 public class ArticleSearchHandler : IRequestHandler<ArticleSearchRequest, PaginatedList<ArticleSearchResponse>>
 {
     private readonly IContext _context;

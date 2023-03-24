@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using MediatR;
-using Boilerplate.Application.Features.Articles.GetArticleById;
 using Boilerplate.Application.Features.Articles.ArticleCreate;
+using Boilerplate.Application.Features.Articles.ArticleSearch;
 
 namespace Boilerplate.Api.Controllers;
 
