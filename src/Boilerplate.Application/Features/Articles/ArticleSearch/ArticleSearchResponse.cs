@@ -23,6 +23,8 @@ public class ArticleSearchResponse
 
     public decimal Cost { get; set; }
 
+    public decimal Total { get; set; } = 0;
+
     public int? Brand { get; set; }
 
     public string? Notes { get; set; }
