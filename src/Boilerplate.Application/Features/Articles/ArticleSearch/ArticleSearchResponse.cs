@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Articles.GetArticleById;
+namespace Boilerplate.Application.Features.Articles.ArticleSearch;
 public class ArticleSearchResponse
 {
     public ArticleId Id { get; set; }

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Boilerplate.Domain.Entities.Enums;
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum AgreegmentPaymentType
+public enum PaymentMethodsType
 {
     [Display(Name = "Pago de Contado")]
     CashPayment,
