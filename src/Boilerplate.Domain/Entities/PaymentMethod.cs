@@ -13,7 +13,9 @@ public class PaymentMethod : Entity<PaymentMethodId>, IDataKeyFilterReadWrite, I
     public override PaymentMethodId Id { get; set; }
     public string DataKey { get; set; }
     public PaymentMethodsType PaymentMethodsType { get; set; }
+    public string Display { get; set; }
     public bool Active { get; set; }
+    public string? Icon { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
 }

@@ -28,6 +28,7 @@ public class PaymentMethodCreateHandler : IRequestHandler<PaymentMethodCreateReq
 
         _context.PaymentMethods.Add(paymentMethodCreate);
         await _context.SaveChangesAsync(cancellationToken);
+        paymentMethodCreateResponse.Message = paymentMethodCreate.DateCreated.ToString();
         return paymentMethodCreateResponse;
     }
 }
