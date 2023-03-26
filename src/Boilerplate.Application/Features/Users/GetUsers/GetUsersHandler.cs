@@ -70,9 +70,9 @@ public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<Ge
                             DateCreated = userInformation.DateCreated,
                             DateUpdated = userInformation.DateUpdated
                         })
-                    .WhereIf(!string.IsNullOrEmpty(request.FirstName), x => EF.Functions.Like(x.FirstName, $"%{request.FirstName}%"))
-                    .WhereIf(!string.IsNullOrEmpty(request.LastName), x => EF.Functions.Like(x.LastName, $"%{request.LastName}%"))
-                    .WhereIf(!string.IsNullOrEmpty(request.Ndocument), x => EF.Functions.Like(x.Ndocument, $"%{request.Ndocument}%"));
+                    .WhereIf(!string.IsNullOrEmpty(request.Search), x => EF.Functions.Like(x.FirstName, $"%{request.Search}%"))
+                    .WhereIf(!string.IsNullOrEmpty(request.Search), x => EF.Functions.Like(x.LastName, $"%{request.Search}%"))
+                    .WhereIf(!string.IsNullOrEmpty(request.Search), x => EF.Functions.Like(x.Ndocument, $"%{request.Search}%"));
 
         return await users
             //.OrderBy(x => x.Sku)
