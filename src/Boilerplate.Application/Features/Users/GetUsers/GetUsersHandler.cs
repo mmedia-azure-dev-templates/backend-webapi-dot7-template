@@ -69,9 +69,12 @@ public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<Ge
                             Notes = userInformation.Notes,
                             DateCreated = userInformation.DateCreated,
                             DateUpdated = userInformation.DateUpdated
-                        });
+                        })
+                    .WhereIf(!string.IsNullOrEmpty(request.FirstName), x => EF.Functions.Like(x.FirstName, $"%{request.FirstName}%"))
+                    .WhereIf(!string.IsNullOrEmpty(request.LastName), x => EF.Functions.Like(x.LastName, $"%{request.LastName}%"))
+                    .WhereIf(!string.IsNullOrEmpty(request.Ndocument), x => EF.Functions.Like(x.Ndocument, $"%{request.Ndocument}%"));
 
-        return await _mapper.ProjectTo<GetUsersResponse>(users)
+        return await users
             //.OrderBy(x => x.Sku)
             .ToPaginatedListAsync(request.CurrentPage, request.PageSize);
 
