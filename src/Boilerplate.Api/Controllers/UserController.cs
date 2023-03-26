@@ -20,6 +20,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ISession = Boilerplate.Domain.Implementations.ISession;
 
@@ -78,13 +79,12 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [ProducesResponseType(typeof(PaginatedList<UserResponse>), StatusCodes.Status200OK)]
-    //[Authorize(Roles = Roles.Admin)]
+    [ProducesResponseType(typeof(PaginatedList<GetUsersResponse>), StatusCodes.Status200OK)]
     [HttpGet]
     [Route("getusers")]
-    public async Task<ActionResult<PaginatedList<UserResponse>>> GetUsers([FromQuery] GetUsersRequest request)
+    public async Task<PaginatedList<GetUsersResponse>> GetUsers([FromQuery] GetUsersRequest request)
     {
-        return Ok(await _mediator.Send(request));
+        return await _mediator.Send(request);
     }
 
 

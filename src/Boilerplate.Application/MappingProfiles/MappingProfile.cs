@@ -6,6 +6,7 @@ using Boilerplate.Application.Features.Heroes.CreateHero;
 using Boilerplate.Application.Features.Heroes.UpdateHero;
 using Boilerplate.Application.Features.Users.GetUserById;
 using Boilerplate.Application.Features.Users.GetUserByToken;
+using Boilerplate.Application.Features.Users.GetUsers;
 using Boilerplate.Domain.Entities;
 
 namespace Boilerplate.Application.MappingProfiles;
@@ -73,6 +74,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DateCreated, opt => opt.MapFrom(src => src.userInformation.DateCreated))
             .ForMember(dest => dest.DateUpdated, opt => opt.MapFrom(src => src.userInformation.DateUpdated))
             ;
+
         // Hero Map
         CreateMap<Article, ArticleSearchResponse>();
         CreateMap<Article, ArticleSearchResponse>().ReverseMap();
