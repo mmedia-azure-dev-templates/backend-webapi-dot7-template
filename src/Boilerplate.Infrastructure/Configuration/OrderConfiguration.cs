@@ -25,12 +25,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         entity.HasIndex(e => e.OrderNumber, "Orders_OrderNumber_key").IsUnique();
 
-        entity.Property(e => e.Balance)
-            .HasPrecision(14, 2)
-            .HasDefaultValueSql("0.00");
-        entity.Property(e => e.CashAdvance)
-            .HasPrecision(14, 2)
-            .HasDefaultValueSql("0.00");
         entity.Property(e => e.Dispatch).HasMaxLength(25);
         entity.Property(e => e.Documentation).HasColumnType("jsonb");
         entity.Property(e => e.DocumentUrl).HasMaxLength(100);
@@ -46,14 +40,5 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         entity.Property(e => e.Total)
             .HasPrecision(14, 2)
             .HasDefaultValueSql("0.00");
-
-        //entity.HasOne(d => d.Contact).WithMany(p => p.Orders)
-        //    .HasForeignKey(d => d.ContactId)
-        //    .HasConstraintName("Orders_ContactId_fk");
-
-        /*entity.HasOne(d => d.User).WithMany(p => p.Orders)
-            .HasForeignKey(d => d.UserId)
-            .OnDelete(DeleteBehavior.ClientSetNull)
-            .HasConstraintName("Orders_UserId_fk");*/
     }
 }

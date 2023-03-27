@@ -11,6 +11,8 @@ public enum PaymentMethodsType
     DirectCredit,
     [Display(Name = "FCME")]
     Fcme,
+    [Display(Name = "Anticipo")]
+    CashAdvance,
     [Display(Name = "Tarjeta Crédito")]
     CreditCard,
 }
