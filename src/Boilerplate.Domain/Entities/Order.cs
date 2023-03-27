@@ -16,7 +16,6 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
     public PaymentMethodsType AgreegmentPaymentType { get; set; }
     public OrderStatusType OrderStatusType { get; set; }
     public OrderNumber OrderNumber { get; set; }
-    public decimal? Credit { get; set; }
     public UserGenerated UserGenerated { get; set; }
     public UserAssigned UserAssigned { get; set; }
     public CustomerId CustomerId { get; set; }
@@ -37,6 +36,4 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
     public string? Extras { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
-    //public virtual Contact? Contact { get; set; }
-    //public virtual User User { get; set; } = null!;
 }

@@ -12,6 +12,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
     public void Configure(EntityTypeBuilder<Order> entity)
     {
         entity.Property(e => e.Id).HasConversion<OrderId.EfCoreValueConverter>();
+        entity.Property(e => e.Id).ValueGeneratedOnAdd();
         entity.Property(e => e.CustomerId).HasConversion<CustomerId.EfCoreValueConverter>();
         entity.Property(e => e.UserGenerated).HasConversion<UserGenerated.EfCoreValueConverter>();
         entity.Property(e => e.UserAssigned).HasConversion<UserAssigned.EfCoreValueConverter>();
@@ -30,7 +31,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         entity.Property(e => e.CashAdvance)
             .HasPrecision(14, 2)
             .HasDefaultValueSql("0.00");
-        entity.Property(e => e.Credit).HasPrecision(14, 2);
         entity.Property(e => e.Dispatch).HasMaxLength(25);
         entity.Property(e => e.Documentation).HasColumnType("jsonb");
         entity.Property(e => e.DocumentUrl).HasMaxLength(100);

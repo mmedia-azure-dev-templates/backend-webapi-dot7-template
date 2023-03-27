@@ -43,6 +43,36 @@ public partial class Customer : Migration
             {
                 table.PrimaryKey("PK_Customers", x => x.Id);
             });
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                schema: "web",
+                table: "Customers",
+                unique: true,
+                column: "Email",
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "NdocumentIndex",
+                schema: "web",
+                table: "Customers",
+                unique: true,
+                column: "Ndocument",
+                filter: "[Ndocument] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "FirstNameIndex",
+                schema: "web",
+                table: "Customers",
+                column: "FirstName",
+                filter: "[FirstName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "LastNameIndex",
+                schema: "web",
+                table: "Customers",
+                column: "LastName",
+                filter: "[LastName] IS NOT NULL");
     }
 
     /// <inheritdoc />
