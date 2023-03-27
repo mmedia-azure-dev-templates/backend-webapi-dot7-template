@@ -1,4 +1,5 @@
-﻿using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
+﻿using Boilerplate.Application.Features.Articles.ArticleSearch;
+using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using MediatR;
@@ -10,7 +11,7 @@ namespace Boilerplate.Application.Features.Orders.OrderCreate;
 public class OrderCreateRequest: IRequest<OrderCreateResponse>
 {
     public PaymentMethodsType AgreegmentPaymentType { get; set; }
-    public OrderStatusType OrderStatusType { get; set; }
+    public OrderStatusType OrderStatusType { get; set; } = OrderStatusType.Entered;
     public OrderNumber OrderNumber { get; set; }
     public decimal? Credit { get; set; }
     public UserGenerated UserGenerated { get; set; }
@@ -31,7 +32,7 @@ public class OrderCreateRequest: IRequest<OrderCreateResponse>
     public bool? PaidState { get; set; }
     public string? Dispatch { get; set; }
     public string? Extras { get; set; }
-    public List<OrderItemCreateRequest> OrderItemsCreateRequest { get; set; }
+    public List<ArticleSearchResponse> ArticleSearchResponse { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
 }
