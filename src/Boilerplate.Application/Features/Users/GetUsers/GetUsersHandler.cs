@@ -10,6 +10,7 @@ using Boilerplate.Domain.Entities.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph;
+using Microsoft.IdentityModel.Tokens;
 using OneOf.Types;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,8 @@ public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<Ge
 
     public async Task<PaginatedList<GetUsersResponse>> Handle(GetUsersRequest request, CancellationToken cancellationToken)
     {
+        string filter = Enum.Parse(typeof(OwnerFilterType), request.Filter.ToString()).ToString();
+
         var users = _context.ApplicationUsers.AsNoTracking()
                     .Join(_context.UserInformations.AsNoTracking(),
                         applicationUser => applicationUser.Id,
@@ -70,10 +73,10 @@ public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<Ge
                             DateCreated = userInformation.DateCreated,
                             DateUpdated = userInformation.DateUpdated
                         })
-                    .WhereIf(!string.IsNullOrEmpty(request.Search), x => EF.Functions.Like(x.FirstName, $"%{request.Search}%"))
-                    .WhereIf(!string.IsNullOrEmpty(request.Search), x => EF.Functions.Like(x.LastName, $"%{request.Search}%"))
-                    .WhereIf(!string.IsNullOrEmpty(request.Search), x => EF.Functions.Like(x.Ndocument, $"%{request.Search}%"));
-
+                    .WhereIf(!string.IsNullOrEmpty(request.Search) && !string.IsNullOrEmpty(filter) && filter == "FirstName", x => EF.Functions.Like(x.FirstName, $"%{request.Search}%"))
+                    .WhereIf(!string.IsNullOrEmpty(request.Search) && !string.IsNullOrEmpty(filter) && filter == "LastName", x => EF.Functions.Like(x.LastName, $"%{request.Search}%"))
+                    .WhereIf(!string.IsNullOrEmpty(request.Search) && !string.IsNullOrEmpty(filter) && filter == "Ndocument", x => EF.Functions.Like(x.Ndocument, $"%{request.Search}%"));
+        
         return await users
             //.OrderBy(x => x.Sku)
             .ToPaginatedListAsync(request.CurrentPage, request.PageSize);
