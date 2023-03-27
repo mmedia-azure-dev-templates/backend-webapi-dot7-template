@@ -3,16 +3,16 @@ using System.Text.Json.Serialization;
 
 namespace Boilerplate.Domain.Entities.Enums;
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum CivilStatusType
+public enum OrderStatusType
 {
-    [Display(Name = "Casado")]
-    Married,
-    [Display(Name = "Divorciado")]
-    Divorced,
-    [Display(Name = "Soltero")]
-    Single,
-    [Display(Name = "Unio Libre")]
-    FreeUnion,
-    [Display(Name = "Viudo")]
-    Widower
+    [Display(Name = "Ingresada")]
+    Entered,
+    [Display(Name = "Cancelada")]
+    Canceled,
+    [Display(Name = "Pendiente")]
+    Earring,
+    [Display(Name = "Pendiente")]
+    Paid,
+    [Display(Name = "Entregada")]
+    Delivered
 }
