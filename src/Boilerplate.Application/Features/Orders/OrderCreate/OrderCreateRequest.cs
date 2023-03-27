@@ -18,7 +18,6 @@ public class OrderCreateRequest: IRequest<OrderCreateResponse>
     public decimal SubTotal { get; set; }
     public decimal Iva { get; set; }
     public decimal Total { get; set; }
-    public int? Term { get; set; }
     public string? Observations { get; set; }
     public string? Notes { get; set; }
     public string? DocumentUrl { get; set; }
