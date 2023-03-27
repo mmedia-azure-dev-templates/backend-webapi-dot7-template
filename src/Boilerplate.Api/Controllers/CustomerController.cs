@@ -1,4 +1,4 @@
-﻿using Boilerplate.Application.Features.Customer.CustomerCreate;
+﻿using Boilerplate.Application.Features.Customers.CustomerCreate;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

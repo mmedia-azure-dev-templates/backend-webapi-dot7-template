@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
 using System;
-using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Boilerplate.Application.Features.Customer.CustomerCreate;
+namespace Boilerplate.Application.Features.Customers.CustomerCreate;
 
 public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, CustomerCreateResponse>
 {
@@ -35,25 +37,31 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
     }
     public async Task<CustomerCreateResponse> Handle(CustomerCreateRequest request, CancellationToken cancellationToken)
     {
-        using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+        var customer = new Customer
         {
-            try
-            {
-                var orderNumber = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault();
-                var order = new Order();
-                //order.
-                
-                return _customerCreateResponse;
-            }
-            catch (Exception ex)
-            {
-                //List<IdentityError> errorList = result.Errors.ToList();
-                //var errors = string.Join(" | ", errorList.Select(e => e.Description));
-                //_logger.LogInformation(3, ex.Message);
-                //_userResponse.SweetAlert.Title = ex.Message;
-                //_userResponse.SweetAlert.Text = ex.Message;
-                return _customerCreateResponse;
-            }
-        }
+            DocumentType = request.DocumentType,
+            Ndocument = request.Ndocument,
+            BirthDate = request.BirthDate,
+            GenderType = request.GenderType,
+            CivilStatusType = request.CivilStatusType,
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Email = request.Email,
+            Mobile = request.Mobile,
+            Phone = request.Phone,
+            PrimaryStreet = request.PrimaryStreet,
+            SecondaryStreet = request.SecondaryStreet,
+            Numeration = request.Numeration,
+            Reference = request.Reference,
+            Provincia = request.Provincia,
+            Canton = request.Canton,
+            Parroquia = request.Parroquia,
+            Notes = request.Notes,
+        };
+
+        _context.Customers.Add(customer);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return _customerCreateResponse;
     }
 }

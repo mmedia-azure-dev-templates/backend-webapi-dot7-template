@@ -17,11 +17,12 @@ public partial class Customer : Migration
             columns: table => new
             {
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                TypeDocument = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                DataKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                DocumentType = table.Column<string>(type: "nvarchar(50)", nullable: false),
                 Ndocument = table.Column<string>(type: "nvarchar(30)", nullable: false),
                 BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                Gender = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                CivilStatus = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                GenderType = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                CivilStatusType = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 FirstName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 LastName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),

@@ -1,17 +1,22 @@
-﻿using Boilerplate.Domain.Entities.Common;
+﻿using AuthPermissions.BaseCode.CommonCode;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
+using Microsoft.Graph.ExternalConnectors;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boilerplate.Domain.Entities;
 
 /// <summary>
 /// TABLA DONDE SE ALMACENAN LOS CLIENTES
 /// </summary>
-public partial class Customer : Entity<CustomerId>, IDateCreatedAndUpdated
+[Table("Customers", Schema = "web")]
+public class Customer : Entity<CustomerId>, IDataKeyFilterReadWrite, IDateCreatedAndUpdated
 {
     public override CustomerId Id { get; set; }
-    public IdentificationType IdentificationType { get; init; }
+    public string DataKey { get; set; }
+    public IdentificationType DocumentType { get; init; }
     public string Ndocument { get; init; } = null!;
     public DateTime? BirthDate { get; init; }
     public GenderType GenderType { get; init; }
@@ -28,6 +33,7 @@ public partial class Customer : Entity<CustomerId>, IDateCreatedAndUpdated
     public int Provincia { get; init; }
     public int Canton { get; init; }
     public int Parroquia { get; init; }
+    public string? Notes { get; init; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
 }

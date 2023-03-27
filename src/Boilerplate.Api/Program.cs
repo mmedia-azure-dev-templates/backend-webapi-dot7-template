@@ -4,7 +4,7 @@ using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.ResetPassword;
-using Boilerplate.Application.Features.Customer.CustomerCreate;
+using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
