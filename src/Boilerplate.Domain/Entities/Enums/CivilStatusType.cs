@@ -11,7 +11,7 @@ public enum CivilStatusType
     Divorced,
     [Display(Name = "Soltero")]
     Single,
-    [Display(Name = "Unio Libre")]
+    [Display(Name = "Unión Libre")]
     FreeUnion,
     [Display(Name = "Viudo")]
     Widower
