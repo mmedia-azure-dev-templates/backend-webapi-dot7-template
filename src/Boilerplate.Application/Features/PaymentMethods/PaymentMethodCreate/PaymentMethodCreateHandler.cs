@@ -23,6 +23,8 @@ public class PaymentMethodCreateHandler : IRequestHandler<PaymentMethodCreateReq
         PaymentMethod paymentMethodCreate = new()
         {
             PaymentMethodsType = request.PaymentMethodsType,
+            Display = request.Display,
+            Icon = request.Icon,
             Active = true,
         };
 

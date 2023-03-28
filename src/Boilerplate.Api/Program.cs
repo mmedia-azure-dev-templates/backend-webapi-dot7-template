@@ -4,6 +4,7 @@ using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.ResetPassword;
+using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
@@ -72,6 +73,7 @@ builder.Services.AddScoped<IArticleCreateResponse, ArticleCreateResponse>();
 builder.Services.AddScoped<IOrderCreateResponse, OrderCreateResponse>();
 builder.Services.AddScoped<IOrderItemCreateResponse, OrderItemCreateResponse>();
 builder.Services.AddScoped<IPaymentMethodCreateResponse, PaymentMethodCreateResponse>();
+builder.Services.AddScoped<ICustomerCreateResponse, CustomerCreateResponse>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers

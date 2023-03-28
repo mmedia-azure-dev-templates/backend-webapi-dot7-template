@@ -4,6 +4,7 @@ using Boilerplate.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Boilerplate.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230327214636_Customer")]
+    partial class Customer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -285,7 +288,6 @@ namespace Boilerplate.Infrastructure.Migrations
             modelBuilder.Entity("Boilerplate.Domain.Entities.Customer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("BirthDate")
@@ -294,27 +296,14 @@ namespace Boilerplate.Infrastructure.Migrations
                     b.Property<int>("Canton")
                         .HasColumnType("int");
 
-                    b.Property<string>("CivilStatusType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("CivilStatusType");
-
-                    b.Property<string>("DataKey")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(250)");
+                    b.Property<int>("CivilStatusType")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DocumentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DocumentType");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -325,10 +314,11 @@ namespace Boilerplate.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GenderType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("GenderType");
+                    b.Property<int>("GenderType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdentificationType")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -343,9 +333,6 @@ namespace Boilerplate.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Numeration")
                         .IsRequired()
@@ -375,12 +362,10 @@ namespace Boilerplate.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DataKey");
-
                     b.HasIndex(new[] { "Ndocument" }, "Customer_Ndocument_key")
                         .IsUnique();
 
-                    b.ToTable("Customers", "web");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Boilerplate.Domain.Entities.GeographicLocation", b =>
@@ -560,8 +545,26 @@ namespace Boilerplate.Infrastructure.Migrations
             modelBuilder.Entity("Boilerplate.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AgreegmentPaymentType")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Balance")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)")
+                        .HasDefaultValueSql("0.00");
+
+                    b.Property<decimal>("CashAdvance")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)")
+                        .HasDefaultValueSql("0.00");
+
+                    b.Property<decimal?>("Credit")
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
@@ -576,12 +579,25 @@ namespace Boilerplate.Infrastructure.Migrations
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Dispatch")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
                     b.Property<string>("DocumentUrl")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Documentation")
                         .HasColumnType("jsonb");
+
+                    b.Property<string>("Extras")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Iva")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)")
+                        .HasDefaultValueSql("0.00");
 
                     b.Property<string>("Notes")
                         .HasMaxLength(150)
@@ -597,14 +613,22 @@ namespace Boilerplate.Infrastructure.Migrations
                     b.Property<int>("OrderStatusType")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentMethodsType")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("PaidDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("PaidState")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("false");
 
                     b.Property<decimal>("SubTotal")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(14, 2)
                         .HasColumnType("decimal(14,2)")
                         .HasDefaultValueSql("0.00");
+
+                    b.Property<int?>("Term")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Total")
                         .ValueGeneratedOnAdd()
@@ -616,6 +640,9 @@ namespace Boilerplate.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserGenerated")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserPaid")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")

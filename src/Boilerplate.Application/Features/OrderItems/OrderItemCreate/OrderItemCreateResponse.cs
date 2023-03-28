@@ -9,5 +9,5 @@ using System.Threading.Tasks;
 namespace Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 public class OrderItemCreateResponse: IOrderItemCreateResponse
 {
-
+    public OrderItemId OrderItemId { get; set; }
 }

@@ -25,6 +25,15 @@ public class OrderItemCreateHandler : IRequestHandler<OrderItemCreateRequest, Or
     }
     public async Task<OrderItemCreateResponse> Handle(OrderItemCreateRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var orderItem = new OrderItem {
+            ArticleId = request.ArticleId,
+            Quantity = request.Quantity,
+            Price = request.Price,
+            Total = request.Total
+        };
+
+        _context.OrderItems.Add(orderItem);
+        await _context.SaveChangesAsync(cancellationToken);
+        return new OrderItemCreateResponse { OrderItemId = orderItem.Id };
     }
 }

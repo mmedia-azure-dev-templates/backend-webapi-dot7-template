@@ -19,7 +19,7 @@ public partial class Orders : Migration
             {
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                 DataKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                AgreegmentPaymentType = table.Column<int>(type: "int", nullable: false),
+                PaymentMethodsType = table.Column<int>(type: "int", nullable: false),
                 OrderStatusType = table.Column<int>(type: "int", nullable: false),
                 OrderNumber = table.Column<long>(type: "bigint", nullable: false),
                 Credit = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: true),

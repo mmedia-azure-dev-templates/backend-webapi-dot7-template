@@ -21,12 +21,13 @@ public partial class OrderItems : Migration
             columns: table => new
             {
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                ArticleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 DataKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                ArticleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 Quantity = table.Column<int>(type: "int", nullable: true),
                 Price = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: true),
                 Total = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: true),
-                DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                 DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true)
             },
             constraints: table =>

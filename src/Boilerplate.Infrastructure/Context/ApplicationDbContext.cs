@@ -33,6 +33,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public virtual DbSet<Counter> Counters { get; set; }
     public virtual DbSet<OrderItem> OrderItems { get; set; }
     public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
+    public virtual DbSet<Customer> Customers { get; set; }
     public virtual DbSet<Hero> Heroes { get; set; }
     public DbSet<CompanyTenant> Companies { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
@@ -116,5 +117,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(TeamConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(GeographicLocationConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CounterConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CustomerConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderItemConfiguration).Assembly);
     }
 }
