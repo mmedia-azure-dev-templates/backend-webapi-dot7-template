@@ -1,4 +1,5 @@
 ﻿using System;
+using Boilerplate.Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -11,12 +12,34 @@ public partial class Matchs : Migration
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
+        migrationBuilder.DropIndex(
+            name: "EmailIndex",
+            table: "AspNetUsers"
+        );
+
+        migrationBuilder.DropIndex(
+            name: "NormalizedEmailIndex",
+            table: "AspNetUsers"
+        );
+
+        migrationBuilder.DropIndex(
+            name: "FirstNameIndex",
+            schema: "dbo",
+            table: "AspNetUsers"
+        );
+
+        migrationBuilder.DropIndex(
+            name: "LastNameIndex",
+            schema: "dbo",
+            table: "AspNetUsers"
+        );
+
         // Foreign Orders.CustomerId to Customers.Id
         migrationBuilder.AddForeignKey(
-            name: "FK_Orders_Customers_CustomerId",
+            schema: "web",
             table: "Orders",
             column: "CustomerId",
-            schema: "web",
+            name: "FK_Orders_Customers_CustomerId",
             principalSchema: "web",
             principalTable: "Customers",
             principalColumn: "Id",
@@ -25,10 +48,10 @@ public partial class Matchs : Migration
 
         // Foreignkey OrderItems.ArticleId to Articles.Id
         migrationBuilder.AddForeignKey(
-            name: "FK_OrderItems_Articles_ArticleId",
+            schema: "web",
             table: "OrderItems",
             column: "ArticleId",
-            schema: "web",
+            name: "FK_OrderItems_Articles_ArticleId",
             principalSchema: "web",
             principalTable: "Articles",
             principalColumn: "Id",
@@ -37,10 +60,10 @@ public partial class Matchs : Migration
 
         // Foreignkey OrderItems.OrderId to Orders.Id
         migrationBuilder.AddForeignKey(
-            name: "FK_OrderItems_Orders_OrderId",
+            schema: "web",
             table: "OrderItems",
             column: "OrderId",
-            schema: "web",
+            name: "FK_OrderItems_Orders_OrderId",
             principalSchema: "web",
             principalTable: "Orders",
             principalColumn: "Id",
@@ -74,6 +97,8 @@ public partial class Matchs : Migration
             column: "LastName",
             filter: "[LastName] IS NOT NULL"
         );
+
+        migrationBuilder.Sql(Utils.GetRawSql("20230328170146_Matchs.sql"));
     }
 
     /// <inheritdoc />
