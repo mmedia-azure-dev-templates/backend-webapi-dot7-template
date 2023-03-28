@@ -41,7 +41,6 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
             {
                 var orderNumber = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault();
                 var order = new Order();
-                //order.
                 
                 return _orderCreateResponse;
             }
