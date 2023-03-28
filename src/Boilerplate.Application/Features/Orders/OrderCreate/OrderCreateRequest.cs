@@ -10,7 +10,6 @@ namespace Boilerplate.Application.Features.Orders.OrderCreate;
 public class OrderCreateRequest: IRequest<OrderCreateResponse>
 {
     public PaymentMethodsType PaymentMethodsType { get; set; }
-    public OrderStatusType OrderStatusType { get; set; } = OrderStatusType.Entered;
     public UserAssigned? UserAssigned { get; set; }
     public decimal SubTotal { get; set; }
     public decimal Total { get; set; }
