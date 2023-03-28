@@ -2,16 +2,9 @@
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Extensions;
-using Boilerplate.Application.Features.Articles.ArticleSearch;
-using Boilerplate.Application.Features.Users.GetUserById;
-using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Graph;
-using Microsoft.IdentityModel.Tokens;
-using OneOf.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;

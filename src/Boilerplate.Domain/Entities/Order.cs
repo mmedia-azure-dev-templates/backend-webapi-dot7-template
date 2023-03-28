@@ -2,7 +2,6 @@
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
-using Microsoft.Graph.ExternalConnectors;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,7 +12,6 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
 {
     public override OrderId Id { get; set; }
     public string DataKey { get; set; }
-    public PaymentMethodsType PaymentMethodsType { get; set; }
     public OrderStatusType OrderStatusType { get; set; }
     public OrderNumber OrderNumber { get; set; }
     public UserGenerated UserGenerated { get; set; }
