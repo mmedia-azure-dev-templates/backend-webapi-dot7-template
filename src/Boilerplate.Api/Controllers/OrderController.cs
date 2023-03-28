@@ -36,7 +36,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    [Route("orderitemcreate")]
+    [Route("itemcreate")]
     public async Task<OrderItemCreateResponse> OrderItemCreate(OrderItemCreateRequest request)
     {
         return await _mediator.Send(request);

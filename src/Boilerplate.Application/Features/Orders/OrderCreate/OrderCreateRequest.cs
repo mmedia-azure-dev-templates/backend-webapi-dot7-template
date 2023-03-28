@@ -1,10 +1,8 @@
 ﻿using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
-using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using MediatR;
-using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 
@@ -13,11 +11,9 @@ public class OrderCreateRequest: IRequest<OrderCreateResponse>
 {
     public PaymentMethodsType PaymentMethodsType { get; set; }
     public OrderStatusType OrderStatusType { get; set; } = OrderStatusType.Entered;
-    public UserGenerated UserGenerated { get; set; }
-    public UserAssigned UserAssigned { get; set; }
+    public UserAssigned? UserAssigned { get; set; }
     public decimal SubTotal { get; set; }
     public decimal Total { get; set; }
-    public string? Observations { get; set; }
     public string? Notes { get; set; }
     public string? DocumentUrl { get; set; }
     public string? Documentation { get; set; }
