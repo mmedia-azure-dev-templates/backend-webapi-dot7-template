@@ -17,7 +17,7 @@ public partial class PaymentMethods : Migration
         columns: table => new
         {
             Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newid()"),
-            DataKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            DataKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
             PaymentMethodsType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
             Display = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
             Active = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "0"),
