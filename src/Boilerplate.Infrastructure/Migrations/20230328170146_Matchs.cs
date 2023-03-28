@@ -34,6 +34,25 @@ public partial class Matchs : Migration
             table: "AspNetUsers"
         );
 
+        migrationBuilder.DropForeignKey(
+            name: "FK_OrderItems_Articles_ArticleId",
+            table: "OrderItems",
+            schema: "web"
+        );
+
+        migrationBuilder.DropForeignKey(
+            name: "FK_Orders_Customers_CustomerId",
+            table: "Orders",
+            schema: "web"
+        );
+
+        migrationBuilder.DropForeignKey(
+            name: "FK_OrderItems_Orders_OrderId",
+            table: "OrderItems",
+            schema: "web"
+        );
+        
+
         // Foreign Orders.CustomerId to Customers.Id
         migrationBuilder.AddForeignKey(
             schema: "web",
@@ -104,16 +123,16 @@ public partial class Matchs : Migration
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.DropForeignKey(
-            name: "FK_OrderItems_Articles_ArticleId",
-            table: "OrderItems",
-            schema: "web"
-        );
+        //migrationBuilder.DropForeignKey(
+        //    name: "FK_OrderItems_Articles_ArticleId",
+        //    table: "OrderItems",
+        //    schema: "web"
+        //);
 
-        migrationBuilder.DropForeignKey(
-            name: "FK_Orders_Customers_CustomerId",
-            table: "Orders",
-            schema: "web"
-        );
+        //migrationBuilder.DropForeignKey(
+        //    name: "FK_Orders_Customers_CustomerId",
+        //    table: "Orders",
+        //    schema: "web"
+        //);
     }
 }

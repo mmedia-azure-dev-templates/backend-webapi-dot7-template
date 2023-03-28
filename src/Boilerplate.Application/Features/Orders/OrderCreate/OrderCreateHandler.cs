@@ -67,15 +67,15 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                     Parroquia = request.CustomerCreateRequest.Parroquia,
                     Notes = request.CustomerCreateRequest.Notes,
                 };
+                await _context.Customers.AddAsync(customer, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
 
-                await _context.Customers.AddAsync(customer,cancellationToken);
-                
                 var counter = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault()!.CustomCounter.Value + 1;
                 var orderNumber = new Counter();
                 orderNumber.CustomCounter = counter;
-                await _context.Customers.AddAsync(customer,cancellationToken);
+                await _context.Counters.AddAsync(orderNumber, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
 
-                
 
                 var order = new Order
                 {
@@ -88,6 +88,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 };
 
                 await _context.Orders.AddAsync(order, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
 
                 List<OrderItem> orderItems = new List<OrderItem>();
                 foreach (var article in request.ArticleSearchResponse)
@@ -100,14 +101,11 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                         Price = article.Cost,
                         Total = article.Total,
                     };
-
                     orderItems.Add(item);
-
                 }
                 await _context.OrderItems.AddRangeAsync(orderItems);
-
-
                 await _context.SaveChangesAsync(cancellationToken);
+
                 scope.Complete();
                 _orderCreateResponse.Message = "Orden Creada Correctamente";
                 return _orderCreateResponse;
