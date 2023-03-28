@@ -46,6 +46,34 @@ public partial class Matchs : Migration
             principalColumn: "Id",
             onDelete: ReferentialAction.NoAction
         );
+
+        migrationBuilder.CreateIndex(
+            name: "EmailIndex",
+            table: "AspNetUsers",
+            column: "Email"
+        );
+
+        migrationBuilder.CreateIndex(
+            name: "NormalizedEmailIndex",
+            table: "AspNetUsers",
+            column: "NormalizedEmail"
+        );
+
+        migrationBuilder.CreateIndex(
+            name: "FirstNameIndex",
+            schema: "dbo",
+            table: "AspNetUsers",
+            column: "FirstName",
+            filter: "[FirstName] IS NOT NULL"
+        );
+
+        migrationBuilder.CreateIndex(
+            name: "LastNameIndex",
+            schema: "dbo",
+            table: "AspNetUsers",
+            column: "LastName",
+            filter: "[LastName] IS NOT NULL"
+        );
     }
 
     /// <inheritdoc />
