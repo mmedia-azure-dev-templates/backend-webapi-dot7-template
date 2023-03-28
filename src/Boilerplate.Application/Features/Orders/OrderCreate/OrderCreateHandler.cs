@@ -1,6 +1,9 @@
-﻿using AutoMapper;
+﻿using Amazon.Runtime.Documents;
+using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -15,6 +18,7 @@ namespace Boilerplate.Application.Features.Orders.OrderCreate;
 public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreateResponse>
 {
     private readonly IContext _context;
+    private readonly ISession _session;
     private readonly IMapper _mapper;
     private readonly ILogger<OrderCreateHandler> _logger;
     private readonly IMailService _mail;
@@ -23,11 +27,12 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
     private OrderCreateResponse _orderCreateResponse;
 
 
-    public OrderCreateHandler(IContext context, IMapper mapper, ILogger<OrderCreateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service)
+    public OrderCreateHandler(IContext context,ISession session, IMapper mapper, ILogger<OrderCreateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service)
     {
         _logger = logger;
         _mapper = mapper;
         _context = context;
+        _session = session;
         _mail = mail;
         _orderCreateResponse = (OrderCreateResponse)orderCreateResponse;
         _localizationService = localizationService;
@@ -39,9 +44,46 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
         {
             try
             {
-                var orderNumber = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault();
-                var order = new Order();
-                
+                var customer = new Customer
+                {
+                    DocumentType = request.CustomerCreateRequest.DocumentType,
+                    Ndocument = request.CustomerCreateRequest.Ndocument,
+                    BirthDate = request.CustomerCreateRequest.BirthDate,
+                    GenderType = request.CustomerCreateRequest.GenderType,
+                    CivilStatusType = request.CustomerCreateRequest.CivilStatusType,
+                    FirstName = request.CustomerCreateRequest.FirstName,
+                    LastName = request.CustomerCreateRequest.LastName,
+                    Email = request.CustomerCreateRequest.Email,
+                    Mobile = request.CustomerCreateRequest.Mobile,
+                    Phone = request.CustomerCreateRequest.Phone,
+                    PrimaryStreet = request.CustomerCreateRequest.PrimaryStreet,
+                    SecondaryStreet = request.CustomerCreateRequest.SecondaryStreet,
+                    Numeration = request.CustomerCreateRequest.Numeration,
+                    Reference = request.CustomerCreateRequest.Reference,
+                    Provincia = request.CustomerCreateRequest.Provincia,
+                    Canton = request.CustomerCreateRequest.Canton,
+                    Parroquia = request.CustomerCreateRequest.Parroquia,
+                    Notes = request.CustomerCreateRequest.Notes,
+                };
+
+                _context.Customers.Add(customer);
+
+                var orderNumber = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault().CustomCounter.Value;
+                var order = new Order
+                {
+                    OrderStatusType = OrderStatusType.Entered,
+                    OrderNumber = orderNumber,
+                    UserGenerated = _session.UserId.Value,
+                    CustomerId = customer.Id,
+                    SubTotal = request.SubTotal,
+                    Total = request.Total,
+                };
+
+                _context.Orders.Add(order);
+
+                await _context.SaveChangesAsync(cancellationToken);
+                scope.Complete();
+                _orderCreateResponse.Message = "Order Creada Correctamente";
                 return _orderCreateResponse;
             }
             catch (Exception ex)

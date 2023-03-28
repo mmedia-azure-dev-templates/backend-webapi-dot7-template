@@ -15,11 +15,10 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
     public OrderStatusType OrderStatusType { get; set; }
     public OrderNumber OrderNumber { get; set; }
     public UserGenerated UserGenerated { get; set; }
-    public UserAssigned UserAssigned { get; set; }
+    public UserAssigned? UserAssigned { get; set; } = null;
     public CustomerId CustomerId { get; set; }
     public decimal SubTotal { get; set; }
     public decimal Total { get; set; }
-    public string? Observations { get; set; }
     public string? Notes { get; set; }
     public string? DocumentUrl { get; set; }
     public string? Documentation { get; set; }
