@@ -42,10 +42,10 @@ public partial struct ContactId : ILong
     }
 }
 
-[StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
-public partial struct CounterId : ILong
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct CounterId : IGuid
 {
-    public static implicit operator CounterId(long counterId)
+    public static implicit operator CounterId(Guid counterId)
     {
         return new CounterId(counterId);
     }
