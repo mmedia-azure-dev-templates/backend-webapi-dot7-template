@@ -118,5 +118,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(GeographicLocationConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CounterConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CustomerConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderItemConfiguration).Assembly);
     }
 }

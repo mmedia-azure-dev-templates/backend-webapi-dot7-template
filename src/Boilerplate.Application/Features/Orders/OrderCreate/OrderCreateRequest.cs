@@ -16,7 +16,6 @@ public class OrderCreateRequest: IRequest<OrderCreateResponse>
     public UserGenerated UserGenerated { get; set; }
     public UserAssigned UserAssigned { get; set; }
     public decimal SubTotal { get; set; }
-    public decimal Iva { get; set; }
     public decimal Total { get; set; }
     public string? Observations { get; set; }
     public string? Notes { get; set; }
