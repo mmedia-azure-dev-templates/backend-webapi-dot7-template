@@ -1,4 +1,5 @@
 ﻿using System;
+using Amazon.S3.Model;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -17,7 +18,7 @@ public partial class Customer : Migration
             columns: table => new
             {
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                DataKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                DataKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 DocumentType = table.Column<string>(type: "nvarchar(50)", nullable: false),
                 Ndocument = table.Column<string>(type: "nvarchar(30)", nullable: false),
                 BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -44,35 +45,35 @@ public partial class Customer : Migration
                 table.PrimaryKey("PK_Customers", x => x.Id);
             });
 
-            migrationBuilder.CreateIndex(
-                name: "EmailIndex",
+        migrationBuilder.CreateIndex(
+                name: "DataKeyEmailIndex",
                 schema: "web",
                 table: "Customers",
                 unique: true,
-                column: "Email",
-                filter: "[Email] IS NOT NULL");
+                columns: new[] { "DataKey", "Email" }
+            );
 
             migrationBuilder.CreateIndex(
-                name: "NdocumentIndex",
+                name: "DataKeyNdocumentIndex",
                 schema: "web",
                 table: "Customers",
                 unique: true,
-                column: "Ndocument",
-                filter: "[Ndocument] IS NOT NULL");
+                columns: new[] { "DataKey", "Ndocument" }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "FirstNameIndex",
                 schema: "web",
                 table: "Customers",
-                column: "FirstName",
-                filter: "[FirstName] IS NOT NULL");
+                columns: new[] { "DataKey", "FirstName" }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "LastNameIndex",
                 schema: "web",
                 table: "Customers",
-                column: "LastName",
-                filter: "[LastName] IS NOT NULL");
+                columns: new[] { "DataKey", "LastName" }
+            );
     }
 
     /// <inheritdoc />

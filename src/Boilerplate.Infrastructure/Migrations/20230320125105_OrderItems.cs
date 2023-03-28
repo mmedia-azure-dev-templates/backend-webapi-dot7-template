@@ -21,7 +21,7 @@ public partial class OrderItems : Migration
             columns: table => new
             {
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                DataKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                DataKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 ArticleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 Quantity = table.Column<int>(type: "int", nullable: true),
@@ -42,5 +42,6 @@ public partial class OrderItems : Migration
         migrationBuilder.DropTable(
             name: "OrderItems",
             schema: "web");
+
     }
 }
