@@ -18,7 +18,7 @@ public partial class Orders : Migration
             columns: table => new
             {
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                DataKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                DataKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 OrderStatusType = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 OrderNumber = table.Column<long>(type: "bigint", nullable: false),
                 UserGenerated = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -36,6 +36,30 @@ public partial class Orders : Migration
             {
                 table.PrimaryKey("PK_Orders", x => x.Id);
             });
+
+        migrationBuilder.CreateIndex(
+                name: "DataKeyOrderNumberIndex",
+                schema: "web",
+                table: "Orders",
+                unique: true,
+                columns: new[] { "DataKey", "OrderNumber" }
+            );
+
+        migrationBuilder.CreateIndex(
+                name: "DataKeyOrderStatusTypeIndex",
+                schema: "web",
+                table: "Orders",
+                unique: true,
+                columns: new[] { "DataKey", "OrderStatusType" }
+            );
+
+        migrationBuilder.CreateIndex(
+                name: "DataKeyDateCreatedIndex",
+                schema: "web",
+                table: "Orders",
+                unique: true,
+                columns: new[] { "DataKey", "DateCreated" }
+            );
     }
 
     /// <inheritdoc />

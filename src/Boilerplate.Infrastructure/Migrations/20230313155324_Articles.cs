@@ -21,7 +21,7 @@ public partial class Articles : Migration
             columns: table => new
             {
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                DataKey = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: false),
+                DataKey = table.Column<string>(type: "varchar(450)", unicode: false, maxLength: 250, nullable: false),
                 Provider = table.Column<int>(type: "int", nullable: true),
                 Sku = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                 Abrevia = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),

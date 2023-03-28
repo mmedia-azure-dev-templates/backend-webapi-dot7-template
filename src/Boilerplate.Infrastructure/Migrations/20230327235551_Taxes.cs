@@ -20,7 +20,7 @@ public partial class Taxes : Migration
             columns: table => new
             {
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                DataKey = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: false),
+                DataKey = table.Column<string>(type: "varchar(450)", unicode: false, maxLength: 250, nullable: false),
                 TaxesType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Display = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Active = table.Column<bool>(type: "bit", nullable: false),

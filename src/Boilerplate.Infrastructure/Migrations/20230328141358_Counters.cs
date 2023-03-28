@@ -21,7 +21,7 @@ public partial class Counters : Migration
             columns: table => new
             {
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                DataKey = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: false),
+                DataKey = table.Column<string>(type: "varchar(450)", unicode: false, maxLength: 250, nullable: false),
                 Slug = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                 CustomCounter = table.Column<long>(type: "bigint", nullable: false),
                 DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),

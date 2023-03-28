@@ -191,10 +191,10 @@ public partial class AbpTables : Migration
             table: "AspNetUserRoles",
             column: "RoleId");
 
-        migrationBuilder.CreateIndex(
-            name: "EmailIndex",
-            table: "AspNetUsers",
-            column: "NormalizedEmail");
+        //migrationBuilder.CreateIndex(
+        //    name: "EmailIndex",
+        //    table: "AspNetUsers",
+        //    column: "NormalizedEmail");
 
         migrationBuilder.CreateIndex(
             name: "UserNameIndex",
