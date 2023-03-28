@@ -13,8 +13,5 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
         entity.Property(e => e.Id).ValueGeneratedOnAdd();
         entity.Property(e => e.OrderId).HasConversion<OrderId.EfCoreValueConverter>();
         entity.Property(e => e.ArticleId).HasConversion<ArticleId.EfCoreValueConverter>();
-        entity.HasKey(e => e.Id).HasName("Products_Id_pkey");
-        entity.Property(e => e.Price).HasPrecision(14, 2);
-        entity.Property(e => e.Total).HasPrecision(14, 2);
     }
 }

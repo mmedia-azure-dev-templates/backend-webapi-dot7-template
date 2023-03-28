@@ -8,10 +8,12 @@ using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Boilerplate.Application.Features.Orders.OrderCreate;
 
@@ -65,25 +67,47 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                     Parroquia = request.CustomerCreateRequest.Parroquia,
                     Notes = request.CustomerCreateRequest.Notes,
                 };
+                await _context.Customers.AddAsync(customer, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
 
-                _context.Customers.Add(customer);
+                var counter = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault()!.CustomCounter.Value + 1;
+                var orderNumber = new Counter();
+                orderNumber.CustomCounter = counter;
+                await _context.Counters.AddAsync(orderNumber, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
 
-                var orderNumber = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault().CustomCounter.Value;
+
                 var order = new Order
                 {
                     OrderStatusType = OrderStatusType.Entered,
-                    OrderNumber = orderNumber,
+                    OrderNumber = orderNumber.CustomCounter.Value,
                     UserGenerated = _session.UserId.Value,
                     CustomerId = customer.Id,
                     SubTotal = request.SubTotal,
                     Total = request.Total,
                 };
 
-                _context.Orders.Add(order);
-
+                await _context.Orders.AddAsync(order, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
+
+                List<OrderItem> orderItems = new List<OrderItem>();
+                foreach (var article in request.ArticleSearchResponse)
+                {
+                    var item = new OrderItem
+                    {
+                        OrderId = order.Id,
+                        ArticleId = article.Id,
+                        Quantity = article.Quantity,
+                        Price = article.Cost,
+                        Total = article.Total,
+                    };
+                    orderItems.Add(item);
+                }
+                await _context.OrderItems.AddRangeAsync(orderItems);
+                await _context.SaveChangesAsync(cancellationToken);
+
                 scope.Complete();
-                _orderCreateResponse.Message = "Order Creada Correctamente";
+                _orderCreateResponse.Message = "Orden Creada Correctamente";
                 return _orderCreateResponse;
             }
             catch (Exception ex)

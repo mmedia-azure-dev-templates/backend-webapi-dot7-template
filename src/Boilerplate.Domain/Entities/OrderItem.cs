@@ -1,13 +1,8 @@
 ﻿using AuthPermissions.BaseCode.CommonCode;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
-using Microsoft.Graph.ExternalConnectors;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Boilerplate.Domain.Entities;
 [Table("OrderItems", Schema = "web")]
