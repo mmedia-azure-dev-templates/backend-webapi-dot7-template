@@ -1,5 +1,6 @@
 ﻿using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
+using Boilerplate.Application.Features.Users.AvailableUserDocument;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -34,6 +35,14 @@ public class CustomerController : ControllerBase
     [Route("customerbyid")]
     [ProducesResponseType(typeof(CustomerByIdResponse), StatusCodes.Status200OK)]
     public async Task<CustomerByIdResponse> CustomerById([FromQuery] CustomerByIdRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpGet]
+    [Route("availabledocument")]
+    [AllowAnonymous]
+    public async Task<CustomerAvailableDocumentResponse> AvailableDocument(CustomerAvailableDocumentRequest request)
     {
         return await _mediator.Send(request);
     }
