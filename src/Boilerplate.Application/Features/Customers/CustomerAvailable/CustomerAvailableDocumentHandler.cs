@@ -24,7 +24,7 @@ public class CustomerAvailableDocumentHandler : IRequestHandler<CustomerAvailabl
         CustomerAvailableDocumentResponse customerAvailableDocumentResponse = new CustomerAvailableDocumentResponse();
         customerAvailableDocumentResponse.IsAvailable = true;
 
-        var customerNdocument = await _context.Customers.Where(x => x.Ndocument == request.Ndocument).FirstOrDefaultAsync();
+        var customerNdocument = await _context.Customers.Where(x => x.DocumentType == request.DocumentType && x.Ndocument == request.Ndocument).FirstOrDefaultAsync();
         if (customerNdocument != null)
         {
             customerAvailableDocumentResponse.IsAvailable = false;

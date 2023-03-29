@@ -1,12 +1,9 @@
-﻿using Boilerplate.Domain.Entities.Common;
+﻿using Boilerplate.Domain.Entities.Enums;
 using MediatR;
-using Microsoft.Graph;
-using OneOf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Users.AvailableUserDocument;
-public record CustomerAvailableDocumentRequest(string Ndocument) : IRequest<CustomerAvailableDocumentResponse>;
+public class CustomerAvailableDocumentRequest : IRequest<CustomerAvailableDocumentResponse>
+{
+    public IdentificationType DocumentType { get; set; }
+    public string Ndocument { get; set; }
+}
