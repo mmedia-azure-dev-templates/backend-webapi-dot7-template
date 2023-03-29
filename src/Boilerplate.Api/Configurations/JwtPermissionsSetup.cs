@@ -1,6 +1,8 @@
 ﻿using AuthPermissions;
 using AuthPermissions.BaseCode;
 using AuthPermissions.BaseCode.SetupCode;
+using AuthPermissions.SupportCode.AddUsersServices;
+using AuthPermissions.SupportCode.AddUsersServices.Authentication;
 using Boilerplate.Api.Extends;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Services;
@@ -8,6 +10,7 @@ using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using Boilerplate.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -91,6 +94,12 @@ public static class JwtPermissionsSetup
         .RegisterFindUserInfoService<ExtendIndividualAccountUserLookup>()
         .RegisterAuthenticationProviderReader<ExtendSyncIndividualAccountUsers>()
         .SetupAspNetCoreAndDatabase();
+
+        //manually add services from the AuthPermissions.SupportCode project
+        //Add the SupportCode services
+        services.AddTransient<IAddNewUserManager, ExtendIndividualUserAddUserManager<ApplicationUser>>();
+        services.AddTransient<ISignInAndCreateTenant, SignInAndCreateTenant>();
+        services.AddTransient<IInviteNewUserService, InviteNewUserService>();
 
         return services;
     }

@@ -3,10 +3,12 @@ using AuthPermissions.AspNetCore;
 using AuthPermissions.BaseCode.CommonCode;
 using AuthPermissions.SupportCode.AddUsersServices;
 using Boilerplate.Api.Common;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StatusGeneric;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -56,7 +58,7 @@ public class TenantAdminController : Controller
     [HasPermission(DefaultPermissions.InviteUsers)]
     [HttpGet]
     [Route("invite-user")]
-    public async Task<ActionResult> InviteUser([FromServices] IInviteNewUserService inviteService)
+    public async Task<InviteUserSetup> InviteUser([FromServices] IInviteNewUserService inviteService)
     {
         var setupInvite = new InviteUserSetup
         {
@@ -64,13 +66,13 @@ public class TenantAdminController : Controller
             ExpirationTimesDropdown = inviteService.ListOfExpirationTimes()
         };
 
-        return View(setupInvite);
+        return setupInvite;
     }
 
     [HasPermission(DefaultPermissions.InviteUsers)]
     [HttpPost]
     [Route("invite-user")]
-    public async Task<ActionResult> InviteUser([FromServices] IInviteNewUserService inviteUserServiceService, InviteUserSetup data)
+    public async Task<CustomStatusGeneric> InviteUser([FromServices] IInviteNewUserService inviteUserServiceService, InviteUserSetup data)
     {
         var addUserData = new AddNewUserDto
         {
@@ -78,15 +80,12 @@ public class TenantAdminController : Controller
             Roles = data.RoleNames,
             TimeInviteExpires = data.InviteExpiration
         };
-        var status = await inviteUserServiceService.CreateInviteUserToJoinAsync(addUserData, User.GetUserIdFromUser());
-        if (status.HasErrors)
-            return Ok(status.GetAllErrors());
-            //return RedirectToAction(nameof(ErrorDisplay),
-                //new { errorMessage = status.GetAllErrors() });
-        return Ok();
-        //var inviteUrl = AbsoluteAction(Url, nameof(HomeController.AcceptInvite), "Home", new { verify = status.Result });
-
-        //return View("InviteUserUrl", new InviteUserResult(status.Message, inviteUrl));
+        var statusGeneric = await inviteUserServiceService.CreateInviteUserToJoinAsync(addUserData, User.GetUserIdFromUser());
+        var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
+        CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
+        customStatusGeneric.IsValid = statusGeneric.IsValid;
+        customStatusGeneric.Message = statusGeneric.IsValid ? statusGeneric.Message : errors;
+        return customStatusGeneric;
     }
     /*
     public ActionResult ErrorDisplay(string errorMessage)
