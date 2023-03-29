@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Boilerplate.Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,4 +9,5 @@ namespace Boilerplate.Application.Features.Users.AvailableUserDocument;
 public class CustomerAvailableDocumentResponse
 {
     public bool IsAvailable { get; set; }
+    public CustomerId? CustomerId { get; set; } = null;
 }

@@ -28,6 +28,7 @@ public class CustomerAvailableDocumentHandler : IRequestHandler<CustomerAvailabl
         if (customerNdocument != null)
         {
             customerAvailableDocumentResponse.IsAvailable = false;
+            customerAvailableDocumentResponse.CustomerId = customerNdocument.Id;
         }
 
         return customerAvailableDocumentResponse;
