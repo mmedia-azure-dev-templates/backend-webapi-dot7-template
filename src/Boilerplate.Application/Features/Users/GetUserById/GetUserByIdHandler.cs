@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
-using Boilerplate.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Graph;
-using System;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using System.Threading;
 using System.Threading.Tasks;
-using static StackExchange.Redis.Role;
 using ISession = Boilerplate.Domain.Implementations.ISession;
 namespace Boilerplate.Application.Features.Users.GetUserById;
 

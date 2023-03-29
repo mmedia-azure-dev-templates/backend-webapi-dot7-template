@@ -16,24 +16,24 @@ public class Customer : Entity<CustomerId>, IDataKeyFilterReadWrite, IDateCreate
 {
     public override CustomerId Id { get; set; }
     public string DataKey { get; set; }
-    public IdentificationType DocumentType { get; init; }
-    public string Ndocument { get; init; } = null!;
-    public DateTime? BirthDate { get; init; }
-    public GenderType GenderType { get; init; }
-    public CivilStatusType CivilStatusType { get; init; }
-    public string FirstName { get; init; } = null!;
-    public string LastName { get; init; } = null!;
-    public string Email { get; init; } = null!;
-    public string Mobile { get; init; }
-    public string Phone { get; init; }
-    public string PrimaryStreet { get; init; }
-    public string SecondaryStreet { get; init; }
-    public string Numeration { get; init; }
-    public string Reference { get; init; }
-    public int Provincia { get; init; }
-    public int Canton { get; init; }
-    public int Parroquia { get; init; }
-    public string? Notes { get; init; }
+    public IdentificationType DocumentType { get; set; }
+    public string Ndocument { get; set; }
+    public DateTime? BirthDate { get; set; }
+    public GenderType GenderType { get; set; }
+    public CivilStatusType CivilStatusType { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Mobile { get; set; }
+    public string? Phone { get; set; }
+    public string PrimaryStreet { get; set; }
+    public string SecondaryStreet { get; set; }
+    public string Numeration { get; set; }
+    public string Reference { get; set; }
+    public int Provincia { get; set; }
+    public int Canton { get; set; }
+    public int Parroquia { get; set; }
+    public string? Notes { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
 }
