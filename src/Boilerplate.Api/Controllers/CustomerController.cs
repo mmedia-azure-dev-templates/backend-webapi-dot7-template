@@ -42,7 +42,7 @@ public class CustomerController : ControllerBase
     [HttpGet]
     [Route("availabledocument")]
     [AllowAnonymous]
-    public async Task<CustomerAvailableDocumentResponse> AvailableDocument(CustomerAvailableDocumentRequest request)
+    public async Task<CustomerAvailableDocumentResponse> AvailableDocument([FromQuery] CustomerAvailableDocumentRequest request)
     {
         return await _mediator.Send(request);
     }
