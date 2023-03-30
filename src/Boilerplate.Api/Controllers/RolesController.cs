@@ -1,10 +1,8 @@
 ﻿using AuthPermissions.AdminCode;
 using AuthPermissions.AspNetCore;
 using AuthPermissions.BaseCode.CommonCode;
-using AuthPermissions.BaseCode.DataLayer.Classes.SupportTypes;
 using AuthPermissions.BaseCode.PermissionsCode;
 using Boilerplate.Api.Common;
-using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using Microsoft.AspNetCore.Authorization;
@@ -67,9 +65,14 @@ public class RolesController : ControllerBase
     [HasPermission(DefaultPermissions.RoleChange)]
     [HttpPost]
     [Route("edit")]
-    public async Task<IStatusGeneric> Edit(RoleCreateUpdateDto input)
+    public async Task<CustomStatusGeneric> Edit(RoleCreateUpdateDto input)
     {
-        return await _authRolesAdmin.UpdateRoleToPermissionsAsync(input.RoleName, input.GetSelectedPermissionNames(), input.Description, input.RoleType);
+        IStatusGeneric statusGeneric = await _authRolesAdmin.UpdateRoleToPermissionsAsync(input.RoleName, input.GetSelectedPermissionNames(), input.Description, input.RoleType);
+        var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
+        CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
+        customStatusGeneric.IsValid = statusGeneric.IsValid;
+        customStatusGeneric.Message = statusGeneric.IsValid ? statusGeneric.Message : errors;
+        return customStatusGeneric;
     }
 
     [HasPermission(DefaultPermissions.RoleChange)]
@@ -84,19 +87,25 @@ public class RolesController : ControllerBase
         customStatusGeneric.Message = statusGeneric.IsValid? statusGeneric.Message : errors;
         return customStatusGeneric;
     }
-    
+
+    [HasPermission(DefaultPermissions.RoleChange)]
+    [HttpGet]
+    [Route("checkdelete")]
+    public async Task<MultiTenantRoleDeleteConfirmDto> CheckDelete([FromQuery]string roleName)
+    {
+        return await MultiTenantRoleDeleteConfirmDto.FormRoleDeleteConfirmDtoAsync(roleName, _authRolesAdmin);
+    }
+
     [HasPermission(DefaultPermissions.RoleChange)]
     [HttpPost]
-    [ValidateAntiForgeryToken]
     [Route("delete")]
-    public async Task<IActionResult> Delete(RoleDeleteConfirmDto input)
+    public async Task<CustomStatusGeneric> Delete(RoleDeleteConfirmDto input)
     {
-        var status = await _authRolesAdmin.DeleteRoleAsync(input.RoleName, input.ConfirmDelete?.Trim() == input.RoleName);
-        return Ok(status);
-        //if (status.HasErrors)
-        //    return RedirectToAction(nameof(ErrorDisplay),
-        //        new { errorMessage = status.GetAllErrors() });
-
-        //return RedirectToAction(nameof(Index), new { message = status.Message });
+        IStatusGeneric statusGeneric = await _authRolesAdmin.DeleteRoleAsync(input.RoleName, input.ConfirmDelete?.Trim() == input.RoleName);
+        var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
+        CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
+        customStatusGeneric.IsValid = statusGeneric.IsValid;
+        customStatusGeneric.Message = statusGeneric.IsValid ? statusGeneric.Message : errors;
+        return customStatusGeneric;
     }
 }
