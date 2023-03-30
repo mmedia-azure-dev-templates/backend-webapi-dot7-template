@@ -73,23 +73,24 @@ public class JibanTenantChangeService : ITenantChangeService
         await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
         try
         {
-            var dataKey = tenant.GetTenantDataKey();
-            var deleteSalesSql = $"DELETE FROM invoice.{nameof(ApplicationDbContext.LineItems)} WHERE DataKey = '{dataKey}'";
-            await _context.Database.ExecuteSqlRawAsync(deleteSalesSql);
-            var deleteStockSql = $"DELETE FROM invoice.{nameof(ApplicationDbContext.Invoices)} WHERE DataKey = '{dataKey}'";
-            await _context.Database.ExecuteSqlRawAsync(deleteStockSql);
+            //De momento deshabilite estas lineas para que no borre los datos de la base de datos
+            //var dataKey = tenant.GetTenantDataKey();
+            //var deleteSalesSql = $"DELETE FROM invoice.{nameof(ApplicationDbContext.LineItems)} WHERE DataKey = '{dataKey}'";
+            //await _context.Database.ExecuteSqlRawAsync(deleteSalesSql);
+            //var deleteStockSql = $"DELETE FROM invoice.{nameof(ApplicationDbContext.Invoices)} WHERE DataKey = '{dataKey}'";
+            //await _context.Database.ExecuteSqlRawAsync(deleteStockSql);
             
-            var companyTenant = await _context.Set<CompanyTenant>()
-                .IgnoreQueryFilters()
-                .SingleOrDefaultAsync(x => x.AuthPTenantId == tenant.TenantId);
-            if (companyTenant != null)
-            {
-                _context.Remove(companyTenant);
-                await _context.SaveChangesAsync();
-                DeletedTenantId = tenant.TenantId;
-            }
+            //var companyTenant = await _context.Set<CompanyTenant>()
+            //    .IgnoreQueryFilters()
+            //    .SingleOrDefaultAsync(x => x.AuthPTenantId == tenant.TenantId);
+            //if (companyTenant != null)
+            //{
+            //    _context.Remove(companyTenant);
+            //    await _context.SaveChangesAsync();
+            //    DeletedTenantId = tenant.TenantId;
+            //}
 
-            await transaction.CommitAsync();
+            //await transaction.CommitAsync();
         }
         catch (Exception e)
         {

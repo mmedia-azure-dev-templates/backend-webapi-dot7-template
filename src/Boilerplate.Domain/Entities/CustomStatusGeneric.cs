@@ -23,4 +23,5 @@ public class CustomStatusGeneric
     //     returns a status If there are errors it contains the message "Failed with NN
     //     errors"
     public string? Message { get; set; }
+    public object? Result { get; set; }
 }
