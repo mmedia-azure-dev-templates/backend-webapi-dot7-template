@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph;
+using StatusGeneric;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -59,33 +60,60 @@ public class TenantController : ControllerBase
         return status.Result;
     }
 
+    [HttpGet]
+    [HasPermission(DefaultPermissions.TenantUpdate)]
+    [Route("edit")]
+    public async Task<SingleLevelTenantDto> Edit(int id)
+    {
+        return await SingleLevelTenantDto.SetupForUpdateAsync(_authTenantAdmin, id);
+    }
+
+
     [HttpPost]
-    [ValidateAntiForgeryToken]
     [Route("edit")]
     [HasPermission(DefaultPermissions.TenantUpdate)]
-    public async Task<IActionResult> Edit(SingleLevelTenantDto input)
+    public async Task<CustomStatusGeneric> Edit(SingleLevelTenantDto input)
     {
-        var status = await _authTenantAdmin
-            .UpdateTenantNameAsync(input.TenantId, input.TenantName);
-        return Ok(status);
-        //return status.HasErrors
-        //    ? RedirectToAction(nameof(ErrorDisplay),
-        //        new { errorMessage = status.GetAllErrors() })
-        //    : RedirectToAction(nameof(Index), new { message = status.Message });
+        IStatusGeneric statusGeneric = await _authTenantAdmin.UpdateTenantNameAsync(input.TenantId, input.TenantName);
+        var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
+        CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
+        customStatusGeneric.IsValid = statusGeneric.IsValid;
+        customStatusGeneric.Message = statusGeneric.IsValid ? statusGeneric.Message : errors;
+        return customStatusGeneric;
+    }
+
+    [HttpGet]
+    [HasPermission(DefaultPermissions.TenantDelete)]
+    [Route("delete")]
+    public async Task<CustomStatusGeneric> Delete(int id)
+    {
+        IStatusGeneric<Tenant> statusGeneric = await _authTenantAdmin.GetTenantViaIdAsync(id);
+        var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
+        CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
+        if (statusGeneric.HasErrors)
+        {
+            customStatusGeneric.IsValid = statusGeneric.IsValid;
+            customStatusGeneric.Message = errors;
+            return customStatusGeneric;
+        }
+
+        customStatusGeneric.IsValid = statusGeneric.IsValid;
+        customStatusGeneric.Message = statusGeneric.Message;
+        customStatusGeneric.Result = statusGeneric.Result;
+        return customStatusGeneric;
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     [Route("delete")]
     [HasPermission(DefaultPermissions.TenantDelete)]
-    public async Task<IActionResult> Delete(SingleLevelTenantDto input)
+    public async Task<CustomStatusGeneric> Delete(SingleLevelTenantDto input)
     {
-        var status = await _authTenantAdmin.DeleteTenantAsync(input.TenantId);
-        return Ok();
-        //return status.HasErrors
-        //    ? RedirectToAction(nameof(ErrorDisplay),
-        //        new { errorMessage = status.GetAllErrors() })
-        //    : RedirectToAction(nameof(Index), new { message = status.Message });
+        IStatusGeneric<ITenantChangeService> statusGeneric = await _authTenantAdmin.DeleteTenantAsync(input.TenantId);
+        var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
+        CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
+        customStatusGeneric.IsValid = statusGeneric.IsValid;
+        customStatusGeneric.Message = statusGeneric.IsValid ? statusGeneric.Message : errors;
+        return customStatusGeneric;
     }
 
     [HasPermission(DefaultPermissions.TenantAccessData)]
