@@ -114,6 +114,7 @@ public class AwsS3Service : IAwsS3Service
 
     public async Task<DeleteObjectsResponse> DeletePathAsync(string bucketFolderRelative)
     {
+        DeleteObjectsResponse deleteObjectsResponse = new DeleteObjectsResponse();
         var request = new ListObjectsRequest
         {
             BucketName = $"{_awsS3Configuration.BucketName}",
@@ -133,6 +134,11 @@ public class AwsS3Service : IAwsS3Service
             BucketName = $"{_awsS3Configuration.BucketName}",
             Objects = keys
         };
+
+        if(multiObjectDeleteRequest.Objects.Count == 0)
+        {
+            return deleteObjectsResponse;
+        }
 
         return  await _s3Client.DeleteObjectsAsync(multiObjectDeleteRequest);
     }
