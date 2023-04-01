@@ -140,6 +140,7 @@ public class UserController : ControllerBase
 
     [HttpDelete]
     [Route("delete")]
+    [HasPermission(DefaultPermissions.UserRemove)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteUser(UserId id)
     {
