@@ -139,10 +139,6 @@ public class TenantAdminController : Controller
             var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(inviteParam));
             newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
 
-            verifyInvitationResponse.addNewUserDto = newUserData;
-            verifyInvitationResponse.Message = "Correo electrónico no coincide con la invitación.";
-            return verifyInvitationResponse;
-
             if (newUserData.Email != normalizedEmail)
             {
                 verifyInvitationResponse.Message = "Correo electrónico no coincide con la invitación.";
