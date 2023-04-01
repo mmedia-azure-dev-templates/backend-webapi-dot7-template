@@ -77,7 +77,7 @@ public class ExtendInviteNewUserService : IInviteNewUserService
             _localizeDefault.LocalizeFormattedMessage("Expiration-Hours".ClassLocalizeKey(this, true),
                 $"La invitación solo es válida durante {24} horas a partir de ahora.")));
 
-        foreach (var numDays in new[] { 3, 7, 20 })
+        foreach (var numDays in new[] { 3 }) //, 7, 20
         {
             result.Add(new(DateTime.UtcNow.AddHours(numDays).Ticks,
                 _localizeDefault.LocalizeFormattedMessage("Expiration-Days".ClassLocalizeKey(this, true),
