@@ -99,7 +99,7 @@ public static class JwtPermissionsSetup
         //Add the SupportCode services
         services.AddTransient<IAddNewUserManager, ExtendIndividualUserAddUserManager<ApplicationUser>>();
         services.AddTransient<ISignInAndCreateTenant, SignInAndCreateTenant>();
-        services.AddTransient<IInviteNewUserService, InviteNewUserService>();
+        services.AddTransient<IInviteNewUserService, ExtendInviteNewUserService>();
 
         return services;
     }

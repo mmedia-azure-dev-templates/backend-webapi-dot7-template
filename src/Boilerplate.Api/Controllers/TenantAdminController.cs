@@ -8,6 +8,7 @@ using Boilerplate.Domain.PermissionsCode;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using StatusGeneric;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,10 +21,12 @@ namespace Boilerplate.Api.Controllers;
 public class TenantAdminController : Controller
 {
     private readonly IAuthUsersAdminService _authUsersAdmin;
+    private readonly IConfiguration _configuration;
 
-    public TenantAdminController(IAuthUsersAdminService authUsersAdmin)
+    public TenantAdminController(IAuthUsersAdminService authUsersAdmin, IConfiguration configuration)
     {
         _authUsersAdmin = authUsersAdmin;
+        _configuration = configuration;
     }
 
     [HasPermission(DefaultPermissions.UserRead)]
@@ -89,6 +92,8 @@ public class TenantAdminController : Controller
             customStatusGeneric.Message = errors;
             return customStatusGeneric;
         }
+
+        var url = _configuration.GetSection("FRONTEND_URL").Value!;
 
         object result = new
         {
