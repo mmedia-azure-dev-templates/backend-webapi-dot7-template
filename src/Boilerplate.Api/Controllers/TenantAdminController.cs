@@ -83,8 +83,21 @@ public class TenantAdminController : Controller
         var statusGeneric = await inviteUserServiceService.CreateInviteUserToJoinAsync(addUserData, User.GetUserIdFromUser());
         var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
         CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
+        if (statusGeneric.HasErrors)
+        {
+            customStatusGeneric.IsValid = statusGeneric.IsValid;
+            customStatusGeneric.Message = errors;
+            return customStatusGeneric;
+        }
+
+        object result = new
+        {
+            url = statusGeneric.Result
+        };
+
         customStatusGeneric.IsValid = statusGeneric.IsValid;
-        customStatusGeneric.Message = statusGeneric.IsValid ? statusGeneric.Message : errors;
+        customStatusGeneric.Message = statusGeneric.Message;
+        customStatusGeneric.Result = result;
         return customStatusGeneric;
     }
     /*
