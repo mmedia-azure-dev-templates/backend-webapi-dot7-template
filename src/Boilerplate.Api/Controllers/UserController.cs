@@ -1,6 +1,8 @@
 ﻿using AuthPermissions;
 using AuthPermissions.AspNetCore;
 using AuthPermissions.AspNetCore.JwtTokenCode;
+using AuthPermissions.SupportCode.AddUsersServices.Authentication;
+using AuthPermissions.SupportCode.AddUsersServices;
 using Boilerplate.Api.Common;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Features.Users;
@@ -16,10 +18,14 @@ using Boilerplate.Application.Features.Users.Migration;
 using Boilerplate.Application.Features.Users.UpdatePassword;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.PermissionsCode;
+using LocalizeMessagesAndErrors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using StatusGeneric;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ISession = Boilerplate.Domain.Implementations.ISession;
@@ -124,14 +130,16 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("availableemail")]
+    [HttpPost]
+    [Route("availableemail")]
     [AllowAnonymous]
     public async Task<AvailableUserEmailResponse> AvailableEmail(AvailableUserEmailRequest request)
     {
         return await _mediator.Send(request);
     }
 
-    [HttpPost("availabledocument")]
+    [HttpPost]
+    [Route("availabledocument")]
     [AllowAnonymous]
     public async Task<AvailableUserNdocumentResponse> AvailableDocument(AvailableUserNdocumentRequest request)
     {
