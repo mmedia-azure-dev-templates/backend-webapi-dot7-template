@@ -70,16 +70,16 @@ public class ExtendInviteNewUserService : IInviteNewUserService
         result.Add(new(DateTime.UtcNow.AddHours(1).Ticks,
             _localizeDefault.LocalizeStringMessage("Expiration-1Hour".ClassLocalizeKey(this, true),
                 "La invitación solo es válida durante 1 hora a partir de ahora.")));
-        result.Add(new(DateTime.UtcNow.AddHours(1).Ticks,
+        result.Add(new(DateTime.UtcNow.AddHours(6).Ticks,
             _localizeDefault.LocalizeFormattedMessage("Expiration-Hours".ClassLocalizeKey(this, true),
                 $"La invitación solo es válida durante {6} horas a partir de ahora.")));
-        result.Add(new(DateTime.UtcNow.AddHours(1).Ticks,
+        result.Add(new(DateTime.UtcNow.AddHours(24).Ticks,
             _localizeDefault.LocalizeFormattedMessage("Expiration-Hours".ClassLocalizeKey(this, true),
                 $"La invitación solo es válida durante {24} horas a partir de ahora.")));
 
         foreach (var numDays in new[] { 3, 7, 20 })
         {
-            result.Add(new(DateTime.UtcNow.AddHours(1).Ticks,
+            result.Add(new(DateTime.UtcNow.AddHours(numDays).Ticks,
                 _localizeDefault.LocalizeFormattedMessage("Expiration-Days".ClassLocalizeKey(this, true),
                     $"La invitación solo es válida para {numDays} dias a partir de ahora.")));
         }
