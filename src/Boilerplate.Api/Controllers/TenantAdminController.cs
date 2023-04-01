@@ -1,16 +1,26 @@
 ﻿using AuthPermissions.AdminCode;
 using AuthPermissions.AspNetCore;
+using AuthPermissions.BaseCode;
 using AuthPermissions.BaseCode.CommonCode;
+using AuthPermissions.BaseCode.DataLayer.EfCode;
+using AuthPermissions.BaseCode.SetupCode;
 using AuthPermissions.SupportCode.AddUsersServices;
+using AuthPermissions.SupportCode.AddUsersServices.Authentication;
 using Boilerplate.Api.Common;
+using Boilerplate.Application.Features.TenantAdmin.VerifyInvitation;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
+using LocalizeMessagesAndErrors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using StatusGeneric;
+using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Api.Controllers;
@@ -22,11 +32,20 @@ public class TenantAdminController : Controller
 {
     private readonly IAuthUsersAdminService _authUsersAdmin;
     private readonly IConfiguration _configuration;
+    private readonly IEncryptDecryptService _encryptService;
+    private readonly IAuthUsersAdminService _usersAdmin;
+    private readonly IAddNewUserManager _addNewUserManager;
+    private readonly IDefaultLocalizer _localizeDefault;
 
-    public TenantAdminController(IAuthUsersAdminService authUsersAdmin, IConfiguration configuration)
+    public TenantAdminController(IAuthUsersAdminService authUsersAdmin, IConfiguration configuration, IEncryptDecryptService encryptService,
+        IAuthUsersAdminService usersAdmin, IAddNewUserManager addNewUserManager, IAuthPDefaultLocalizer localizeProvider)
     {
         _authUsersAdmin = authUsersAdmin;
         _configuration = configuration;
+        _encryptService = encryptService;
+        _usersAdmin = usersAdmin;
+        _addNewUserManager = addNewUserManager;
+        _localizeDefault = localizeProvider.DefaultLocalizer;
     }
 
     [HasPermission(DefaultPermissions.UserRead)]
@@ -105,22 +124,45 @@ public class TenantAdminController : Controller
         customStatusGeneric.Result = result;
         return customStatusGeneric;
     }
-    /*
-    public ActionResult ErrorDisplay(string errorMessage)
-    {
-        return View((object)errorMessage);
-    }
 
-    //-------------------------------------------------------
-
-    //Thanks to https://stackoverflow.com/questions/30755827/getting-absolute-urls-using-asp-net-core
-    public string AbsoluteAction(IUrlHelper url,
-        string actionName,
-        string controllerName,
-        object routeValues = null)
+    [HttpGet]
+    [Route("verifyInvitation")]
+    [AllowAnonymous]
+    public VerifyInvitationResponse verifyInvitation([FromQuery] string inviteParam, string email)
     {
-        string scheme = HttpContext.Request.Scheme;
-        return url.Action(actionName, controllerName, routeValues, scheme);
+        VerifyInvitationResponse verifyInvitationResponse = new VerifyInvitationResponse();
+        
+        try
+        {
+            var normalizedEmail = email.Trim().ToLower();
+            AddNewUserDto newUserData;
+            var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(inviteParam));
+            newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
+
+            verifyInvitationResponse.addNewUserDto = newUserData;
+            verifyInvitationResponse.Message = "Correo electrónico no coincide con la invitación.";
+            return verifyInvitationResponse;
+
+            if (newUserData.Email != normalizedEmail)
+            {
+                verifyInvitationResponse.Message = "Correo electrónico no coincide con la invitación.";
+                return verifyInvitationResponse;
+            }
+                
+            if (newUserData.TimeInviteExpires != default && newUserData.TimeInviteExpires < DateTime.UtcNow.Ticks)
+            {
+                verifyInvitationResponse.Message = "La invitación ha expirado!. Póngase en contacto con la persona que envió la invitación.";
+                return verifyInvitationResponse;
+            }
+
+            verifyInvitationResponse.IsValid = true;
+            verifyInvitationResponse.Message = "Excelente la invitación es válida!";
+            return verifyInvitationResponse;
+        }
+        catch (Exception e)
+        {
+            verifyInvitationResponse.Message = e.Message;
+            return verifyInvitationResponse;
+        }
     }
-    */
 }
