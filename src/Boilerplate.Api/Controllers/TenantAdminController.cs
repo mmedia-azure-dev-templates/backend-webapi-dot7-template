@@ -7,6 +7,7 @@ using AuthPermissions.BaseCode.SetupCode;
 using AuthPermissions.SupportCode.AddUsersServices;
 using AuthPermissions.SupportCode.AddUsersServices.Authentication;
 using Boilerplate.Api.Common;
+using Boilerplate.Application.Features.TenantAdmin.VerifyInvitation;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using LocalizeMessagesAndErrors;
@@ -127,31 +128,41 @@ public class TenantAdminController : Controller
     [HttpGet]
     [Route("verifyInvitation")]
     [AllowAnonymous]
-    public StatusGenericLocalizer<AddNewUserDto> verifyInvitation([FromQuery] string inviteParam, string email)
+    public VerifyInvitationResponse verifyInvitation([FromQuery] string inviteParam, string email)
     {
-        StatusGenericLocalizer<AddNewUserDto> status = new StatusGenericLocalizer<AddNewUserDto>(_localizeDefault);
+        VerifyInvitationResponse verifyInvitationResponse = new VerifyInvitationResponse();
+        
         try
         {
             var normalizedEmail = email.Trim().ToLower();
             AddNewUserDto newUserData;
             var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(inviteParam));
             newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
+
+            verifyInvitationResponse.addNewUserDto = newUserData;
+            verifyInvitationResponse.Message = "Correo electrónico no coincide con la invitación.";
+            return verifyInvitationResponse;
+
             if (newUserData.Email != normalizedEmail)
             {
-                return (StatusGenericLocalizer<AddNewUserDto>)status.AddErrorString("EmailNotMatch".ClassLocalizeKey(this, true), "Correo electrónico no coincide con la invitación.", nameof(AddNewUserDto.Email));
+                verifyInvitationResponse.Message = "Correo electrónico no coincide con la invitación.";
+                return verifyInvitationResponse;
             }
                 
             if (newUserData.TimeInviteExpires != default && newUserData.TimeInviteExpires < DateTime.UtcNow.Ticks)
             {
-                return (StatusGenericLocalizer<AddNewUserDto>)status.AddErrorString("InviteExpired".ClassLocalizeKey(this, true), "La invitación ha expirado!. Póngase en contacto con la persona que envió la invitación.");
-
+                verifyInvitationResponse.Message = "La invitación ha expirado!. Póngase en contacto con la persona que envió la invitación.";
+                return verifyInvitationResponse;
             }
-                
-            return (StatusGenericLocalizer<AddNewUserDto>)status.SetResult(newUserData);
+
+            verifyInvitationResponse.IsValid = true;
+            verifyInvitationResponse.Message = "Excelente la invitación es válida!";
+            return verifyInvitationResponse;
         }
         catch (Exception e)
         {
-            return (StatusGenericLocalizer<AddNewUserDto>)status.AddErrorString(e.Message.ClassLocalizeKey(this, true), e.Message);
+            verifyInvitationResponse.Message = e.Message;
+            return verifyInvitationResponse;
         }
     }
 }
