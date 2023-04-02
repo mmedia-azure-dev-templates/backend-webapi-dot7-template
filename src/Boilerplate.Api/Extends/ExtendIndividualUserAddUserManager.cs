@@ -104,11 +104,11 @@ public class ExtendIndividualUserAddUserManager<TIdentity> : IAddNewUserManager
                     ForEach(error => status.AddErrorString(this.AlreadyLocalized(), error));
             }
         }
-        else if (!await _userManager.CheckPasswordAsync(user, newUser.Password))
-            status.AddErrorString("ExistUserBadPassword".ClassLocalizeKey(this, true),
-                //the problem is that the user was already known, but the password was wrong
-                "Your user is invalid.",
-                nameof(AddNewUserDto.Password));
+        //else if (!await _userManager.CheckPasswordAsync(user, newUser.Password))
+        //    status.AddErrorString("ExistUserBadPassword".ClassLocalizeKey(this, true),
+        //        //the problem is that the user was already known, but the password was wrong
+        //        "Your user is invalid.",
+        //        nameof(AddNewUserDto.Password));
 
         //We have created the individual user account, so we have the user's UserId.
         //Now we create the AuthUser using the data we have been given
