@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AuthPermissions.SupportCode.AddUsersServices.Authentication;
+using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Domain.Entities;
@@ -10,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
 using OneOf.Types;
 using System;
 using System.Collections.Generic;
@@ -28,12 +30,13 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
     private readonly ILogger<CreateUserHandler> _logger;
     private readonly IMailService _mail;
     private readonly ILocalizationService _localizationService;
+    private readonly IAddNewUserManager _addNewUserManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IAwsS3Service _awsS3Service;
     private UserResponse _userResponse;
 
 
-    public CreateUserHandler(IContext context, IMapper mapper, ILogger<CreateUserHandler> logger, IMailService mail, UserManager<ApplicationUser> userManager, IUserResponse userResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service)
+    public CreateUserHandler(IAddNewUserManager addNewUserManager,IContext context, IMapper mapper, ILogger<CreateUserHandler> logger, IMailService mail, UserManager<ApplicationUser> userManager, IUserResponse userResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service)
     {
         _logger = logger;
         _mapper = mapper;
@@ -43,6 +46,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
         _userResponse = (UserResponse)userResponse;
         _localizationService = localizationService;
         _awsS3Service = awsS3Service;
+        _addNewUserManager = addNewUserManager;
     }
     public async Task<UserResponse> Handle(CreateUsersInformationsRequest request, CancellationToken cancellationToken)
     {
@@ -102,6 +106,9 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
 
                 _context.UserInformations.Add(userInformation);
                 await _context.SaveChangesAsync(cancellationToken);
+
+                //await _addNewUserManager.SetUserInfoAsync(newUserData);
+
 
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));

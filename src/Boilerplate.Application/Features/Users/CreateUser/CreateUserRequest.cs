@@ -4,7 +4,7 @@ using System;
 
 namespace Boilerplate.Application.Features.Users.CreateUser;
 
-public record CreateUsersInformationsRequest : IRequest<UserResponse>
+public class CreateUsersInformationsRequest : IRequest<UserResponse>
 {
     public string Email { get; init; } = null!;
     public string FirstName { get; init; } = null!;
@@ -24,4 +24,5 @@ public record CreateUsersInformationsRequest : IRequest<UserResponse>
     public int Canton { get; init; }
     public int Parroquia { get; init; }
     public string ImageProfile { get; init; }
+    public string Invitation { get; init; }
 }
