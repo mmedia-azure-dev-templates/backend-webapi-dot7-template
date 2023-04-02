@@ -147,6 +147,12 @@
   <data name="ForgotPasswordResponseTitleSuccess" xml:space="preserve">
     <value>Excelente! Se ha enviado un correo de restablecimiento de password</value>
   </data>
+  <data name="InvitationEmailNotMatch" xml:space="preserve">
+    <value>Correo electrónico no coincide con la invitación</value>
+  </data>
+  <data name="InvitationExpired" xml:space="preserve">
+    <value>La invitación ha expirado!. Póngase en contacto con la persona que envió la invitación.</value>
+  </data>
   <data name="ResetPasswordResponseTitleSuccess" xml:space="preserve">
     <value>Excelente! Se ha restablecido el password</value>
   </data>

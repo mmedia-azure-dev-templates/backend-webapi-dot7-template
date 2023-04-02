@@ -1,26 +1,28 @@
 ﻿using AuthPermissions.AdminCode;
 using AuthPermissions.AspNetCore;
-using AuthPermissions.BaseCode;
 using AuthPermissions.BaseCode.CommonCode;
-using AuthPermissions.BaseCode.DataLayer.EfCode;
 using AuthPermissions.BaseCode.SetupCode;
 using AuthPermissions.SupportCode.AddUsersServices;
 using AuthPermissions.SupportCode.AddUsersServices.Authentication;
 using Boilerplate.Api.Common;
 using Boilerplate.Application.Features.TenantAdmin.VerifyInvitation;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Emails;
+using Boilerplate.Domain.Implementations;
 using Boilerplate.Domain.PermissionsCode;
 using LocalizeMessagesAndErrors;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using StatusGeneric;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Api.Controllers;
@@ -31,21 +33,25 @@ namespace Boilerplate.Api.Controllers;
 public class TenantAdminController : Controller
 {
     private readonly IAuthUsersAdminService _authUsersAdmin;
-    private readonly IConfiguration _configuration;
     private readonly IEncryptDecryptService _encryptService;
     private readonly IAuthUsersAdminService _usersAdmin;
     private readonly IAddNewUserManager _addNewUserManager;
     private readonly IDefaultLocalizer _localizeDefault;
+    private readonly IMailService _mailService;
+    private readonly ISession _session;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public TenantAdminController(IAuthUsersAdminService authUsersAdmin, IConfiguration configuration, IEncryptDecryptService encryptService,
-        IAuthUsersAdminService usersAdmin, IAddNewUserManager addNewUserManager, IAuthPDefaultLocalizer localizeProvider)
+    public TenantAdminController(IAuthUsersAdminService authUsersAdmin, IEncryptDecryptService encryptService,
+        IAuthUsersAdminService usersAdmin, IAddNewUserManager addNewUserManager, IAuthPDefaultLocalizer localizeProvider, IMailService mailService,ISession session, UserManager<ApplicationUser> userManager)
     {
         _authUsersAdmin = authUsersAdmin;
-        _configuration = configuration;
         _encryptService = encryptService;
         _usersAdmin = usersAdmin;
         _addNewUserManager = addNewUserManager;
         _localizeDefault = localizeProvider.DefaultLocalizer;
+        _mailService = mailService;
+        _session = session;
+        _userManager = userManager;
     }
 
     [HasPermission(DefaultPermissions.UserRead)]
@@ -112,7 +118,32 @@ public class TenantAdminController : Controller
             return customStatusGeneric;
         }
 
-        var url = _configuration.GetSection("FRONTEND_URL").Value!;
+
+        var user = await _userManager.FindByIdAsync(_session.UserId.ToString());
+
+        MailStruct mailData = new MailStruct(
+                    "Nueva invitación de " + user.FirstName + " " + user.LastName,
+                    new List<string> {
+                        addUserData.Email
+                    },
+                    "Nueva invitación de " + user.FirstName + " " + user.LastName,
+                    "ConfirmationInvitationView"
+                   );
+
+        // Create MailData object
+        ConfirmationInvitationMailData confirmationInvitationMailData = new ConfirmationInvitationMailData()
+        {
+            Name = user.FirstName + " " + user.LastName,
+            Token = statusGeneric.Result
+        };
+
+        bool emailStatus = await _mailService.CreateEmailMessage(mailData, confirmationInvitationMailData, new CancellationToken());
+        if (!emailStatus)
+        {
+            customStatusGeneric.IsValid = false;
+            customStatusGeneric.Message = "Error al enviar el correo electrónico.";
+            return customStatusGeneric;
+        }
 
         object result = new
         {
@@ -128,7 +159,7 @@ public class TenantAdminController : Controller
     [HttpGet]
     [Route("verifyInvitation")]
     [AllowAnonymous]
-    public VerifyInvitationResponse verifyInvitation([FromQuery] string inviteParam, string email)
+    public async Task<VerifyInvitationResponse> verifyInvitation([FromQuery] string inviteParam, string email)
     {
         VerifyInvitationResponse verifyInvitationResponse = new VerifyInvitationResponse();
         
