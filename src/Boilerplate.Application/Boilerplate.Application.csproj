@@ -32,6 +32,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Boilerplate.Domain\Boilerplate.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Orders\OrderCreateDocument\" />
   </ItemGroup> 
 
 </Project>

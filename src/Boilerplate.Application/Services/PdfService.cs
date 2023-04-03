@@ -2,35 +2,28 @@
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Pdfs;
 using Boilerplate.Domain.Implementations;
-using Microsoft.AspNetCore.Http;
 using QuestPDF.Fluent;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
+using ISession = Boilerplate.Domain.Implementations.ISession;
 
 namespace Boilerplate.Application.Services;
 public class PdfService: IPdfService
 {
     private readonly IAwsS3Service _awsS3Service;
-    public PdfService(IAwsS3Service awsS3Service)
+    private readonly ISession _session;
+    public PdfService(IAwsS3Service awsS3Service, ISession session)
     {
         _awsS3Service = awsS3Service;
+        _session = session;
     }
 
-    public async Task<string> GenerateOrderPdf(Order order, List<OrderItem> orderItems, Customer customer)
+    public async Task<AmazonObject> GenerateOrderPdf(Order order, List<OrderItem> orderItems, Customer customer)
     {
+        var relativePath = _session.TenantName + "/orders/" + _session.Now.Year + "/"+ _session.Now.ToString("MM") + "/" + _session.Now.ToString("dd") + "/" + order.OrderNumber.ToString();
         var orderDocumentDataSource = new OrderDocumentDataSource(order,orderItems,customer);
         var document = new OrderDocument(orderDocumentDataSource);
-        var stream = document.GeneratePdf();
-        //var orderDocument = new FormFile(document.GeneratePdf(), "application/pdf", "myReport.pdf");
-
-        //AmazonObject objectImageProfile = await _awsS3Service.UploadFileAsync(document.GeneratePdf(), "public", "fotoperfil.jpg");
-        //if (objectImageProfile.ObjectUrl == null)
-        //{
-        //    _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseTitleError").Value;
-        //    return _userResponse;
-        //}
-        return "pdf";
+        AmazonObject amazonObject = await _awsS3Service.UploadFileAmazonAsync(document.GeneratePdf(), relativePath, "order.pdf");
+        return amazonObject;
     }
-
 }

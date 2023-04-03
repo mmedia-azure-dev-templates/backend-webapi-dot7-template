@@ -1,12 +1,9 @@
-﻿using Amazon.Runtime.Documents;
-using AutoMapper;
+﻿using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,7 +11,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Boilerplate.Application.Features.Orders.OrderCreate;
 
@@ -75,7 +71,6 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
 
                 var counter = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault();
                 counter.CustomCounter = counter!.CustomCounter.Value + 1;
-                //await _context.Counters.(counter, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
 
 
@@ -121,6 +116,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 //_logger.LogInformation(3, ex.Message);
                 //_userResponse.SweetAlert.Title = ex.Message;
                 //_userResponse.SweetAlert.Text = ex.Message;
+                _orderCreateResponse.Message = ex.Message;
                 return _orderCreateResponse;
             }
         }

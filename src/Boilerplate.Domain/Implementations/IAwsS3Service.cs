@@ -7,10 +7,8 @@ namespace Boilerplate.Domain.Implementations;
 public interface IAwsS3Service
 {
     public Task<AmazonObject> UploadFileAsync(IFormFile file, string bucketFolderRelative, string fileName);
-
     public Task<AmazonObject> UploadFileBase64Async(string base64File, string bucketFolderRelative, string fileName);
-
+    public Task<AmazonObject> UploadFileAmazonAsync(byte[] binaryFile, string bucketFolderRelative, string fileName);
     public Task<DeleteObjectResponse> DeleteFileAsync(string bucketFolderRelative, string fileName);
-
     public Task<DeleteObjectsResponse> DeletePathAsync(string bucketFolderRelative);
 }

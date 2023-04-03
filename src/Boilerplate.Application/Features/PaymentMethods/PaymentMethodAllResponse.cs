@@ -2,7 +2,7 @@
 using Boilerplate.Domain.Entities.Enums;
 using System;
 
-namespace Boilerplate.Application.Features.Orders;
+namespace Boilerplate.Application.Features.PaymentMethods;
 
 /* Class created because Nswag not working wih override parameters*/
 public class PaymentMethodAllResponse

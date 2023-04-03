@@ -1,5 +1,6 @@
 ﻿using Boilerplate.Application.Features.OrderItems.OrderItemById;
 using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
+using Boilerplate.Application.Features.Orders.OrderById;
 using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.Entities;
@@ -19,6 +20,13 @@ public class OrderController : ControllerBase
     public OrderController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    [HttpGet]
+    [Route("getorder")]
+    public async Task<OrderByIdResponse> GetOrder(OrderByIdRequest request)
+    {
+        return await _mediator.Send(request);
     }
 
     [HttpPost]
