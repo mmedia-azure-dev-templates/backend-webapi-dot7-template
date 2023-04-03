@@ -3,7 +3,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 #INSTALAR LIBRERIAS UBUNTU
-RUN apt-get update && apt-get install -y apt-utils iputils-ping telnet vim
+RUN apt-get update && apt-get install -y apt-utils iputils-ping telnet vim libfontconfig1
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443

@@ -1,15 +1,10 @@
 ﻿using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.OrderItems.OrderItemById;
 using Boilerplate.Application.Features.Orders;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
-using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
