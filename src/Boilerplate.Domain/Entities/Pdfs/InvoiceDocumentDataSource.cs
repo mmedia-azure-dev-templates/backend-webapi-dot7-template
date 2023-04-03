@@ -10,10 +10,8 @@ public class InvoiceModel
     public int InvoiceNumber { get; set; }
     public DateTime IssueDate { get; set; }
     public DateTime DueDate { get; set; }
-
     public Address SellerAddress { get; set; }
     public Address CustomerAddress { get; set; }
-
     public List<OrderItem2> Items { get; set; }
     public string Comments { get; set; }
 }
@@ -34,36 +32,6 @@ public class Address
     public object Email { get; set; }
     public string Phone { get; set; }
 }
-
-public class AddressComponent : IComponent
-{
-    private string Title { get; }
-    private Address Address { get; }
-
-    public AddressComponent(string title, Address address)
-    {
-        Title = title;
-        Address = address;
-    }
-
-    public void Compose(IContainer container)
-    {
-        container.Column(column =>
-        {
-            column.Spacing(2);
-
-            column.Item().BorderBottom(1).PaddingBottom(5).Text(Title).SemiBold();
-
-            column.Item().Text(Address.CompanyName);
-            column.Item().Text(Address.Street);
-            column.Item().Text($"{Address.City}, {Address.State}");
-            column.Item().Text(Address.Email);
-            column.Item().Text(Address.Phone);
-        });
-    }
-}
-
-
 
 public static class InvoiceDocumentDataSource
 {
