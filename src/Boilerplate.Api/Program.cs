@@ -10,6 +10,7 @@ using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Features.Users.EditUser;
+using Boilerplate.Application.Services;
 using Boilerplate.Domain.ClaimsChangeCode;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
@@ -74,6 +75,7 @@ builder.Services.AddScoped<IOrderCreateResponse, OrderCreateResponse>();
 builder.Services.AddScoped<IOrderItemCreateResponse, OrderItemCreateResponse>();
 builder.Services.AddScoped<IPaymentMethodCreateResponse, PaymentMethodCreateResponse>();
 builder.Services.AddScoped<ICustomerCreateResponse, CustomerCreateResponse>();
+builder.Services.AddScoped<IPdfService, PdfService>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers

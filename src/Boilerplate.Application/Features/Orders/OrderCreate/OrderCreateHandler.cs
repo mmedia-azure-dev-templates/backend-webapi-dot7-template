@@ -6,6 +6,7 @@ using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -26,10 +27,11 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
     private readonly IMailService _mail;
     private readonly ILocalizationService _localizationService;
     private readonly IAwsS3Service _awsS3Service;
+    private readonly IPdfService _pdfService;
     private OrderCreateResponse _orderCreateResponse;
 
 
-    public OrderCreateHandler(IContext context,ISession session, IMapper mapper, ILogger<OrderCreateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service)
+    public OrderCreateHandler(IContext context,ISession session, IMapper mapper, ILogger<OrderCreateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
     {
         _logger = logger;
         _mapper = mapper;
@@ -39,6 +41,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
         _orderCreateResponse = (OrderCreateResponse)orderCreateResponse;
         _localizationService = localizationService;
         _awsS3Service = awsS3Service;
+        _pdfService = pdfService;
     }
     public async Task<OrderCreateResponse> Handle(OrderCreateRequest request, CancellationToken cancellationToken)
     {
@@ -70,17 +73,16 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 await _context.Customers.AddAsync(customer, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                var counter = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault()!.CustomCounter.Value + 1;
-                var orderNumber = new Counter();
-                orderNumber.CustomCounter = counter;
-                await _context.Counters.AddAsync(orderNumber, cancellationToken);
+                var counter = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault();
+                counter.CustomCounter = counter!.CustomCounter.Value + 1;
+                //await _context.Counters.(counter, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
 
 
                 var order = new Order
                 {
                     OrderStatusType = OrderStatusType.Entered,
-                    OrderNumber = orderNumber.CustomCounter.Value,
+                    OrderNumber = counter.CustomCounter.Value,
                     UserGenerated = _session.UserId.Value,
                     CustomerId = customer.Id,
                     SubTotal = request.SubTotal,
@@ -105,6 +107,8 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 }
                 await _context.OrderItems.AddRangeAsync(orderItems);
                 await _context.SaveChangesAsync(cancellationToken);
+
+                _pdfService.GenerateOrderPdf(order, orderItems, customer);
 
                 scope.Complete();
                 _orderCreateResponse.Message = "Orden Creada Correctamente";
