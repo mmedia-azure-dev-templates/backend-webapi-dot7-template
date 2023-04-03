@@ -26,6 +26,7 @@ namespace Boilerplate.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class AuthenticateController : ControllerBase
 {
     private readonly IMailService _mail;

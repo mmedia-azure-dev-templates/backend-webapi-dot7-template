@@ -3,6 +3,7 @@ using Amazon.S3.Model;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,6 +15,7 @@ namespace Boilerplate.Api.Controllers;
 
 [Route("api/files")]
 [ApiController]
+[Authorize]
 public class FilesController : ControllerBase
 {
     private readonly IAmazonS3 _s3Client;

@@ -10,8 +10,11 @@
     <PackageReference Include="AuthPermissions.AspNetCore" />
     <PackageReference Include="AWSSDK.S3" />
     <PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="NewId" />
+    <PackageReference Include="QuestPDF" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" />
     <PackageReference Include="StronglyTypedId" />
   </ItemGroup>
   

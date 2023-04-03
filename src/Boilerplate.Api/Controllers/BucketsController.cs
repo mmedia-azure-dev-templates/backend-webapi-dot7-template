@@ -1,4 +1,5 @@
 ﻿using Amazon.S3;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ namespace Boilerplate.Api.Controllers;
 
 [Route("api/buckets")]
 [ApiController]
+[Authorize]
 public class BucketsController : ControllerBase
 {
     private readonly IAmazonS3 _s3Client;

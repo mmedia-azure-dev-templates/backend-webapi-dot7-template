@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 using MediatR;
 using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Boilerplate.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ArticleController : ControllerBase
 {
     private readonly IMediator _mediator;
