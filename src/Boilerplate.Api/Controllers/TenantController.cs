@@ -75,10 +75,12 @@ public class TenantController : ControllerBase
     public async Task<CustomStatusGeneric> Edit(SingleLevelTenantDto input)
     {
         IStatusGeneric statusGeneric = await _authTenantAdmin.UpdateTenantNameAsync(input.TenantId, input.TenantName);
+        IStatusGeneric statusGeneric2 = await _authTenantAdmin.UpdateTenantRolesAsync(input.TenantId, input.TenantRolesName);
         var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
+        var errors2 = string.Join(" | ", statusGeneric2.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
         CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
         customStatusGeneric.IsValid = statusGeneric.IsValid;
-        customStatusGeneric.Message = statusGeneric.IsValid ? statusGeneric.Message : errors;
+        customStatusGeneric.Message = statusGeneric.IsValid ? statusGeneric.Message : errors + errors2;
         return customStatusGeneric;
     }
 
