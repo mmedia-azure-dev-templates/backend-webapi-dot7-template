@@ -1,7 +1,12 @@
 ﻿using Boilerplate.Domain.Entities.Pdfs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Graph;
 using QuestPDF.Fluent;
+using System.IO;
+
+using System.Threading.Tasks;
+
 namespace Boilerplate.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
@@ -14,16 +19,12 @@ public class PdfController : Controller
     }
 
     [HttpGet]
-    [Route("GetPdf")]
+    [Route("CheckGenerationPdf")]
     [AllowAnonymous]
     public IActionResult GetPdf()
     {
-        var filePath = "invoice.pdf";
-
         var model = InvoiceDocumentDataSource.GetInvoiceDetails();
         var document = new InvoiceDocument(model);
-        document.GeneratePdf(filePath);
-        return Ok(filePath);
-
+        return File(document.GeneratePdf(), "application/pdf", "myReport.pdf");
     }
 }
