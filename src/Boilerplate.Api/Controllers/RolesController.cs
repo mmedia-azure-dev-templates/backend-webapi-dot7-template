@@ -99,9 +99,9 @@ public class RolesController : ControllerBase
     [HasPermission(DefaultPermissions.RoleChange)]
     [HttpPost]
     [Route("delete")]
-    public async Task<CustomStatusGeneric> Delete(RoleDeleteConfirmDto input)
+    public async Task<CustomStatusGeneric> Delete([FromBody]RoleDeleteConfirmDto request)
     {
-        IStatusGeneric statusGeneric = await _authRolesAdmin.DeleteRoleAsync(input.RoleName, input.ConfirmDelete?.Trim() == input.RoleName);
+        IStatusGeneric statusGeneric = await _authRolesAdmin.DeleteRoleAsync(request.RoleName, request.ConfirmDelete?.Trim() == request.RoleName);
         var errors = string.Join(" | ", statusGeneric.Errors.ToList().Select(e => e.ErrorResult.ErrorMessage));
         CustomStatusGeneric customStatusGeneric = new CustomStatusGeneric();
         customStatusGeneric.IsValid = statusGeneric.IsValid;
