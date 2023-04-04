@@ -18,9 +18,4 @@ public class OrderItem : Entity<OrderItemId>, IDataKeyFilterReadWrite, IDateCrea
     public decimal Total { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
-
-    public static implicit operator List<object>(OrderItem v)
-    {
-        throw new NotImplementedException();
-    }
 }

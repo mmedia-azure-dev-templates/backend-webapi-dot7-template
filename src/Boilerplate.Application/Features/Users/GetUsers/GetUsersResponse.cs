@@ -13,25 +13,25 @@ public class GetUsersResponse
     public string Email { get; set; }
     public bool EmailConfirmed { get; set; }
     public IdentificationType TypeDocument { get; set; }
-    public required NacionalityType Nacionality { get; set; }
-    public required string Ndocument { get; set; }
-    public required GenderType Gender { get; set; }
-    public required CivilStatusType CivilStatus { get; set; }
+    public NacionalityType Nacionality { get; set; }
+    public string Ndocument { get; set; }
+    public GenderType Gender { get; set; }
+    public CivilStatusType CivilStatus { get; set; }
     public DateTime? BirthDate { get; set; }
     public DateTime? EntryDate { get; set; }
     public DateTime? DepartureDate { get; set; }
-    public required bool Hired { get; set; }
+    public bool Hired { get; set; }
     public string? ImgUrl { get; set; }
     public string? CurriculumUrl { get; set; }
     public string? Mobile { get; set; }
     public string? Phone { get; set; }
-    public required string PrimaryStreet { get; set; }
-    public required string SecondaryStreet { get; set; }
-    public required string Numeration { get; set; }
-    public required string Reference { get; set; }
-    public required int Provincia { get; set; }
-    public required int Canton { get; set; }
-    public required int Parroquia { get; set; }
+    public string PrimaryStreet { get; set; }
+    public string SecondaryStreet { get; set; }
+    public string Numeration { get; set; }
+    public string Reference { get; set; }
+    public int Provincia { get; set; }
+    public int Canton { get; set; }
+    public int Parroquia { get; set; }
     public string? Notes { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
