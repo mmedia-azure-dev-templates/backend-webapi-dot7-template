@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Customers.CustomerById;
+using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.Heroes;
 using Boilerplate.Application.Features.Heroes.CreateHero;
 using Boilerplate.Application.Features.Heroes.UpdateHero;
@@ -75,7 +76,7 @@ public class MappingProfile : Profile
             ;
 
         CreateMap<Customer, CustomerByIdResponse> ();
-
+        CreateMap<CustomerCreateRequest, Customer>();
         // Hero Map
         CreateMap<Article, ArticleSearchResponse>();
         CreateMap<Article, ArticleSearchResponse>().ReverseMap();

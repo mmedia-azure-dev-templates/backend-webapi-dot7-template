@@ -1,13 +1,17 @@
-﻿using AutoMapper;
+﻿using Amazon.Runtime.Documents;
+using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -27,7 +31,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
     private OrderCreateResponse _orderCreateResponse;
 
 
-    public OrderCreateHandler(IContext context,ISession session, IMapper mapper, ILogger<OrderCreateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
+    public OrderCreateHandler(IContext context, ISession session, IMapper mapper, ILogger<OrderCreateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
     {
         _logger = logger;
         _mapper = mapper;
@@ -45,27 +49,55 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
         {
             try
             {
-                var customer = new Customer
+                var customer = await _context.Customers.Where(x => x.Ndocument == request.CustomerCreateRequest.Ndocument).FirstOrDefaultAsync(cancellationToken);
+                if (customer == null)
                 {
-                    DocumentType = request.CustomerCreateRequest.DocumentType,
-                    Ndocument = request.CustomerCreateRequest.Ndocument,
-                    BirthDate = request.CustomerCreateRequest.BirthDate,
-                    GenderType = request.CustomerCreateRequest.GenderType,
-                    CivilStatusType = request.CustomerCreateRequest.CivilStatusType,
-                    FirstName = request.CustomerCreateRequest.FirstName,
-                    LastName = request.CustomerCreateRequest.LastName,
-                    Email = request.CustomerCreateRequest.Email,
-                    Mobile = request.CustomerCreateRequest.Mobile,
-                    Phone = request.CustomerCreateRequest.Phone,
-                    PrimaryStreet = request.CustomerCreateRequest.PrimaryStreet,
-                    SecondaryStreet = request.CustomerCreateRequest.SecondaryStreet,
-                    Numeration = request.CustomerCreateRequest.Numeration,
-                    Reference = request.CustomerCreateRequest.Reference,
-                    Provincia = request.CustomerCreateRequest.Provincia,
-                    Canton = request.CustomerCreateRequest.Canton,
-                    Parroquia = request.CustomerCreateRequest.Parroquia,
-                    Notes = request.CustomerCreateRequest.Notes,
-                };
+                    customer = _mapper.Map(request.CustomerCreateRequest, customer);
+                    var hola = 1;
+                    //customer = new Customer
+                    //{
+                    //    DocumentType = request.CustomerCreateRequest.DocumentType,
+                    //    Ndocument = request.CustomerCreateRequest.Ndocument,
+                    //    BirthDate = request.CustomerCreateRequest.BirthDate,
+                    //    GenderType = request.CustomerCreateRequest.GenderType,
+                    //    CivilStatusType = request.CustomerCreateRequest.CivilStatusType,
+                    //    FirstName = request.CustomerCreateRequest.FirstName,
+                    //    LastName = request.CustomerCreateRequest.LastName,
+                    //    Email = request.CustomerCreateRequest.Email,
+                    //    Mobile = request.CustomerCreateRequest.Mobile,
+                    //    Phone = request.CustomerCreateRequest.Phone,
+                    //    PrimaryStreet = request.CustomerCreateRequest.PrimaryStreet,
+                    //    SecondaryStreet = request.CustomerCreateRequest.SecondaryStreet,
+                    //    Numeration = request.CustomerCreateRequest.Numeration,
+                    //    Reference = request.CustomerCreateRequest.Reference,
+                    //    Provincia = request.CustomerCreateRequest.Provincia,
+                    //    Canton = request.CustomerCreateRequest.Canton,
+                    //    Parroquia = request.CustomerCreateRequest.Parroquia,
+                    //    Notes = request.CustomerCreateRequest.Notes,
+                    //};
+                }
+                if (customer != null)
+                {
+                    customer.DocumentType = request.CustomerCreateRequest.DocumentType;
+                    customer.Ndocument = request.CustomerCreateRequest.Ndocument;
+                    customer.BirthDate = request.CustomerCreateRequest.BirthDate;
+                    customer.GenderType = request.CustomerCreateRequest.GenderType;
+                    customer.CivilStatusType = request.CustomerCreateRequest.CivilStatusType;
+                    customer.FirstName = request.CustomerCreateRequest.FirstName;
+                    customer.LastName = request.CustomerCreateRequest.LastName;
+                    customer.Email = request.CustomerCreateRequest.Email;
+                    customer.Mobile = request.CustomerCreateRequest.Mobile;
+                    customer.Phone = request.CustomerCreateRequest.Phone;
+                    customer.PrimaryStreet = request.CustomerCreateRequest.PrimaryStreet;
+                    customer.SecondaryStreet = request.CustomerCreateRequest.SecondaryStreet;
+                    customer.Numeration = request.CustomerCreateRequest.Numeration;
+                    customer.Reference = request.CustomerCreateRequest.Reference;
+                    customer.Provincia = request.CustomerCreateRequest.Provincia;
+                    customer.Canton = request.CustomerCreateRequest.Canton;
+                    customer.Parroquia = request.CustomerCreateRequest.Parroquia;
+                    customer.Notes = request.CustomerCreateRequest.Notes;
+                }
+
                 await _context.Customers.AddAsync(customer, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
 
