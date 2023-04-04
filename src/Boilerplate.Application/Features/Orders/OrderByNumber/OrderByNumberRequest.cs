@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Boilerplate.Domain.Entities.Common;
+using MediatR;
 
 namespace Boilerplate.Application.Features.Orders.OrderByNumber;
-internal class OrderByNumberRequest
+public class OrderByNumberRequest : IRequest<OrderByNumberResponse>
 {
+    public OrderNumber OrderNumber { get; set; }
 }

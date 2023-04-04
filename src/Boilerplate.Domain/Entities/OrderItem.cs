@@ -2,6 +2,7 @@
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Boilerplate.Domain.Entities;
@@ -17,4 +18,9 @@ public class OrderItem : Entity<OrderItemId>, IDataKeyFilterReadWrite, IDateCrea
     public decimal Total { get; set; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
+
+    public static implicit operator List<object>(OrderItem v)
+    {
+        throw new NotImplementedException();
+    }
 }

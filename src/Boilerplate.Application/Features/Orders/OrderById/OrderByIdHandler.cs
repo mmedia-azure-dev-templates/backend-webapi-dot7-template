@@ -1,6 +1,8 @@
 ﻿using Boilerplate.Application.Common;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,10 +15,18 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
         _context = context;
     }
 
-    public Task<OrderByIdResponse> Handle(OrderByIdRequest request, CancellationToken cancellationToken)
+    public async Task<OrderByIdResponse> Handle(OrderByIdRequest request, CancellationToken cancellationToken)
     {
-        OrderByIdResponse orderByIdResponse = new OrderByIdResponse();
+        var orderByIdResponse = new OrderByIdResponse();
+        var result = await (from order in _context.Orders.AsNoTracking()
+                            join orderItems in _context.OrderItems.AsNoTracking() on order.Id equals orderItems.OrderId
+                            join customer in _context.Customers.AsNoTracking() on order.CustomerId equals customer.Id
+                            where order.Id == request.OrderId
+                            select new { order, orderItems, customer }).ToListAsync(cancellationToken);
 
-        throw new NotImplementedException();
+        orderByIdResponse.Order = result.Select(x => x.order).FirstOrDefault();
+        orderByIdResponse.OrderItems = result.Select(x => x.orderItems).ToList();
+        orderByIdResponse.Customer = result.Select(x => x.customer).FirstOrDefault();
+        return orderByIdResponse;
     }
 }

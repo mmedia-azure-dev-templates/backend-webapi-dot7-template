@@ -1,6 +1,7 @@
 ﻿using Boilerplate.Application.Features.OrderItems.OrderItemById;
 using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Application.Features.Orders.OrderById;
+using Boilerplate.Application.Features.Orders.OrderByNumber;
 using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.Entities;
@@ -23,8 +24,15 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getorder")]
-    public async Task<OrderByIdResponse> GetOrder(OrderByIdRequest request)
+    [Route("getorderbyid")]
+    public async Task<OrderByIdResponse> GetOrderById([FromQuery]OrderByIdRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpGet]
+    [Route("getorderbynumber")]
+    public async Task<OrderByNumberResponse> GetOrderByNumber([FromQuery] OrderByNumberRequest request)
     {
         return await _mediator.Send(request);
     }

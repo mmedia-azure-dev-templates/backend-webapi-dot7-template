@@ -103,7 +103,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 await _context.OrderItems.AddRangeAsync(orderItems);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                _pdfService.GenerateOrderPdf(order, orderItems, customer);
+                //_pdfService.GenerateOrderPdf(order, orderItems, customer);
 
                 scope.Complete();
                 _orderCreateResponse.Message = "Orden Creada Correctamente";
