@@ -30,9 +30,10 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                             join articles in _context.Articles.AsNoTracking() on orderItems.ArticleId equals articles.Id
                             join userGeneratedApplicationUser in _context.ApplicationUsers.AsNoTracking() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = userGeneratedApplicationUser.Id }
                             join userGeneratedUserInformation in _context.UserInformations.AsNoTracking() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = (Guid)userGeneratedUserInformation.UserId }
-                            join userAssignedApplicationUser in _context.ApplicationUsers.AsNoTracking() on new { p2 = order.UserAssigned == null ? (Guid)order.UserAssigned : Guid.Empty  } equals new { p2 = userAssignedApplicationUser.Id } into j1
+                            join userAssignedApplicationUser in _context.ApplicationUsers.AsNoTracking() on new { p2 = (Guid)order.UserAssigned } equals new { p2 = userAssignedApplicationUser.Id } into j1
                             from userAssignedApplicationUser in j1.DefaultIfEmpty()
-
+                            join userAssignedUserInformation in _context.UserInformations.AsNoTracking() on new { p2 = (Guid)order.UserAssigned } equals new { p2 = (Guid)userAssignedUserInformation.UserId } into j2
+                            from userAssignedUserInformation in j2.DefaultIfEmpty()
                             join customer in _context.Customers.AsNoTracking() on order.CustomerId equals customer.Id
                             where order.Id == request.OrderId
                             select new { 
@@ -68,11 +69,11 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
 
         var ownerUser = new GetUsersResponse();
 
-
         orderByIdResponse.Order = result.Select(x => x.order).FirstOrDefault();
         orderByIdResponse.ArticleSearchResponse = articleSearchResponse;
         orderByIdResponse.UserGeneratedApplicationUser = result.Select(x => x.userGeneratedApplicationUser).FirstOrDefault();
         orderByIdResponse.UserGeneratedInformationUser = result.Select(x => x.userGeneratedUserInformation).FirstOrDefault();
+        orderByIdResponse.UserAssignedApplicationUser = result.Select(x => x.userAssignedApplicationUser).FirstOrDefault();
         orderByIdResponse.Customer = result.Select(x => x.customer).FirstOrDefault();
         return orderByIdResponse;
     }
