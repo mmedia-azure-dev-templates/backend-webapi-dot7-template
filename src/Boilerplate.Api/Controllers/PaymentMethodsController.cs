@@ -1,5 +1,5 @@
 ﻿using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Orders;
+using Boilerplate.Application.Features.PaymentMethods;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

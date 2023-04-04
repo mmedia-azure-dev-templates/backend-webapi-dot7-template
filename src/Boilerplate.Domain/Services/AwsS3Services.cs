@@ -1,21 +1,16 @@
 ﻿using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Transfer;
 using Amazon.S3.Util;
-using ISession = Boilerplate.Domain.Implementations.ISession;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using System.IO;
-using System.Net.Http;
 using System;
-using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Web;
-using System.Net;
-using Azure.Core;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Boilerplate.Domain.Services;
 public class AwsS3Service : IAwsS3Service
@@ -28,10 +23,10 @@ public class AwsS3Service : IAwsS3Service
     {
         _awsS3Configuration = awsS3Configuration;
         _s3Client = new AmazonS3Client(_awsS3Configuration.AwsAccessKey, _awsS3Configuration.AwsSecretAccessKey, RegionEndpoint.GetBySystemName(_awsS3Configuration.Region));
-        
+
     }
 
-    public async Task<AmazonObject> UploadFileAsync(IFormFile file, string bucketFolderRelative,string fileName)
+    public async Task<AmazonObject> UploadFileAsync(IFormFile file, string bucketFolderRelative, string fileName)
     {
         var response = new AmazonObject();
         var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, _awsS3Configuration.BucketName);
@@ -83,24 +78,42 @@ public class AwsS3Service : IAwsS3Service
         return response;
     }
 
-    //public async Task<AmazonObject> UploadFileAsync(AmazonObjectToUpload amazonObjectToUpload)
-    //{
-    //    try
-    //    {
-    //        using (var newMemoryStream = new MemoryStream())
-    //        {
-    //            amazonObjectToUpload.FormFile.CopyTo(newMemoryStream);
-    //            AmazonObject awsResponse = await UploadAmazonObjectAsync(amazonObjectToUpload, newMemoryStream.ToArray());
-    //            return awsResponse;
-    //        }
+    /// <summary>
+    /// Upload File to Amazon Web Service
+    /// </summary>
+    /// <param name="binaryFile">Array of binary data</param>
+    /// <param name="bucketFolderRelative">bucketFolderRelative</param>
+    /// <param name="fileName">FileName</param>
+    /// <returns></returns>
+    public async Task<AmazonObject> UploadFileAmazonAsync(byte[] binaryFile, string bucketFolderRelative, string fileName)
+    {
+        using (MemoryStream memoryStream = new MemoryStream(binaryFile))
+        {
+            await new TransferUtility(_s3Client).UploadAsync(memoryStream, $"{_awsS3Configuration.BucketName}", $"{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}");
 
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        //Logger.Error(e.Message, e);
-    //        return null;
-    //    }
-    //}
+            var retVal = await _s3Client.GetObjectAsync($"{_awsS3Configuration.BucketName}", $"{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}");
+
+            var result = new AmazonObject
+            {
+                ETag = retVal.ETag,
+                BucketName = $"{_awsS3Configuration.BucketName}",
+                Key = retVal.Key,
+                LastModified = retVal.LastModified,
+                Size = binaryFile.Length,
+                Name = fileName,
+                File = true,
+            };
+
+            // ObjectUrl
+            //https://mad-storage.s3.amazonaws.com/devempresas/users/a49cf027-915b-4933-9fce-30def6d67037/fotoperfil.jpg
+            result.ObjectUrl = $"https://{_awsS3Configuration.BucketName}.s3.amazonaws.com/{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}";
+            // S3Uri
+            //https://mad-storage.s3.amazonaws.com/devempresas/users/a49cf027-915b-4933-9fce-30def6d67037/fotoperfil.jpg
+            result.S3Uri = $"s3://{_awsS3Configuration.BucketName}/{_awsS3Configuration.BucketFolder}/{bucketFolderRelative}/{fileName}";
+
+            return result;
+        }
+    }
 
     public async Task<DeleteObjectResponse> DeleteFileAsync(string bucketFolderRelative, string fileName)
     {
@@ -135,11 +148,11 @@ public class AwsS3Service : IAwsS3Service
             Objects = keys
         };
 
-        if(multiObjectDeleteRequest.Objects.Count == 0)
+        if (multiObjectDeleteRequest.Objects.Count == 0)
         {
             return deleteObjectsResponse;
         }
 
-        return  await _s3Client.DeleteObjectsAsync(multiObjectDeleteRequest);
+        return await _s3Client.DeleteObjectsAsync(multiObjectDeleteRequest);
     }
 }

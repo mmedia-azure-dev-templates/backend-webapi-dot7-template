@@ -9,10 +9,13 @@
   <ItemGroup>
     <Compile Remove="Features\Auth\Register\**" />
     <Compile Remove="Features\Mail\**" />
+    <Compile Remove="Features\Orders\OrderCreateDocument\**" />
     <EmbeddedResource Remove="Features\Auth\Register\**" />
     <EmbeddedResource Remove="Features\Mail\**" />
+    <EmbeddedResource Remove="Features\Orders\OrderCreateDocument\**" />
     <None Remove="Features\Auth\Register\**" />
     <None Remove="Features\Mail\**" />
+    <None Remove="Features\Orders\OrderCreateDocument\**" />
   </ItemGroup>
 
   <ItemGroup>

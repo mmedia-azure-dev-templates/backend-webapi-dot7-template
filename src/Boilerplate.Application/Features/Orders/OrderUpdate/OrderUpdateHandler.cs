@@ -16,34 +16,34 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Boilerplate.Application.Features.Orders.OrderCreate;
+namespace Boilerplate.Application.Features.Orders.OrderUpdate;
 
-public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreateResponse>
+public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdateResponse>
 {
     private readonly IContext _context;
     private readonly ISession _session;
     private readonly IMapper _mapper;
-    private readonly ILogger<OrderCreateHandler> _logger;
+    private readonly ILogger<OrderUpdateHandler> _logger;
     private readonly IMailService _mail;
     private readonly ILocalizationService _localizationService;
     private readonly IAwsS3Service _awsS3Service;
     private readonly IPdfService _pdfService;
-    private OrderCreateResponse _orderCreateResponse;
+    private OrderUpdateResponse _orderCreateResponse;
 
 
-    public OrderCreateHandler(IContext context, ISession session, IMapper mapper, ILogger<OrderCreateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
+    public OrderUpdateHandler(IContext context, ISession session, IMapper mapper, ILogger<OrderUpdateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
     {
         _logger = logger;
         _mapper = mapper;
         _context = context;
         _session = session;
         _mail = mail;
-        _orderCreateResponse = (OrderCreateResponse)orderCreateResponse;
+        _orderCreateResponse = (OrderUpdateResponse)orderCreateResponse;
         _localizationService = localizationService;
         _awsS3Service = awsS3Service;
         _pdfService = pdfService;
     }
-    public async Task<OrderCreateResponse> Handle(OrderCreateRequest request, CancellationToken cancellationToken)
+    public async Task<OrderUpdateResponse> Handle(OrderUpdateRequest request, CancellationToken cancellationToken)
     {
         using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
@@ -68,35 +68,26 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 counter.CustomCounter = counter!.CustomCounter.Value + 1;
                 await _context.SaveChangesAsync(cancellationToken);
 
-
-                var order = new Order
-                {
-                    OrderStatusType = OrderStatusType.Entered,
-                    OrderNumber = counter.CustomCounter.Value,
-                    UserGenerated = _session.UserId.Value,
-                    CustomerId = customer.Id,
-                    SubTotal = request.SubTotal,
-                    Total = request.Total,
-                };
-
-                await _context.Orders.AddAsync(order, cancellationToken);
+                var order = await _context.Orders.Where(x => x.Id == request.OrderId).FirstOrDefaultAsync(cancellationToken);
+                order = _mapper.Map(request, order);
+                _context.Orders.Update(order);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                List<OrderItem> orderItems = new List<OrderItem>();
-                foreach (var article in request.ArticleSearchResponse)
-                {
-                    var item = new OrderItem
-                    {
-                        OrderId = order.Id,
-                        ArticleId = article.Id,
-                        Quantity = article.Quantity,
-                        Price = article.Cost,
-                        Total = article.Total,
-                    };
-                    orderItems.Add(item);
-                }
-                await _context.OrderItems.AddRangeAsync(orderItems);
-                await _context.SaveChangesAsync(cancellationToken);
+                //List<OrderItem> orderItems = new List<OrderItem>();
+                //foreach (var article in request.ArticleSearchResponse)
+                //{
+                //    var item = new OrderItem
+                //    {
+                //        OrderId = order.Id,
+                //        ArticleId = article.Id,
+                //        Quantity = article.Quantity,
+                //        Price = article.Cost,
+                //        Total = article.Total,
+                //    };
+                //    orderItems.Add(item);
+                //}
+                //await _context.OrderItems.AddRangeAsync(orderItems);
+                //await _context.SaveChangesAsync(cancellationToken);
 
                 //_pdfService.GenerateOrderPdf(order, orderItems, customer);
 

@@ -11,7 +11,7 @@ public enum OrderStatusType
     Canceled,
     [Display(Name = "Pendiente")]
     Earring,
-    [Display(Name = "Pendiente")]
+    [Display(Name = "Pagada")]
     Paid,
     [Display(Name = "Entregada")]
     Delivered

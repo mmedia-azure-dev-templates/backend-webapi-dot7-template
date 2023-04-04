@@ -7,9 +7,11 @@ using Boilerplate.Application.Features.Auth.ResetPassword;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Application.Features.Orders.OrderCreate;
+using Boilerplate.Application.Features.Orders.OrderUpdate;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
 using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Features.Users.EditUser;
+using Boilerplate.Application.Services;
 using Boilerplate.Domain.ClaimsChangeCode;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
@@ -71,9 +73,11 @@ builder.Services.AddScoped<IUserResponse, UserResponse>();
 builder.Services.AddScoped<IEditUserResponse, EditUserResponse>();
 builder.Services.AddScoped<IArticleCreateResponse, ArticleCreateResponse>();
 builder.Services.AddScoped<IOrderCreateResponse, OrderCreateResponse>();
+builder.Services.AddScoped<IOrderUpdateResponse, OrderUpdateResponse>();
 builder.Services.AddScoped<IOrderItemCreateResponse, OrderItemCreateResponse>();
 builder.Services.AddScoped<IPaymentMethodCreateResponse, PaymentMethodCreateResponse>();
 builder.Services.AddScoped<ICustomerCreateResponse, CustomerCreateResponse>();
+builder.Services.AddScoped<IPdfService, PdfService>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers

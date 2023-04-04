@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Customers.CustomerById;
+using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.Heroes;
 using Boilerplate.Application.Features.Heroes.CreateHero;
 using Boilerplate.Application.Features.Heroes.UpdateHero;
+using Boilerplate.Application.Features.Orders.OrderUpdate;
 using Boilerplate.Application.Features.Users.GetUserById;
 using Boilerplate.Application.Features.Users.GetUserByToken;
 using Boilerplate.Domain.Entities;
@@ -73,8 +75,12 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DateCreated, opt => opt.MapFrom(src => src.userInformation.DateCreated))
             .ForMember(dest => dest.DateUpdated, opt => opt.MapFrom(src => src.userInformation.DateUpdated))
             ;
-
+        // Customer Map
         CreateMap<Customer, CustomerByIdResponse> ();
+        CreateMap<CustomerCreateRequest, Customer>();
+
+        // Order Map
+        CreateMap<OrderUpdateRequest, Order>();
 
         // Hero Map
         CreateMap<Article, ArticleSearchResponse>();
