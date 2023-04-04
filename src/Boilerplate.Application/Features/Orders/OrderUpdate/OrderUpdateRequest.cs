@@ -6,9 +6,10 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 
-namespace Boilerplate.Application.Features.Orders.OrderCreate;
-public class OrderCreateRequest: IRequest<OrderCreateResponse>
+namespace Boilerplate.Application.Features.Orders.OrderUpdate;
+public class OrderUpdateRequest: IRequest<OrderUpdateResponse>
 {
+    public OrderId OrderId { get; set; }
     public PaymentMethodsType PaymentMethodsType { get; set; }
     public UserAssigned? UserAssigned { get; set; }
     public decimal SubTotal { get; set; }
