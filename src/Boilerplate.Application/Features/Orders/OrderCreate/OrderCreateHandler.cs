@@ -101,7 +101,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 //_pdfService.GenerateOrderPdf(order, orderItems, customer);
 
                 scope.Complete();
-                _orderCreateResponse.Message = "Orden Creada Correctamente";
+                _orderCreateResponse.Message = "Orden Guardada Correctamente";
                 return _orderCreateResponse;
             }
             catch (Exception ex)
