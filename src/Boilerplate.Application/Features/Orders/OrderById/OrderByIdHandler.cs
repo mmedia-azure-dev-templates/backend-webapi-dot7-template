@@ -1,9 +1,11 @@
 ﻿using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Users.GetUsers;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +28,22 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
         var result = await (from order in _context.Orders.AsNoTracking()
                             join orderItems in _context.OrderItems.AsNoTracking() on order.Id equals orderItems.OrderId
                             join articles in _context.Articles.AsNoTracking() on orderItems.ArticleId equals articles.Id
-                            //new { p1 = q.QOT_SEC_ID, p2 = dpr.DPR_TS } equals new { p1 = (decimal)p.PAY_SEC_ID, p2 = p.PAY_DATE }
-                            join userGeneratedUserInformation in _context.UserInformations.AsNoTracking() on new { p1 = order.UserGenerated } equals new { p1 = new UserGenerated(new Guid(userGeneratedUserInformation.UserId.ToString())) } into PersonasColegio
-                            from pco in PersonasColegio.DefaultIfEmpty()
+                            join userGeneratedApplicationUser in _context.ApplicationUsers.AsNoTracking() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = userGeneratedApplicationUser.Id }
+                            join userGeneratedUserInformation in _context.UserInformations.AsNoTracking() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = (Guid)userGeneratedUserInformation.UserId }
+                            join userAssignedApplicationUser in _context.ApplicationUsers.AsNoTracking() on new { p2 = order.UserAssigned == null ? (Guid)order.UserAssigned : Guid.Empty  } equals new { p2 = userAssignedApplicationUser.Id } into j1
+                            from userAssignedApplicationUser in j1.DefaultIfEmpty()
+
                             join customer in _context.Customers.AsNoTracking() on order.CustomerId equals customer.Id
                             where order.Id == request.OrderId
-                            select new { order, orderItems, articles, pco, customer }).ToListAsync(cancellationToken);
+                            select new { 
+                                order, 
+                                orderItems, 
+                                articles, 
+                                userGeneratedApplicationUser, 
+                                userGeneratedUserInformation,
+                                userAssignedApplicationUser,
+                                customer 
+                            }).ToListAsync(cancellationToken);
 
         List<ArticleSearchResponse> articleSearchResponse = new List<ArticleSearchResponse>();
         foreach (var item in result)
@@ -59,6 +71,8 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
 
         orderByIdResponse.Order = result.Select(x => x.order).FirstOrDefault();
         orderByIdResponse.ArticleSearchResponse = articleSearchResponse;
+        orderByIdResponse.UserGeneratedApplicationUser = result.Select(x => x.userGeneratedApplicationUser).FirstOrDefault();
+        orderByIdResponse.UserGeneratedInformationUser = result.Select(x => x.userGeneratedUserInformation).FirstOrDefault();
         orderByIdResponse.Customer = result.Select(x => x.customer).FirstOrDefault();
         return orderByIdResponse;
     }

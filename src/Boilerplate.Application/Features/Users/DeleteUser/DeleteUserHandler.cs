@@ -1,9 +1,11 @@
 ﻿using Amazon.S3.Model;
 using Boilerplate.Application.Common;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,8 +24,7 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserRequest, OneOf<bool, 
 
     public async Task<OneOf<bool, UserNotFound>> Handle(DeleteUserRequest request, CancellationToken cancellationToken)
     {
-
-        var user = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        var user = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Id == (Guid)request.Id, cancellationToken);
 
         if (user is null) return new UserNotFound();
 

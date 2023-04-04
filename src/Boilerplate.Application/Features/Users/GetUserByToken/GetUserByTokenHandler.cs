@@ -29,7 +29,7 @@ public class GetUserByTokenHandler : IRequestHandler<GetUserByTokenRequest, GetU
     public async Task<GetUserByTokenResponse> Handle(GetUserByTokenRequest request, CancellationToken cancellationToken)
     {
         var result = await (from applicationUser in _context.ApplicationUsers.AsNoTracking()
-                            join userInformation in _context.UserInformations.AsNoTracking() on applicationUser.Id equals userInformation.UserId
+                            join userInformation in _context.UserInformations.AsNoTracking() on applicationUser.Id equals (Guid)userInformation.UserId
                             where userInformation.UserId == _session.UserId
                             select new
                             {

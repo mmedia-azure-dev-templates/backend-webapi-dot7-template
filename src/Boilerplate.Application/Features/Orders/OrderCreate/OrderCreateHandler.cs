@@ -2,6 +2,7 @@
 using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
@@ -73,7 +74,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 {
                     OrderStatusType = OrderStatusType.Entered,
                     OrderNumber = counter.CustomCounter.Value,
-                    UserGenerated = _session.UserId.Value,
+                    UserGenerated = new UserGenerated(_session.UserId.Value),
                     CustomerId = customer.Id,
                     SubTotal = request.SubTotal,
                     Total = request.Total,

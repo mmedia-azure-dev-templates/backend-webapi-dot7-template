@@ -10,5 +10,7 @@ public class OrderByIdResponse
 {
     public Order Order { get; set; }
     public List<ArticleSearchResponse> ArticleSearchResponse { get; set; }
+    public ApplicationUser UserGeneratedApplicationUser { get; set; }
+    public UserInformation UserGeneratedInformationUser { get; set; }
     public Customer Customer { get; set; }
 }

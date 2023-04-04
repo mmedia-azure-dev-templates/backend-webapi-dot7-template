@@ -32,7 +32,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<Ge
         var users = _context.ApplicationUsers.AsNoTracking()
                     .Join(_context.UserInformations.AsNoTracking(),
                         applicationUser => applicationUser.Id,
-                        userInformation => userInformation.UserId,
+                        userInformation => (Guid)userInformation.UserId,
                         (applicationUser, userInformation) => new GetUsersResponse
                         {
                             Id = applicationUser.Id,
