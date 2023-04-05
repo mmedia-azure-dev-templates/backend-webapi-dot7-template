@@ -19,6 +19,7 @@ public partial class Orders : Migration
             {
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                 DataKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                Locked = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "0"),
                 OrderStatusType = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 OrderNumber = table.Column<long>(type: "bigint", nullable: false),
                 UserGenerated = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -44,12 +45,18 @@ public partial class Orders : Migration
                 unique: true,
                 columns: new[] { "DataKey", "OrderNumber" }
             );
-
+        migrationBuilder.CreateIndex(
+                name: "DataKeyLockedIndex",
+                schema: "web",
+                table: "Orders",
+                unique: false,
+                columns: new[] { "DataKey", "Locked" }
+            );
         migrationBuilder.CreateIndex(
                 name: "DataKeyOrderStatusTypeIndex",
                 schema: "web",
                 table: "Orders",
-                unique: true,
+                unique: false,
                 columns: new[] { "DataKey", "OrderStatusType" }
             );
 
@@ -57,7 +64,7 @@ public partial class Orders : Migration
                 name: "DataKeyDateCreatedIndex",
                 schema: "web",
                 table: "Orders",
-                unique: true,
+                unique: false,
                 columns: new[] { "DataKey", "DateCreated" }
             );
     }
