@@ -12,6 +12,7 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
 {
     public override OrderId Id { get; set; }
     public string DataKey { get; set; }
+    public bool Locked { get; set; } = false;
     public OrderStatusType OrderStatusType { get; set; }
     public OrderNumber OrderNumber { get; set; }
     public UserGenerated UserGenerated { get; set; }
