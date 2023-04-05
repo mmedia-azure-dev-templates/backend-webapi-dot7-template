@@ -18,8 +18,8 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
     public UserGenerated UserGenerated { get; set; }
     public UserAssigned? UserAssigned { get; set; } = null;
     public CustomerId CustomerId { get; set; }
-    public decimal SubTotal { get; set; }
-    public decimal Total { get; set; }
+    public decimal SubTotal { get; set; } = 0;
+    public decimal Total { get; set; } = 0;
     public string? Notes { get; set; }
     public string? DocumentUrl { get; set; }
     public string? Documentation { get; set; }

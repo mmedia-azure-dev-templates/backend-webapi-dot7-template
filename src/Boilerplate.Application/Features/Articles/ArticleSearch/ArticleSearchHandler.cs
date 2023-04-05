@@ -22,11 +22,11 @@ public class ArticleSearchHandler : IRequestHandler<ArticleSearchRequest, Pagina
 
     public async Task<PaginatedList<ArticleSearchResponse>> Handle(ArticleSearchRequest request, CancellationToken cancellationToken)
     {
-        var heroes = _context.Articles
+        var articles = _context.Articles
             .WhereIf(!string.IsNullOrEmpty(request.Sku), x => EF.Functions.Like(x.Sku, $"%{request.Sku}%"))
             //.WhereIf(!string.IsNullOrEmpty(request.Display), x => EF.Functions.Like(x.Display!, $"%{request.Display}%"))
             ;
-        return await _mapper.ProjectTo<ArticleSearchResponse>(heroes)
+        return await _mapper.ProjectTo<ArticleSearchResponse>(articles)
             .OrderBy(x => x.Sku)
             .ToPaginatedListAsync(request.CurrentPage, request.PageSize);
     }
