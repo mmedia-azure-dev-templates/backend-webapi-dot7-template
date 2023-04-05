@@ -28,8 +28,8 @@ public class ArticleController : ControllerBase
     /// <returns></returns>
     [ProducesResponseType(typeof(PaginatedList<ArticleSearchResponse>), StatusCodes.Status200OK)]
     [HttpGet]
-    [Route("article")]
-    public async Task<PaginatedList<ArticleSearchResponse>> GetUsers([FromQuery] ArticleSearchRequest request)
+    [Route("articles")]
+    public async Task<PaginatedList<ArticleSearchResponse>> GetArticles([FromQuery] ArticleSearchRequest request)
     {
         return await _mediator.Send(request);
     }

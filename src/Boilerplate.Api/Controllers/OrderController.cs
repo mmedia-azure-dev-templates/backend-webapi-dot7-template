@@ -1,11 +1,11 @@
-﻿using Boilerplate.Application.Features.OrderItems.OrderItemById;
+﻿using Boilerplate.Application.Common.Responses;
+using Boilerplate.Application.Features.OrderItems.OrderItemById;
 using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Application.Features.Orders.OrderById;
 using Boilerplate.Application.Features.Orders.OrderByNumber;
 using Boilerplate.Application.Features.Orders.OrderCreate;
+using Boilerplate.Application.Features.Orders.OrderSearch;
 using Boilerplate.Application.Features.Orders.OrderUpdate;
-using Boilerplate.Application.Features.Users;
-using Boilerplate.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +22,14 @@ public class OrderController : ControllerBase
     public OrderController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+
+    [HttpGet]
+    [Route("getorders")]
+    public async Task<PaginatedList<OrderSearchResponse>> GetOrders([FromQuery] OrderSearchRequest request)
+    {
+        return await _mediator.Send(request);
     }
 
     [HttpGet]

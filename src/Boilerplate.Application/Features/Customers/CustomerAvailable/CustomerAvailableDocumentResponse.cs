@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Users.AvailableUserDocument;
+namespace Boilerplate.Application.Features.Customers.CustomerAvailable;
 public class CustomerAvailableDocumentResponse
 {
     public bool IsAvailable { get; set; }
