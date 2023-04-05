@@ -153,6 +153,12 @@
   <data name="InvitationExpired" xml:space="preserve">
     <value>La invitación ha expirado!. Póngase en contacto con la persona que envió la invitación.</value>
   </data>
+  <data name="OrderCreatedSuccess" xml:space="preserve">
+    <value>Orden guardada correctamente!</value>
+  </data>
+  <data name="OrderUpdatedSuccess" xml:space="preserve">
+    <value>Orden actualizada correctamente!</value>
+  </data>
   <data name="ResetPasswordResponseTitleSuccess" xml:space="preserve">
     <value>Excelente! Se ha restablecido el password</value>
   </data>

@@ -1,6 +1,7 @@
 ﻿using Amazon.Runtime.Documents;
 using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
@@ -103,7 +104,11 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 //_pdfService.GenerateOrderPdf(order, orderItems, customer);
 
                 scope.Complete();
-                _orderCreateResponse.Message = "Orden Guardada Correctamente";
+                _orderCreateResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
+                _orderCreateResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
+                _orderCreateResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess").Value);
+                _orderCreateResponse.Transaction = true;
+                _orderCreateResponse.OrderNumber = order.OrderNumber;
                 return _orderCreateResponse;
             }
             catch (Exception ex)
@@ -113,7 +118,10 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 //_logger.LogInformation(3, ex.Message);
                 //_userResponse.SweetAlert.Title = ex.Message;
                 //_userResponse.SweetAlert.Text = ex.Message;
-                _orderCreateResponse.Message = ex.Message;
+                _logger.LogInformation(3, ex.Message);
+                _orderCreateResponse.SweetAlert.Title = ex.Message;
+                _orderCreateResponse.SweetAlert.Text = ex.Message;
+                _orderCreateResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconError").Value);
                 return _orderCreateResponse;
             }
         }
