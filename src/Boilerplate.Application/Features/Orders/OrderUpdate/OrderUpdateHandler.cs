@@ -28,17 +28,17 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
     private readonly ILocalizationService _localizationService;
     private readonly IAwsS3Service _awsS3Service;
     private readonly IPdfService _pdfService;
-    private OrderUpdateResponse _orderCreateResponse;
+    private OrderUpdateResponse _orderUpdateResponse;
 
 
-    public OrderUpdateHandler(IContext context, ISession session, IMapper mapper, ILogger<OrderUpdateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
+    public OrderUpdateHandler(IContext context, ISession session, IMapper mapper, ILogger<OrderUpdateHandler> logger, IMailService mail, IOrderUpdateResponse orderUpdateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
     {
         _logger = logger;
         _mapper = mapper;
         _context = context;
         _session = session;
         _mail = mail;
-        _orderCreateResponse = (OrderUpdateResponse)orderCreateResponse;
+        _orderUpdateResponse = (OrderUpdateResponse)orderUpdateResponse;
         _localizationService = localizationService;
         _awsS3Service = awsS3Service;
         _pdfService = pdfService;
@@ -62,10 +62,6 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                     await _context.Customers.AddAsync(customer, cancellationToken);
                 }
 
-                await _context.SaveChangesAsync(cancellationToken);
-
-                var counter = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault();
-                counter.CustomCounter = counter!.CustomCounter.Value + 1;
                 await _context.SaveChangesAsync(cancellationToken);
 
                 var order = await _context.Orders.Where(x => x.Id == request.OrderId).FirstOrDefaultAsync(cancellationToken);
@@ -92,8 +88,8 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 //_pdfService.GenerateOrderPdf(order, orderItems, customer);
 
                 scope.Complete();
-                _orderCreateResponse.Message = "Orden Guardada Correctamente";
-                return _orderCreateResponse;
+                _orderUpdateResponse.Message = "Orden Guardada Correctamente";
+                return _orderUpdateResponse;
             }
             catch (Exception ex)
             {
@@ -102,8 +98,8 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 //_logger.LogInformation(3, ex.Message);
                 //_userResponse.SweetAlert.Title = ex.Message;
                 //_userResponse.SweetAlert.Text = ex.Message;
-                _orderCreateResponse.Message = ex.Message;
-                return _orderCreateResponse;
+                _orderUpdateResponse.Message = ex.Message;
+                return _orderUpdateResponse;
             }
         }
     }
