@@ -137,14 +137,11 @@ public partial struct ProductId : ILong
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
 public partial struct UserId : IGuid
 {
-    public static implicit operator UserId(Guid userId)
-    {
-        return new UserId(userId);
-    }
-}
-
-public readonly partial struct UserId
-{
+    public static explicit operator Guid(UserId userId) => userId.Value;
+    //public static implicit operator UserId(Guid userId)
+    //{
+    //    return new UserId(userId);
+    //}
     public class StronglyTypedIdEfValueConverter : ValueConverter<UserId, Guid>
     {
         public StronglyTypedIdEfValueConverter(ConverterMappingHints mappingHints = null)
@@ -175,19 +172,21 @@ public partial struct OrderItemId : IGuid
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
 public partial struct UserGenerated : IGuid
 {
-    public static implicit operator UserGenerated(Guid userGenerated)
-    {
-        return new UserGenerated(userGenerated);
-    }
+    public static explicit operator Guid(UserGenerated userGenerated) => userGenerated.Value;
+    //public static implicit operator UserGenerated(Guid userGenerated)
+    //{
+    //    return new UserGenerated(userGenerated);
+    //}
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
 public partial struct UserAssigned : IGuid
 {
-    public static implicit operator UserAssigned(Guid userAssigned)
-    {
-        return new UserAssigned(userAssigned);
-    }
+    public static explicit operator Guid(UserAssigned userAssigned) => userAssigned.Value;
+    //public static implicit operator UserAssigned(Guid userAssigned)
+    //{
+    //    return new UserAssigned(userAssigned);
+    //}
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]

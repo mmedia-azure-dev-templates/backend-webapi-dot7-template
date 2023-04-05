@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +26,7 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, GetUserByI
     public async Task<GetUserByIdResponse> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
     {
         var result = await (from applicationUser in _context.ApplicationUsers.AsNoTracking()
-                            join userInformation in _context.UserInformations.AsNoTracking() on applicationUser.Id equals userInformation.UserId
+                            join userInformation in _context.UserInformations.AsNoTracking() on applicationUser.Id equals (Guid)userInformation.UserId
                             where userInformation.UserId == request.UserId
                             select new
                             {

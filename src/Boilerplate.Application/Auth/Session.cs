@@ -23,7 +23,7 @@ public class Session : ISession
 
         if(nameIdentifier != null)
         {
-            UserId = new Guid(nameIdentifier.Value);
+            UserId = new UserId(new Guid(nameIdentifier.Value));
         }
 
         if(tenantName != null)
