@@ -1,5 +1,7 @@
-﻿using Boilerplate.Application.Common;
+﻿using AutoMapper;
+using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
+using Boilerplate.Application.Features.Users.GetUserById;
 using Boilerplate.Application.Features.Users.GetUsers;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
@@ -16,10 +18,12 @@ using System.Threading.Tasks;
 namespace Boilerplate.Application.Features.Orders.OrderById;
 public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdResponse>
 {
-    public readonly IContext _context;
-    public OrderByIdHandler(IContext context)
+    private readonly IContext _context;
+    private readonly IMapper _mapper;
+    public OrderByIdHandler(IContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<OrderByIdResponse> Handle(OrderByIdRequest request, CancellationToken cancellationToken)
@@ -30,10 +34,8 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                             join articles in _context.Articles.AsNoTracking() on orderItems.ArticleId equals articles.Id
                             join userGeneratedApplicationUser in _context.ApplicationUsers.AsNoTracking() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = userGeneratedApplicationUser.Id }
                             join userGeneratedUserInformation in _context.UserInformations.AsNoTracking() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = (Guid)userGeneratedUserInformation.UserId }
-                            join userAssignedApplicationUser in _context.ApplicationUsers.AsNoTracking() on new { p2 = (Guid)order.UserAssigned } equals new { p2 = userAssignedApplicationUser.Id } into j1
-                            from userAssignedApplicationUser in j1.DefaultIfEmpty()
-                            join userAssignedUserInformation in _context.UserInformations.AsNoTracking() on new { p2 = (Guid)order.UserAssigned } equals new { p2 = (Guid)userAssignedUserInformation.UserId } into j2
-                            from userAssignedUserInformation in j2.DefaultIfEmpty()
+                            join userAssignedApplicationUser in _context.ApplicationUsers.AsNoTracking() on new { p2 = (Guid)order.UserAssigned } equals new { p2 = userAssignedApplicationUser.Id } into j1 from userAssignedApplicationUser in j1.DefaultIfEmpty()
+                            join userAssignedUserInformation in _context.UserInformations.AsNoTracking() on new { p2 = (Guid)order.UserAssigned } equals new { p2 = (Guid)userAssignedUserInformation.UserId } into j2 from userAssignedUserInformation in j2.DefaultIfEmpty()
                             join customer in _context.Customers.AsNoTracking() on order.CustomerId equals customer.Id
                             where order.Id == request.OrderId
                             select new { 
@@ -43,6 +45,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                                 userGeneratedApplicationUser, 
                                 userGeneratedUserInformation,
                                 userAssignedApplicationUser,
+                                userAssignedUserInformation,
                                 customer 
                             }).ToListAsync(cancellationToken);
 
@@ -67,13 +70,16 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
             articleSearchResponse.Add(articleSearch);
         }
 
-        var ownerUser = new GetUsersResponse();
+        var getUsersResponse = new GetUsersResponse();
+        var getUserAssignedApplicationUser = result.Select(x => x.userAssignedApplicationUser).FirstOrDefault();
+        var getUserAssignedUserInformation = result.Select(x => x.userAssignedUserInformation).FirstOrDefault();
+
+        getUsersResponse = getUserAssignedApplicationUser != null && getUserAssignedUserInformation != null ? _mapper.Map<GetUsersResponse>((getUserAssignedApplicationUser, getUserAssignedUserInformation)) : null;
 
         orderByIdResponse.Order = result.Select(x => x.order).FirstOrDefault();
         orderByIdResponse.ArticleSearchResponse = articleSearchResponse;
-        orderByIdResponse.UserGeneratedApplicationUser = result.Select(x => x.userGeneratedApplicationUser).FirstOrDefault();
-        orderByIdResponse.UserGeneratedInformationUser = result.Select(x => x.userGeneratedUserInformation).FirstOrDefault();
-        orderByIdResponse.UserAssignedApplicationUser = result.Select(x => x.userAssignedApplicationUser).FirstOrDefault();
+        orderByIdResponse.UserGenerated = _mapper.Map<GetUsersResponse>((result.Select(x => x.userGeneratedApplicationUser).FirstOrDefault(), result.Select(x => x.userGeneratedUserInformation).FirstOrDefault()));
+        orderByIdResponse.UserAssigned = getUsersResponse;
         orderByIdResponse.Customer = result.Select(x => x.customer).FirstOrDefault();
         return orderByIdResponse;
     }
