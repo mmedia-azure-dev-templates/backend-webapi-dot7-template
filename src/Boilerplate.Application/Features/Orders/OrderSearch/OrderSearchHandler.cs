@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using org.apache.zookeeper.data;
+using Boilerplate.Domain.Entities.Common;
 
 namespace Boilerplate.Application.Features.Orders.OrderSearch;
 public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedList<OrderSearchResponse>>
@@ -61,15 +62,8 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
         //var products = result.GroupBy(x => x.orderItems.Id).Select(x => x.First());
 
         var mierda = await (from order in result.Select(x=>x.order)
-                            group order by new
-                            {
-                                order.OrderNumber
-                            } into gcs
-                            select new OrderSearchResponse
-                            {
-                                //Order = gcs.Key.OrderNumber
-                                //product
-                            }).ToListAsync(cancellationToken);
+                            group order by order.OrderNumber into g
+                            select new { PersonId = g.Key, Cars = g.ToList() }).ToListAsync(cancellationToken);
 
         //    //.Select(x => x.First().order).ToList();
         //var userGeneratedApplicationUser = result.GroupBy(x => x.userGeneratedApplicationUser).Select(x => x.First().userGeneratedApplicationUser).ToList();
