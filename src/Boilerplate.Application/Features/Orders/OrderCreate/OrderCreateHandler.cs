@@ -75,6 +75,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                     OrderStatusType = OrderStatusType.Entered,
                     OrderNumber = counter.CustomCounter.Value,
                     UserGenerated = new UserGenerated(_session.UserId.Value),
+                    UserAssigned = request.UserAssigned,
                     CustomerId = customer.Id,
                     SubTotal = request.SubTotal,
                     Total = request.Total,

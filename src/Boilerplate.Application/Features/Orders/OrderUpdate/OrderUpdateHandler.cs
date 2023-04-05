@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,8 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
 
                 if (customer != null)
                 {
-                   _context.Customers.Update(customer);
+                    customer = _mapper.Map(request.CustomerCreateRequest, customer);
+                    _context.Customers.Update(customer);
                 }
 
                 if (customer == null)
@@ -69,21 +71,25 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 _context.Orders.Update(order);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                //List<OrderItem> orderItems = new List<OrderItem>();
-                //foreach (var article in request.ArticleSearchResponse)
-                //{
-                //    var item = new OrderItem
-                //    {
-                //        OrderId = order.Id,
-                //        ArticleId = article.Id,
-                //        Quantity = article.Quantity,
-                //        Price = article.Cost,
-                //        Total = article.Total,
-                //    };
-                //    orderItems.Add(item);
-                //}
-                //await _context.OrderItems.AddRangeAsync(orderItems);
-                //await _context.SaveChangesAsync(cancellationToken);
+                var removeOrderItems = await _context.OrderItems.Where(x => x.OrderId == request.OrderId).ToListAsync();
+                _context.OrderItems.RemoveRange(removeOrderItems);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                List<OrderItem> orderItems = new List<OrderItem>();
+                foreach (var article in request.ArticleSearchResponse)
+                {
+                    var item = new OrderItem
+                    {
+                        OrderId = order.Id,
+                        ArticleId = article.Id,
+                        Quantity = article.Quantity,
+                        Price = article.Cost,
+                        Total = article.Total,
+                    };
+                    orderItems.Add(item);
+                }
+                await _context.OrderItems.AddRangeAsync(orderItems);
+                await _context.SaveChangesAsync(cancellationToken);
 
                 //_pdfService.GenerateOrderPdf(order, orderItems, customer);
 
