@@ -5,9 +5,11 @@ using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Orders.OrderById;
 using Boilerplate.Application.Features.Users.GetUsers;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +29,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
 
     public async Task<PaginatedList<OrderSearchResponse>> Handle(OrderSearchRequest request, CancellationToken cancellationToken)
     {
+        
         var orderByIdResponse = new OrderByIdResponse();
         var result = (from order in _context.Orders.AsNoTracking().DefaultIfEmpty()
                       join orderItems in _context.OrderItems.AsNoTracking().DefaultIfEmpty() on order.Id equals orderItems.OrderId into j1
@@ -42,8 +45,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                       join userAssignedUserInformation in _context.UserInformations.AsNoTracking() on (Guid?)order.UserAssigned equals (Guid)userAssignedUserInformation.UserId into j6
                       from userAssignedUserInformation in j6.DefaultIfEmpty()
                       join customer in _context.Customers.AsNoTracking().DefaultIfEmpty() on order.CustomerId equals customer.Id
-                      where order.DateCreated <= DateTime.Now
-                      orderby order.OrderNumber ascending
+                      //orderby order.OrderNumber ascending
                       select new
                       {
                           order,
@@ -54,7 +56,10 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                           userAssignedApplicationUser,
                           userAssignedUserInformation,
                           customer
-                      });//.ToListAsync(cancellationToken);
+                      });
+
+        var chespi = await result.Where(x => x.order.DateCreated >= request.StartDate && x.order.DateCreated <= request.EndDate).ToListAsync(cancellationToken);
+
 
         var products = (from product in result.AsNoTracking()
                         group new

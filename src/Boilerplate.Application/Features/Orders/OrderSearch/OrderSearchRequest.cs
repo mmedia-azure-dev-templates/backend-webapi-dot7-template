@@ -1,15 +1,17 @@
 ﻿using Boilerplate.Application.Common.Requests;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Enums;
 using MediatR;
+using System;
 
 namespace Boilerplate.Application.Features.Orders.OrderSearch;
 
 public class OrderSearchRequest : PaginatedRequest, IRequest<PaginatedList<OrderSearchResponse>>
 {
-    public OrderNumber? OrderNumber { get; set; }
-    public string? Abrevia { get; set; }
-    public string? Display { get; set; }
-    public int? Brand { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public OrderFilterType? OrderFilterType { get; set; }
+    public string? Search { get; set; }
 }
 

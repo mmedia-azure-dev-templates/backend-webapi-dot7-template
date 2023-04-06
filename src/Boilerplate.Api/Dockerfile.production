@@ -20,6 +20,7 @@ RUN echo "ConnectionStrings__SqlServerConnection: ${ConnectionStrings__SqlServer
 
 # Disable the invariant mode (set in base image)
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+ENV TZ="America/Guayaquil"
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
