@@ -53,8 +53,8 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
         foreach (var item in result)
         {
             var articleSearch = new ArticleSearchResponse();
-            articleSearch.Id = item.articles.Id;
-            articleSearch.DataKey = item.articles.DataKey;
+            articleSearch.ArticleId = item.articles.Id;
+            articleSearch.OrderId = item.order.Id;
             articleSearch.Provider = item.articles.Provider;
             articleSearch.Sku = item.articles.Sku;
             articleSearch.Abrevia = item.articles.Abrevia;

@@ -91,7 +91,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                     var item = new OrderItem
                     {
                         OrderId = order.Id,
-                        ArticleId = article.Id,
+                        ArticleId = article.ArticleId,
                         Quantity = article.Quantity,
                         Price = article.Cost,
                         Total = article.Total,

@@ -2,19 +2,17 @@
 using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Responses;
-using Boilerplate.Application.Extensions;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Orders.OrderById;
 using Boilerplate.Application.Features.Users.GetUsers;
+using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using org.apache.zookeeper.data;
-using Boilerplate.Domain.Entities.Common;
 
 namespace Boilerplate.Application.Features.Orders.OrderSearch;
 public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedList<OrderSearchResponse>>
@@ -58,71 +56,119 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                           customer
                       });//.ToListAsync(cancellationToken);
 
-        //var orders = result.GroupBy(x => x.order.OrderNumber);//.Select(x => x.First());
-        //var products = result.GroupBy(x => x.orderItems.Id).Select(x => x.First());
+        var products = (from product in result.AsNoTracking()
+                        group new
+                        {
+                            product.orderItems,
+                            product.articles,
+                        } by new { product.orderItems.Id } into h
+                        select new ArticleSearchResponse
+                        {
+                            ArticleId = new ArticleId((Guid)h.First().orderItems.Id),
+                            OrderId = h.First().orderItems.OrderId,
+                            Provider = h.First().articles.Provider,
+                            Sku = h.First().articles.Sku,
+                            Abrevia = h.First().articles.Abrevia,
+                            Display = h.First().articles.Display,
+                            Quantity = h.First().orderItems.Quantity,
+                            Cost = h.First().articles.Cost,
+                            Total = h.First().orderItems.Total,
+                            Brand = h.First().articles.Brand,
+                            Notes = h.First().articles.Abrevia,
+                            Meta = h.First().articles.Abrevia,
+                            Discontinued = h.First().articles.Discontinued,
+                            IsSelected = true,
+                        });
 
-        var mierda = await (from order in result.Select(x=>x.order)
-                            group order by order.OrderNumber into g
-                            select new { PersonId = g.Key, Cars = g.ToList() }).ToListAsync(cancellationToken);
+        var orders = (from order in result.AsNoTracking()
+                            group new
+                            {
+                                order.order,
+                                order.customer,
+                                order.userGeneratedApplicationUser,
+                                order.userGeneratedUserInformation,
+                                order.userAssignedApplicationUser,
+                                order.userAssignedUserInformation
+                            } by new { order.order.OrderNumber } into g
+                            orderby g.Key.OrderNumber ascending
+                            select new OrderSearchResponse
+                            {
+                                Order = g.First().order,
+                                Customer = g.First().customer,
+                                UserGenerated = new GetUsersResponse
+                                {
+                                    Id = g.First().userGeneratedApplicationUser.Id,
+                                    UserId = g.First().userGeneratedUserInformation.UserId,
+                                    FirstName = g.First().userGeneratedApplicationUser.FirstName,
+                                    LastName = g.First().userGeneratedApplicationUser.LastName,
+                                    LastLogin = g.First().userGeneratedApplicationUser.LastLogin,
+                                    Email = g.First().userGeneratedApplicationUser.Email,
+                                    EmailConfirmed = g.First().userGeneratedApplicationUser.EmailConfirmed,
+                                    TypeDocument = g.First().userGeneratedUserInformation.TypeDocument,
+                                    Nacionality = g.First().userGeneratedUserInformation.Nacionality,
+                                    Ndocument = g.First().userGeneratedUserInformation.Ndocument,
+                                    Gender = g.First().userGeneratedUserInformation.Gender,
+                                    CivilStatus = g.First().userGeneratedUserInformation.CivilStatus,
+                                    BirthDate = g.First().userGeneratedUserInformation.BirthDate,
+                                    EntryDate = g.First().userGeneratedUserInformation.EntryDate,
+                                    DepartureDate = g.First().userGeneratedUserInformation.DepartureDate,
+                                    Hired = g.First().userGeneratedUserInformation.Hired,
+                                    ImgUrl = g.First().userGeneratedUserInformation.ImgUrl,
+                                    CurriculumUrl = g.First().userGeneratedUserInformation.CurriculumUrl,
+                                    Mobile = g.First().userGeneratedUserInformation.Mobile,
+                                    Phone = g.First().userGeneratedUserInformation.Phone,
+                                    PrimaryStreet = g.First().userGeneratedUserInformation.PrimaryStreet,
+                                    SecondaryStreet = g.First().userGeneratedUserInformation.SecondaryStreet,
+                                    Numeration = g.First().userGeneratedUserInformation.Numeration,
+                                    Reference = g.First().userGeneratedUserInformation.Reference,
+                                    Provincia = g.First().userGeneratedUserInformation.Provincia,
+                                    Canton = g.First().userGeneratedUserInformation.Canton,
+                                    Parroquia = g.First().userGeneratedUserInformation.Parroquia,
+                                    Notes = g.First().userGeneratedUserInformation.Notes,
+                                    DateCreated = g.First().userGeneratedUserInformation.DateCreated,
+                                    DateUpdated = g.First().userGeneratedUserInformation.DateUpdated,
+                                },
+                                UserAssigned = g.First().userAssignedApplicationUser == null && g.First().userAssignedUserInformation == null ? null : new GetUsersResponse
+                                {
+                                    Id = g.First().userAssignedApplicationUser.Id,
+                                    UserId = g.First().userAssignedUserInformation.UserId,
+                                    FirstName = g.First().userAssignedApplicationUser.FirstName,
+                                    LastName = g.First().userAssignedApplicationUser.LastName,
+                                    LastLogin = g.First().userAssignedApplicationUser.LastLogin,
+                                    Email = g.First().userAssignedApplicationUser.Email,
+                                    EmailConfirmed = g.First().userAssignedApplicationUser.EmailConfirmed,
+                                    TypeDocument = g.First().userAssignedUserInformation.TypeDocument,
+                                    Nacionality = g.First().userAssignedUserInformation.Nacionality,
+                                    Ndocument = g.First().userAssignedUserInformation.Ndocument,
+                                    Gender = g.First().userAssignedUserInformation.Gender,
+                                    CivilStatus = g.First().userAssignedUserInformation.CivilStatus,
+                                    BirthDate = g.First().userAssignedUserInformation.BirthDate,
+                                    EntryDate = g.First().userAssignedUserInformation.EntryDate,
+                                    DepartureDate = g.First().userAssignedUserInformation.DepartureDate,
+                                    Hired = g.First().userAssignedUserInformation.Hired,
+                                    ImgUrl = g.First().userAssignedUserInformation.ImgUrl,
+                                    CurriculumUrl = g.First().userAssignedUserInformation.CurriculumUrl,
+                                    Mobile = g.First().userAssignedUserInformation.Mobile,
+                                    Phone = g.First().userAssignedUserInformation.Phone,
+                                    PrimaryStreet = g.First().userAssignedUserInformation.PrimaryStreet,
+                                    SecondaryStreet = g.First().userAssignedUserInformation.SecondaryStreet,
+                                    Numeration = g.First().userAssignedUserInformation.Numeration,
+                                    Reference = g.First().userAssignedUserInformation.Reference,
+                                    Provincia = g.First().userAssignedUserInformation.Provincia,
+                                    Canton = g.First().userAssignedUserInformation.Canton,
+                                    Parroquia = g.First().userAssignedUserInformation.Parroquia,
+                                    Notes = g.First().userAssignedUserInformation.Notes,
+                                    DateCreated = g.First().userAssignedUserInformation.DateCreated,
+                                    DateUpdated = g.First().userAssignedUserInformation.DateUpdated,
+                                },
+                                ArticleSearchResponse = (List<ArticleSearchResponse>)(
+                                                         from product in products
+                                                         where product.OrderId == g.First().order.Id
+                                                         select product)
+                            });//.ToListAsync(cancellationToken);
 
-        //    //.Select(x => x.First().order).ToList();
-        //var userGeneratedApplicationUser = result.GroupBy(x => x.userGeneratedApplicationUser).Select(x => x.First().userGeneratedApplicationUser).ToList();
-        //var userGeneratedUserInformation = result.GroupBy(x => x.userGeneratedApplicationUser).Select(x => x.First().userGeneratedApplicationUser).ToList();
-        //List<OrderByIdResponse> listOrderByIdResponse = new List<OrderByIdResponse>();
-        //foreach (var order in orders)
-        //{
-        //    var temp = new OrderByIdResponse();
-        //    temp.Order = order.order;
-        //    temp.Customer = order.customer;
-        //    temp.UserGenerated = _mapper.Map<GetUsersResponse>((order.userGeneratedApplicationUser, order.userGeneratedUserInformation));
-        //    temp.UserAssigned = _mapper.Map<GetUsersResponse>((order.userGeneratedApplicationUser, order.userGeneratedUserInformation));
-        //    listOrderByIdResponse.Add(temp);
-        //}
 
-        throw new NotImplementedException();
-        //return await _mapper.ProjectTo<OrderSearchResponse>(result).OrderBy(x => x.).ToPaginatedListAsync(request.CurrentPage, request.PageSize);
-        //var orders = result.GroupBy(x => x.order.OrderNumber).Select(x => x.First().order).ToList();
-        //List<ArticleSearchResponse> articleSearchResponse = new List<ArticleSearchResponse>();
-        //foreach (var item in result)
-        //{
-        //    //Replace OrderItems with ArticleSearchResponse
-        //    var articleSearch = new ArticleSearchResponse();
-        //    articleSearch.Id = item.articles.Id;
-        //    articleSearch.DataKey = item.articles.DataKey;
-        //    articleSearch.Provider = item.articles.Provider;
-        //    articleSearch.Sku = item.articles.Sku;
-        //    articleSearch.Abrevia = item.articles.Abrevia;
-        //    articleSearch.Display = item.articles.Display;
-        //    articleSearch.Quantity = item.orderItems.Quantity;
-        //    articleSearch.Cost = item.articles.Cost;
-        //    articleSearch.Total = item.orderItems.Total;
-        //    articleSearch.Brand = item.articles.Brand;
-        //    articleSearch.Notes = item.articles.Notes;
-        //    articleSearch.Meta = item.articles.Meta;
-        //    articleSearch.Discontinued = item.articles.Discontinued;
-        //    articleSearch.IsSelected = true;
-        //    articleSearchResponse.Add(articleSearch);
-        //}
-
-        //var orderSearchResponse = new OrderSearchResponse();
-
-        //var getUsersResponse = new GetUsersResponse();
-        //var getUserAssignedApplicationUser = result.Select(x => x.userAssignedApplicationUser).FirstOrDefault();
-        //var getUserAssignedUserInformation = result.Select(x => x.userAssignedUserInformation).FirstOrDefault();
-
-        //getUsersResponse = getUserAssignedApplicationUser != null && getUserAssignedUserInformation != null ? _mapper.Map<GetUsersResponse>((getUserAssignedApplicationUser, getUserAssignedUserInformation)) : null;
-
-        //orderByIdResponse.Order = result.Select(x => x.order).FirstOrDefault();
-        //orderByIdResponse.ArticleSearchResponse = articleSearchResponse;
-        //orderByIdResponse.UserGenerated = _mapper.Map<GetUsersResponse>((result.Select(x => x.userGeneratedApplicationUser).FirstOrDefault(), result.Select(x => x.userGeneratedUserInformation).FirstOrDefault()));
-        //orderByIdResponse.UserAssigned = getUsersResponse;
-        //orderByIdResponse.Customer = result.Select(x => x.customer).FirstOrDefault();
-
-        ////var articles = _context.Articles
-        ////    .WhereIf(!string.IsNullOrEmpty(request.Sku), x => EF.Functions.Like(x.Sku, $"%{request.Sku}%"))
-        ////    //.WhereIf(!string.IsNullOrEmpty(request.Display), x => EF.Functions.Like(x.Display!, $"%{request.Display}%"))
-        ////    ;
-
-
+        return await orders.ToPaginatedListAsync(request.CurrentPage, request.PageSize);
+        //.OrderBy(x => x.)
     }
 }
