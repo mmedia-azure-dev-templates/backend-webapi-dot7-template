@@ -186,18 +186,12 @@ public partial struct CustomerId : IGuid
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct CustomCounter : ILong
 {
-    public static implicit operator CustomCounter(long customCounter)
-    {
-        return new CustomCounter(customCounter);
-    }
+    public static explicit operator long(CustomCounter customCounter) => customCounter.Value;
 }
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct OrderNumber : ILong
 {
-    public static implicit operator OrderNumber(long orderNumber)
-    {
-        return new OrderNumber(orderNumber);
-    }
+    public static explicit operator long(OrderNumber orderItemId) => orderItemId.Value;
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
