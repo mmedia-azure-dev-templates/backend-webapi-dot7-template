@@ -67,14 +67,14 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 await _context.SaveChangesAsync(cancellationToken);
 
                 var counter = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault();
-                counter.CustomCounter = counter!.CustomCounter.Value + 1;
+                counter.CustomCounter = new CustomCounter(counter!.CustomCounter.Value + 1);
                 await _context.SaveChangesAsync(cancellationToken);
 
 
                 var order = new Order
                 {
                     OrderStatusType = OrderStatusType.Entered,
-                    OrderNumber = counter.CustomCounter.Value,
+                    OrderNumber = new OrderNumber(counter.CustomCounter.Value),
                     UserGenerated = new UserGenerated(_session.UserId.Value),
                     UserAssigned = request.UserAssigned,
                     CustomerId = customer.Id,
