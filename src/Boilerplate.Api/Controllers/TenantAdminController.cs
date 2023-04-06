@@ -159,10 +159,41 @@ public class TenantAdminController : Controller
     [HttpGet]
     [Route("verifyInvitation")]
     [AllowAnonymous]
-    public async Task<VerifyInvitationResponse> verifyInvitation([FromQuery] string inviteParam, string email)
+    public async Task<VerifyInvitationResponse> verifyInvitation([FromQuery] string inviteParam)
     {
         VerifyInvitationResponse verifyInvitationResponse = new VerifyInvitationResponse();
         
+        try
+        {
+            AddNewUserDto newUserData;
+            var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(inviteParam));
+            newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
+  
+            if (newUserData.TimeInviteExpires != default && newUserData.TimeInviteExpires < DateTime.UtcNow.Ticks)
+            {
+                verifyInvitationResponse.Message = "La invitación ha expirado!. Póngase en contacto con la persona que envió la invitación.";
+                return verifyInvitationResponse;
+            }
+
+            verifyInvitationResponse.IsValid = true;
+            verifyInvitationResponse.Message = "Excelente la invitación es válida!";
+            verifyInvitationResponse.Email = newUserData.Email;
+            return verifyInvitationResponse;
+        }
+        catch (Exception e)
+        {
+            verifyInvitationResponse.Message = e.Message;
+            return verifyInvitationResponse;
+        }
+    }
+
+    [HttpGet]
+    [Route("confirmInvitation")]
+    [AllowAnonymous]
+    public async Task<VerifyInvitationResponse> confirmInvitation([FromQuery] string inviteParam, string? email)
+    {
+        VerifyInvitationResponse verifyInvitationResponse = new VerifyInvitationResponse();
+
         try
         {
             var normalizedEmail = email.Trim().ToLower();
@@ -175,7 +206,7 @@ public class TenantAdminController : Controller
                 verifyInvitationResponse.Message = "Correo electrónico no coincide con la invitación.";
                 return verifyInvitationResponse;
             }
-                
+
             if (newUserData.TimeInviteExpires != default && newUserData.TimeInviteExpires < DateTime.UtcNow.Ticks)
             {
                 verifyInvitationResponse.Message = "La invitación ha expirado!. Póngase en contacto con la persona que envió la invitación.";
@@ -184,6 +215,7 @@ public class TenantAdminController : Controller
 
             verifyInvitationResponse.IsValid = true;
             verifyInvitationResponse.Message = "Excelente la invitación es válida!";
+            verifyInvitationResponse.Email = newUserData.Email;
             return verifyInvitationResponse;
         }
         catch (Exception e)

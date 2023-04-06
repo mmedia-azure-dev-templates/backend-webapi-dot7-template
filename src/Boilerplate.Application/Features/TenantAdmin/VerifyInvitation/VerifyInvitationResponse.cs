@@ -5,5 +5,6 @@ public class VerifyInvitationResponse
 {
     public bool IsValid { get; set; } = false;
     public string Message { get; set; }
+    public string Email { get; set; }
     public AddNewUserDto addNewUserDto { get; set; }
 }
