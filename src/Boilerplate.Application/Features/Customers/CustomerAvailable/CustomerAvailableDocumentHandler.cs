@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Users.AvailableUserDocument;
+namespace Boilerplate.Application.Features.Customers.CustomerAvailable;
 public class CustomerAvailableDocumentHandler : IRequestHandler<CustomerAvailableDocumentRequest, CustomerAvailableDocumentResponse>
 {
     private readonly IContext _context;

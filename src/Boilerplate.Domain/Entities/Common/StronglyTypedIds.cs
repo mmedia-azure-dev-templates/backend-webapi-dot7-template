@@ -15,15 +15,6 @@ public interface ILong { }
 public interface IInt { }
 public interface IString { }
 
-[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
-public partial struct ArticleId : IGuid
-{
-    public static implicit operator ArticleId(Guid articleId)
-    {
-        return new ArticleId(articleId);
-    }
-}
-
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct CatalogId : ILong
 {
@@ -138,10 +129,6 @@ public partial struct ProductId : ILong
 public partial struct UserId : IGuid
 {
     public static explicit operator Guid(UserId userId) => userId.Value;
-    //public static implicit operator UserId(Guid userId)
-    //{
-    //    return new UserId(userId);
-    //}
     public class StronglyTypedIdEfValueConverter : ValueConverter<UserId, Guid>
     {
         public StronglyTypedIdEfValueConverter(ConverterMappingHints mappingHints = null)
@@ -161,15 +148,6 @@ public partial struct TeamId : IGuid
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
-public partial struct OrderItemId : IGuid
-{
-    public static implicit operator OrderItemId(Guid orderItemId)
-    {
-        return new OrderItemId(orderItemId);
-    }
-}
-
-[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
 public partial struct UserGenerated : IGuid
 {
     public static explicit operator Guid(UserGenerated userGenerated) => userGenerated.Value;
@@ -183,10 +161,18 @@ public partial struct UserGenerated : IGuid
 public partial struct UserAssigned : IGuid
 {
     public static explicit operator Guid(UserAssigned userAssigned) => userAssigned.Value;
-    //public static implicit operator UserAssigned(Guid userAssigned)
-    //{
-    //    return new UserAssigned(userAssigned);
-    //}
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct ArticleId : IGuid
+{
+    public static explicit operator Guid(ArticleId articleId) => articleId.Value;
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct OrderItemId : IGuid
+{
+    public static explicit operator Guid(OrderItemId orderItemId) => orderItemId.Value;
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]

@@ -1,6 +1,6 @@
-﻿using Boilerplate.Application.Features.Customers.CustomerById;
+﻿using Boilerplate.Application.Features.Customers.CustomerAvailable;
+using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
-using Boilerplate.Application.Features.Users.AvailableUserDocument;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
