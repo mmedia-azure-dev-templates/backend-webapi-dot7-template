@@ -9,7 +9,7 @@ namespace Boilerplate.Application.Features.Orders.OrderSearch;
 
 public class OrderSearchRequest : PaginatedRequest, IRequest<PaginatedList<OrderSearchResponse>>
 {
-    public DateTime StartDate { get; set; }
+    public DateTime StartDate { get; set; } 
     public DateTime EndDate { get; set; }
     public OrderFilterType? OrderFilterType { get; set; }
     public string? Search { get; set; }

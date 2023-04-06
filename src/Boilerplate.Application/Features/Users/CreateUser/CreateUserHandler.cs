@@ -134,36 +134,36 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                 await _addNewUserManager.SetUserInfoAsync(newUserData);
 
 
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-                var callbackUrl = new { token, email = user.Email };
+                //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                //token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+                //var callbackUrl = new { token, email = user.Email };
 
-                MailStruct mailData = new MailStruct(
-                    user.FirstName + " " + user.LastName,
-                    new List<string> {
-                        user.Email
-                    },
-                    "Confirm your account",
-                    "WelcomeView"
-                   );
+                //MailStruct mailData = new MailStruct(
+                //    user.FirstName + " " + user.LastName,
+                //    new List<string> {
+                //        user.Email
+                //    },
+                //    "Confirm your account",
+                //    "WelcomeView"
+                //   );
 
-                // Create MailData object
-                WelcomeMailData welcomeMail = new WelcomeMailData()
-                {
-                    Name = user.FirstName + " " + user.LastName,
-                    Email = user.Email,
-                    Token = token
-                };
+                //// Create MailData object
+                //WelcomeMailData welcomeMail = new WelcomeMailData()
+                //{
+                //    Name = user.FirstName + " " + user.LastName,
+                //    Email = user.Email,
+                //    Token = token
+                //};
 
-                bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
+                //bool emailStatus = await _mail.CreateEmailMessage(mailData, welcomeMail, new CancellationToken());
 
-                if (!emailStatus)
-                {
-                    _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value;
-                    _userResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value;
-                    _logger.LogInformation(3, _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value);
-                    return _userResponse;
-                }
+                //if (!emailStatus)
+                //{
+                //    _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value;
+                //    _userResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value;
+                //    _logger.LogInformation(3, _localizationService.GetLocalizedHtmlString("UserResponseEmailError").Value);
+                //    return _userResponse;
+                //}
 
                 scope.Complete();
                 _userResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("UserResponseTitleSuccess").Value;

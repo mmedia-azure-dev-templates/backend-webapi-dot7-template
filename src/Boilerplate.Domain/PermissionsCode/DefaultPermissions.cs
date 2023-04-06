@@ -48,6 +48,15 @@ public enum DefaultPermissions : ushort //Must be ushort to work with AuthP
     // Useful if are working on new permissions but you don't want it to be used by anyone yet 
     AnotherPermission = 2_000,
 
+
+    //Here is an orders of detailed control over some feature
+    [Display(GroupName = "Orders", Description = "Puede ver ordenes")]
+    OrderRead = 3000,
+    [Display(GroupName = "Orders", Description = "Puede crear ordenes")]
+    OrderCreate = 3001,
+    [Display(GroupName = "Orders", Description = "Puede modificar ordenes")]
+    OrderModify = 3002,
+
     //----------------------------------------------------
     //Admin section
 
