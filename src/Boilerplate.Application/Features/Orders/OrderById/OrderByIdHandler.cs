@@ -57,7 +57,8 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                       });
 
 
-        var products = (from product in result.AsNoTracking()
+        var products = (from product in result.AsNoTracking().DefaultIfEmpty()
+                        where product.orderItems != null && product.articles != null
                         group new
                         {
                             product.orderItems,
@@ -129,7 +130,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                               DateCreated = g.First().userGeneratedUserInformation.DateCreated,
                               DateUpdated = g.First().userGeneratedUserInformation.DateUpdated,
                           },
-                          UserAssigned = g.First().userAssignedApplicationUser == null && g.First().userAssignedUserInformation == null ? null : new GetUsersResponse
+                          UserAssigned = g.First().userAssignedApplicationUser == null || g.First().userAssignedUserInformation == null ? null : new GetUsersResponse
                           {
                               Id = g.First().userAssignedApplicationUser.Id,
                               UserId = g.First().userAssignedUserInformation.UserId,
@@ -163,7 +164,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                               DateUpdated = g.First().userAssignedUserInformation.DateUpdated,
                           },
                           ArticleSearchResponse = (List<ArticleSearchResponse>)(
-                                                   from product in products
+                                                   from product in products.DefaultIfEmpty()
                                                    where product.OrderId == g.First().order.Id
                                                    select product)
                       });

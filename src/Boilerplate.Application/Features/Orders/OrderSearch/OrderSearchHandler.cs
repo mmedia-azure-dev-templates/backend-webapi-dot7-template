@@ -46,6 +46,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                       join userAssignedUserInformation in _context.UserInformations.AsNoTracking() on (Guid?)order.UserAssigned equals (Guid)userAssignedUserInformation.UserId into j6
                       from userAssignedUserInformation in j6.DefaultIfEmpty()
                       join customer in _context.Customers.AsNoTracking().DefaultIfEmpty() on order.CustomerId equals customer.Id
+                      where userGeneratedApplicationUser!= null && userGeneratedUserInformation != null
                       select new
                       {
                           order,
@@ -59,6 +60,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                       });
 
         var defaultFilter = result;
+        
 
         defaultFilter = result.Where(x => x.order.DateCreated >= formatStartDate && x.order.DateCreated <= formatEndDate).OrderByDescending(x => x.order.DateCreated);
 
@@ -67,7 +69,10 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
             defaultFilter = result.Where(x => x.order.OrderNumber == new OrderNumber(long.Parse(request.Search)));
         }
 
-        var products = (from product in defaultFilter.AsNoTracking()
+        
+        
+        var products = (from product in defaultFilter.AsNoTracking().DefaultIfEmpty()
+                        where product.orderItems != null && product.articles != null
                         group new
                         {
                             product.orderItems,
@@ -139,7 +144,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                               DateCreated = g.First().userGeneratedUserInformation.DateCreated,
                               DateUpdated = g.First().userGeneratedUserInformation.DateUpdated,
                           },
-                          UserAssigned = g.First().userAssignedApplicationUser == null && g.First().userAssignedUserInformation == null ? null : new GetUsersResponse
+                          UserAssigned = g.First().userAssignedApplicationUser == null || g.First().userAssignedUserInformation == null ? null : new GetUsersResponse
                           {
                               Id = g.First().userAssignedApplicationUser.Id,
                               UserId = g.First().userAssignedUserInformation.UserId,
@@ -177,6 +182,8 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                                                    where product.OrderId == g.First().order.Id
                                                    select product)
                       });
+
+        
 
         return await orders.ToPaginatedListAsync(request.CurrentPage, request.PageSize);
         //.OrderBy(x => x.)

@@ -2,6 +2,7 @@
 using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
@@ -68,6 +69,8 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
 
                 var order = await _context.Orders.Where(x => x.Id == request.OrderId).FirstOrDefaultAsync(cancellationToken);
                 order = _mapper.Map(request, order);
+                order.UserGenerated = new UserGenerated(_session.UserId.Value);
+                order.UserAssigned = new UserAssigned((Guid)request.UserAssigned);
                 _context.Orders.Update(order);
                 await _context.SaveChangesAsync(cancellationToken);
 

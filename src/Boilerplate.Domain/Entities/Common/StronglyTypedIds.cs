@@ -151,10 +151,6 @@ public partial struct TeamId : IGuid
 public partial struct UserGenerated : IGuid
 {
     public static explicit operator Guid(UserGenerated userGenerated) => userGenerated.Value;
-    //public static implicit operator UserGenerated(Guid userGenerated)
-    //{
-    //    return new UserGenerated(userGenerated);
-    //}
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
