@@ -1,6 +1,7 @@
 ﻿using Amazon.Runtime.Documents;
 using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
@@ -97,7 +98,11 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 //_pdfService.GenerateOrderPdf(order, orderItems, customer);
 
                 scope.Complete();
-                _orderUpdateResponse.Message = "Orden Guardada Correctamente";
+                _orderUpdateResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
+                _orderUpdateResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
+                _orderUpdateResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess").Value);
+                _orderUpdateResponse.Transaction = true;
+                _orderUpdateResponse.OrderNumber = order.OrderNumber;
                 return _orderUpdateResponse;
             }
             catch (Exception ex)
@@ -107,7 +112,10 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 //_logger.LogInformation(3, ex.Message);
                 //_userResponse.SweetAlert.Title = ex.Message;
                 //_userResponse.SweetAlert.Text = ex.Message;
-                _orderUpdateResponse.Message = ex.Message;
+                _logger.LogInformation(3, ex.Message);
+                _orderUpdateResponse.SweetAlert.Title = ex.Message;
+                _orderUpdateResponse.SweetAlert.Text = ex.Message;
+                _orderUpdateResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconError").Value);
                 return _orderUpdateResponse;
             }
         }
