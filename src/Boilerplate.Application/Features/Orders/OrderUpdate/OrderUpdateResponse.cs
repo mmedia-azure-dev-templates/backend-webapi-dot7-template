@@ -1,7 +1,14 @@
-﻿using Boilerplate.Domain.Implementations;
+﻿using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Implementations;
 
 namespace Boilerplate.Application.Features.Orders.OrderUpdate;
 public class OrderUpdateResponse: IOrderUpdateResponse
 {
-    public string Message { get; set; }
+    public SweetAlert SweetAlert { get; set; }
+    public bool Transaction { get; set; } = false;
+    public OrderNumber OrderNumber { get; set; }
+    public OrderUpdateResponse(SweetAlert sweetAlert)
+    {
+        SweetAlert = sweetAlert;
+    }
 }
