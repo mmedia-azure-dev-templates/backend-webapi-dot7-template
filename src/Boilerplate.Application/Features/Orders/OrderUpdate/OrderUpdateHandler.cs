@@ -107,11 +107,6 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
             }
             catch (Exception ex)
             {
-                //List<IdentityError> errorList = result.Errors.ToList();
-                //var errors = string.Join(" | ", errorList.Select(e => e.Description));
-                //_logger.LogInformation(3, ex.Message);
-                //_userResponse.SweetAlert.Title = ex.Message;
-                //_userResponse.SweetAlert.Text = ex.Message;
                 _logger.LogInformation(3, ex.Message);
                 _orderUpdateResponse.SweetAlert.Title = ex.Message;
                 _orderUpdateResponse.SweetAlert.Text = ex.Message;
