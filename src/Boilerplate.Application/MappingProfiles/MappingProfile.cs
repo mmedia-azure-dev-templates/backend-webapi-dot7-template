@@ -114,8 +114,9 @@ public class MappingProfile : Profile
         CreateMap<OrderUpdateRequest, Order>();
 
         // Hero Map
-        CreateMap<Article, ArticleSearchResponse>();
-        CreateMap<Article, ArticleSearchResponse>().ReverseMap();
+        CreateMap<Article, ArticleSearchResponse>()
+            .ForMember(dest => dest.ArticleId, opt => opt.MapFrom(src => src.Id));
+        //CreateMap<Article, ArticleSearchResponse>().ReverseMap();
         CreateMap<Hero, GetHeroResponse>().ReverseMap();
         CreateMap<CreateHeroRequest, Hero>();
         CreateMap<UpdateHeroRequest, Hero>();

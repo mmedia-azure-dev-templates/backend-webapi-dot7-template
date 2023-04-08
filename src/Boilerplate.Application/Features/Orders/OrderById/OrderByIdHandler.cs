@@ -66,7 +66,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                         } by new { product.orderItems.Id } into h
                         select new ArticleSearchResponse
                         {
-                            ArticleId = new ArticleId((Guid)h.First().orderItems.Id),
+                            ArticleId = h.First().orderItems.ArticleId,
                             OrderId = h.First().orderItems.OrderId,
                             Provider = h.First().articles.Provider,
                             Sku = h.First().articles.Sku,

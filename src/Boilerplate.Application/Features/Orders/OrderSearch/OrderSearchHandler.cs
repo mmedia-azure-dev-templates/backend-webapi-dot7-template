@@ -46,7 +46,6 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                       join userAssignedUserInformation in _context.UserInformations.AsNoTracking() on (Guid?)order.UserAssigned equals (Guid)userAssignedUserInformation.UserId into j6
                       from userAssignedUserInformation in j6.DefaultIfEmpty()
                       join customer in _context.Customers.AsNoTracking().DefaultIfEmpty() on order.CustomerId equals customer.Id
-                      where userGeneratedApplicationUser!= null && userGeneratedUserInformation != null
                       select new
                       {
                           order,
@@ -69,8 +68,6 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
             defaultFilter = result.Where(x => x.order.OrderNumber == new OrderNumber(long.Parse(request.Search)));
         }
 
-        
-        
         var products = (from product in defaultFilter.AsNoTracking().DefaultIfEmpty()
                         where product.orderItems != null && product.articles != null
                         group new
@@ -80,7 +77,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                         } by new { product.orderItems.Id } into h
                         select new ArticleSearchResponse
                         {
-                            ArticleId = new ArticleId((Guid)h.First().orderItems.Id),
+                            ArticleId = h.First().orderItems.ArticleId,
                             OrderId = h.First().orderItems.OrderId,
                             Provider = h.First().articles.Provider,
                             Sku = h.First().articles.Sku,
