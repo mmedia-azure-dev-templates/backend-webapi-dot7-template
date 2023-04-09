@@ -36,19 +36,7 @@ using Boilerplate.Domain;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ISession, Session>();
-builder.Services.AddDefaultIdentity<ApplicationUser>(
-options => {
-    options.SignIn.RequireConfirmedEmail = true;
-    options.SignIn.RequireConfirmedPhoneNumber = false;
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-})
-.AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<ApplicationUser>>()
-.AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders();
+
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureDomainServices(builder.Configuration);
@@ -77,9 +65,6 @@ builder.AddOpenTemeletrySetup();
 
 // Swagger
 builder.Services.AddSwaggerSetup();
-
-// Add jwt
-builder.Services.AddJwtSetup(builder.Configuration);
 
 //Render Email Templates
 builder.Services.AddRazorPages();

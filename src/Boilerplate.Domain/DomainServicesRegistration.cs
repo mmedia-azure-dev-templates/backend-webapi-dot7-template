@@ -1,6 +1,8 @@
 ﻿using Amazon.S3;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Implementations;
 using Boilerplate.Domain.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +12,7 @@ public static class DomainServicesRegistration
 {
     public static IServiceCollection ConfigureDomainServices(this IServiceCollection services, IConfiguration configuration)
     {
+        
         var options = configuration.GetAWSOptions();
         services.AddDefaultAWSOptions(options);
         services.AddAWSService<IAmazonS3>();
