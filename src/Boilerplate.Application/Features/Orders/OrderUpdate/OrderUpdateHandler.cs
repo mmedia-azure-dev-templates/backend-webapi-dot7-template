@@ -71,7 +71,7 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 var order = await _context.Orders.Where(x => x.Id == request.OrderId).FirstOrDefaultAsync(cancellationToken);
                 order = _mapper.Map(request, order);
                 order.UserGenerated = new UserGenerated(_session.UserId.Value);
-                order.UserAssigned = new UserAssigned((Guid)request.UserAssigned);
+                order.UserAssigned = request.UserAssigned == null ? null : new UserAssigned((Guid)request.UserAssigned);
                 _context.Orders.Update(order);
                 await _context.SaveChangesAsync(cancellationToken);
 

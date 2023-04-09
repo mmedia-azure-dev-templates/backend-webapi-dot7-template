@@ -1,11 +1,15 @@
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
+using Boilerplate.Application;
+using Boilerplate.Application.Auth;
+using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.ResetPassword;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
+using Boilerplate.Application.Features.Orders.OrderById;
 using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Application.Features.Orders.OrderUpdate;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
@@ -13,8 +17,13 @@ using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Features.Users.EditUser;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.ClaimsChangeCode;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
+using Boilerplate.Infrastructure;
+using Boilerplate.Infrastructure.Context;
+using MassTransit.NewIdProviders;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,23 +31,23 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json.Serialization;
+using Boilerplate.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Persistence
-builder.Services.AddPersistenceSetup(builder.Configuration);
+builder.Services.AddScoped<ISession, Session>();
 
-// Application layer setup
-builder.Services.AddApplicationSetup();
+builder.Services.ConfigurePersistenceServices(builder.Configuration);
+builder.Services.ConfigureApplicationServices();
+builder.Services.ConfigureDomainServices(builder.Configuration);
+builder.Services.AddScoped<IContext, ApplicationDbContext>();
+NewId.SetProcessIdProvider(new CurrentProcessIdProvider());
 
 // Request response compression
 builder.Services.AddCompressionSetup();
 
 // HttpContextAcessor
 builder.Services.AddHttpContextAccessor();
-
-// Mediator
-builder.Services.AddMediatRSetup();
 
 // Middleware
 builder.Services.AddScoped<ExceptionHandlerMiddleware>();
@@ -57,12 +66,6 @@ builder.AddOpenTemeletrySetup();
 // Swagger
 builder.Services.AddSwaggerSetup();
 
-// Add jwt
-builder.Services.AddJwtSetup(builder.Configuration);
-
-// Add AWS S3
-builder.Services.AddAwsS3Setup(builder.Configuration);
-
 //Render Email Templates
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<SweetAlert, SweetAlert>();
@@ -78,6 +81,8 @@ builder.Services.AddScoped<IOrderItemCreateResponse, OrderItemCreateResponse>();
 builder.Services.AddScoped<IPaymentMethodCreateResponse, PaymentMethodCreateResponse>();
 builder.Services.AddScoped<ICustomerCreateResponse, CustomerCreateResponse>();
 builder.Services.AddScoped<IPdfService, PdfService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderByIdResponse, OrderByIdResponse>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers

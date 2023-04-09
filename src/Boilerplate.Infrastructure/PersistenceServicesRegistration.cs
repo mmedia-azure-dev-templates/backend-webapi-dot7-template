@@ -1,30 +1,56 @@
-﻿using AuthPermissions;
-using AuthPermissions.BaseCode;
-using AuthPermissions.BaseCode.SetupCode;
+﻿using AuthPermissions.SupportCode.AddUsersServices.Authentication;
 using AuthPermissions.SupportCode.AddUsersServices;
-using AuthPermissions.SupportCode.AddUsersServices.Authentication;
+using AuthPermissions;
 using Boilerplate.Api.Extends;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.PermissionsCode;
 using Boilerplate.Infrastructure.Configuration;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Boilerplate.Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Threading.Tasks;
+using AuthPermissions.BaseCode;
+using AuthPermissions.BaseCode.SetupCode;
 
-namespace Boilerplate.Api.Configurations;
+namespace Boilerplate.Infrastructure;
 
-public static class JwtPermissionsSetup
+public static class PersistenceServicesRegistration
 {
-    public static IServiceCollection AddJwtSetup(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddDefaultIdentity<ApplicationUser>(
+        options => {
+            options.SignIn.RequireConfirmedEmail = true;
+            options.SignIn.RequireConfirmedPhoneNumber = false;
+            options.Password.RequireDigit = false;
+            options.Password.RequiredLength = 6;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
+        })
+        .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<ApplicationUser>>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
+        services.AddDbContext<ApplicationDbContext>(o =>
+        {
+            o.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>(); // add this line
+            o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"), conf =>
+            {
+                conf.UseHierarchyId();
+            });
+        });
+
         // Configure Authentication using JWT token with refresh capability
         var jwtData = new JwtSetupData();
         configuration.Bind("JwtData", jwtData);
