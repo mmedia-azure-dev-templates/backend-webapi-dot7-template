@@ -1,5 +1,8 @@
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
+using Boilerplate.Application;
+using Boilerplate.Application.Auth;
+using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
@@ -14,8 +17,13 @@ using Boilerplate.Application.Features.Users;
 using Boilerplate.Application.Features.Users.EditUser;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.ClaimsChangeCode;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
+using Boilerplate.Infrastructure;
+using Boilerplate.Infrastructure.Context;
+using MassTransit.NewIdProviders;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,20 +34,30 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Persistence
-builder.Services.AddPersistenceSetup(builder.Configuration);
-
-// Application layer setup
-builder.Services.AddApplicationSetup();
+builder.Services.AddScoped<ISession, Session>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(
+options => {
+    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+})
+.AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<ApplicationUser>>()
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
+builder.Services.ConfigurePersistenceServices(builder.Configuration);
+builder.Services.ConfigureApplicationServices();
+builder.Services.AddScoped<IContext, ApplicationDbContext>();
+NewId.SetProcessIdProvider(new CurrentProcessIdProvider());
 
 // Request response compression
 builder.Services.AddCompressionSetup();
 
 // HttpContextAcessor
 builder.Services.AddHttpContextAccessor();
-
-// Mediator
-builder.Services.AddMediatRSetup();
 
 // Middleware
 builder.Services.AddScoped<ExceptionHandlerMiddleware>();

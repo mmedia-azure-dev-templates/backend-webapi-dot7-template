@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <PackageReference Include="AWSSDK.S3" />
     <PackageReference Include="BCrypt.Net-Next" />
     <PackageReference Include="FluentValidation" />
