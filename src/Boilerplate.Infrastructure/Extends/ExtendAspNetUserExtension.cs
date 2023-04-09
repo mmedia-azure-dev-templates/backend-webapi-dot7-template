@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo("Test")]
-namespace Boilerplate.Api.Extends;
+namespace Boilerplate.Infrastructure.Extends;
 
 internal static class ExtendAspNetUserExtension
 {

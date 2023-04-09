@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Api.Extends;
+namespace Boilerplate.Infrastructure.Extends;
 
 public class ExtendClaimsPrincipalFactory : UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>
 {

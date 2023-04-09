@@ -31,7 +31,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RunMethodsSequentially;
 
-namespace Boilerplate.Api.Extends;
+namespace Boilerplate.Infrastructure.Extends;
 
 public static class ExtendSetupExtensions
 {

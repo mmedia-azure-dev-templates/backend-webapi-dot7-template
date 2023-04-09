@@ -3,7 +3,7 @@ using Boilerplate.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Api.Extends;
+namespace Boilerplate.Infrastructure.Extends;
 
 public class ExtendIndividualAccountUserLookup : IFindUserInfoService
 {
@@ -33,6 +33,6 @@ public class ExtendIndividualAccountUserLookup : IFindUserInfoService
     public async Task<FindUserInfoResult> FindUserInfoAsync(string uniqueName)
     {
         ApplicationUser identityUser = await _userManager.FindByNameAsync(uniqueName);
-        return (identityUser == null) ? null : new FindUserInfoResult(identityUser.Id.ToString(), identityUser.UserName);
+        return identityUser == null ? null : new FindUserInfoResult(identityUser.Id.ToString(), identityUser.UserName);
     }
 }

@@ -32,6 +32,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json.Serialization;
 using Boilerplate.Domain;
+using Boilerplate.Infrastructure.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,7 @@ builder.Services.AddScoped<ISession, Session>();
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureDomainServices(builder.Configuration);
-builder.Services.AddScoped<IContext, ApplicationDbContext>();
+
 NewId.SetProcessIdProvider(new CurrentProcessIdProvider());
 
 // Request response compression
@@ -63,9 +64,6 @@ if (builder.Environment.EnvironmentName != "Testing")
 // Add opentelemetry
 builder.AddOpenTemeletrySetup();
 
-// Swagger
-builder.Services.AddSwaggerSetup();
-
 //Render Email Templates
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<SweetAlert, SweetAlert>();
@@ -83,7 +81,6 @@ builder.Services.AddScoped<ICustomerCreateResponse, CustomerCreateResponse>();
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IOrderByIdResponse, OrderByIdResponse>();
-//builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers
 builder.Services.AddControllersWithViews().AddJsonOptions(o =>
@@ -102,8 +99,6 @@ builder.Services.AddMailSetup(builder.Configuration);
 builder.Services.Configure<DataProtectionTokenProviderOptions>(o =>
        o.TokenLifespan = TimeSpan.FromHours(4));
 
-// Add Localization
-builder.Services.AddLocalizationSetup();
 
 var app = builder.Build();
 

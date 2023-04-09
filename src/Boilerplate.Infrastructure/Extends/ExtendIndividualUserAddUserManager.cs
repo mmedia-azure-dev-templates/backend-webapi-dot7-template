@@ -15,7 +15,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Api.Extends;
+namespace Boilerplate.Infrastructure.Extends;
 
 /// <summary>
 /// This the implementation of the <see cref="IAddNewUserManager"/> for the Individual User Accounts authentication handler
