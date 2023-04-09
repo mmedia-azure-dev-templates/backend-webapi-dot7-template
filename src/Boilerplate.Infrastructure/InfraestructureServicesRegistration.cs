@@ -25,7 +25,7 @@ using Boilerplate.Infrastructure.Extends;
 
 namespace Boilerplate.Infrastructure;
 
-public static class PersistenceServicesRegistration
+public static class InfraestructureServicesRegistration
 {
     public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {

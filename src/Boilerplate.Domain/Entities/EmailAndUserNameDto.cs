@@ -4,7 +4,7 @@
 using System.ComponentModel.DataAnnotations;
 using AuthPermissions.BaseCode.DataLayer.Classes.SupportTypes;
 
-namespace Boilerplate.Api.Common
+namespace Boilerplate.Domain.Entities
 {
     public class EmailAndUserNameDto
     {

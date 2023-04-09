@@ -4,7 +4,6 @@ using AuthPermissions.BaseCode.CommonCode;
 using AuthPermissions.BaseCode.SetupCode;
 using AuthPermissions.SupportCode.AddUsersServices;
 using AuthPermissions.SupportCode.AddUsersServices.Authentication;
-using Boilerplate.Api.Common;
 using Boilerplate.Application.Features.TenantAdmin.VerifyInvitation;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;

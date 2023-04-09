@@ -15,7 +15,7 @@ using AuthPermissions.BaseCode.SetupCode;
 using LocalizeMessagesAndErrors;
 using StatusGeneric;
 
-namespace Boilerplate.Api.Common;
+namespace Boilerplate.Domain.Entities;
 
 public class SetupManualUserChange
 {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using AuthPermissions.AdminCode;
 using Microsoft.EntityFrameworkCore;
 
-namespace Boilerplate.Api.Common;
+namespace Boilerplate.Domain.Entities;
 
 /// <summary>
 /// This is the standard delete confirm where you need to display what uses are using a Role

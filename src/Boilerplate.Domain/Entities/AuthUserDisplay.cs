@@ -6,7 +6,7 @@ using System.Linq;
 using AuthPermissions.BaseCode.DataLayer.Classes;
 using AuthPermissions.BaseCode.DataLayer.Classes.SupportTypes;
 
-namespace Boilerplate.Api.Common;
+namespace Boilerplate.Domain.Entities;
 
 public class AuthUserDisplay
 {

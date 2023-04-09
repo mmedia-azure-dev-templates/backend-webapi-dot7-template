@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using AuthPermissions.AdminCode;
 using Microsoft.EntityFrameworkCore;
 
-namespace Boilerplate.Api.Common
+namespace Boilerplate.Domain.Entities
 {
     /// <summary>
     /// This is the multi-tenant delete confirm where you need to display what uses and tenants are using a Role

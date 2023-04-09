@@ -1,29 +1,12 @@
 using Boilerplate.Api.Common;
 using Boilerplate.Api.Configurations;
 using Boilerplate.Application;
-using Boilerplate.Application.Auth;
-using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Articles.ArticleCreate;
-using Boilerplate.Application.Features.Auth;
-using Boilerplate.Application.Features.Auth.ForgotPassword;
-using Boilerplate.Application.Features.Auth.ResetPassword;
-using Boilerplate.Application.Features.Customers.CustomerCreate;
-using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
-using Boilerplate.Application.Features.Orders.OrderById;
-using Boilerplate.Application.Features.Orders.OrderCreate;
-using Boilerplate.Application.Features.Orders.OrderUpdate;
-using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
-using Boilerplate.Application.Features.Users;
-using Boilerplate.Application.Features.Users.EditUser;
-using Boilerplate.Application.Services;
+using Boilerplate.Domain;
 using Boilerplate.Domain.ClaimsChangeCode;
-using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Common;
-using Boilerplate.Domain.Implementations;
 using Boilerplate.Infrastructure;
-using Boilerplate.Infrastructure.Context;
-using MassTransit.NewIdProviders;
+using Boilerplate.Infrastructure.Configuration;
 using MassTransit;
+using MassTransit.NewIdProviders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,16 +14,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json.Serialization;
-using Boilerplate.Domain;
-using Boilerplate.Infrastructure.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<ISession, Session>();
-
-builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureDomainServices(builder.Configuration);
+builder.Services.ConfigurePersistenceServices(builder.Configuration);
 
 NewId.SetProcessIdProvider(new CurrentProcessIdProvider());
 
@@ -64,23 +43,10 @@ if (builder.Environment.EnvironmentName != "Testing")
 // Add opentelemetry
 builder.AddOpenTemeletrySetup();
 
-//Render Email Templates
+// Swagger
+builder.Services.AddSwaggerSetup();
+
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<SweetAlert, SweetAlert>();
-builder.Services.AddScoped<IForgotPasswordResponse, ForgotPasswordResponse>();
-builder.Services.AddScoped<IAuthenticateResponse, AuthenticateResponse>();
-builder.Services.AddScoped<IResetPasswordResponse, ResetPasswordResponse>();
-builder.Services.AddScoped<IUserResponse, UserResponse>();
-builder.Services.AddScoped<IEditUserResponse, EditUserResponse>();
-builder.Services.AddScoped<IArticleCreateResponse, ArticleCreateResponse>();
-builder.Services.AddScoped<IOrderCreateResponse, OrderCreateResponse>();
-builder.Services.AddScoped<IOrderUpdateResponse, OrderUpdateResponse>();
-builder.Services.AddScoped<IOrderItemCreateResponse, OrderItemCreateResponse>();
-builder.Services.AddScoped<IPaymentMethodCreateResponse, PaymentMethodCreateResponse>();
-builder.Services.AddScoped<ICustomerCreateResponse, CustomerCreateResponse>();
-builder.Services.AddScoped<IPdfService, PdfService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IOrderByIdResponse, OrderByIdResponse>();
 
 // Controllers
 builder.Services.AddControllersWithViews().AddJsonOptions(o =>
