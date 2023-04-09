@@ -31,6 +31,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json.Serialization;
+using Boilerplate.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,7 @@ options => {
 .AddDefaultTokenProviders();
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 builder.Services.ConfigureApplicationServices();
+builder.Services.ConfigureDomainServices(builder.Configuration);
 builder.Services.AddScoped<IContext, ApplicationDbContext>();
 NewId.SetProcessIdProvider(new CurrentProcessIdProvider());
 
@@ -78,9 +80,6 @@ builder.Services.AddSwaggerSetup();
 
 // Add jwt
 builder.Services.AddJwtSetup(builder.Configuration);
-
-// Add AWS S3
-builder.Services.AddAwsS3Setup(builder.Configuration);
 
 //Render Email Templates
 builder.Services.AddRazorPages();
