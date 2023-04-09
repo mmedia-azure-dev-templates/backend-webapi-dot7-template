@@ -2,7 +2,6 @@
 using AuthPermissions.AspNetCore;
 using AuthPermissions.BaseCode.CommonCode;
 using AuthPermissions.BaseCode.PermissionsCode;
-using Boilerplate.Api.Common;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.PermissionsCode;
 using Microsoft.AspNetCore.Authorization;

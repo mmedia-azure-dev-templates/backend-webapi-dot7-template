@@ -7,13 +7,13 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Boilerplate.Api.Configurations;
+namespace Boilerplate.Infrastructure.Configuration;
 
 public static class LozalizationSetup
 {
     public static IServiceCollection AddLocalizationSetup(this IServiceCollection services)
     {
-        services.AddLocalization(options => options.ResourcesPath = "Resources");        
+        services.AddLocalization(options => options.ResourcesPath = "Resources");
 
         services.Configure<RequestLocalizationOptions>(options =>
         {
@@ -21,9 +21,9 @@ public static class LozalizationSetup
             {
                 new CultureInfo("es-ES"),
                 new CultureInfo("en-US"),
-                        
+
             };
-            
+
             options.DefaultRequestCulture = new RequestCulture(culture: supportedCultures[0], uiCulture: supportedCultures[0]);
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;

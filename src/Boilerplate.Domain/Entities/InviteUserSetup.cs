@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Boilerplate.Api.Common;
+namespace Boilerplate.Domain.Entities;
 
 public class InviteUserSetup
 {

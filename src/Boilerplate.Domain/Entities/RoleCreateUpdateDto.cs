@@ -8,7 +8,7 @@ using AuthPermissions.BaseCode.DataLayer.Classes.SupportTypes;
 using AuthPermissions.BaseCode.PermissionsCode;
 using AuthPermissions.SetupCode;
 
-namespace Boilerplate.Api.Common;
+namespace Boilerplate.Domain.Entities;
 
 public class RoleCreateUpdateDto
 {

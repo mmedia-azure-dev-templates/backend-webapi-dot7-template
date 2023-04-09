@@ -1,7 +1,6 @@
 ﻿using AuthPermissions.SupportCode.AddUsersServices.Authentication;
 using AuthPermissions.SupportCode.AddUsersServices;
 using AuthPermissions;
-using Boilerplate.Api.Extends;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities;
@@ -22,10 +21,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Threading.Tasks;
 using AuthPermissions.BaseCode;
 using AuthPermissions.BaseCode.SetupCode;
+using Boilerplate.Infrastructure.Extends;
 
 namespace Boilerplate.Infrastructure;
 
-public static class PersistenceServicesRegistration
+public static class InfraestructureServicesRegistration
 {
     public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
@@ -123,10 +123,11 @@ public static class PersistenceServicesRegistration
 
         //manually add services from the AuthPermissions.SupportCode project
         //Add the SupportCode services
+        services.AddScoped<IContext, ApplicationDbContext>();
         services.AddTransient<IAddNewUserManager, ExtendIndividualUserAddUserManager<ApplicationUser>>();
         services.AddTransient<ISignInAndCreateTenant, SignInAndCreateTenant>();
         services.AddTransient<IInviteNewUserService, ExtendInviteNewUserService>();
-
+        services.AddLocalizationSetup();
         return services;
     }
 }

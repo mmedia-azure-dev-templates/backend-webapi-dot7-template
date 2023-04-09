@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Api.Configurations;
+namespace Boilerplate.Infrastructure.Configuration;
 
 public static class MigrationsSetup
 {

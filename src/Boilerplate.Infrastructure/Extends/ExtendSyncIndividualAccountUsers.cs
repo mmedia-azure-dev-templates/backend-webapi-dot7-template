@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Api.Extends;
+namespace Boilerplate.Infrastructure.Extends;
 
 public class ExtendSyncIndividualAccountUsers : ISyncAuthenticationUsers
 {

@@ -22,7 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using StatusGeneric;
 
-namespace Boilerplate.Api.Extends;
+namespace Boilerplate.Infrastructure.Extends;
 
 /// <summary>
 /// This service implements the "invite user" feature
