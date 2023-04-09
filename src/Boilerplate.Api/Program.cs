@@ -6,6 +6,7 @@ using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.ResetPassword;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
+using Boilerplate.Application.Features.Orders.OrderById;
 using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Application.Features.Orders.OrderUpdate;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
@@ -78,6 +79,8 @@ builder.Services.AddScoped<IOrderItemCreateResponse, OrderItemCreateResponse>();
 builder.Services.AddScoped<IPaymentMethodCreateResponse, PaymentMethodCreateResponse>();
 builder.Services.AddScoped<ICustomerCreateResponse, CustomerCreateResponse>();
 builder.Services.AddScoped<IPdfService, PdfService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderByIdResponse, OrderByIdResponse>();
 //builder.Services.AddTransient<RazorViewToStringRenderer>();
 
 // Controllers

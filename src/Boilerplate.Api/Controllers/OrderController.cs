@@ -4,6 +4,7 @@ using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Application.Features.Orders.OrderById;
 using Boilerplate.Application.Features.Orders.OrderByNumber;
 using Boilerplate.Application.Features.Orders.OrderCreate;
+using Boilerplate.Application.Features.Orders.OrderPdf;
 using Boilerplate.Application.Features.Orders.OrderSearch;
 using Boilerplate.Application.Features.Orders.OrderUpdate;
 using MediatR;
@@ -70,6 +71,13 @@ public class OrderController : ControllerBase
     [HttpPost]
     [Route("itemcreate")]
     public async Task<OrderItemCreateResponse> OrderItemCreate(OrderItemCreateRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpGet]
+    [Route("getpdf")]
+    public async Task<OrderPdfResponse> GetOrders([FromQuery] OrderPdfRequest request)
     {
         return await _mediator.Send(request);
     }
