@@ -29,16 +29,16 @@ public class TableComponent : IComponent
             // step 2
             table.Header(header =>
             {
-                header.Cell().Element(CellStyle).Text("#");
+                header.Cell().Element(CellStyle).AlignCenter().Text("#");
                 //header.Cell().Element(CellStyle).Text("Sku");
-                header.Cell().Element(CellStyle).Text("Producto");
+                header.Cell().Element(CellStyle).AlignCenter().Text("Producto");
                 header.Cell().Element(CellStyle).AlignCenter().Text("Precio unitario");
-                header.Cell().Element(CellStyle).AlignRight().Text("Cantidad");
-                header.Cell().Element(CellStyle).AlignRight().Text("Total");
+                header.Cell().Element(CellStyle).AlignCenter().Text("Cantidad");
+                header.Cell().Element(CellStyle).AlignCenter().Text("Total");
 
                 static IContainer CellStyle(IContainer container)
                 {
-                    return container.DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(Colors.Black);
+                    return container.DefaultTextStyle(x => x.SemiBold()).AlignMiddle().MinHeight(40).Border(1).BorderColor(Colors.Black);
                 }
             });
 
@@ -49,12 +49,12 @@ public class TableComponent : IComponent
                // table.Cell().Element(CellStyle).Text(item.Sku);
                 table.Cell().Element(CellStyle).Text(item.Display);
                 table.Cell().Element(CellStyle).AlignRight().Text($"{item.Cost}$");
-                table.Cell().Element(CellStyle).AlignRight().Text(item.Quantity);
+                table.Cell().Element(CellStyle).AlignCenter().AlignMiddle().Text(item.Quantity);
                 table.Cell().Element(CellStyle).AlignRight().Text($"{item.Total}$");
 
                 static IContainer CellStyle(IContainer container)
                 {
-                    return container.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5);
+                    return container.Border(1).BorderColor(Colors.Black).PaddingVertical(5);
                 }
             }
         });
