@@ -1,4 +1,4 @@
-﻿using Boilerplate.Application.Features.Pdfs;
+﻿using Boilerplate.Application.Common.Pdfs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuestPDF.Fluent;

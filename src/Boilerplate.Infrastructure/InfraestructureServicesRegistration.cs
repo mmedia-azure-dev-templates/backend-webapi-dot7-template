@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using AuthPermissions.BaseCode;
 using AuthPermissions.BaseCode.SetupCode;
 using Boilerplate.Infrastructure.Extends;
+using Boilerplate.Application.Implementations;
 
 namespace Boilerplate.Infrastructure;
 

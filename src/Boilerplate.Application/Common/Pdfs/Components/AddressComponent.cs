@@ -1,7 +1,7 @@
 ﻿using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 
-namespace Boilerplate.Application.Features.Pdfs.Components;
+namespace Boilerplate.Application.Common.Pdfs.Components;
 public class AddressComponent : IComponent
 {
     private string Title { get; }
