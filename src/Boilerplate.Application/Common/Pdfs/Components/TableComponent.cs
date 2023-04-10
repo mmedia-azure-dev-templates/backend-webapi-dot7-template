@@ -1,4 +1,5 @@
-﻿using QuestPDF.Fluent;
+﻿using Boilerplate.Application.Features.Articles.ArticleSearch;
+using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.Collections.Generic;
@@ -6,8 +7,8 @@ using System.Collections.Generic;
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class TableComponent : IComponent
 {
-    public List<OrderItem2> Model { get; }
-    public TableComponent(List<OrderItem2> model)
+    public List<ArticleSearchResponse> Model { get; }
+    public TableComponent(List<ArticleSearchResponse> model)
     {
         Model = model;
     }
@@ -29,9 +30,10 @@ public class TableComponent : IComponent
             table.Header(header =>
             {
                 header.Cell().Element(CellStyle).Text("#");
-                header.Cell().Element(CellStyle).Text("Product");
-                header.Cell().Element(CellStyle).AlignRight().Text("Unit price");
-                header.Cell().Element(CellStyle).AlignRight().Text("Quantity");
+                //header.Cell().Element(CellStyle).Text("Sku");
+                header.Cell().Element(CellStyle).Text("Producto");
+                header.Cell().Element(CellStyle).AlignCenter().Text("Precio unitario");
+                header.Cell().Element(CellStyle).AlignRight().Text("Cantidad");
                 header.Cell().Element(CellStyle).AlignRight().Text("Total");
 
                 static IContainer CellStyle(IContainer container)
@@ -44,10 +46,11 @@ public class TableComponent : IComponent
             foreach (var item in Model)
             {
                 table.Cell().Element(CellStyle).Text(Model.IndexOf(item) + 1);
-                table.Cell().Element(CellStyle).Text(item.Name);
-                table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price}$");
+               // table.Cell().Element(CellStyle).Text(item.Sku);
+                table.Cell().Element(CellStyle).Text(item.Display);
+                table.Cell().Element(CellStyle).AlignRight().Text($"{item.Cost}$");
                 table.Cell().Element(CellStyle).AlignRight().Text(item.Quantity);
-                table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price * item.Quantity}$");
+                table.Cell().Element(CellStyle).AlignRight().Text($"{item.Total}$");
 
                 static IContainer CellStyle(IContainer container)
                 {

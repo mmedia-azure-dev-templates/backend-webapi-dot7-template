@@ -5,6 +5,8 @@ using Boilerplate.Application.Features.Orders.OrderValid;
 using Boilerplate.Application.Implementations;
 using Boilerplate.Domain.Entities.Common;
 using MediatR;
+using QuestPDF.Fluent;
+using QuestPDF.Previewer;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,10 +36,16 @@ public class OrderPdfHandler : IRequestHandler<OrderPdfRequest, OrderPdfResponse
         {
             return result;
         }
+
         var document = new OrderDocument(orderValid);
-        AmazonObject amazonObject = await _pdfService.CreateOrderPdf(document);
-        result.IsValid = true;
-        result.DocumentUrl = amazonObject.ObjectUrl;
+
+        // instead of the standard way of generating a PDF file
+        document.GeneratePdf("hello.pdf");
+
+        //document.ShowInPreviewer(12345);
+        //AmazonObject amazonObject = await _pdfService.CreateOrderPdf(document);
+        //result.IsValid = true;
+        //result.DocumentUrl = amazonObject.ObjectUrl;
         return result;
     }
 }
