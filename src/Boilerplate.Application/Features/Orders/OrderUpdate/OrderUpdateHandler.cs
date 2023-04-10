@@ -30,11 +30,10 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
     private readonly IMailService _mail;
     private readonly ILocalizationService _localizationService;
     private readonly IAwsS3Service _awsS3Service;
-    private readonly IPdfService _pdfService;
     private OrderUpdateResponse _orderUpdateResponse;
 
 
-    public OrderUpdateHandler(IContext context, ISession session, IMapper mapper, ILogger<OrderUpdateHandler> logger, IMailService mail, IOrderUpdateResponse orderUpdateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
+    public OrderUpdateHandler(IContext context, ISession session, IMapper mapper, ILogger<OrderUpdateHandler> logger, IMailService mail, IOrderUpdateResponse orderUpdateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service)
     {
         _logger = logger;
         _mapper = mapper;
@@ -44,7 +43,6 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
         _orderUpdateResponse = (OrderUpdateResponse)orderUpdateResponse;
         _localizationService = localizationService;
         _awsS3Service = awsS3Service;
-        _pdfService = pdfService;
     }
     public async Task<OrderUpdateResponse> Handle(OrderUpdateRequest request, CancellationToken cancellationToken)
     {
@@ -94,8 +92,6 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 }
                 await _context.OrderItems.AddRangeAsync(orderItems);
                 await _context.SaveChangesAsync(cancellationToken);
-
-                //_pdfService.GenerateOrderPdf(order, orderItems, customer);
 
                 scope.Complete();
                 _orderUpdateResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;

@@ -1,18 +1,18 @@
-﻿using Boilerplate.Domain.Implementations;
+﻿using Boilerplate.Application.Features.Orders.OrderValid;
+using Boilerplate.Domain.Implementations;
 using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
-namespace Boilerplate.Domain.Entities.Pdfs;
+namespace Boilerplate.Application.Features.Pdfs;
 public class OrderDocument : IDocument
 {
-    OrderDocumentDataSource _orderDocumentDataSource { get; set; }
+    public OrderValidResponse _orderValidResponse { get; set; }
 
-    public OrderDocument(OrderDocumentDataSource orderDocumentDataSource)
+    public OrderDocument(OrderValidResponse orderValidResponse)
     {
-        _orderDocumentDataSource = orderDocumentDataSource;
-        //var hola = new OrderByIdResponse();
+        _orderValidResponse = orderValidResponse;
     }
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
     public void Compose(IDocumentContainer container)

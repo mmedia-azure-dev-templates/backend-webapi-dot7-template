@@ -1,7 +1,7 @@
 ﻿using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 
-namespace Boilerplate.Domain.Entities.Pdfs.Components;
+namespace Boilerplate.Application.Features.Pdfs.Components;
 public class FooterComponent : IComponent
 {
     private string Title { get; }
