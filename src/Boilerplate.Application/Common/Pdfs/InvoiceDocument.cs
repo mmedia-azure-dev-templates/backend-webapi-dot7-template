@@ -1,10 +1,10 @@
-﻿using Boilerplate.Application.Features.Pdfs.Components;
+﻿using Boilerplate.Application.Common.Pdfs.Components;
 using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using System.Linq;
 
-namespace Boilerplate.Application.Features.Pdfs;
+namespace Boilerplate.Application.Common.Pdfs;
 public class InvoiceDocument : IDocument
 {
     public InvoiceModel Model { get; }

@@ -1,27 +1,25 @@
-﻿using Boilerplate.Application.Common.Behaviors;
-using Boilerplate.Application.Common.Handlers;
+﻿using Boilerplate.Application.Auth;
 using Boilerplate.Application.Common;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using Boilerplate.Application.MappingProfiles;
+using Boilerplate.Application.Common.Handlers;
 using Boilerplate.Application.Features.Articles.ArticleCreate;
+using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.ResetPassword;
-using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Application.Features.Orders.OrderById;
 using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Application.Features.Orders.OrderUpdate;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
-using Boilerplate.Application.Features.Users.EditUser;
 using Boilerplate.Application.Features.Users;
+using Boilerplate.Application.Features.Users.EditUser;
+using Boilerplate.Application.Implementations;
+using Boilerplate.Application.MappingProfiles;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
-using Boilerplate.Application.Auth;
-using Boilerplate.Application.Features.Pdfs;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Boilerplate.Application;
 
@@ -46,8 +44,8 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IOrderItemCreateResponse, OrderItemCreateResponse>();
         services.AddScoped<IPaymentMethodCreateResponse, PaymentMethodCreateResponse>();
         services.AddScoped<ICustomerCreateResponse, CustomerCreateResponse>();
-        services.AddScoped<IPdfService, PdfService>();
         services.AddScoped<IOrderByIdResponse, OrderByIdResponse>();
+        services.AddScoped<IPdfService, PdfService>();
         return services;
     }
 }

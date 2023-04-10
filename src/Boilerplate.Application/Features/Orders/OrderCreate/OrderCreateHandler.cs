@@ -1,8 +1,8 @@
 ﻿using Amazon.Runtime.Documents;
 using AutoMapper;
 using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Pdfs;
 using Boilerplate.Application.Features.Users;
+using Boilerplate.Application.Implementations;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;

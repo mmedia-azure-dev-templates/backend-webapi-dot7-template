@@ -5,7 +5,7 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
-namespace Boilerplate.Application.Features.Pdfs;
+namespace Boilerplate.Application.Common.Pdfs;
 public class OrderDocument : IDocument
 {
     public OrderValidResponse _orderValidResponse { get; set; }

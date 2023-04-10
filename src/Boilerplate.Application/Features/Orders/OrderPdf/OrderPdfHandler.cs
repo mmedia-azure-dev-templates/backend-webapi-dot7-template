@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Common.Pdfs;
 using Boilerplate.Application.Features.Orders.OrderValid;
-using Boilerplate.Application.Features.Pdfs;
+using Boilerplate.Application.Implementations;
 using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using System;
@@ -16,7 +17,7 @@ public class OrderPdfHandler : IRequestHandler<OrderPdfRequest, OrderPdfResponse
     private readonly IMediator _mediator;
     private readonly IPdfService _pdfService;
 
-    public OrderPdfHandler(IContext context, IMapper mapper, IMediator mediator,IPdfService pdfService)
+    public OrderPdfHandler(IContext context, IMapper mapper, IMediator mediator, IPdfService pdfService)
     {
         _context = context;
         _mapper = mapper;
