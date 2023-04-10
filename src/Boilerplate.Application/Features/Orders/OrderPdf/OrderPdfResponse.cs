@@ -9,9 +9,6 @@ using System.Collections.Generic;
 namespace Boilerplate.Application.Features.Orders.OrderPdf;
 public class OrderPdfResponse
 {
-    public Order Order { get; set; }
-    public List<ArticleSearchResponse> ArticleSearchResponse { get; set; }
-    public GetUsersResponse UserGenerated { get; set; }
-    public GetUsersResponse? UserAssigned { get; set; }
-    public Customer Customer { get; set; }
+    public bool IsValid { get; set; } = false;
+    public string DocumentUrl { get; set; }
 }

@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Orders.OrderById;
+using Boilerplate.Application.Features.Orders.OrderValid;
+using Boilerplate.Domain.Entities.Pdfs;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using System;
@@ -11,17 +14,26 @@ public class OrderPdfHandler : IRequestHandler<OrderPdfRequest, OrderPdfResponse
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
-    private readonly IOrderService _orderService;
-    public OrderPdfHandler(IContext context, IMapper mapper,IOrderService orderService)
+    private readonly IMediator _mediator;
+
+    public OrderPdfHandler(IContext context, IMapper mapper, IMediator mediator)
     {
         _context = context;
         _mapper = mapper;
-        _orderService = orderService;
+        _mediator = mediator;
     }
 
     public async Task<OrderPdfResponse> Handle(OrderPdfRequest request, CancellationToken cancellationToken)
     {
-        var orderValid = await _orderService.CheckValidOrderById(request.OrderId, cancellationToken);
+        var result = new OrderPdfResponse();
+        var orderValid = await _mediator.Send(new OrderValidRequest { OrderId = request.OrderId }, cancellationToken);
+
+        if (!orderValid.IsValid)
+        {
+            return result;
+        }
         throw new NotImplementedException();
+        //var document = new OrderDocument(orderValid.OrderByIdResponse);
+        //return File(document.GeneratePdf(), "application/pdf", "myReport.pdf");
     }
 }

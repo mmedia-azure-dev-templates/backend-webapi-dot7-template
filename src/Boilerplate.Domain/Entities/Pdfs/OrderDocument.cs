@@ -1,4 +1,5 @@
-﻿using QuestPDF.Drawing;
+﻿using Boilerplate.Domain.Implementations;
+using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -7,9 +8,11 @@ namespace Boilerplate.Domain.Entities.Pdfs;
 public class OrderDocument : IDocument
 {
     OrderDocumentDataSource _orderDocumentDataSource { get; set; }
+
     public OrderDocument(OrderDocumentDataSource orderDocumentDataSource)
     {
         _orderDocumentDataSource = orderDocumentDataSource;
+        //var hola = new OrderByIdResponse();
     }
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
     public void Compose(IDocumentContainer container)
