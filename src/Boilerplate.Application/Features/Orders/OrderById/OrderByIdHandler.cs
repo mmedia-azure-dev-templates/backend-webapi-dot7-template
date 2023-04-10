@@ -2,7 +2,6 @@
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Users.GetUsers;
-using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,19 +15,14 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
-    private readonly IOrderService _orderService;
-    private OrderByIdResponse _orderByIdResponse;
-    public OrderByIdHandler(IContext context, IMapper mapper, IOrderService orderService, IOrderByIdResponse orderByIdResponse)
+    public OrderByIdHandler(IContext context, IMapper mapper, IMediator mediator)
     {
         _context = context;
         _mapper = mapper;
-        _orderService = orderService;
-        _orderByIdResponse = (OrderByIdResponse)orderByIdResponse;
     }
 
     public async Task<OrderByIdResponse> Handle(OrderByIdRequest request, CancellationToken cancellationToken)
     {
-        //var hola = _orderService.GetLocalOrderById(request.OrderId);
         var result = (from order in _context.Orders.AsNoTracking().DefaultIfEmpty()
                       join orderItems in _context.OrderItems.AsNoTracking().DefaultIfEmpty() on order.Id equals orderItems.OrderId into j1
                       from orderItems in j1.DefaultIfEmpty()
@@ -168,9 +162,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                                                         where product.OrderId == g.First().order.Id
                                                         select product)
                            });
-        var hola = await finalResult.FirstOrDefaultAsync(cancellationToken);
-        _orderByIdResponse = _mapper.Map<OrderByIdResponse>(hola);
 
-        return _orderByIdResponse;
+        return _mapper.Map<OrderByIdResponse>(await finalResult.FirstOrDefaultAsync(cancellationToken));
     }
 }

@@ -46,7 +46,6 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IPaymentMethodCreateResponse, PaymentMethodCreateResponse>();
         services.AddScoped<ICustomerCreateResponse, CustomerCreateResponse>();
         services.AddScoped<IPdfService, PdfService>();
-        services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IOrderByIdResponse, OrderByIdResponse>();
         return services;
     }
