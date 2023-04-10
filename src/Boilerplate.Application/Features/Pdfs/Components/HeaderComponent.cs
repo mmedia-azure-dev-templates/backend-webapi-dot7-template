@@ -2,7 +2,7 @@
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
-namespace Boilerplate.Domain.Entities.Pdfs.Components;
+namespace Boilerplate.Application.Features.Pdfs.Components;
 public class HeaderComponent : IComponent
 {
     public InvoiceModel Model { get; }

@@ -21,6 +21,7 @@ using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using Boilerplate.Application.Auth;
+using Boilerplate.Application.Features.Pdfs;
 
 namespace Boilerplate.Application;
 

@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Orders.OrderById;
 using Boilerplate.Application.Features.Orders.OrderValid;
-using Boilerplate.Domain.Entities.Pdfs;
-using Boilerplate.Domain.Implementations;
+using Boilerplate.Application.Features.Pdfs;
+using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using System;
 using System.Threading;
@@ -15,12 +14,14 @@ public class OrderPdfHandler : IRequestHandler<OrderPdfRequest, OrderPdfResponse
     private readonly IContext _context;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+    private readonly IPdfService _pdfService;
 
-    public OrderPdfHandler(IContext context, IMapper mapper, IMediator mediator)
+    public OrderPdfHandler(IContext context, IMapper mapper, IMediator mediator,IPdfService pdfService)
     {
         _context = context;
         _mapper = mapper;
         _mediator = mediator;
+        _pdfService = pdfService;
     }
 
     public async Task<OrderPdfResponse> Handle(OrderPdfRequest request, CancellationToken cancellationToken)
@@ -32,8 +33,10 @@ public class OrderPdfHandler : IRequestHandler<OrderPdfRequest, OrderPdfResponse
         {
             return result;
         }
-        throw new NotImplementedException();
-        //var document = new OrderDocument(orderValid.OrderByIdResponse);
-        //return File(document.GeneratePdf(), "application/pdf", "myReport.pdf");
+        var document = new OrderDocument(orderValid);
+        AmazonObject amazonObject = await _pdfService.CreateOrderPdf(document);
+        result.IsValid = true;
+        result.DocumentUrl = amazonObject.ObjectUrl;
+        return result;
     }
 }

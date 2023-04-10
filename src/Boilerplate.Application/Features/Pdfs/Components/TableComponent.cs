@@ -3,7 +3,7 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.Collections.Generic;
 
-namespace Boilerplate.Domain.Entities.Pdfs.Components;
+namespace Boilerplate.Application.Features.Pdfs.Components;
 public class TableComponent : IComponent
 {
     public List<OrderItem2> Model { get; }
