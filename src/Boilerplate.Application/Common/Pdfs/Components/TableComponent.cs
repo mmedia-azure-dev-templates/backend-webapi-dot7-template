@@ -32,7 +32,7 @@ public class TableComponent : IComponent
                 header.Cell().Element(CellStyle).AlignCenter().Text("#");
                 //header.Cell().Element(CellStyle).Text("Sku");
                 header.Cell().Element(CellStyle).AlignCenter().Text("Producto");
-                header.Cell().Element(CellStyle).AlignCenter().Text("Precio unitario");
+                header.Cell().Element(CellStyle).AlignCenter().Text("Precio U.");
                 header.Cell().Element(CellStyle).AlignCenter().Text("Cantidad");
                 header.Cell().Element(CellStyle).AlignCenter().Text("Total");
 
@@ -45,18 +45,28 @@ public class TableComponent : IComponent
             // step 3
             foreach (var item in Model)
             {
-                table.Cell().Element(CellStyle).Text(Model.IndexOf(item) + 1);
+                table.Cell().Element(CellStyle).AlignCenter().Text(Model.IndexOf(item) + 1);
                // table.Cell().Element(CellStyle).Text(item.Sku);
-                table.Cell().Element(CellStyle).Text(item.Display);
-                table.Cell().Element(CellStyle).AlignRight().Text($"{item.Cost}$");
+                table.Cell().Element(CellStyle).PaddingLeft(4).Text(item.Display);
+                table.Cell().Element(CellStyle).PaddingRight(4).AlignRight().Text($"{item.Cost}$");
                 table.Cell().Element(CellStyle).AlignCenter().AlignMiddle().Text(item.Quantity);
-                table.Cell().Element(CellStyle).AlignRight().Text($"{item.Total}$");
+                table.Cell().Element(CellStyle).PaddingRight(4).AlignRight().Text($"{item.Total}$");
 
                 static IContainer CellStyle(IContainer container)
                 {
                     return container.Border(1).BorderColor(Colors.Black).PaddingVertical(5);
                 }
             }
+
+            table.Footer(footer =>
+            {
+                footer.Cell().RowSpan(4).Element(CellStyle).AlignCenter().Text("Producto");
+                static IContainer CellStyle(IContainer container)
+                {
+                    return container.DefaultTextStyle(x => x.SemiBold()).AlignMiddle().MinHeight(40).Border(1).BorderColor(Colors.Black);
+                }
+
+            });
         });
     }
 }

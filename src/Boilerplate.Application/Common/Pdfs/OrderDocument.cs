@@ -44,7 +44,7 @@ public class OrderDocument : IDocument
             column.Item().Element(ComposeTable);
 
             var totalPrice = _orderValidResponse.OrderByIdResponse.Order.Total;
-            column.Item().AlignRight().Text($"Grand total: {totalPrice}$").FontSize(14);
+            column.Item().PaddingRight(2).AlignRight().Text($"Total: {totalPrice}$").FontSize(14);
 
         });
     }
