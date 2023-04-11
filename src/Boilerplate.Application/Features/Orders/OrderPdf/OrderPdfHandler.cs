@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Pdfs;
+using Boilerplate.Application.Features.Orders.OrderUpdate;
 using Boilerplate.Application.Features.Orders.OrderValid;
 using Boilerplate.Application.Implementations;
 using Boilerplate.Domain.Entities.Common;
@@ -37,15 +38,19 @@ public class OrderPdfHandler : IRequestHandler<OrderPdfRequest, OrderPdfResponse
             return result;
         }
 
+        
+
         var document = new OrderDocument(orderValid);
+        //document.GeneratePdf("hello.pdf");
+        AmazonObject amazonObject = await _pdfService.CreateOrderPdf(document);
+        result.IsValid = true;
+        result.DocumentUrl = amazonObject.ObjectUrl;
 
-        // instead of the standard way of generating a PDF file
-        document.GeneratePdf("hello.pdf");
+        //orderValid.OrderByIdResponse.Order.DocumentUrl = amazonObject.ObjectUrl;
 
-        //document.ShowInPreviewer(12345);
-        //AmazonObject amazonObject = await _pdfService.CreateOrderPdf(document);
-        //result.IsValid = true;
-        //result.DocumentUrl = amazonObject.ObjectUrl;
+        //var orderUpdate = _mapper.Map<OrderValidResponse, OrderUpdateRequest>(orderValid);
+        //var testing = await _mediator.Send(orderUpdate, cancellationToken);
+
         return result;
     }
 }
