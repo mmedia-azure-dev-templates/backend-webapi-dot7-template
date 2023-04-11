@@ -30,7 +30,7 @@ public class HeaderComponent : IComponent
             {                
                 row.ConstantItem(300).AlignBottom().Background("#BBB").Column(column =>
                 {
-                    column.Item().AlignMiddle().Text(text =>
+                    column.Item().Text(text =>
                     {
                         text.Span($"ORDEN DE COMPRA No. ").Bold().FontSize(16);
                         text.Span($"{_orderByIdResponse.Order.OrderNumber}").Bold().Style(titleStyle);
@@ -40,7 +40,7 @@ public class HeaderComponent : IComponent
                     });
                 });
 
-                row.RelativeItem(2).AlignMiddle().Image(_logo, ImageScaling.FitArea);
+                row.RelativeItem(1).Image(_logo, ImageScaling.FitArea);
             });
 
             column.Item().Text(text =>
