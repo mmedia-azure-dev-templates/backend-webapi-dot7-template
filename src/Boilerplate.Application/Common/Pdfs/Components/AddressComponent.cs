@@ -5,9 +5,9 @@ namespace Boilerplate.Application.Common.Pdfs.Components;
 public class AddressComponent : IComponent
 {
     private string Title { get; }
-    private Address Address { get; }
+    private Address2 Address { get; }
 
-    public AddressComponent(string title, Address address)
+    public AddressComponent(string title, Address2 address)
     {
         Title = title;
         Address = address;

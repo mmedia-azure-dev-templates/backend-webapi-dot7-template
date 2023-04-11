@@ -49,6 +49,12 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
             Email = request.Email,
             Mobile = request.Mobile,
             Phone = request.Phone,
+            
+            Notes = request.Notes,
+        };
+
+        var address = new Addres
+        {
             PrimaryStreet = request.PrimaryStreet,
             SecondaryStreet = request.SecondaryStreet,
             Numeration = request.Numeration,
@@ -56,7 +62,6 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
             Provincia = request.Provincia,
             Canton = request.Canton,
             Parroquia = request.Parroquia,
-            Notes = request.Notes,
         };
 
         _context.Customers.Add(customer);
