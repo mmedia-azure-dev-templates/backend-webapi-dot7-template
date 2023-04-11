@@ -39,18 +39,12 @@ public class OrderDocument : IDocument
         container.PaddingVertical(40).Column(column =>
         {
             column.Spacing(5);
-
-
             column.Item().Element(ComposeTable);
-
-            var totalPrice = _orderValidResponse.OrderByIdResponse.Order.Total;
-            column.Item().PaddingRight(2).AlignRight().Text($"Total: {totalPrice}$").FontSize(14);
-
         });
     }
 
     void ComposeTable(IContainer container)
     {
-        new TableComponent(_orderValidResponse.OrderByIdResponse.ArticleSearchResponse).Compose(container);
+        new TableComponent(_orderValidResponse.OrderByIdResponse.ArticleSearchResponse, _orderValidResponse.OrderByIdResponse.Order).Compose(container);
     }
 }

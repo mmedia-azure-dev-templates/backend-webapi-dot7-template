@@ -26,19 +26,22 @@ public class HeaderComponent : IComponent
         var titleStyle = TextStyle.Default.FontSize(15).SemiBold().FontColor(Colors.Red.Medium);
         container.Row(row =>
         {
-
             row.RelativeItem().Column(column =>
             {
                 column.Item().Text(text =>
                 {
                     text.Span($"ORDEN DE COMPRA No. ").Bold().FontSize(16);
                     text.Span($"{_orderByIdResponse.Order.OrderNumber}").Bold().Style(titleStyle);
+                    text.EmptyLine();
+                    text.Span("Fecha: ").SemiBold();
+                    text.Span($"{_orderByIdResponse.Order.DateCreated:F}").Light();
                 });
+
+                row.ConstantItem(180).Image(_logo, ImageScaling.FitArea);
 
                 column.Item().Text(text =>
                 {
-                    text.Span("Fecha: ").SemiBold();
-                    text.Span($"{_orderByIdResponse.Order.DateCreated:F}").Light();
+                    text.EmptyLine();
                     text.EmptyLine();
                     text.Span("Nombres y Apellidos: ").SemiBold();
                     text.Span($"{_orderByIdResponse.Customer.FirstName} {_orderByIdResponse.Customer.LastName}").Light();
@@ -65,15 +68,7 @@ public class HeaderComponent : IComponent
                     text.Span("Parroquia: ").SemiBold();
                     text.Span($"{_orderByIdResponse.Customer.Parroquia} ").Light();
                 });
-            });
-
-
-
-
-
-            row.ConstantItem(180).Image(_logo, ImageScaling.FitArea);
-
-
+            }); 
         });
     }
 }
