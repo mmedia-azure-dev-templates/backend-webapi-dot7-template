@@ -54,6 +54,12 @@ public partial class Address : Migration
         migrationBuilder.EnsureSchema(
             name: "web");
 
+        migrationBuilder.DropForeignKey(
+            name: "FK_Address_Customers_PersonId",
+            table: "Address",
+            schema: "web"
+        );
+
         migrationBuilder.DropTable(
             name: "Address",
             schema: "web");
