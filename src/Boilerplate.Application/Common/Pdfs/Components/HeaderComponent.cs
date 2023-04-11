@@ -10,7 +10,6 @@ using System.Net;
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class HeaderComponent : IComponent
 {
-    public InvoiceModel Model { get; }
     public WebClient client = new WebClient();
     public OrderByIdResponse _orderByIdResponse { get; set; }
     public byte[] _logo { get; set; }
@@ -28,7 +27,7 @@ public class HeaderComponent : IComponent
         {
             column.Item().Row(row =>
             {                
-                row.ConstantItem(300).AlignBottom().Background("#BBB").Column(column =>
+                row.ConstantItem(300).AlignBottom().Column(column =>
                 {
                     column.Item().Text(text =>
                     {
