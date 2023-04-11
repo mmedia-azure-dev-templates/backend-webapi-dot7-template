@@ -23,13 +23,13 @@ public partial class Address : Migration
                 Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                 DataKey = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: false),
                 PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                PrimaryStreet = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                SecondaryStreet = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Numeration = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Reference = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Provincia = table.Column<int>(type: "int", nullable: false),
-                Canton = table.Column<int>(type: "int", nullable: false),
-                Parroquia = table.Column<int>(type: "int", nullable: false),
+                PrimaryStreet = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                SecondaryStreet = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                Numeration = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                Reference = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                Provincia = table.Column<int>(type: "int", nullable: true),
+                Canton = table.Column<int>(type: "int", nullable: true),
+                Parroquia = table.Column<int>(type: "int", nullable: true),
                 Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                 DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -53,12 +53,6 @@ public partial class Address : Migration
     {
         migrationBuilder.EnsureSchema(
             name: "web");
-
-        migrationBuilder.DropForeignKey(
-            name: "FK_Address_Customers_PersonId",
-            table: "Address",
-            schema: "web"
-        );
 
         migrationBuilder.DropTable(
             name: "Address",

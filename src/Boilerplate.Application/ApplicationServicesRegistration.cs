@@ -6,6 +6,7 @@ using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
 using Boilerplate.Application.Features.Auth.ResetPassword;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
+using Boilerplate.Application.Features.Customers.CustomerUpdate;
 using Boilerplate.Application.Features.OrderItems.OrderItemCreate;
 using Boilerplate.Application.Features.Orders.OrderById;
 using Boilerplate.Application.Features.Orders.OrderCreate;
@@ -44,6 +45,7 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IOrderItemCreateResponse, OrderItemCreateResponse>();
         services.AddScoped<IPaymentMethodCreateResponse, PaymentMethodCreateResponse>();
         services.AddScoped<ICustomerCreateResponse, CustomerCreateResponse>();
+        services.AddScoped<ICustomerUpdateResponse, CustomerUpdateResponse>();
         services.AddScoped<IOrderByIdResponse, OrderByIdResponse>();
         services.AddScoped<IPdfService, PdfService>();
         return services;

@@ -1,18 +1,9 @@
 ﻿using AutoMapper;
-using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Heroes.GetAllHeroes;
-using Boilerplate.Application.Features.Heroes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Boilerplate.Domain.Entities;
+using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
-using Boilerplate.Domain.Entities;
-using Boilerplate.Application.Features.Users;
-using Boilerplate.Domain.Entities.Common;
 
 namespace Boilerplate.Application.Features.Articles.ArticleCreate;
 public class ArticleCreateHandler:IRequestHandler<ArticleCreateRequest, ArticleCreateResponse>

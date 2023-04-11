@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
 using MediatR;
@@ -23,9 +24,10 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
     private readonly ILocalizationService _localizationService;
     private readonly IAwsS3Service _awsS3Service;
     private CustomerCreateResponse _customerCreateResponse;
+    private readonly IMediator _mediator;
 
 
-    public CustomerCreateHandler(IContext context, IMapper mapper, ILogger<CustomerCreateHandler> logger, IMailService mail, ICustomerCreateResponse customerCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service)
+    public CustomerCreateHandler(IContext context, IMapper mapper, ILogger<CustomerCreateHandler> logger, IMailService mail, ICustomerCreateResponse customerCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service,IMediator mediator)
     {
         _logger = logger;
         _mapper = mapper;
@@ -34,38 +36,25 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
         _customerCreateResponse = (CustomerCreateResponse)customerCreateResponse;
         _localizationService = localizationService;
         _awsS3Service = awsS3Service;
+        _mediator = mediator;
     }
     public async Task<CustomerCreateResponse> Handle(CustomerCreateRequest request, CancellationToken cancellationToken)
     {
-        var customer = new Customer
+        using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
-            DocumentType = request.DocumentType,
-            Ndocument = request.Ndocument,
-            BirthDate = request.BirthDate,
-            GenderType = request.GenderType,
-            CivilStatusType = request.CivilStatusType,
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Email = request.Email,
-            Mobile = request.Mobile,
-            Phone = request.Phone,
-            
-            Notes = request.Notes,
-        };
-
-        var address = new Addres
-        {
-            PrimaryStreet = request.PrimaryStreet,
-            SecondaryStreet = request.SecondaryStreet,
-            Numeration = request.Numeration,
-            Reference = request.Reference,
-            Provincia = request.Provincia,
-            Canton = request.Canton,
-            Parroquia = request.Parroquia,
-        };
-
-        _context.Customers.Add(customer);
-        await _context.SaveChangesAsync(cancellationToken);
+            var customer = new Customer();
+            customer = _mapper.Map(request, customer);
+            customer.Id = new CustomerId(Guid.NewGuid());
+            _context.Customers.Add(customer);
+            await _context.Customers.AddAsync(customer, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            request.addresCreateRequest.PersonId = new PersonId((Guid)customer.Id);
+            var addres = await _mediator.Send(request.addresCreateRequest);
+            _customerCreateResponse = _mapper.Map(customer, _customerCreateResponse);
+            _customerCreateResponse.CustomerId = customer.Id;
+            _customerCreateResponse.addresCreateResponse = addres;
+            scope.Complete();
+        }
 
         return _customerCreateResponse;
     }

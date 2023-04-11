@@ -15,12 +15,12 @@ public class Customer : Entity<CustomerId>, IDataKeyFilterReadWrite, IDateCreate
     public IdentificationType DocumentType { get; set; }
     public string Ndocument { get; set; }
     public DateTime? BirthDate { get; set; }
-    public GenderType GenderType { get; set; }
-    public CivilStatusType CivilStatusType { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Email { get; set; }
-    public string Mobile { get; set; }
+    public GenderType? GenderType { get; set; }
+    public CivilStatusType? CivilStatusType { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? Email { get; set; }
+    public string? Mobile { get; set; }
     public string? Phone { get; set; }
     public string? Notes { get; set; }
     public DateTime DateCreated { get; set; }

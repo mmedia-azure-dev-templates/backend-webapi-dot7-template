@@ -186,10 +186,7 @@ public partial struct PersonId : IGuid
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
 public partial struct CustomerId : IGuid
 {
-    public static implicit operator CustomerId(Guid customerId)
-    {
-        return new CustomerId(customerId);
-    }
+    public static explicit operator Guid(CustomerId customerId) => customerId.Value;
 }
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct CustomCounter : ILong

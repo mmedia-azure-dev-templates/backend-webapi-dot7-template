@@ -1,0 +1,17 @@
+﻿using Boilerplate.Domain.Entities.Common;
+using MediatR;
+using System;
+
+namespace Boilerplate.Application.Features.Address.AddresUpdate;
+public class AddresUpdateRequest : IRequest<AddresUpdateResponse>
+{
+    public PersonId PersonId { get; set; }
+    public string? PrimaryStreet { get; set; }
+    public string? SecondaryStreet { get; set; }
+    public string? Numeration { get; set; }
+    public string? Reference { get; set; }
+    public int? Provincia { get; set; }
+    public int? Canton { get; set; }
+    public int? Parroquia { get; set; }
+    public string? Notes { get; set; }
+}
