@@ -1,4 +1,5 @@
-﻿using Boilerplate.Application.Features.Orders.OrderValid;
+﻿using Boilerplate.Application.Common.Pdfs.Components;
+using Boilerplate.Application.Features.Orders.OrderValid;
 using Boilerplate.Domain.Implementations;
 using QuestPDF.Drawing;
 using QuestPDF.Fluent;
@@ -21,10 +22,29 @@ public class OrderDocument : IDocument
             .Page(page =>
             {
                 page.Margin(50);
-
-                page.Header().Height(100).Background(Colors.Grey.Lighten1);
-                page.Content().Background(Colors.Grey.Lighten3);
+                page.Header().Element(ComposeHeader);
+                //page.Header().Height(100).Background(Colors.Grey.Lighten1);
+                page.Content().Element(ComposeContent); //.Background(Colors.Grey.Lighten3);
                 page.Footer().Height(50).Background(Colors.Grey.Lighten1);
             });
+    }
+
+    void ComposeHeader(IContainer container)
+    {
+        new HeaderComponent(_orderValidResponse.OrderByIdResponse).Compose(container);
+    }
+
+    void ComposeContent(IContainer container)
+    {
+        container.PaddingVertical(40).Column(column =>
+        {
+            column.Spacing(5);
+            column.Item().Element(ComposeTable);
+        });
+    }
+
+    void ComposeTable(IContainer container)
+    {
+        new TableComponent(_orderValidResponse.OrderByIdResponse.ArticleSearchResponse, _orderValidResponse.OrderByIdResponse.Order).Compose(container);
     }
 }

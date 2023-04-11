@@ -37,7 +37,7 @@ public class InvoiceDocument : IDocument
 
     void ComposeHeader(IContainer container)
     {
-        new HeaderComponent(Model).Compose(container);
+        //new HeaderComponent(Model).Compose(container);
     }
 
     void ComposeContent(IContainer container)
@@ -65,7 +65,7 @@ public class InvoiceDocument : IDocument
 
     void ComposeTable(IContainer container)
     {
-        new TableComponent(Model.Items).Compose(container);
+        //new TableComponent(Model.Items).Compose(container);
     }
 
     void ComposeComments(IContainer container)
