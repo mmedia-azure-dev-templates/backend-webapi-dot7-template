@@ -1,6 +1,9 @@
 ﻿using Amazon.Runtime.Documents;
 using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Address.AddresUpdate;
+using Boilerplate.Application.Features.Customers.CustomerCreate;
+using Boilerplate.Application.Features.Customers.CustomerUpdate;
 using Boilerplate.Application.Features.Orders.OrderCreate;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
@@ -23,6 +26,7 @@ namespace Boilerplate.Application.Features.Orders.OrderUpdate;
 
 public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdateResponse>
 {
+    private readonly IMediator _mediator;
     private readonly IContext _context;
     private readonly ISession _session;
     private readonly IMapper _mapper;
@@ -33,8 +37,9 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
     private OrderUpdateResponse _orderUpdateResponse;
 
 
-    public OrderUpdateHandler(IContext context, ISession session, IMapper mapper, ILogger<OrderUpdateHandler> logger, IMailService mail, IOrderUpdateResponse orderUpdateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service)
+    public OrderUpdateHandler(IMediator mediator, IContext context, ISession session, IMapper mapper, ILogger<OrderUpdateHandler> logger, IMailService mail, IOrderUpdateResponse orderUpdateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service)
     {
+        _mediator = mediator;
         _logger = logger;
         _mapper = mapper;
         _context = context;
@@ -50,21 +55,26 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
         {
             try
             {
-                var customer = await _context.Customers.Where(x => x.Ndocument == request.CustomerCreateRequest.Ndocument).FirstOrDefaultAsync(cancellationToken);
+                CustomerUpdateResponse customerUpdateResponse = new CustomerUpdateResponse();
+                CustomerCreateResponse customerCreateResponse = new CustomerCreateResponse();
+                CustomerUpdateRequest customerUpdateRequest = new CustomerUpdateRequest();
+                CustomerCreateRequest customerCreateRequest = new CustomerCreateRequest();
+                var customer = await _context.Customers.Where(x => x.Ndocument == request.CustomerUpdateRequest.Ndocument).FirstOrDefaultAsync(cancellationToken);
 
                 if (customer != null)
                 {
-                    customer = _mapper.Map(request.CustomerCreateRequest, customer);
-                    _context.Customers.Update(customer);
+                    customerUpdateRequest = _mapper.Map<CustomerUpdateRequest>(customer);
+                    customerUpdateRequest.AddresUpdateRequest = request.CustomerUpdateRequest.AddresUpdateRequest;
+                    customerUpdateRequest.CustomerId = customer.Id;
+                    customerUpdateRequest.AddresUpdateRequest.PersonId = new PersonId((Guid)customer.Id);
+                    customerUpdateResponse = await _mediator.Send(customerUpdateRequest, cancellationToken);
                 }
 
                 if (customer == null)
                 {
-                    customer = _mapper.Map(request.CustomerCreateRequest, customer);
-                    await _context.Customers.AddAsync(customer, cancellationToken);
+                    customerCreateRequest = _mapper.Map<CustomerCreateRequest>(request.CustomerUpdateRequest);
+                    customerCreateResponse = await _mediator.Send(customerCreateRequest, cancellationToken);
                 }
-
-                await _context.SaveChangesAsync(cancellationToken);
 
                 var order = await _context.Orders.Where(x => x.Id == request.OrderId).FirstOrDefaultAsync(cancellationToken);
                 order = _mapper.Map(request, order);

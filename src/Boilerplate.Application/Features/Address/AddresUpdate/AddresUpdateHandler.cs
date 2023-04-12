@@ -28,6 +28,15 @@ public class AddresUpdateHandler : IRequestHandler<AddresUpdateRequest, AddresUp
         var address = await _context.Address.Where(x=> x.PersonId == request.PersonId).FirstOrDefaultAsync(cancellationToken);
         if (address != null) 
         {
+            address.PersonId = request.PersonId;
+            address.PrimaryStreet = request.PrimaryStreet;
+            address.SecondaryStreet = request.SecondaryStreet;
+            address.Numeration = request.Numeration;
+            address.Reference = request.Reference;
+            address.Provincia = request.Provincia;
+            address.Canton = request.Canton;
+            address.Parroquia = request.Parroquia;
+            address.Notes = request.Notes;
             _context.Address.Update(address);
             await _context.SaveChangesAsync(cancellationToken);
             _addresUpdateResponse = _mapper.Map(address, _addresUpdateResponse);

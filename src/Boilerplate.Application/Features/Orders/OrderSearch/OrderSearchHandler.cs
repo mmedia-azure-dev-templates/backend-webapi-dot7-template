@@ -30,8 +30,8 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
 
     public async Task<PaginatedList<OrderSearchResponse>> Handle(OrderSearchRequest request, CancellationToken cancellationToken)
     {
-        var formatStartDate = new DateTime(request.StartDate.Year, request.StartDate.Month, request.StartDate.Day);
-        var formatEndDate = new DateTime(request.EndDate.Year, request.EndDate.Month, request.EndDate.Day).AddDays(1).AddSeconds(-1);
+        //var formatStartDate = new DateTime(request.StartDate.Year, request.StartDate.Month, request.StartDate.Day);
+        //var formatEndDate = new DateTime(request.EndDate.Year, request.EndDate.Month, request.EndDate.Day).AddDays(1).AddSeconds(-1);
         var result = (from order in _context.Orders.AsNoTracking().DefaultIfEmpty()
                       join orderItems in _context.OrderItems.AsNoTracking().DefaultIfEmpty() on order.Id equals orderItems.OrderId into j1
                       from orderItems in j1.DefaultIfEmpty()
@@ -45,7 +45,8 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                       from userAssignedApplicationUser in j5.DefaultIfEmpty()
                       join userAssignedUserInformation in _context.UserInformations.AsNoTracking() on (Guid?)order.UserAssigned equals (Guid)userAssignedUserInformation.UserId into j6
                       from userAssignedUserInformation in j6.DefaultIfEmpty()
-                      join customer in _context.Customers.AsNoTracking().DefaultIfEmpty() on order.CustomerId equals customer.Id
+                      join customer in _context.Customers.AsNoTracking().DefaultIfEmpty() on order.CustomerId equals customer.Id into j7
+                      from customer in j7.DefaultIfEmpty()
                       select new
                       {
                           order,
@@ -61,7 +62,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
         var defaultFilter = result;
         
 
-        defaultFilter = result.Where(x => x.order.DateCreated >= formatStartDate && x.order.DateCreated <= formatEndDate).OrderByDescending(x => x.order.DateCreated);
+        defaultFilter = result.Where(x => x.order.DateCreated >= request.StartDate && x.order.DateCreated <= request.EndDate).OrderByDescending(x => x.order.DateCreated);
 
         if (request.OrderFilterType != null && request.OrderFilterType.ToString() == "OrderNumber")
         {

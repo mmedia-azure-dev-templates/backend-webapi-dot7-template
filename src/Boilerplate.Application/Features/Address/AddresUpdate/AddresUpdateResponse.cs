@@ -3,7 +3,7 @@ using Boilerplate.Domain.Implementations;
 using System;
 
 namespace Boilerplate.Application.Features.Address.AddresUpdate;
-public class AddresUpdateResponse
+public class AddresUpdateResponse: IAddresUpdateResponse
 {
     public PersonId PersonId { get; set; }
     public string PrimaryStreet { get; set; }

@@ -12,13 +12,18 @@ public partial class AlterCustomer : Migration
     protected override void Up(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.EnsureSchema(name: "web");
+        migrationBuilder.Sql(@"IF (EXISTS (SELECT 1 FROM sys.objects WHERE name = 'FK_Orders_Customers_CustomerId'))
+        BEGIN
+            ALTER TABLE [web].Orders DROP CONSTRAINT FK_Orders_Customers_CustomerId
+        END");
         migrationBuilder.Sql("ALTER TABLE web.Orders ALTER COLUMN CustomerId UniqueIdentifier NULL;");
         migrationBuilder.Sql("UPDATE web.Orders SET CustomerId = null");
-        migrationBuilder.DropForeignKey(
-            name: "FK_Orders_Customers_CustomerId",
-            table: "Orders",
-            schema: "web"
-        );
+
+        //migrationBuilder.DropForeignKey(
+        //    name: "FK_Orders_Customers_CustomerId",
+        //    table: "Orders",
+        //    schema: "web"
+        //);
         migrationBuilder.DropTable(name: "Customers", schema: "web");
 
         migrationBuilder.CreateTable(
@@ -58,21 +63,29 @@ public partial class AlterCustomer : Migration
             onDelete: ReferentialAction.NoAction
         );
 
-        migrationBuilder.CreateIndex(
-                name: "DataKeyEmailIndex",
-                schema: "web",
-                table: "Customers",
-                unique: true,
-                columns: new[] { "DataKey", "Email" }
-            );
+        //migrationBuilder.CreateIndex(
+        //        name: "DataKeyEmailIndex",
+        //        schema: "web",
+        //        table: "Customers",
+        //        unique: true,
+        //        columns: new[] { "DataKey", "Email" }
+        //    );
 
-        migrationBuilder.CreateIndex(
-            name: "DataKeyNdocumentIndex",
-            schema: "web",
-            table: "Customers",
-            unique: true,
-            columns: new[] { "DataKey", "Ndocument" }
-        );
+        migrationBuilder.Sql(@"CREATE UNIQUE INDEX [DataKeyEmailIndex]
+        ON web.Customers (DataKey, Email)
+        WHERE Email IS NOT NULL ;");
+
+        //migrationBuilder.CreateIndex(
+        //    name: "DataKeyNdocumentIndex",
+        //    schema: "web",
+        //    table: "Customers",
+        //    unique: true,
+        //    columns: new[] { "DataKey", "Ndocument" }
+        //);
+
+        migrationBuilder.Sql(@"CREATE UNIQUE INDEX [DataKeyNdocumentIndex]
+        ON web.Customers (DataKey, DocumentType,Ndocument)
+        WHERE DocumentType IS NOT NULL AND Ndocument IS NOT NULL;");
 
         migrationBuilder.CreateIndex(
             name: "FirstNameIndex",
@@ -164,20 +177,15 @@ public partial class AlterCustomer : Migration
             columns: new[] { "DataKey", "LastName" }
         );
 
-        migrationBuilder.AddForeignKey(
-            schema: "web",
-            table: "Orders",
-            column: "CustomerId",
-            name: "FK_Orders_Customers_CustomerId",
-            principalSchema: "web",
-            principalTable: "Customers",
-            principalColumn: "Id",
-            onDelete: ReferentialAction.NoAction
-        );
-
-
-
-
-
+        //migrationBuilder.AddForeignKey(
+        //    schema: "web",
+        //    table: "Orders",
+        //    column: "CustomerId",
+        //    name: "FK_Orders_Customers_CustomerId",
+        //    principalSchema: "web",
+        //    principalTable: "Customers",
+        //    principalColumn: "Id",
+        //    onDelete: ReferentialAction.NoAction
+        //);
     }
 }

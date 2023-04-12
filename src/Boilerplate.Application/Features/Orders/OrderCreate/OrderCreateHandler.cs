@@ -51,6 +51,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
     {
         try
         {
+            CustomerUpdateResponse customerUpdateResponse = new CustomerUpdateResponse();
             CustomerCreateResponse customerCreateResponse = new CustomerCreateResponse();
             CustomerUpdateRequest customerUpdateRequest = new CustomerUpdateRequest();
             
@@ -65,7 +66,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                     customerUpdateRequest.AddresUpdateRequest = _mapper.Map<AddresUpdateRequest>(request.CustomerCreateRequest.addresCreateRequest);
                     customerUpdateRequest.CustomerId = customer.Id;
                     customerUpdateRequest.AddresUpdateRequest.PersonId = new PersonId((Guid)customer.Id);
-                    var chesnse = await _mediator.Send(customerUpdateRequest, cancellationToken);
+                    customerUpdateResponse = await _mediator.Send(customerUpdateRequest, cancellationToken);
                 }
 
                 if (customer == null)
@@ -74,12 +75,21 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 }
 
             }
-                
+            var customerId = new CustomerId();
 
             var counter = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault();
-            counter.CustomCounter = new CustomCounter(counter!.CustomCounter.Value + 1);
+            counter!.CustomCounter = new CustomCounter(counter!.CustomCounter.Value + 1);
             await _context.SaveChangesAsync(cancellationToken);
 
+            if(customerCreateResponse?.CustomerId != null)
+            {
+                customerId = new CustomerId((Guid) customerCreateResponse.CustomerId);
+            }
+
+            if (customerUpdateResponse?.CustomerId != null)
+            {
+                customerId = new CustomerId((Guid)customerUpdateResponse.CustomerId);
+            }
 
             var order = new Order
             {
@@ -87,7 +97,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 OrderNumber = new OrderNumber(counter.CustomCounter.Value),
                 UserGenerated = new UserGenerated(_session.UserId.Value),
                 UserAssigned = request.UserAssigned,
-                CustomerId = customerCreateResponse.CustomerId,
+                CustomerId = customerId == default ? null : customerId,
                 SubTotal = request.SubTotal,
                 Total = request.Total,
             };

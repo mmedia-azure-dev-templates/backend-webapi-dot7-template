@@ -17,7 +17,7 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
     public OrderNumber OrderNumber { get; set; }
     public UserGenerated UserGenerated { get; set; }
     public UserAssigned? UserAssigned { get; set; } = null;
-    public CustomerId CustomerId { get; set; }
+    public CustomerId? CustomerId { get; set; } = null;
     public decimal SubTotal { get; set; } = 0;
     public decimal Total { get; set; } = 0;
     public string? Notes { get; set; }
