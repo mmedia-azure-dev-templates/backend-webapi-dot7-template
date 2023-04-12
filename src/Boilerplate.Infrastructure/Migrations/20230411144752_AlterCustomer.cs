@@ -12,12 +12,13 @@ public partial class AlterCustomer : Migration
     protected override void Up(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.EnsureSchema(name: "web");
-        migrationBuilder.Sql("ALTER TABLE web.Orders ALTER COLUMN CustomerId UniqueIdentifier NULL;");
-        migrationBuilder.Sql("UPDATE web.Orders SET CustomerId = null");
-        migrationBuilder.Sql(@"IF (OBJECT_ID(N'FK_Orders_Customers_CustomerId', 'F') IS NOT NULL)
+        migrationBuilder.Sql(@"IF (EXISTS (SELECT 1 FROM sys.objects WHERE name = 'FK_Orders_Customers_CustomerId'))
         BEGIN
             ALTER TABLE [web].Orders DROP CONSTRAINT FK_Orders_Customers_CustomerId
         END");
+        migrationBuilder.Sql("ALTER TABLE web.Orders ALTER COLUMN CustomerId UniqueIdentifier NULL;");
+        migrationBuilder.Sql("UPDATE web.Orders SET CustomerId = null");
+
         //migrationBuilder.DropForeignKey(
         //    name: "FK_Orders_Customers_CustomerId",
         //    table: "Orders",
