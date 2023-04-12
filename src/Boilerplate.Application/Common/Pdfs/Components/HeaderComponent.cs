@@ -10,7 +10,6 @@ using System.Net;
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class HeaderComponent : IComponent
 {
-    public InvoiceModel Model { get; }
     public WebClient client = new WebClient();
     public OrderByIdResponse _orderByIdResponse { get; set; }
     public byte[] _logo { get; set; }
@@ -28,7 +27,7 @@ public class HeaderComponent : IComponent
         {
             column.Item().Row(row =>
             {                
-                row.ConstantItem(300).AlignBottom().Background("#BBB").Column(column =>
+                row.ConstantItem(300).AlignBottom().Column(column =>
                 {
                     column.Item().Text(text =>
                     {
@@ -53,10 +52,10 @@ public class HeaderComponent : IComponent
                 text.Span($"{_orderByIdResponse.Customer.Ndocument}").Light();
                 text.EmptyLine();
                 text.Span("Dirección domiciliar: ").SemiBold();
-                text.Span($"{_orderByIdResponse.Customer.PrimaryStreet} {_orderByIdResponse.Customer.SecondaryStreet} {_orderByIdResponse.Customer.Numeration}").Light();
+                //text.Span($"{_orderByIdResponse.Customer.PrimaryStreet} {_orderByIdResponse.Customer.SecondaryStreet} {_orderByIdResponse.Customer.Numeration}").Light();
                 text.EmptyLine();
                 text.Span("Referencia del domicilio: ").SemiBold();
-                text.Span($"{_orderByIdResponse.Customer.Reference}").Light();
+                //text.Span($"{_orderByIdResponse.Customer.Reference}").Light();
                 text.EmptyLine();
                 text.Span("Teléfonos: ").SemiBold();
                 text.Span($"{_orderByIdResponse.Customer.Mobile}").Light();
@@ -65,11 +64,11 @@ public class HeaderComponent : IComponent
                 text.Span($"{_orderByIdResponse.Customer.Email}").Light();
                 text.EmptyLine();
                 text.Span("Provincia: ").SemiBold();
-                text.Span($"{_orderByIdResponse.Customer.Provincia} ").Light();
+                //text.Span($"{_orderByIdResponse.Customer.Provincia} ").Light();
                 text.Span("Canton: ").SemiBold();
-                text.Span($"{_orderByIdResponse.Customer.Canton} ").Light();
+                //text.Span($"{_orderByIdResponse.Customer.Canton} ").Light();
                 text.Span("Parroquia: ").SemiBold();
-                text.Span($"{_orderByIdResponse.Customer.Parroquia} ").Light();
+                //text.Span($"{_orderByIdResponse.Customer.Parroquia} ").Light();
             });
 
         });

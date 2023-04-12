@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Boilerplate.Application.Features.Address.AddresCreate;
+using Boilerplate.Application.Features.Address.AddresUpdate;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
+using Boilerplate.Application.Features.Customers.CustomerUpdate;
 using Boilerplate.Application.Features.Heroes;
 using Boilerplate.Application.Features.Heroes.CreateHero;
 using Boilerplate.Application.Features.Heroes.UpdateHero;
@@ -109,6 +112,16 @@ public class MappingProfile : Profile
         // Customer Map
         CreateMap<Customer, CustomerByIdResponse> ();
         CreateMap<CustomerCreateRequest, Customer>();
+        CreateMap<CustomerCreateResponse, Customer>().ReverseMap();
+        CreateMap<CustomerUpdateRequest, Customer>().ReverseMap();
+        //CreateMap<CustomerUpdateResponse, Customer>().ReverseMap();
+        //CreateMap<CustomerCreateRequest, CustomerUpdateResponse>().ReverseMap();
+        //CreateMap<CustomerCreateResponse, CustomerUpdateResponse>().ReverseMap();
+
+        //Address Map
+        CreateMap<Addres, AddresCreateResponse>();
+        CreateMap<Addres, AddresUpdateRequest>().ReverseMap();
+        CreateMap<AddresCreateRequest, AddresUpdateRequest>().ReverseMap();
 
         // Order Map
         CreateMap<OrderUpdateRequest, Order>();

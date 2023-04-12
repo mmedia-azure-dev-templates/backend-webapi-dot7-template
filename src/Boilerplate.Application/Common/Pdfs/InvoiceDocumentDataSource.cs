@@ -8,8 +8,8 @@ public class InvoiceModel
     public int InvoiceNumber { get; set; }
     public DateTime IssueDate { get; set; }
     public DateTime DueDate { get; set; }
-    public Address SellerAddress { get; set; }
-    public Address CustomerAddress { get; set; }
+    public Address2 SellerAddress { get; set; }
+    public Address2 CustomerAddress { get; set; }
     public List<OrderItem2> Items { get; set; }
     public string Comments { get; set; }
 }
@@ -21,7 +21,7 @@ public class OrderItem2
     public int Quantity { get; set; }
 }
 
-public class Address
+public class Address2
 {
     public string CompanyName { get; set; }
     public string Street { get; set; }
@@ -66,9 +66,9 @@ public static class InvoiceDocumentDataSource
         };
     }
 
-    private static Address GenerateRandomAddress()
+    private static Address2 GenerateRandomAddress()
     {
-        return new Address
+        return new Address2
         {
             CompanyName = Placeholders.Name(),
             Street = Placeholders.Label(),

@@ -1,7 +1,8 @@
-﻿using Amazon.Runtime.Documents;
-using AutoMapper;
+﻿using AutoMapper;
 using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Users;
+using Boilerplate.Application.Features.Address.AddresUpdate;
+using Boilerplate.Application.Features.Customers.CustomerCreate;
+using Boilerplate.Application.Features.Customers.CustomerUpdate;
 using Boilerplate.Application.Implementations;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
@@ -10,11 +11,9 @@ using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -26,6 +25,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
     private readonly IContext _context;
     private readonly ISession _session;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly ILogger<OrderCreateHandler> _logger;
     private readonly IMailService _mail;
     private readonly ILocalizationService _localizationService;
@@ -34,7 +34,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
     private OrderCreateResponse _orderCreateResponse;
 
 
-    public OrderCreateHandler(IContext context, ISession session, IMapper mapper, ILogger<OrderCreateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
+    public OrderCreateHandler(IContext context, ISession session, IMapper mapper, IMediator mediator, ILogger<OrderCreateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
     {
         _logger = logger;
         _mapper = mapper;
@@ -45,86 +45,93 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
         _localizationService = localizationService;
         _awsS3Service = awsS3Service;
         _pdfService = pdfService;
+        _mediator = mediator;
     }
     public async Task<OrderCreateResponse> Handle(OrderCreateRequest request, CancellationToken cancellationToken)
     {
-        using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+        try
         {
-            try
+            CustomerCreateResponse customerCreateResponse = new CustomerCreateResponse();
+            CustomerUpdateRequest customerUpdateRequest = new CustomerUpdateRequest();
+            
+            if (request.CustomerCreateRequest?.Ndocument != null)
             {
-                var customer = await _context.Customers.Where(x => x.Ndocument == request.CustomerCreateRequest.Ndocument).FirstOrDefaultAsync(cancellationToken);
+
+                var customer = await _context.Customers.Where(x => x.Ndocument == request.CustomerCreateRequest.Ndocument).AsNoTracking().FirstOrDefaultAsync(cancellationToken);
 
                 if (customer != null)
                 {
-                   _context.Customers.Update(customer);
+                    customerUpdateRequest = _mapper.Map<CustomerUpdateRequest>(customer);
+                    customerUpdateRequest.AddresUpdateRequest = _mapper.Map<AddresUpdateRequest>(request.CustomerCreateRequest.addresCreateRequest);
+                    customerUpdateRequest.CustomerId = customer.Id;
+                    customerUpdateRequest.AddresUpdateRequest.PersonId = new PersonId((Guid)customer.Id);
+                    var chesnse = await _mediator.Send(customerUpdateRequest, cancellationToken);
                 }
 
                 if (customer == null)
                 {
-                    customer = _mapper.Map(request.CustomerCreateRequest, customer);
-                    await _context.Customers.AddAsync(customer, cancellationToken);
+                    customerCreateResponse = await _mediator.Send(request.CustomerCreateRequest, cancellationToken);
                 }
 
-                await _context.SaveChangesAsync(cancellationToken);
-
-                var counter = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault();
-                counter.CustomCounter = new CustomCounter(counter!.CustomCounter.Value + 1);
-                await _context.SaveChangesAsync(cancellationToken);
-
-
-                var order = new Order
-                {
-                    OrderStatusType = OrderStatusType.Entered,
-                    OrderNumber = new OrderNumber(counter.CustomCounter.Value),
-                    UserGenerated = new UserGenerated(_session.UserId.Value),
-                    UserAssigned = request.UserAssigned,
-                    CustomerId = customer.Id,
-                    SubTotal = request.SubTotal,
-                    Total = request.Total,
-                };
-
-                await _context.Orders.AddAsync(order, cancellationToken);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                List<OrderItem> orderItems = new List<OrderItem>();
-                foreach (var article in request.ArticleSearchResponse)
-                {
-                    var item = new OrderItem
-                    {
-                        OrderId = order.Id,
-                        ArticleId = article.ArticleId,
-                        Quantity = article.Quantity,
-                        Price = article.Cost,
-                        Total = article.Total,
-                    };
-                    orderItems.Add(item);
-                }
-                await _context.OrderItems.AddRangeAsync(orderItems);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                //_pdfService.GenerateOrderPdf(order, orderItems, customer);
-
-                scope.Complete();
-                _orderCreateResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
-                _orderCreateResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
-                _orderCreateResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess").Value);
-                _orderCreateResponse.Transaction = true;
-                _orderCreateResponse.OrderNumber = order.OrderNumber;
-                return _orderCreateResponse;
             }
-            catch (Exception ex)
+                
+
+            var counter = _context.Counters.Where(x => x.Slug == "ORDERSFCME").FirstOrDefault();
+            counter.CustomCounter = new CustomCounter(counter!.CustomCounter.Value + 1);
+            await _context.SaveChangesAsync(cancellationToken);
+
+
+            var order = new Order
             {
-                //List<IdentityError> errorList = result.Errors.ToList();
-                //var errors = string.Join(" | ", errorList.Select(e => e.Description));
-                //_logger.LogInformation(3, ex.Message);
-                //_userResponse.SweetAlert.Title = ex.Message;
-                //_userResponse.SweetAlert.Text = ex.Message;
-                _logger.LogInformation(3, ex.Message);
-                _orderCreateResponse.SweetAlert.Title = ex.Message;
-                _orderCreateResponse.SweetAlert.Text = ex.Message;
-                _orderCreateResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconError").Value);
-                return _orderCreateResponse;
+                OrderStatusType = OrderStatusType.Entered,
+                OrderNumber = new OrderNumber(counter.CustomCounter.Value),
+                UserGenerated = new UserGenerated(_session.UserId.Value),
+                UserAssigned = request.UserAssigned,
+                CustomerId = customerCreateResponse.CustomerId,
+                SubTotal = request.SubTotal,
+                Total = request.Total,
+            };
+
+            await _context.Orders.AddAsync(order, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            List<OrderItem> orderItems = new List<OrderItem>();
+            foreach (var article in request.ArticleSearchResponse)
+            {
+                var item = new OrderItem
+                {
+                    OrderId = order.Id,
+                    ArticleId = article.ArticleId,
+                    Quantity = article.Quantity,
+                    Price = article.Cost,
+                    Total = article.Total,
+                };
+                orderItems.Add(item);
             }
+            await _context.OrderItems.AddRangeAsync(orderItems);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            //_pdfService.GenerateOrderPdf(order, orderItems, customer);
+
+            _orderCreateResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
+            _orderCreateResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
+            _orderCreateResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconSuccess").Value);
+            _orderCreateResponse.Transaction = true;
+            _orderCreateResponse.OrderNumber = order.OrderNumber;
+            return _orderCreateResponse;
+        }
+        catch (Exception ex)
+        {
+            //List<IdentityError> errorList = result.Errors.ToList();
+            //var errors = string.Join(" | ", errorList.Select(e => e.Description));
+            //_logger.LogInformation(3, ex.Message);
+            //_userResponse.SweetAlert.Title = ex.Message;
+            //_userResponse.SweetAlert.Text = ex.Message;
+            _logger.LogInformation(3, ex.Message);
+            _orderCreateResponse.SweetAlert.Title = ex.Message;
+            _orderCreateResponse.SweetAlert.Text = ex.Message;
+            _orderCreateResponse.SweetAlert.Icon = (SweetAlertIconType)Enum.Parse(typeof(SweetAlertIconType), _localizationService.GetLocalizedHtmlString("ForgotPasswordResponseIconError").Value);
+            return _orderCreateResponse;
         }
     }
 }
