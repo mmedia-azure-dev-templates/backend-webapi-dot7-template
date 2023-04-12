@@ -8,7 +8,7 @@ using System;
 namespace Boilerplate.Application.Features.Customers.CustomerUpdate;
 public class CustomerUpdateResponse: ICustomerUpdateResponse
 {
-    public CustomerId CustomerId { get; set; }
+    public CustomerId? CustomerId { get; set; } = null;
     public IdentificationType DocumentType { get; init; }
     public string? Ndocument { get; init; } = null!;
     public DateTime? BirthDate { get; init; }

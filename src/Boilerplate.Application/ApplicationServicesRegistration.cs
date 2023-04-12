@@ -1,6 +1,7 @@
 ﻿using Boilerplate.Application.Auth;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Handlers;
+using Boilerplate.Application.Features.Address.AddresUpdate;
 using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;
@@ -48,6 +49,7 @@ public static class ApplicationServicesRegistration
         services.AddScoped<ICustomerUpdateResponse, CustomerUpdateResponse>();
         services.AddScoped<IOrderByIdResponse, OrderByIdResponse>();
         services.AddScoped<IPdfService, PdfService>();
+        services.AddScoped<IAddresUpdateResponse, AddresUpdateResponse>();
         return services;
     }
 }
