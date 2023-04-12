@@ -115,7 +115,7 @@ public class MappingProfile : Profile
         CreateMap<CustomerCreateResponse, Customer>().ReverseMap();
         CreateMap<CustomerUpdateRequest, Customer>().ReverseMap();
         CreateMap<CustomerUpdateResponse, Customer>().ReverseMap();
-        //CreateMap<CustomerCreateRequest, CustomerUpdateResponse>().ReverseMap();
+        CreateMap<CustomerCreateRequest, CustomerUpdateRequest>().ReverseMap();
         //CreateMap<CustomerCreateResponse, CustomerUpdateResponse>().ReverseMap();
 
         //Address Map

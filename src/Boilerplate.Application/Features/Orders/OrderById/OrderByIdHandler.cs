@@ -36,7 +36,8 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                       from userAssignedApplicationUser in j5.DefaultIfEmpty()
                       join userAssignedUserInformation in _context.UserInformations.AsNoTracking() on (Guid?)order.UserAssigned equals (Guid)userAssignedUserInformation.UserId into j6
                       from userAssignedUserInformation in j6.DefaultIfEmpty()
-                      join customer in _context.Customers.AsNoTracking().DefaultIfEmpty() on order.CustomerId equals customer.Id
+                      join customer in _context.Customers.AsNoTracking().DefaultIfEmpty() on order.CustomerId equals customer.Id into j7
+                      from customer in j7.DefaultIfEmpty()
                       where order.Id == request.OrderId
                       select new
                       {

@@ -13,6 +13,7 @@ public class OrderItem : Entity<OrderItemId>, IDataKeyFilterReadWrite, IDateCrea
     public string DataKey { get; set; }
     public OrderId OrderId { get; set; }
     public ArticleId ArticleId { get; set; }
+    public bool Delivered { get; set; }
     public int Quantity { get; set; }
     public decimal Price { get; set; }
     public decimal Total { get; set; }
