@@ -39,8 +39,8 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                       from userAssignedUserInformation in j6.DefaultIfEmpty()
                       join customer in _context.Customers.AsNoTracking().DefaultIfEmpty() on order.CustomerId equals customer.Id into j7
                       from customer in j7.DefaultIfEmpty()
-                      join adres in _context.Addresses.AsNoTracking().DefaultIfEmpty() on (Guid?)customer.Id equals (Guid)adres.PersonId into j8
-                      from adres in j8.DefaultIfEmpty()
+                      join adress in _context.Addresses.AsNoTracking().DefaultIfEmpty() on (Guid?)customer.Id equals (Guid)adress.PersonId into j8
+                      from adress in j8.DefaultIfEmpty()
                       where order.Id == request.OrderId
                       select new
                       {
@@ -52,7 +52,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                           userAssignedApplicationUser,
                           userAssignedUserInformation,
                           customer,
-                          adres
+                          adress
                       });
 
         var products = (from product in result.AsNoTracking().DefaultIfEmpty()
