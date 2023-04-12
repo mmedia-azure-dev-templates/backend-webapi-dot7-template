@@ -172,9 +172,9 @@ public partial struct OrderItemId : IGuid
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
-public partial struct AddresId : IGuid
+public partial struct AddressId : IGuid
 {
-    public static explicit operator Guid(AddresId addresId) => addresId.Value;
+    public static explicit operator Guid(AddressId addressId) => addressId.Value;
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]

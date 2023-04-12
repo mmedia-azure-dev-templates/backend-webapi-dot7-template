@@ -49,7 +49,7 @@ public static class ApplicationServicesRegistration
         services.AddScoped<ICustomerUpdateResponse, CustomerUpdateResponse>();
         services.AddScoped<IOrderByIdResponse, OrderByIdResponse>();
         services.AddScoped<IPdfService, PdfService>();
-        services.AddScoped<IAddresUpdateResponse, AddresUpdateResponse>();
+        services.AddScoped<IAddressUpdateResponse, AddressUpdateResponse>();
         return services;
     }
 }

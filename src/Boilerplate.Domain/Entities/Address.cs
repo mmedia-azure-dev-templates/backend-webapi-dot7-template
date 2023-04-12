@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Boilerplate.Domain.Entities;
 
 [Table("Address", Schema = "web")]
-public class Addres : Entity<AddresId>, IDataKeyFilterReadWrite, IDateCreatedAndUpdated
+public class Address : Entity<AddressId>, IDataKeyFilterReadWrite, IDateCreatedAndUpdated
 {
-    public override AddresId Id { get; set; }
+    public override AddressId Id { get; set; }
     public string DataKey { get; set; }
     public PersonId PersonId { get; set; }
     public string? PrimaryStreet { get; set; }

@@ -12,20 +12,20 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Address.AddresUpdate;
-public class AddresUpdateHandler : IRequestHandler<AddresUpdateRequest, AddresUpdateResponse>
+public class AddressUpdateHandler : IRequestHandler<AddressUpdateRequest, AddressUpdateResponse>
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
-    private AddresUpdateResponse _addresUpdateResponse;
+    private AddressUpdateResponse _addresUpdateResponse;
 
-    public AddresUpdateHandler(IMapper mapper, IContext context)
+    public AddressUpdateHandler(IMapper mapper, IContext context)
     {
         _mapper = mapper;
         _context = context;
     }
-    public async Task<AddresUpdateResponse> Handle(AddresUpdateRequest request, CancellationToken cancellationToken)
+    public async Task<AddressUpdateResponse> Handle(AddressUpdateRequest request, CancellationToken cancellationToken)
     {
-        var address = await _context.Address.Where(x=> x.PersonId == request.PersonId).FirstOrDefaultAsync(cancellationToken);
+        var address = await _context.Addresses.Where(x=> x.PersonId == request.PersonId).FirstOrDefaultAsync(cancellationToken);
         if (address != null) 
         {
             address.PersonId = request.PersonId;
@@ -37,7 +37,7 @@ public class AddresUpdateHandler : IRequestHandler<AddresUpdateRequest, AddresUp
             address.Canton = request.Canton;
             address.Parroquia = request.Parroquia;
             address.Notes = request.Notes;
-            _context.Address.Update(address);
+            _context.Addresses.Update(address);
             await _context.SaveChangesAsync(cancellationToken);
             _addresUpdateResponse = _mapper.Map(address, _addresUpdateResponse);
             _addresUpdateResponse.PersonId = request.PersonId;

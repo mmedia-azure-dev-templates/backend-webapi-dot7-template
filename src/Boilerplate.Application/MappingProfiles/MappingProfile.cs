@@ -119,10 +119,10 @@ public class MappingProfile : Profile
         //CreateMap<CustomerCreateResponse, CustomerUpdateResponse>().ReverseMap();
 
         //Address Map
-        CreateMap<Addres, AddresCreateResponse>();
-        CreateMap<Addres, AddresUpdateRequest>().ReverseMap();
-        CreateMap<Addres, AddresUpdateResponse>().ReverseMap();
-        CreateMap<AddresCreateRequest, AddresUpdateRequest>().ReverseMap();
+        CreateMap<Address, AddressCreateResponse>();
+        CreateMap<Address, AddressUpdateRequest>().ReverseMap();
+        CreateMap<Address, AddressUpdateResponse>().ReverseMap();
+        CreateMap<AddressCreateRequest, AddressUpdateRequest>().ReverseMap();
 
         // Order Map
         CreateMap<OrderUpdateRequest, Order>();

@@ -17,6 +17,6 @@ public class CustomerCreateRequest: IRequest<CustomerCreateResponse>
     public string? Email { get; init; } = null!;
     public string? Mobile { get; init; }
     public string? Phone { get; init; }
-    public AddresCreateRequest addresCreateRequest { get; init; }
+    public AddressCreateRequest addresCreateRequest { get; init; }
     public string? Notes { get; init; }
 }

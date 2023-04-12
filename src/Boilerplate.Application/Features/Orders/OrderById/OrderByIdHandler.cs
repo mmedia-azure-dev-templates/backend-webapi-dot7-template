@@ -2,6 +2,7 @@
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Users.GetUsers;
+using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,6 +39,8 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                       from userAssignedUserInformation in j6.DefaultIfEmpty()
                       join customer in _context.Customers.AsNoTracking().DefaultIfEmpty() on order.CustomerId equals customer.Id into j7
                       from customer in j7.DefaultIfEmpty()
+                      join adres in _context.Addresses.AsNoTracking().DefaultIfEmpty() on (Guid?)customer.Id equals (Guid)adres.PersonId into j8
+                      from adres in j8.DefaultIfEmpty()
                       where order.Id == request.OrderId
                       select new
                       {
@@ -48,9 +51,9 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                           userGeneratedUserInformation,
                           userAssignedApplicationUser,
                           userAssignedUserInformation,
-                          customer
+                          customer,
+                          adres
                       });
-
 
         var products = (from product in result.AsNoTracking().DefaultIfEmpty()
                         where product.orderItems != null && product.articles != null

@@ -3,7 +3,7 @@ using MediatR;
 using System;
 
 namespace Boilerplate.Application.Features.Address.AddresUpdate;
-public class AddresUpdateRequest : IRequest<AddresUpdateResponse>
+public class AddressUpdateRequest : IRequest<AddressUpdateResponse>
 {
     public PersonId PersonId { get; set; }
     public string? PrimaryStreet { get; set; }

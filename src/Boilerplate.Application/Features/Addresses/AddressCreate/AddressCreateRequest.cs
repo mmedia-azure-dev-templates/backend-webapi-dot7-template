@@ -3,7 +3,7 @@ using MediatR;
 using System;
 
 namespace Boilerplate.Application.Features.Address.AddresCreate;
-public class AddresCreateRequest : IRequest<AddresCreateResponse>
+public class AddressCreateRequest : IRequest<AddressCreateResponse>
 {
     public PersonId PersonId { get; set; }
     public string? PrimaryStreet { get; set; }

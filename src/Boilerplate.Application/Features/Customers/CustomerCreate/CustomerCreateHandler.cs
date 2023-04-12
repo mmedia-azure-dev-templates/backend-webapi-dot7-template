@@ -43,7 +43,7 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
     {
         using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
-            AddresCreateRequest addresCreateRequest = new AddresCreateRequest();
+            AddressCreateRequest addresCreateRequest = new AddressCreateRequest();
             var customer = new Customer();
             customer = _mapper.Map(request, customer);
             customer.Id = new CustomerId(Guid.NewGuid());

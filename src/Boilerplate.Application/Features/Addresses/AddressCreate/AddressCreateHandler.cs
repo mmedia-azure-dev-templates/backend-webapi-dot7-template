@@ -8,22 +8,22 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Address.AddresCreate;
-public class AddresCreateHandler : IRequestHandler<AddresCreateRequest, AddresCreateResponse>
+public class AddressCreateHandler : IRequestHandler<AddressCreateRequest, AddressCreateResponse>
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
-    private AddresCreateResponse _addresCreateResponse;
+    private AddressCreateResponse _addresCreateResponse;
 
-    public AddresCreateHandler(IMapper mapper, IContext context)
+    public AddressCreateHandler(IMapper mapper, IContext context)
     {
         _mapper = mapper;
         _context = context;
     }
-    public async Task<AddresCreateResponse> Handle(AddresCreateRequest request, CancellationToken cancellationToken)
+    public async Task<AddressCreateResponse> Handle(AddressCreateRequest request, CancellationToken cancellationToken)
     {
-        var address = new Addres
+        var address = new Domain.Entities.Address
         {
-            Id = new AddresId(Guid.NewGuid()),
+            Id = new AddressId(Guid.NewGuid()),
             PersonId = new PersonId((Guid)request.PersonId),
             PrimaryStreet = request.PrimaryStreet,
             SecondaryStreet = request.SecondaryStreet,
@@ -33,7 +33,7 @@ public class AddresCreateHandler : IRequestHandler<AddresCreateRequest, AddresCr
             Canton = request.Canton,
             Parroquia = request.Parroquia,
         };
-        await _context.Address.AddAsync(address, cancellationToken);
+        await _context.Addresses.AddAsync(address, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         _addresCreateResponse = _mapper.Map(address, _addresCreateResponse);
         _addresCreateResponse.PersonId = address.PersonId;

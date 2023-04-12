@@ -1,4 +1,4 @@
 ﻿namespace Boilerplate.Domain.Implementations;
-public interface IAddresUpdateResponse
+public interface IAddressUpdateResponse
 {
 }

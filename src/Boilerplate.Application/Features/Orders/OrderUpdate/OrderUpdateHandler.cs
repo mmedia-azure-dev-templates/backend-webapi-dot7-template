@@ -65,8 +65,8 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 {
                     customerUpdateRequest = _mapper.Map<CustomerUpdateRequest>(customer);
                     customerUpdateRequest = request.CustomerUpdateRequest;
-                    customerUpdateRequest.AddresUpdateRequest = request.CustomerUpdateRequest.AddresUpdateRequest;
                     customerUpdateRequest.CustomerId = customer.Id;
+                    customerUpdateRequest.AddresUpdateRequest = request.CustomerUpdateRequest.AddresUpdateRequest;
                     customerUpdateRequest.AddresUpdateRequest.PersonId = new PersonId((Guid)customer.Id);
                     customerUpdateResponse = await _mediator.Send(customerUpdateRequest, cancellationToken);
                 }
