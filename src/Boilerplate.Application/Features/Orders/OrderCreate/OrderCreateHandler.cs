@@ -57,7 +57,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
             if (request.CustomerCreateRequest?.Ndocument != null)
             {
 
-                var customer = await _context.Customers.Where(x => x.Ndocument == request.CustomerCreateRequest.Ndocument).FirstOrDefaultAsync(cancellationToken);
+                var customer = await _context.Customers.Where(x => x.Ndocument == request.CustomerCreateRequest.Ndocument).AsNoTracking().FirstOrDefaultAsync(cancellationToken);
 
                 if (customer != null)
                 {

@@ -120,6 +120,7 @@ public class MappingProfile : Profile
 
         //Address Map
         CreateMap<Addres, AddresCreateResponse>();
+        CreateMap<Addres, AddresUpdateRequest>().ReverseMap();
         CreateMap<AddresCreateRequest, AddresUpdateRequest>().ReverseMap();
 
         // Order Map

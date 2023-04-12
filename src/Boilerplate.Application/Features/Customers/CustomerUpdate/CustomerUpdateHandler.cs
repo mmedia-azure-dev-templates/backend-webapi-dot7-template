@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -32,21 +35,16 @@ public class CustomerUpdateHandler : IRequestHandler<CustomerUpdateRequest, Cust
         using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
             var customer = _mapper.Map<Customer>(request);
+            customer.Id = new CustomerId((Guid)request.CustomerId);
             _context.Customers.Update(customer);
-
-            //var address = new Addres
-            //{
-            //    PrimaryStreet = request.PrimaryStreet,
-            //    SecondaryStreet = request.SecondaryStreet,
-            //    Numeration = request.Numeration,
-            //    Reference = request.Reference,
-            //    Provincia = request.Provincia,
-            //    Canton = request.Canton,
-            //    Parroquia = request.Parroquia,
-            //};
-
-            //_context.Customers.Add(customer);
             await _context.SaveChangesAsync(cancellationToken);
+
+            request.AddresUpdateRequest.PersonId = new PersonId((Guid)customer.Id);
+            var addres = await _mediator.Send(request.AddresUpdateRequest);
+            await _context.SaveChangesAsync(cancellationToken);
+            _customerUpdateResponse = _mapper.Map(customer, _customerUpdateResponse);
+            _customerUpdateResponse.CustomerId = customer.Id;
+            _customerUpdateResponse.AddresUpdateResponse = addres;
             scope.Complete();
         }
             

@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Address.AddresCreate;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using org.apache.zookeeper.data;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,22 +25,14 @@ public class AddresUpdateHandler : IRequestHandler<AddresUpdateRequest, AddresUp
     }
     public async Task<AddresUpdateResponse> Handle(AddresUpdateRequest request, CancellationToken cancellationToken)
     {
-        //_context.Address.Update(customer);
-        Addres addres = new()
+        var address = await _context.Address.Where(x=> x.PersonId == request.PersonId).FirstOrDefaultAsync(cancellationToken);
+        if (address != null) 
         {
-            PersonId = request.PersonId,
-            PrimaryStreet = request.PrimaryStreet,
-            SecondaryStreet = request.SecondaryStreet,
-            Numeration = request.Numeration,
-            Reference = request.Reference,
-            Provincia = request.Provincia,
-            Canton = request.Canton,
-            Parroquia = request.Parroquia,
-            Notes = request.Notes,
-        };
-
-        _context.Address.Add(addres);
-        await _context.SaveChangesAsync(cancellationToken);
+            _context.Address.Update(address);
+            await _context.SaveChangesAsync(cancellationToken);
+            _addresUpdateResponse = _mapper.Map(address, _addresUpdateResponse);
+            _addresUpdateResponse.PersonId = request.PersonId;
+        }
         return _addresUpdateResponse;
     }
 }
