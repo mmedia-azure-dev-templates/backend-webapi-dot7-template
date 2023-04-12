@@ -64,6 +64,7 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 if (customer != null)
                 {
                     customerUpdateRequest = _mapper.Map<CustomerUpdateRequest>(customer);
+                    customerUpdateRequest = request.CustomerUpdateRequest;
                     customerUpdateRequest.AddresUpdateRequest = request.CustomerUpdateRequest.AddresUpdateRequest;
                     customerUpdateRequest.CustomerId = customer.Id;
                     customerUpdateRequest.AddresUpdateRequest.PersonId = new PersonId((Guid)customer.Id);
@@ -76,9 +77,22 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                     customerCreateResponse = await _mediator.Send(customerCreateRequest, cancellationToken);
                 }
 
+                var customerId = new CustomerId();
+
+                if (customerCreateResponse?.CustomerId != null)
+                {
+                    customerId = new CustomerId((Guid)customerCreateResponse.CustomerId);
+                }
+
+                if (customerUpdateResponse?.CustomerId != null)
+                {
+                    customerId = new CustomerId((Guid)customerUpdateResponse.CustomerId);
+                }
+
                 var order = await _context.Orders.Where(x => x.Id == request.OrderId).FirstOrDefaultAsync(cancellationToken);
                 order = _mapper.Map(request, order);
-                order.UserGenerated = new UserGenerated(_session.UserId.Value);
+                order!.UserGenerated = new UserGenerated(_session.UserId.Value);
+                order.CustomerId = customerId == default ? null : customerId;
                 order.UserAssigned = request.UserAssigned == null ? null : new UserAssigned((Guid)request.UserAssigned);
                 _context.Orders.Update(order);
                 await _context.SaveChangesAsync(cancellationToken);

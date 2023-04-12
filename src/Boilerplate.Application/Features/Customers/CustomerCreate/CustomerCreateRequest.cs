@@ -7,8 +7,8 @@ using System;
 namespace Boilerplate.Application.Features.Customers.CustomerCreate;
 public class CustomerCreateRequest: IRequest<CustomerCreateResponse>
 {
-    public IdentificationType DocumentType { get; init; }
-    public string? Ndocument { get; init; } = null!;
+    public IdentificationType DocumentType { get; set; }
+    public string? Ndocument { get; set; } = null!;
     public DateTime? BirthDate { get; init; }
     public GenderType? GenderType { get; init; }
     public CivilStatusType? CivilStatusType { get; init; }
