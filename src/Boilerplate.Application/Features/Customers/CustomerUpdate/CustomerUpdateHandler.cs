@@ -28,7 +28,7 @@ public class CustomerUpdateHandler : IRequestHandler<CustomerUpdateRequest, Cust
     private readonly IMapper _mapper;
     private readonly ILogger<CustomerUpdateHandler> _logger;
     private CustomerUpdateResponse _customerUpdateResponse;
-    private AddresUpdateResponse _addresUpdateResponse;
+    private AddressUpdateResponse _addresUpdateResponse;
 
 
     public CustomerUpdateHandler(
@@ -37,14 +37,14 @@ public class CustomerUpdateHandler : IRequestHandler<CustomerUpdateRequest, Cust
         IMapper mapper, 
         ILogger<CustomerUpdateHandler> logger, 
         ICustomerUpdateResponse customerUpdateResponse,
-        IAddresUpdateResponse addresUpdateResponse)
+        IAddressUpdateResponse addresUpdateResponse)
     {
         _mediator = mediator;
         _logger = logger;
         _mapper = mapper;
         _context = context;
         _customerUpdateResponse = (CustomerUpdateResponse)customerUpdateResponse;
-        _addresUpdateResponse = (AddresUpdateResponse)addresUpdateResponse;
+        _addresUpdateResponse = (AddressUpdateResponse)addresUpdateResponse;
     }
     public async Task<CustomerUpdateResponse> Handle(CustomerUpdateRequest request, CancellationToken cancellationToken)
     {

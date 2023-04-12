@@ -63,7 +63,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 if (customer != null)
                 {
                     customerUpdateRequest = _mapper.Map<CustomerUpdateRequest>(customer);
-                    customerUpdateRequest.AddresUpdateRequest = _mapper.Map<AddresUpdateRequest>(request.CustomerCreateRequest.addresCreateRequest);
+                    customerUpdateRequest.AddresUpdateRequest = _mapper.Map<AddressUpdateRequest>(request.CustomerCreateRequest.addresCreateRequest);
                     customerUpdateRequest.CustomerId = customer.Id;
                     customerUpdateRequest.AddresUpdateRequest.PersonId = new PersonId((Guid)customer.Id);
                     customerUpdateResponse = await _mediator.Send(customerUpdateRequest, cancellationToken);

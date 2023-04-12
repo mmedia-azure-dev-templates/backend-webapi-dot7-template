@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Boilerplate.Infrastructure.Configuration;
 
-public class AdresConfiguration : IEntityTypeConfiguration<Addres>
+public class AdressConfiguration : IEntityTypeConfiguration<Address>
 {
-    public void Configure(EntityTypeBuilder<Addres> entity)
+    public void Configure(EntityTypeBuilder<Address> entity)
     {
-        entity.Property(e => e.Id).HasConversion<AddresId.EfCoreValueConverter>();
+        entity.Property(e => e.Id).HasConversion<AddressId.EfCoreValueConverter>();
         entity.HasKey(e => e.Id).HasName("PK_Address");
         entity.Property(e => e.PersonId).HasConversion<PersonId.EfCoreValueConverter>();
     }

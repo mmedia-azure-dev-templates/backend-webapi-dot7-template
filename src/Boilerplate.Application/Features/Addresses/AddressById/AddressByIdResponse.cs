@@ -1,9 +1,9 @@
 ﻿using Boilerplate.Domain.Entities.Common;
-using MediatR;
+using Boilerplate.Domain.Implementations;
 using System;
 
-namespace Boilerplate.Application.Features.Address.AddresUpdate;
-public class AddresUpdateRequest : IRequest<AddresUpdateResponse>
+namespace Boilerplate.Application.Features.Address.AddresById;
+public class AddressByIdResponse
 {
     public PersonId PersonId { get; set; }
     public string? PrimaryStreet { get; set; }
@@ -14,4 +14,6 @@ public class AddresUpdateRequest : IRequest<AddresUpdateResponse>
     public int? Canton { get; set; }
     public int? Parroquia { get; set; }
     public string? Notes { get; set; }
+    public DateTime DateCreated { get; set; }
+    public DateTime? DateUpdated { get; set; }
 }

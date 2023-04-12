@@ -2,8 +2,8 @@
 using MediatR;
 using System;
 
-namespace Boilerplate.Application.Features.Address.AddresCreate;
-public class AddresCreateRequest : IRequest<AddresCreateResponse>
+namespace Boilerplate.Application.Features.Address.AddresUpdate;
+public class AddressUpdateRequest : IRequest<AddressUpdateResponse>
 {
     public PersonId PersonId { get; set; }
     public string? PrimaryStreet { get; set; }

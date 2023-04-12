@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Address.AddresCreate;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
@@ -42,17 +43,22 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
     {
         using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
+            AddressCreateRequest addresCreateRequest = new AddressCreateRequest();
             var customer = new Customer();
             customer = _mapper.Map(request, customer);
             customer.Id = new CustomerId(Guid.NewGuid());
             _context.Customers.Add(customer);
             await _context.Customers.AddAsync(customer, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
-            request.addresCreateRequest.PersonId = new PersonId((Guid)customer.Id);
-            var addres = await _mediator.Send(request.addresCreateRequest);
+            if(request.addresCreateRequest != null)
+            {
+                addresCreateRequest = request.addresCreateRequest;
+                addresCreateRequest.PersonId = new PersonId((Guid)customer.Id);
+                _customerCreateResponse.addresCreateResponse = await _mediator.Send(addresCreateRequest);
+            }
+
             _customerCreateResponse = _mapper.Map(customer, _customerCreateResponse);
             _customerCreateResponse.CustomerId = customer.Id;
-            _customerCreateResponse.addresCreateResponse = addres;
             scope.Complete();
         }
 

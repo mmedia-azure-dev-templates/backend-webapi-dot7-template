@@ -18,7 +18,7 @@ public class CustomerCreateResponse: ICustomerCreateResponse
     public string? Email { get; init; } = null!;
     public string? Mobile { get; init; }
     public string? Phone { get; init; }
-    public AddresCreateResponse addresCreateResponse { get; set; }
+    public AddressCreateResponse addresCreateResponse { get; set; }
     public string? Notes { get; init; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
