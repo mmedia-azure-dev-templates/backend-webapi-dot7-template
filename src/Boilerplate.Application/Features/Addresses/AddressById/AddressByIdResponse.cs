@@ -10,8 +10,11 @@ public class AddressByIdResponse
     public string? SecondaryStreet { get; set; } = null!;
     public string? Numeration { get; set; } = null!;
     public string? Reference { get; set; } = null!;
+    public string? ProvinciaDisplay { get; set; } = null!;
     public int? Provincia { get; set; } = null!;
+    public string? CantonDisplay { get; set; } = null!;
     public int? Canton { get; set; } = null!;
+    public string? ParroquiaDisplay { get; set; } = null!;
     public int? Parroquia { get; set; } = null!;
     public string? Notes { get; set; } = null!;
     public DateTime DateCreated { get; set; }
