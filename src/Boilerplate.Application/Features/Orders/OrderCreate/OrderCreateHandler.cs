@@ -112,6 +112,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 {
                     OrderId = order.Id,
                     ArticleId = article.ArticleId,
+                    Delivered = article.Delivered,
                     Quantity = article.Quantity,
                     Price = article.Cost,
                     Total = article.Total,

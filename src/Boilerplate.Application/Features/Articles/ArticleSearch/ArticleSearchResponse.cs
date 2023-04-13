@@ -10,6 +10,7 @@ public class ArticleSearchResponse
 {
     public ArticleId ArticleId { get; set; }
     public OrderId? OrderId { get; set; } = null;
+    public bool Delivered { get; set; } = false;
     public int? Provider { get; set; }
     public string? Sku { get; set; }
     public string? Abrevia { get; set; }
