@@ -20,5 +20,5 @@ public class CustomerByIdResponse
     public string? Notes { get; init; } = null;
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
-    public AddressByIdResponse AddressByIdResponse { get; set; }
+    public AddressByIdResponse? AddressByIdResponse { get; set; }
 }
