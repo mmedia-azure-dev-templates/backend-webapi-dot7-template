@@ -98,6 +98,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                             Sku = h.First().articles.Sku,
                             Abrevia = h.First().articles.Abrevia,
                             Display = h.First().articles.Display,
+                            Delivered = h.First().orderItems.Delivered,
                             Quantity = h.First().orderItems.Quantity,
                             Cost = h.First().articles.Cost,
                             Total = h.First().orderItems.Total,
