@@ -45,10 +45,7 @@ public partial struct CounterId : IGuid
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Int)]
 public partial struct GeographicLocationId : IInt
 {
-    public static implicit operator GeographicLocationId(int geographicLocationId)
-    {
-        return new GeographicLocationId(geographicLocationId);
-    }
+    public static explicit operator int(GeographicLocationId geographicLocationId) => geographicLocationId.Value;
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]

@@ -51,6 +51,12 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                       from customer in j7.DefaultIfEmpty()
                       join address in _context.Addresses on (Guid?)customer.Id equals (Guid)address.PersonId into j8
                       from address in j8.DefaultIfEmpty()
+                      join provincia in _context.GeographicLocations.AsNoTracking().DefaultIfEmpty() on address.Provincia equals (int)provincia.Id into j9
+                      from provincia in j9.DefaultIfEmpty()
+                      join canton in _context.GeographicLocations.AsNoTracking().DefaultIfEmpty() on address.Canton equals (int)canton.Id into j10
+                      from canton in j10.DefaultIfEmpty()
+                      join parroquia in _context.GeographicLocations.AsNoTracking().DefaultIfEmpty() on address.Parroquia equals (int)parroquia.Id into j11
+                      from parroquia in j11.DefaultIfEmpty()
                       select new
                       {
                           order,
@@ -61,7 +67,10 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                           userAssignedApplicationUser,
                           userAssignedUserInformation,
                           customer,
-                          address
+                          address,
+                          provincia,
+                          canton,
+                          parroquia
                       });
 
         var defaultFilter = result;
