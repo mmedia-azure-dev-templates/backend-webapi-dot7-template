@@ -50,7 +50,7 @@ public class CustomerByIdHandler : IRequestHandler<CustomerByIdRequest, Customer
                                 Notes = customer.Notes,
                                 DateCreated = customer.DateCreated,
                                 DateUpdated = customer.DateUpdated,
-                                AddressByIdResponse = new AddressByIdResponse
+                                AddressByIdResponse = address == null ? null : new AddressByIdResponse
                                 {
                                     PersonId = address.PersonId,
                                     PrimaryStreet = address.PrimaryStreet,
