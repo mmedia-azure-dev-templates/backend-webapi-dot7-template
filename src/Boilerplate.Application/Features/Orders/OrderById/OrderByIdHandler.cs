@@ -44,6 +44,12 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                       from customer in j7.DefaultIfEmpty()
                       join address in _context.Addresses.AsNoTracking().DefaultIfEmpty() on (Guid?)customer.Id equals (Guid)address.PersonId into j8
                       from address in j8.DefaultIfEmpty()
+                      join provincia in _context.GeographicLocations.AsNoTracking().DefaultIfEmpty() on address.Provincia equals (int)provincia.Id into j9
+                      from provincia in j9.DefaultIfEmpty()
+                      join canton in _context.GeographicLocations.AsNoTracking().DefaultIfEmpty() on address.Canton equals (int)canton.Id into j10
+                      from canton in j10.DefaultIfEmpty()
+                      join parroquia in _context.GeographicLocations.AsNoTracking().DefaultIfEmpty() on address.Parroquia equals (int)parroquia.Id into j11
+                      from parroquia in j11.DefaultIfEmpty()
                       where order.Id == request.OrderId
                       select new
                       {
@@ -55,7 +61,10 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                           userAssignedApplicationUser,
                           userAssignedUserInformation,
                           customer,
-                          address
+                          address,
+                          provincia,
+                          canton,
+                          parroquia
                       });
 
         var products = (from product in result.AsNoTracking().DefaultIfEmpty()
@@ -90,6 +99,9 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                                order.order,
                                order.customer,
                                order.address,
+                               order.provincia,
+                               order.canton,
+                               order.parroquia,
                                order.userGeneratedApplicationUser,
                                order.userGeneratedUserInformation,
                                order.userAssignedApplicationUser,
@@ -122,8 +134,11 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                                        SecondaryStreet = g.First().address.SecondaryStreet,
                                        Numeration = g.First().address.Numeration,
                                        Reference = g.First().address.Reference,
+                                       ProvinciaDisplay = g.First().provincia.Name,
                                        Provincia = g.First().address.Provincia,
+                                       CantonDisplay = g.First().canton.Name,
                                        Canton = g.First().address.Canton,
+                                       ParroquiaDisplay = g.First().parroquia.Name,
                                        Parroquia = g.First().address.Parroquia,
                                        Notes = g.First().address.Notes,
                                        DateCreated = g.First().address.DateCreated,

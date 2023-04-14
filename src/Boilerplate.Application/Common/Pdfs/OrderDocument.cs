@@ -25,7 +25,12 @@ public class OrderDocument : IDocument
                 page.Header().Element(ComposeHeader);
                 //page.Header().Height(100).Background(Colors.Grey.Lighten1);
                 page.Content().Element(ComposeContent); //.Background(Colors.Grey.Lighten3);
-                page.Footer().Height(50).Background(Colors.Grey.Lighten1);
+                page.Footer().AlignCenter().Text(x =>
+                {
+                    x.CurrentPageNumber();
+                    x.Span(" / ");
+                    x.TotalPages();
+                });
             });
     }
 
