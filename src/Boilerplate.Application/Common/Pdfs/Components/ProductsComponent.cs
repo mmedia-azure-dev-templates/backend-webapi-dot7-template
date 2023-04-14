@@ -4,6 +4,7 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class ProductsComponent : IComponent
@@ -88,15 +89,25 @@ public class ProductsComponent : IComponent
                 footer.Cell().Row(1).Column(4).Element(CellStyle).PaddingRight(4).AlignRight().Text("Subtotal: ").SemiBold();
                 footer.Cell().Row(2).Column(4).Element(CellStyle).PaddingRight(4).AlignRight().Text("IVA 12%: ").SemiBold();
                 footer.Cell().Row(3).Column(4).Element(CellStyle).PaddingRight(4).AlignRight().Text("Total: ").SemiBold();
-                footer.Cell().Row(1).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text($"${_order.SubTotal}");
-                footer.Cell().Row(2).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text("");
-                footer.Cell().Row(3).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text($"${_order.Total}").SemiBold();
+                if(ArticleSearchResponse.Count == 0)
+                {
+                    footer.Cell().Row(1).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text("");
+                    footer.Cell().Row(2).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text("");
+                    footer.Cell().Row(3).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text("");
+                }
+                if (ArticleSearchResponse.Count > 0)
+                {
+                    footer.Cell().Row(1).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text($"${_order.SubTotal}");
+                    footer.Cell().Row(2).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text("");
+                    footer.Cell().Row(3).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text($"${_order.Total}").SemiBold();
+                }
                 static IContainer CellStyle(IContainer container)
                 {
                     return container.AlignMiddle().MinHeight(20).Border(1).BorderColor(Colors.Black);
                 }
-
             });
-        });
+
+            
+        });        
     }
 }
