@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Address.AddresById;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
+using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Users.GetUsers;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -39,8 +42,8 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                       from userAssignedUserInformation in j6.DefaultIfEmpty()
                       join customer in _context.Customers.AsNoTracking().DefaultIfEmpty() on order.CustomerId equals customer.Id into j7
                       from customer in j7.DefaultIfEmpty()
-                      join adress in _context.Addresses.AsNoTracking().DefaultIfEmpty() on (Guid?)customer.Id equals (Guid)adress.PersonId into j8
-                      from adress in j8.DefaultIfEmpty()
+                      join address in _context.Addresses.AsNoTracking().DefaultIfEmpty() on (Guid?)customer.Id equals (Guid)address.PersonId into j8
+                      from address in j8.DefaultIfEmpty()
                       where order.Id == request.OrderId
                       select new
                       {
@@ -52,7 +55,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                           userAssignedApplicationUser,
                           userAssignedUserInformation,
                           customer,
-                          adress
+                          address
                       });
 
         var products = (from product in result.AsNoTracking().DefaultIfEmpty()
@@ -86,6 +89,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                            {
                                order.order,
                                order.customer,
+                               order.address,
                                order.userGeneratedApplicationUser,
                                order.userGeneratedUserInformation,
                                order.userAssignedApplicationUser,
@@ -95,7 +99,37 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                            select new OrderByIdResponse
                            {
                                Order = g.First().order,
-                               Customer = g.First().customer,
+                               Customer = g.First().customer == null ? null : new CustomerByIdResponse
+                               {
+                                   Id = g.First().customer.Id,
+                                   DocumentType = g.First().customer.DocumentType,
+                                   Ndocument = g.First().customer.Ndocument,
+                                   BirthDate = g.First().customer.BirthDate,
+                                   GenderType = g.First().customer.GenderType,
+                                   CivilStatusType = g.First().customer.CivilStatusType,
+                                   FirstName = g.First().customer.FirstName,
+                                   LastName = g.First().customer.LastName,
+                                   Email = g.First().customer.Email,
+                                   Mobile = g.First().customer.Mobile,
+                                   Phone = g.First().customer.Phone,
+                                   Notes = g.First().customer.Notes,
+                                   DateCreated = g.First().customer.DateCreated,
+                                   DateUpdated = g.First().customer.DateUpdated,
+                                   AddressByIdResponse = g.First().address == null ? null : new AddressByIdResponse
+                                   {
+                                       PersonId = g.First().address.PersonId,
+                                       PrimaryStreet = g.First().address.PrimaryStreet,
+                                       SecondaryStreet = g.First().address.SecondaryStreet,
+                                       Numeration = g.First().address.Numeration,
+                                       Reference = g.First().address.Reference,
+                                       Provincia = g.First().address.Provincia,
+                                       Canton = g.First().address.Canton,
+                                       Parroquia = g.First().address.Parroquia,
+                                       Notes = g.First().address.Notes,
+                                       DateCreated = g.First().address.DateCreated,
+                                       DateUpdated = g.First().address.DateUpdated,
+                                   }
+                               },
                                UserGenerated = new GetUsersResponse
                                {
                                    Id = g.First().userGeneratedApplicationUser.Id,

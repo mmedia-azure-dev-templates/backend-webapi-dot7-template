@@ -33,10 +33,10 @@ public class OrderPdfHandler : IRequestHandler<OrderPdfRequest, OrderPdfResponse
         var result = new OrderPdfResponse();
         var orderValid = await _mediator.Send(new OrderValidRequest { OrderId = request.OrderId }, cancellationToken);
 
-        if (!orderValid.IsValid)
-        {
-            return result;
-        }
+        //if (!orderValid.IsValid)
+        //{
+        //    return result;
+        //}
 
         
 
