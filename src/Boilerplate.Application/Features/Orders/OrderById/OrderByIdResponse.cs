@@ -8,8 +8,8 @@ using System.Collections.Generic;
 namespace Boilerplate.Application.Features.Orders.OrderById;
 public class OrderByIdResponse: IOrderByIdResponse
 {
-    public Order Order { get; set; }
-    public List<ArticleSearchResponse> ArticleSearchResponse { get; set; }
+    public Order Order { get; set; } = new();
+    public List<ArticleSearchResponse> ArticleSearchResponse { get; set; } = new();
     public GetUsersResponse? UserGenerated { get; set; }
     public GetUsersResponse? UserAssigned { get; set; }
     public CustomerByIdResponse? Customer { get; set; }

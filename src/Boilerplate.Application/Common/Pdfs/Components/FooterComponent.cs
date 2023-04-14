@@ -4,28 +4,21 @@ using QuestPDF.Infrastructure;
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class FooterComponent : IComponent
 {
-    private string Title { get; }
-    private Address2 Address { get; }
 
-    public FooterComponent(string title, Address2 address)
+    public FooterComponent()
     {
-        Title = title;
-        Address = address;
     }
 
     public void Compose(IContainer container)
     {
         container.Column(column =>
         {
-            column.Spacing(2);
-
-            column.Item().BorderBottom(1).PaddingBottom(5).Text(Title).SemiBold();
-
-            column.Item().Text(Address.CompanyName);
-            column.Item().Text(Address.Street);
-            column.Item().Text($"{Address.City}, {Address.State}");
-            column.Item().Text(Address.Email);
-            column.Item().Text(Address.Phone);
+            column.Item().AlignCenter().Text(x =>
+             {
+                 x.CurrentPageNumber();
+                 x.Span(" / ");
+                 x.TotalPages();
+             });
         });
     }
 }

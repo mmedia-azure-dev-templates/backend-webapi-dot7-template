@@ -70,6 +70,6 @@ public class InvoiceDocument : IDocument
 
     void ComposeComments(IContainer container)
     {
-        new CommentsComponent(Model.Comments).Compose(container);
+        new NotesComponent(Model.Comments).Compose(container);
     }
 }

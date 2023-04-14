@@ -21,16 +21,10 @@ public class OrderDocument : IDocument
         container
             .Page(page =>
             {
-                page.Margin(50);
+                page.Margin(20);
                 page.Header().Element(ComposeHeader);
-                //page.Header().Height(100).Background(Colors.Grey.Lighten1);
-                page.Content().Element(ComposeContent); //.Background(Colors.Grey.Lighten3);
-                page.Footer().AlignCenter().Text(x =>
-                {
-                    x.CurrentPageNumber();
-                    x.Span(" / ");
-                    x.TotalPages();
-                });
+                page.Content().Element(ComposeContent);
+                page.Footer().Element(ComposeFooter);
             });
     }
 
@@ -45,11 +39,21 @@ public class OrderDocument : IDocument
         {
             column.Spacing(5);
             column.Item().Element(ComposeTable);
+            column.Item().Element(ComposeComments);
         });
     }
 
     void ComposeTable(IContainer container)
     {
-        new TableComponent(_orderValidResponse.OrderByIdResponse.ArticleSearchResponse, _orderValidResponse.OrderByIdResponse.Order).Compose(container);
+        new ProductsComponent(_orderValidResponse.OrderByIdResponse.ArticleSearchResponse, _orderValidResponse.OrderByIdResponse.Order).Compose(container);
+    }
+    void ComposeComments(IContainer container)
+    {
+        new NotesComponent(_orderValidResponse.OrderByIdResponse.Order.Notes).Compose(container);
+    }
+
+    void ComposeFooter(IContainer container)
+    {
+        new FooterComponent().Compose(container);
     }
 }
