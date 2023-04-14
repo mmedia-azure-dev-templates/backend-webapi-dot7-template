@@ -44,6 +44,7 @@ public class HeaderComponent : IComponent
 
             column.Item().Text(text =>
             {
+                
 
                 text.Span("Nombres y Apellidos: ").SemiBold();
                 text.Span($"{_orderByIdResponse.Customer?.FirstName} {_orderByIdResponse.Customer?.LastName}").Light();
@@ -64,11 +65,20 @@ public class HeaderComponent : IComponent
                 text.Span($"{_orderByIdResponse.Customer?.Email}").Light();
                 text.EmptyLine();
                 text.Span("Provincia: ").SemiBold();
-                text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay} ").Light();
+                if(_orderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay != null)
+                {
+                    text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay} ").Light();
+                }
                 text.Span("Canton: ").SemiBold();
-                text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay} ").Light();
+                if (_orderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay != null)
+                {
+                    text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay} ").Light();
+                }
                 text.Span("Parroquia: ").SemiBold();
-                text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.ParroquiaDisplay} ").Light();
+                if (_orderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay != null)
+                {
+                    text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.ParroquiaDisplay} ").Light();
+                }
             });
 
         });
