@@ -19,8 +19,8 @@ public class PdfService : IPdfService
 
     public async Task<AmazonObject> CreateOrderPdf(OrderDocument orderDocument)
     {
-        var relativePath = "enterprise/" + _session.TenantName + "/orders/" + _session.Now.Year + "/" + _session.Now.ToString("MM") + "/" + _session.Now.ToString("dd") + "/" + orderDocument._orderValidResponse.OrderByIdResponse.Order.Id.ToString();
-        AmazonObject amazonObject = await _awsS3Service.UploadFileAmazonAsync(orderDocument.GeneratePdf(), relativePath, "order.pdf");
+        var relativePath = $"enterprise/{_session.TenantName}/orders/{_session.Now.Year}/{_session.Now.ToString("MM")}/{_session.Now.ToString("dd")}/{orderDocument._orderValidResponse.OrderByIdResponse.Order.Id}";
+        AmazonObject amazonObject = await _awsS3Service.UploadFileAmazonAsync(orderDocument.GeneratePdf(), relativePath,$"Order{orderDocument._orderValidResponse.OrderByIdResponse.Order.OrderNumber}.pdf");
         return amazonObject;
     }
 }

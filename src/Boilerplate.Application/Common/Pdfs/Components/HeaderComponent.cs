@@ -27,15 +27,13 @@ public class HeaderComponent : IComponent
         {
             column.Item().Row(row =>
             {                
-                row.ConstantItem(300).AlignBottom().Column(column =>
+                row.ConstantItem(300).AlignMiddle().Column(column =>
                 {
                     column.Item().Text(text =>
                     {
                         text.Span($"ORDEN DE COMPRA No. ").Bold().FontSize(16);
                         text.Span($"{_orderByIdResponse.Order.OrderNumber}").Bold().Style(titleStyle);
-                        text.EmptyLine();
-                        text.Span("Fecha: ").SemiBold();
-                        text.Span($"{_orderByIdResponse.Order.DateCreated:F}").Light();
+                        
                     });
                 });
 
@@ -44,8 +42,10 @@ public class HeaderComponent : IComponent
 
             column.Item().Text(text =>
             {
-                
-
+                text.DefaultTextStyle(TextStyle.Default.LineHeight(1.5f));
+                text.Span("Fecha: ").SemiBold();
+                text.Span($"{_orderByIdResponse.Order.DateCreated:F}").Light();
+                text.EmptyLine();
                 text.Span("Nombres y Apellidos: ").SemiBold();
                 text.Span($"{_orderByIdResponse.Customer?.FirstName} {_orderByIdResponse.Customer?.LastName}").Light();
                 text.EmptyLine();
@@ -69,6 +69,12 @@ public class HeaderComponent : IComponent
                 {
                     text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay} ").Light();
                 }
+                if (_orderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay == null)
+                {
+                    
+                }
+
+
                 text.Span("Canton: ").SemiBold();
                 if (_orderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay != null)
                 {
