@@ -71,7 +71,7 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                     customerUpdateResponse = await _mediator.Send(customerUpdateRequest, cancellationToken);
                 }
 
-                if (customer == null)
+                if (customer == null && request.CustomerUpdateRequest.Ndocument != null && request.CustomerUpdateRequest.DocumentType != null)
                 {
                     customerCreateRequest = _mapper.Map<CustomerCreateRequest>(request.CustomerUpdateRequest);
                     customerCreateResponse = await _mediator.Send(customerCreateRequest, cancellationToken);
