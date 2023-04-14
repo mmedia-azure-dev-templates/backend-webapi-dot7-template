@@ -45,11 +45,16 @@ public class OrderDocument : IDocument
         {
             column.Spacing(5);
             column.Item().Element(ComposeTable);
+            column.Item().Element(ComposeComments);
         });
     }
 
     void ComposeTable(IContainer container)
     {
-        new TableComponent(_orderValidResponse.OrderByIdResponse.ArticleSearchResponse, _orderValidResponse.OrderByIdResponse.Order).Compose(container);
+        new ProductsComponent(_orderValidResponse.OrderByIdResponse.ArticleSearchResponse, _orderValidResponse.OrderByIdResponse.Order).Compose(container);
+    }
+    void ComposeComments(IContainer container)
+    {
+        new NotesComponent(_orderValidResponse.OrderByIdResponse.Order.Notes).Compose(container);
     }
 }

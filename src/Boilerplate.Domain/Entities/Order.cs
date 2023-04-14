@@ -20,7 +20,7 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
     public CustomerId? CustomerId { get; set; } = null;
     public decimal SubTotal { get; set; } = 0;
     public decimal Total { get; set; } = 0;
-    public string? Notes { get; set; }
+    public string? Notes { get; set; } = null;
     public string? DocumentUrl { get; set; }
     public string? Documentation { get; set; }
     public DateTime DateCreated { get; set; }
