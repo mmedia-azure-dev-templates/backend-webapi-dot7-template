@@ -38,16 +38,16 @@ public class OrderDocument : IDocument
         container.PaddingVertical(40).Column(column =>
         {
             column.Spacing(5);
-            column.Item().Element(ComposeTable);
-            column.Item().Element(ComposeComments);
+            column.Item().Element(ComposeProducts);
+            column.Item().Element(ComposeNotes);
         });
     }
 
-    void ComposeTable(IContainer container)
+    void ComposeProducts(IContainer container)
     {
         new ProductsComponent(_orderValidResponse.OrderByIdResponse.ArticleSearchResponse, _orderValidResponse.OrderByIdResponse.Order).Compose(container);
     }
-    void ComposeComments(IContainer container)
+    void ComposeNotes(IContainer container)
     {
         new NotesComponent(_orderValidResponse.OrderByIdResponse.Order.Notes).Compose(container);
     }
