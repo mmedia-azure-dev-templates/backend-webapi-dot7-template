@@ -94,6 +94,7 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 order!.UserGenerated = new UserGenerated(_session.UserId.Value);
                 order.CustomerId = customerId == default ? null : customerId;
                 order.UserAssigned = request.UserAssigned == null ? null : new UserAssigned((Guid)request.UserAssigned);
+                order.Notes = request.Notes;
                 _context.Orders.Update(order);
                 await _context.SaveChangesAsync(cancellationToken);
 
