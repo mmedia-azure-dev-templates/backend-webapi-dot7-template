@@ -21,17 +21,12 @@ public record PaginatedList<T>
         TotalItems = count;
         Result.AddRange(items);
     }
-
-    public PaginatedList()
-    {
-
-    }
 }
 
 public static class PaginatedListHelper 
 {
 
-    public const int DefaultPageSize = 15;
+    public const int DefaultPageSize = 10;
     public const int DefaultCurrentPage = 1;
 
     public static async Task<PaginatedList<T>> ToPaginatedListAsync<T>(this IQueryable<T> source, int currentPage, int pageSize)
