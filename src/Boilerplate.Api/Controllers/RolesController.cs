@@ -49,6 +49,18 @@ public class RolesController : ControllerBase
         return permissionDisplays;
     }
 
+    [HasPermission(DefaultPermissions.RoleRead)]
+    [HttpGet]
+    [Route("view")]
+    public async Task<ActionResult<RoleCreateUpdateDto>> View(string roleName)
+    {
+        var userId = User.GetUserIdFromUser();
+        var role = await _authRolesAdmin.QueryRoleToPermissions(userId).SingleOrDefaultAsync(x => x.RoleName == roleName);
+        var permissionsDisplay = _authRolesAdmin.GetPermissionDisplay(false);
+        RoleCreateUpdateDto roleCreateUpdate = RoleCreateUpdateDto.SetupForCreateUpdate(role.RoleName, role.Description, role.PermissionNames, permissionsDisplay, role.RoleType);
+        return roleCreateUpdate;
+    }
+
     [HasPermission(DefaultPermissions.RoleChange)]
     [HttpGet]
     [Route("edit")]

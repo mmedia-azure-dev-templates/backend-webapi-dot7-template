@@ -79,16 +79,19 @@ public enum DefaultPermissions : ushort //Must be ushort to work with AuthP
     AdministrationRead = 40_007,
 
     //41_000 - Roles admin
-    [Display(GroupName = "RolesAdmin", Name = "Read Roles", Description = "Can list Role")]
+    [Display(GroupName = "RolesAdmin", Name = "Read Roles", Description = "Puede ver Roles")]
     RoleRead = 41_000,
     //This is an example of grouping multiple actions under one permission
-    [Display(GroupName = "RolesAdmin", Name = "Change Role", Description = "Can create, update or delete a Role", AutoGenerateFilter = true)]
+    [Display(GroupName = "RolesAdmin", Name = "Change Role", Description = "Puede actualizar or eliminar un Rol", AutoGenerateFilter = true)]
     RoleChange = 41_001,
+    [Display(GroupName = "RolesAdmin", Name = "Create Role", Description = "Puede crear un Rol", AutoGenerateFilter = true)]
+    RoleCreate = 41_002,
+
 
     //41_100 - Permissions 
-    [Display(GroupName = "RolesAdmin", Name = "See permissions", Description = "Can display the list of permissions", AutoGenerateFilter = true)]
+    [Display(GroupName = "RolesAdmin", Name = "See permissions", Description = "Puede mostrar la lista de permisos", AutoGenerateFilter = true)]
     PermissionRead = 41_100,
-    [Display(GroupName = "RolesAdmin", Name = "See all permissions", Description = "list will included filtered Permission ", AutoGenerateFilter = true)]
+    [Display(GroupName = "RolesAdmin", Name = "See all permissions", Description = "Puede mostrar la lista de permisos (incluirá el permiso filtrado)", AutoGenerateFilter = true)]
     IncludeFilteredPermissions = 41_101,
 
     //42_000 - tenant admin
