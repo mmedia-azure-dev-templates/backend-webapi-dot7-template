@@ -98,6 +98,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 UserGenerated = new UserGenerated(_session.UserId.Value),
                 UserAssigned = request.UserAssigned,
                 CustomerId = customerId == default ? null : customerId,
+                Notes = request.Notes,
                 SubTotal = request.SubTotal,
                 Total = request.Total,
             };
