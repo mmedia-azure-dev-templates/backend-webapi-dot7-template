@@ -2,6 +2,7 @@
 using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Responses;
+using Boilerplate.Application.Extensions;
 using Boilerplate.Application.Features.Address.AddresById;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Customers.CustomerById;
@@ -15,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -75,12 +77,30 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
 
         var defaultFilter = result;
         
-
-        defaultFilter = result.Where(x => x.order.DateCreated >= request.StartDate && x.order.DateCreated <= request.EndDate).OrderByDescending(x => x.order.DateCreated);
-
-        if (request.OrderFilterType != null && request.OrderFilterType.ToString() == "OrderNumber")
+        if(request.OrderFilterType == null)
         {
-            defaultFilter = result.Where(x => x.order.OrderNumber == new OrderNumber(long.Parse(request.Search)));
+            defaultFilter = result.Where(x => x.order.DateCreated >= request.StartDate && x.order.DateCreated <= request.EndDate).OrderByDescending(x => x.order.DateCreated);
+        }
+
+        if (request.OrderFilterType != null)
+        {
+            if(request.OrderFilterType.ToString() == "OrderNumber")
+            {
+                defaultFilter = result.WhereIf(!string.IsNullOrEmpty(request.Search),x => x.order.OrderNumber == new OrderNumber(long.Parse(request.Search)));
+            }
+
+            if (request.OrderFilterType.ToString() == "Amount")
+            {
+                defaultFilter = result.WhereIf(!string.IsNullOrEmpty(request.Search),x => x.order.Total == decimal.Parse(request.Search, CultureInfo.InvariantCulture));
+            }
+
+            if (request.OrderFilterType.ToString() == "Customer")
+            {
+                defaultFilter = result
+                    .WhereIf(!string.IsNullOrEmpty(request.Search), 
+                    x => EF.Functions.Like(x.customer.FirstName, $"%{request.Search}%") || 
+                    EF.Functions.Like(x.customer.LastName, $"%{request.Search}%"));
+            }
         }
 
         var products = (from product in defaultFilter.AsNoTracking().DefaultIfEmpty()
@@ -160,7 +180,6 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                                   DateCreated = g.First().address.DateCreated,
                                   DateUpdated = g.First().address.DateUpdated,
                               }
-
                           },
                           UserGenerated = new GetUsersResponse
                           {
