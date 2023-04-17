@@ -9,4 +9,6 @@ public enum OrderFilterType
     OrderNumber,
     [Display(Name = "Cliente")]
     Customer,
+    [Display(Name = "Monto")]
+    Amount,
 }

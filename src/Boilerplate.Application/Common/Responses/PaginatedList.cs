@@ -11,9 +11,7 @@ public record PaginatedList<T>
     public int CurrentPage { get; init; }
     public int TotalPages { get; init; }
     public int TotalItems { get; init; }
-
     public List<T> Result { get; init; } = new List<T>();
-
     public PaginatedList(List<T> items, int count, int currentPage, int pageSize)
     {
         CurrentPage = currentPage;
@@ -25,10 +23,8 @@ public record PaginatedList<T>
 
 public static class PaginatedListHelper 
 {
-
     public const int DefaultPageSize = 10;
     public const int DefaultCurrentPage = 1;
-
     public static async Task<PaginatedList<T>> ToPaginatedListAsync<T>(this IQueryable<T> source, int currentPage, int pageSize)
     {
         currentPage = currentPage > 0 ? currentPage : DefaultCurrentPage;
