@@ -25,8 +25,6 @@ public class PaymentMethodUpdateHandler : IRequestHandler<PaymentMethodUpdateReq
         var paymentMethod = await _context.PaymentMethods.Where(x => x.Id == request.Id).FirstOrDefaultAsync(cancellationToken);
         if (paymentMethod != null)
         {
-            paymentMethod.PaymentMethodsType = request.PaymentMethodsType;
-            paymentMethod.Display = request.Display;
             paymentMethod.Icon = request.Icon;
             paymentMethod.Active = request.Active;
             _context.PaymentMethods.Update(paymentMethod);

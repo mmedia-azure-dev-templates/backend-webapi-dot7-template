@@ -13,6 +13,7 @@ public class PaymentMethodAllResponse
     public string Display { get; set; }
     public string? Icon { get; set; }
     public bool Active { get; set; }
+    public bool IsSelected { get; set; } = false;
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
 }
