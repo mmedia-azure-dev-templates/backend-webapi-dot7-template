@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.PaymentMethods.PaymentMethodUpdate;
 using Boilerplate.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,8 @@ public class PaymentMethodCreateHandler : IRequestHandler<PaymentMethodCreateReq
 
         _context.PaymentMethods.Add(paymentMethodCreate);
         await _context.SaveChangesAsync(cancellationToken);
-        paymentMethodCreateResponse.Message = paymentMethodCreate.DateCreated.ToString();
+        paymentMethodCreateResponse.Success = true;
+        paymentMethodCreateResponse.Message = "Método de Pago Creado";
         return paymentMethodCreateResponse;
     }
 }
