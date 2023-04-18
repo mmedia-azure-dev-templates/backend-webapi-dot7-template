@@ -20,6 +20,7 @@ public interface IContext : IAsyncDisposable, IDisposable
     public DbSet<PaymentMethod> PaymentMethods { get; }
     public DbSet<Customer> Customers { get; }
     public DbSet<Order> Orders { get; }
+    public DbSet<Payment> Payments { get; }
     public DbSet<Address> Addresses { get; }
     public DbSet<Hero> Heroes { get; }
     public DbSet<CompanyTenant> Companies { get; set; }
