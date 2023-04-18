@@ -77,6 +77,8 @@ public enum DefaultPermissions : ushort //Must be ushort to work with AuthP
     UserEmailUpdate = 40_006,
     [Display(GroupName = "UserAdmin", Name = "Read administration", Description = "Can read administration")]
     AdministrationRead = 40_007,
+    [Display(GroupName = "UserAdmin", Name = "Maintenance Tenant", Description = "Mantenimiento Empresa")]
+    MaintenanceTenant = 40_008,
 
     //41_000 - Roles admin
     [Display(GroupName = "RolesAdmin", Name = "Read Roles", Description = "Puede ver Roles")]

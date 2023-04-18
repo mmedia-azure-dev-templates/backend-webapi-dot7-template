@@ -35,6 +35,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
     public virtual DbSet<Customer> Customers { get; set; }
     public virtual DbSet<Order> Orders { get; set; }
+    public virtual DbSet<Payment> Payments { get; set; }
     public virtual DbSet<Address> Addresses { get; set; }
     public virtual DbSet<Hero> Heroes { get; set; }
     public DbSet<CompanyTenant> Companies { get; set; }

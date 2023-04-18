@@ -208,8 +208,11 @@ public partial struct UserPaid : IGuid
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
 public partial struct PaymentMethodId : IGuid
 {
-    public static implicit operator PaymentMethodId(Guid paymentMethodId)
-    {
-        return new PaymentMethodId(paymentMethodId);
-    }
+    public static explicit operator Guid(PaymentMethodId paymentMethodId) => paymentMethodId.Value;
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct PaymentId : IGuid
+{
+    public static explicit operator Guid(PaymentId paymentId) => paymentId.Value;
 }
