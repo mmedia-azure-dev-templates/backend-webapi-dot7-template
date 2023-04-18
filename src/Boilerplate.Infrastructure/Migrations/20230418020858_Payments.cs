@@ -24,7 +24,7 @@ public partial class Payments : Migration
                 DataKey = table.Column<string>(type: "varchar(450)", unicode: false, maxLength: 250, nullable: false),
                 OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 PaymentMethodId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                Amount = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
+                Amount = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false, defaultValue: 0),
                 Notes = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                 DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                 Dateupdated = table.Column<DateTime>(type: "datetime2", nullable: true),
