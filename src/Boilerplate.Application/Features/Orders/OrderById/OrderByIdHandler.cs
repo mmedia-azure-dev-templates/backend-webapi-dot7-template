@@ -3,6 +3,7 @@ using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Address.AddresById;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Customers.CustomerById;
+using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Application.Features.Users.GetUsers;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
@@ -32,6 +33,8 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                       from orderItems in j1.DefaultIfEmpty()
                       join articles in _context.Articles.AsNoTracking().DefaultIfEmpty() on orderItems.ArticleId equals articles.Id into j2
                       from articles in j2.DefaultIfEmpty()
+                      join payments in _context.Payments.AsNoTracking().DefaultIfEmpty() on order.Id equals payments.OrderId into j100
+                      from payments in j100.DefaultIfEmpty()
                       join userGeneratedApplicationUser in _context.ApplicationUsers.AsNoTracking().DefaultIfEmpty() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = userGeneratedApplicationUser.Id } into j3
                       from userGeneratedApplicationUser in j3.DefaultIfEmpty()
                       join userGeneratedUserInformation in _context.UserInformations.AsNoTracking().DefaultIfEmpty() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = (Guid)userGeneratedUserInformation.UserId } into j4
@@ -56,6 +59,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                           order,
                           orderItems,
                           articles,
+                          payments,
                           userGeneratedApplicationUser,
                           userGeneratedUserInformation,
                           userAssignedApplicationUser,
@@ -66,6 +70,26 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                           canton,
                           parroquia
                       });
+
+        var customPayments = (from payment in result.AsNoTracking().DefaultIfEmpty()
+                              join paymentMethod in _context.PaymentMethods.AsNoTracking().DefaultIfEmpty() on payment.payments.PaymentMethodId equals paymentMethod.Id into j101
+                              from paymentMethod in j101.DefaultIfEmpty()
+                              where payment.payments != null && payment.order != null
+                              select new PaymentByIdResponse
+                              {
+                                  Id = payment.payments.Id,
+                                  DataKey = payment.payments.DataKey,
+                                  OrderId = payment.payments.OrderId,
+                                  PaymentMethodId = payment.payments.PaymentMethodId,
+                                  Amount = payment.payments.Amount,
+                                  Notes = payment.payments.Notes,
+                                  PaymentMethodsType = paymentMethod.PaymentMethodsType,
+                                  Display = paymentMethod.Display,
+                                  Active = paymentMethod.Active,
+                                  Icon = paymentMethod.Icon,
+                                  DateCreated = payment.payments.DateCreated,
+                                  DateUpdated = payment.payments.DateUpdated
+                              });
 
         var products = (from product in result.AsNoTracking().DefaultIfEmpty()
                         where product.orderItems != null && product.articles != null
@@ -211,6 +235,10 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                                    DateCreated = g.First().userAssignedUserInformation.DateCreated,
                                    DateUpdated = g.First().userAssignedUserInformation.DateUpdated,
                                },
+                               PaymentByIdResponse = (List<PaymentByIdResponse>)(
+                                                   from payment in customPayments
+                                                   where payment.OrderId == g.First().order.Id
+                                                   select payment),
                                ArticleSearchResponse = (List<ArticleSearchResponse>)(
                                                         from product in products.DefaultIfEmpty()
                                                         where product.OrderId == g.First().order.Id

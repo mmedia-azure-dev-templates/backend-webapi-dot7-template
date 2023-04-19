@@ -1,4 +1,6 @@
 ﻿using Boilerplate.Application.Features.Articles.ArticleSearch;
+using Boilerplate.Application.Features.Orders.OrderValid;
+using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Domain.Entities;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -11,10 +13,12 @@ public class ProductsComponent : IComponent
 {
     public Order _order { get; set; }
     public List<ArticleSearchResponse> ArticleSearchResponse { get; }
-    public ProductsComponent(List<ArticleSearchResponse> model, Order order)
+    public List<PaymentByIdResponse> _paymentByIdResponse { get; }
+    public ProductsComponent(Order order,List<ArticleSearchResponse> model, List<PaymentByIdResponse> paymentByIdResponse)
     {
-        ArticleSearchResponse = model;
         _order = order;
+        ArticleSearchResponse = model;
+        _paymentByIdResponse = paymentByIdResponse;
     }
     public void Compose(IContainer container)
     {
@@ -102,9 +106,11 @@ public class ProductsComponent : IComponent
                     }
                 }
             }
+            
 
             table.Footer(footer =>
             {
+                footer.Cell().RowSpan(3).ColumnSpan(4).Element(ComposePayments);
                 footer.Cell().Row(1).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text("Subtotal: ").SemiBold();
                 footer.Cell().Row(2).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text("IVA 12%: ").SemiBold();
                 footer.Cell().Row(3).Column(5).Element(CellStyle).PaddingRight(4).AlignRight().Text("Total: ").SemiBold();
@@ -124,9 +130,26 @@ public class ProductsComponent : IComponent
                 {
                     return container.AlignMiddle().MinHeight(20).Border(1,Unit.Mill).BorderColor(Colors.Black);
                 }
+                // for simplicity, you can also use extension method described in the "Extending DSL" section
+                static IContainer Block(IContainer container)
+                {
+                    return container
+                        .Border(1)
+                        .Background(Colors.Grey.Lighten3)
+                        .ShowOnce()
+                        .MinWidth(50)
+                        .MinHeight(50)
+                        .AlignCenter()
+                        .AlignMiddle();
+                }
             });
 
 
         });        
+    }
+
+    void ComposePayments(IContainer container)
+    {
+        new PaymentComponent(_paymentByIdResponse).Compose(container);
     }
 }

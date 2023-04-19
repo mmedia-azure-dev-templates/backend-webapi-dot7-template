@@ -45,7 +45,7 @@ public class OrderDocument : IDocument
 
     void ComposeProducts(IContainer container)
     {
-        new ProductsComponent(_orderValidResponse.OrderByIdResponse.ArticleSearchResponse, _orderValidResponse.OrderByIdResponse.Order).Compose(container);
+        new ProductsComponent(_orderValidResponse.OrderByIdResponse.Order, _orderValidResponse.OrderByIdResponse.ArticleSearchResponse, _orderValidResponse.OrderByIdResponse.PaymentByIdResponse).Compose(container);
     }
     void ComposeNotes(IContainer container)
     {
