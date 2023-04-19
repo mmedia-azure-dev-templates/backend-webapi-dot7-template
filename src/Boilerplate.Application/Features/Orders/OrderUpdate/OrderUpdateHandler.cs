@@ -119,6 +119,19 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 await _context.OrderItems.AddRangeAsync(orderItems);
                 await _context.SaveChangesAsync(cancellationToken);
 
+                var removePayments = await _context.Payments.Where(x => x.OrderId == request.OrderId).ToListAsync();
+                List<Payment> payments = new List<Payment>();
+                foreach (var payment in request.PaymentMethodAllResponse)
+                {
+                    var item = new Payment
+                    {
+                        OrderId = order.Id,
+                        PaymentMethodId = payment.Id,
+                    };
+                    payments.Add(item);
+                }
+                await _context.Payments.AddRangeAsync(payments);
+                await _context.SaveChangesAsync(cancellationToken);
                 scope.Complete();
                 _orderUpdateResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
                 _orderUpdateResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;

@@ -7,6 +7,8 @@ using Boilerplate.Application.Features.Address.AddresById;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Orders.OrderById;
+using Boilerplate.Application.Features.PaymentMethods.PaymentMethodById;
+using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Application.Features.Users.GetUsers;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
@@ -34,13 +36,13 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
 
     public async Task<PaginatedList<OrderSearchResponse>> Handle(OrderSearchRequest request, CancellationToken cancellationToken)
     {
-        //var formatStartDate = new DateTime(request.StartDate.Year, request.StartDate.Month, request.StartDate.Day);
-        //var formatEndDate = new DateTime(request.EndDate.Year, request.EndDate.Month, request.EndDate.Day).AddDays(1).AddSeconds(-1);
         var result = (from order in _context.Orders.AsNoTracking().DefaultIfEmpty()
                       join orderItems in _context.OrderItems.AsNoTracking().DefaultIfEmpty() on order.Id equals orderItems.OrderId into j1
                       from orderItems in j1.DefaultIfEmpty()
                       join articles in _context.Articles.AsNoTracking().DefaultIfEmpty() on orderItems.ArticleId equals articles.Id into j2
                       from articles in j2.DefaultIfEmpty()
+                      join payments in _context.Payments.AsNoTracking().DefaultIfEmpty() on order.Id equals payments.OrderId into j100
+                      from payments in j100.DefaultIfEmpty()
                       join userGeneratedApplicationUser in _context.ApplicationUsers.AsNoTracking().DefaultIfEmpty() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = userGeneratedApplicationUser.Id } into j3
                       from userGeneratedApplicationUser in j3.DefaultIfEmpty()
                       join userGeneratedUserInformation in _context.UserInformations.AsNoTracking().DefaultIfEmpty() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = (Guid)userGeneratedUserInformation.UserId } into j4
@@ -64,6 +66,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                           order,
                           orderItems,
                           articles,
+                          payments,
                           userGeneratedApplicationUser,
                           userGeneratedUserInformation,
                           userAssignedApplicationUser,
@@ -74,10 +77,10 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                           canton,
                           parroquia
                       });
-
-        var defaultFilter = result;
         
-        if(request.OrderFilterType == null)
+        var defaultFilter = result;
+
+        if (request.OrderFilterType == null)
         {
             defaultFilter = result.Where(x => x.order.DateCreated >= request.StartDate && x.order.DateCreated <= request.EndDate).OrderByDescending(x => x.order.DateCreated);
         }
@@ -102,6 +105,26 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                     EF.Functions.Like(x.customer.LastName, $"%{request.Search}%"));
             }
         }
+
+        var customPayments = (from payment in defaultFilter.AsNoTracking().DefaultIfEmpty()
+                              join paymentMethod in _context.PaymentMethods.AsNoTracking().DefaultIfEmpty() on payment.payments.PaymentMethodId equals paymentMethod.Id into j101
+                              from paymentMethod in j101.DefaultIfEmpty()
+                              where payment.payments != null && payment.order !=null
+                              select new PaymentByIdResponse
+                              {
+                                  Id = payment.payments.Id,
+                                  DataKey = payment.payments.DataKey,
+                                  OrderId = payment.payments.OrderId,
+                                  PaymentMethodId = payment.payments.PaymentMethodId,
+                                  Amount = payment.payments.Amount,
+                                  Notes = payment.payments.Notes,
+                                  PaymentMethodsType = paymentMethod.PaymentMethodsType,
+                                  Display = paymentMethod.Display,
+                                  Active = paymentMethod.Active,
+                                  Icon = paymentMethod.Icon,
+                                  DateCreated = payment.payments.DateCreated,
+                                  DateUpdated = payment.payments.DateUpdated
+                              });
 
         var products = (from product in defaultFilter.AsNoTracking().DefaultIfEmpty()
                         where product.orderItems != null && product.articles != null
@@ -134,6 +157,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                       {
                           order.order,
                           order.customer,
+                          order.payments,
                           order.address,
                           order.provincia,
                           order.canton,
@@ -247,6 +271,10 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                               DateCreated = g.First().userAssignedUserInformation.DateCreated,
                               DateUpdated = g.First().userAssignedUserInformation.DateUpdated,
                           },
+                          PaymentByIdResponse = (List<PaymentByIdResponse>)(
+                                                   from payment in customPayments
+                                                   where payment.OrderId == g.First().order.Id
+                                                   select payment),
                           ArticleSearchResponse = (List<ArticleSearchResponse>)(
                                                    from product in products
                                                    where product.OrderId == g.First().order.Id

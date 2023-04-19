@@ -1,6 +1,7 @@
 ﻿using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.Customers.CustomerUpdate;
+using Boilerplate.Application.Features.PaymentMethods;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using MediatR;
@@ -20,4 +21,5 @@ public class OrderUpdateRequest: IRequest<OrderUpdateResponse>
     public string? Documentation { get; set; }
     public CustomerUpdateRequest CustomerUpdateRequest { get; set; }
     public List<ArticleSearchResponse> ArticleSearchResponse { get; set; }
+    public List<PaymentMethodAllResponse> PaymentMethodAllResponse { get; set; }
 }
