@@ -117,7 +117,7 @@ public class ExtendIndividualUserAddUserManager<TIdentity> : IAddNewUserManager
             ? null
             : (await _tenantAdminService.GetTenantViaIdAsync((int)newUser.TenantId)).Result?.TenantFullName;
 
-        status.CombineStatuses(await _authUsersAdmin.AddNewUserAsync(user.Id.ToString(),
+        status.CombineStatuses(await _authUsersAdmin.AddNewUserAsync(user.Id.ToString().ToUpper(),
             newUser.Email, newUser.UserName, newUser.Roles, tenantName));
 
         return status;
