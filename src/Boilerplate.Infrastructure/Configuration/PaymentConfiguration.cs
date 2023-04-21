@@ -16,5 +16,6 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         entity.Property(e => e.Id).ValueGeneratedOnAdd();
         entity.Property(e => e.OrderId).HasConversion<OrderId.EfCoreValueConverter>();
         entity.Property(e => e.PaymentMethodId).HasConversion<PaymentMethodId.EfCoreValueConverter>();
+        entity.Property(c => c.Amount).HasPrecision(14, 4);
     }
 }

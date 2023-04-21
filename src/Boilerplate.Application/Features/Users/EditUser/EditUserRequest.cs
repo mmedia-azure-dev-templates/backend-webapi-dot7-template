@@ -11,7 +11,7 @@ public record EditUserRequest : IRequest<EditUserResponse>
     public string Email { get; init; } = null!;
     public string FirstName { get; init; } = null!;
     public string LastName { get; init; } = null!;
-    public DocumentType IdentificationType { get; init; }
+    public DocumentType DocumentType { get; init; }
     public NacionalityType NacionalityType { get; init; }
     public string Ndocument { get; init; } = null!;
     public GenderType GenderType { get; init; }

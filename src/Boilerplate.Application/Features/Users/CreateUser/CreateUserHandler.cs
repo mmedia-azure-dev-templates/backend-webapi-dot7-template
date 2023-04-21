@@ -84,7 +84,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                 UserInformation userInformation = new()
                 {
                     UserId = new UserId(user.Id),
-                    TypeDocument = request.IdentificationType,
+                    DocumentType = request.DocumentType,
                     Nacionality = request.NacionalityType,
                     Ndocument = request.Ndocument,
                     Gender = request.GenderType,
