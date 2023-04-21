@@ -5,8 +5,6 @@ using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Application.Features.Users.GetUsers;
-using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,8 +29,6 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
         var result = (from order in _context.Orders.AsNoTracking().DefaultIfEmpty()
                       join orderItems in _context.OrderItems.AsNoTracking().DefaultIfEmpty() on order.Id equals orderItems.OrderId into j1
                       from orderItems in j1.DefaultIfEmpty()
-                      join articles in _context.Articles.AsNoTracking().DefaultIfEmpty() on orderItems.ArticleId equals articles.Id into j2
-                      from articles in j2.DefaultIfEmpty()
                       join payments in _context.Payments.AsNoTracking().DefaultIfEmpty() on order.Id equals payments.OrderId into j100
                       from payments in j100.DefaultIfEmpty()
                       join userGeneratedApplicationUser in _context.ApplicationUsers.AsNoTracking().DefaultIfEmpty() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = userGeneratedApplicationUser.Id } into j3
@@ -58,7 +54,6 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                       {
                           order,
                           orderItems,
-                          articles,
                           payments,
                           userGeneratedApplicationUser,
                           userGeneratedUserInformation,
@@ -92,11 +87,13 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                               });
 
         var products = (from product in result.AsNoTracking().DefaultIfEmpty()
-                        where product.orderItems != null && product.articles != null
+                        join articles in _context.Articles.AsNoTracking().DefaultIfEmpty() on product.orderItems.ArticleId equals articles.Id into j2
+                        from articles in j2.DefaultIfEmpty()
+                        where product.orderItems != null
                         group new
                         {
                             product.orderItems,
-                            product.articles,
+                            articles,
                         } by new { product.orderItems.Id } into h
                         select new ArticleSearchResponse
                         {

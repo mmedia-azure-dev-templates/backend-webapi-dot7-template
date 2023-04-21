@@ -7,23 +7,24 @@
     <!--    add your PackageVersion nodes here -->
     <PackageVersion Include="AuthPermissions.AspNetCore" Version="4.1.0" />
     <PackageVersion Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.5" />
-    <PackageVersion Include="AWSSDK.S3" Version="3.7.103.45" />
+    <PackageVersion Include="AWSSDK.S3" Version="3.7.104.1" />
     <PackageVersion Include="EntityFramework" Version="6.4.4" />
     <PackageVersion Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="4.0.0" />
     <PackageVersion Include="HarfBuzzSharp.NativeAssets.Linux" Version="2.8.2.3" />
-    <PackageVersion Include="MailKit" Version="3.6.0" />
+    <PackageVersion Include="MailKit" Version="4.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.4" />
-    <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.4" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.5" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="6.0.13" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="7.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="7.0.5" />
     <PackageVersion Include="Microsoft.SqlServer.Types" Version="160.1000.6" />
     <PackageVersion Include="Net.DistributedFileStoreCache" Version="2.0.0" />
     <PackageVersion Include="NewId" Version="4.0.1" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
     <PackageVersion Include="NSwag.AspNetCore" Version="13.18.2" />
-    <PackageVersion Include="QuestPDF" Version="2022.12.2" />
+    <PackageVersion Include="QuestPDF" Version="2022.12.3" />
     <PackageVersion Include="Razor.Templating.Core" Version="1.8.0" />
     <PackageVersion Include="RazorEngineCore" Version="2022.8.1" />
+    <PackageVersion Include="Rollbar" Version="5.2.0" />
     <PackageVersion Include="SkiaSharp" Version="2.88.3" />
     <PackageVersion Include="SkiaSharp.HarfBuzz" Version="2.88.3" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="2.88.3" />
@@ -31,15 +32,15 @@
     <PackageVersion Include="StronglyTypedId" Version="1.0.0-beta06" />
     <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageVersion Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageVersion Include="FluentValidation" Version="11.5.1" />
+    <PackageVersion Include="FluentValidation" Version="11.5.2" />
     <PackageVersion Include="MediatR" Version="12.0.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageVersion Include="OneOf" Version="3.0.243" />
-    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.28.0" />
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.29.0" />
     <PackageVersion Include="EntityFrameworkCore.Exceptions.SqlServer" Version="6.0.3.1" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.4" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
     <PackageVersion Include="Bogus" Version="34.0.2" />
     <PackageVersion Include="coverlet.msbuild" Version="3.2.0" />
     <PackageVersion Include="FluentAssertions" Version="6.9.0" />
@@ -55,15 +56,15 @@
     <PackageVersion Include="Ben.Demystifier" Version="0.4.1" />
     <PackageVersion Include="FluentValidation.AspNetCore" Version="11.2.2" />
     <PackageVersion Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.4" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageVersion>
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
-    <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
     <PackageVersion Include="OpenTelemetry.Exporter.Jaeger" Version="1.4.0-rc.2" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.4.0-rc.2" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.11" />
