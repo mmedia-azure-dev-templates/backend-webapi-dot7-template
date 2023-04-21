@@ -1,4 +1,5 @@
 ﻿//https://stackoverflow.com/questions/33153932/filter-search-using-multiple-fields-asp-net-mvc
+using AuthPermissions.BaseCode.PermissionsCode;
 using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Responses;
@@ -6,16 +7,13 @@ using Boilerplate.Application.Extensions;
 using Boilerplate.Application.Features.Address.AddresById;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Customers.CustomerById;
-using Boilerplate.Application.Features.Orders.OrderById;
-using Boilerplate.Application.Features.PaymentMethods.PaymentMethodById;
 using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Application.Features.Users.GetUsers;
-using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
-using Boilerplate.Domain.Entities.Enums;
+using Boilerplate.Domain.Implementations;
+using Boilerplate.Domain.PermissionsCode;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,10 +26,12 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
-    public OrderSearchHandler(IMapper mapper, IContext context)
+    private readonly ISession _session;
+    public OrderSearchHandler(IMapper mapper, IContext context, ISession session)
     {
         _mapper = mapper;
         _context = context;
+        _session = session;
     }
 
     public async Task<PaginatedList<OrderSearchResponse>> Handle(OrderSearchRequest request, CancellationToken cancellationToken)
@@ -77,31 +77,38 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                           canton,
                           parroquia
                       });
-        
+
         var defaultFilter = result;
+
+        defaultFilter = result.Where(x => x.order.UserGenerated == new UserGenerated((Guid)_session.UserId) || x.order.UserAssigned == new UserAssigned((Guid)_session.UserId));
+
+        if (_session.User.HasPermission(DefaultPermissions.OrderAll))
+        {
+            defaultFilter = result;
+        }
 
         if (request.OrderFilterType == null)
         {
-            defaultFilter = result.Where(x => x.order.DateCreated >= request.StartDate && x.order.DateCreated <= request.EndDate).OrderByDescending(x => x.order.DateCreated);
+            defaultFilter = defaultFilter.Where(x => x.order.DateCreated >= request.StartDate && x.order.DateCreated <= request.EndDate).OrderByDescending(x => x.order.DateCreated);
         }
 
         if (request.OrderFilterType != null)
         {
-            if(request.OrderFilterType.ToString() == "OrderNumber")
+            if (request.OrderFilterType.ToString() == "OrderNumber")
             {
-                defaultFilter = result.WhereIf(!string.IsNullOrEmpty(request.Search),x => x.order.OrderNumber == new OrderNumber(long.Parse(request.Search)));
+                defaultFilter = defaultFilter.WhereIf(!string.IsNullOrEmpty(request.Search), x => x.order.OrderNumber == new OrderNumber(long.Parse(request.Search)));
             }
 
             if (request.OrderFilterType.ToString() == "Amount")
             {
-                defaultFilter = result.WhereIf(!string.IsNullOrEmpty(request.Search),x => x.order.Total == decimal.Parse(request.Search, CultureInfo.InvariantCulture));
+                defaultFilter = defaultFilter.WhereIf(!string.IsNullOrEmpty(request.Search), x => x.order.Total == decimal.Parse(request.Search, CultureInfo.InvariantCulture));
             }
 
             if (request.OrderFilterType.ToString() == "Customer")
             {
-                defaultFilter = result
-                    .WhereIf(!string.IsNullOrEmpty(request.Search), 
-                    x => EF.Functions.Like(x.customer.FirstName, $"%{request.Search}%") || 
+                defaultFilter = defaultFilter
+                    .WhereIf(!string.IsNullOrEmpty(request.Search),
+                    x => EF.Functions.Like(x.customer.FirstName, $"%{request.Search}%") ||
                     EF.Functions.Like(x.customer.LastName, $"%{request.Search}%"));
             }
         }
@@ -109,7 +116,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
         var customPayments = (from payment in defaultFilter.AsNoTracking().DefaultIfEmpty()
                               join paymentMethod in _context.PaymentMethods.AsNoTracking().DefaultIfEmpty() on payment.payments.PaymentMethodId equals paymentMethod.Id into j101
                               from paymentMethod in j101.DefaultIfEmpty()
-                              where payment.payments != null && payment.order !=null
+                              where payment.payments != null && payment.order != null
                               select new PaymentByIdResponse
                               {
                                   Id = payment.payments.Id,
@@ -281,7 +288,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                                                    select product)
                       });
 
-        
+
 
         return await orders.ToPaginatedListAsync(request.CurrentPage, request.PageSize);
         //.OrderBy(x => x.)
