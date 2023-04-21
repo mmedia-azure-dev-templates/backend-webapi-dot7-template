@@ -7,7 +7,7 @@ namespace Boilerplate.Application.Features.Customers.CustomerById;
 public class CustomerByIdResponse
 {
     public CustomerId? Id { get; set; } = null;
-    public IdentificationType? DocumentType { get; init; } = null;
+    public DocumentType? DocumentType { get; init; } = null;
     public string? Ndocument { get; init; } = null;
     public DateTime? BirthDate { get; init; } = null;
     public GenderType? GenderType { get; init; } = null;

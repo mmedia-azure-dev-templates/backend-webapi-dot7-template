@@ -17,7 +17,7 @@ public class GetUserByIdResponse
     public DateTime? LastLogin { get; set; }
     public string Email { get; set; }
     public bool EmailConfirmed { get; set; }
-    public IdentificationType TypeDocument { get; set; }
+    public DocumentType DocumentType { get; set; }
     public NacionalityType Nacionality { get; set; }
     public string Ndocument { get; set; }
     public GenderType Gender { get; set; }

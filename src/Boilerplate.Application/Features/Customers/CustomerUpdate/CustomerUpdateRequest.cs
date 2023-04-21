@@ -9,7 +9,7 @@ namespace Boilerplate.Application.Features.Customers.CustomerUpdate;
 public class CustomerUpdateRequest: IRequest<CustomerUpdateResponse>
 {
     public CustomerId? CustomerId { get; set; } = null;
-    public IdentificationType? DocumentType { get; set; }
+    public DocumentType? DocumentType { get; set; }
     public string? Ndocument { get; set; } = null!;
     public DateTime? BirthDate { get; set; }
     public GenderType? GenderType { get; set; }

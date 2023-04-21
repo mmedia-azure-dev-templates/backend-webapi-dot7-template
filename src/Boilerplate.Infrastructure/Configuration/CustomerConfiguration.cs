@@ -21,6 +21,6 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             v => (GenderType)Enum.Parse(typeof(GenderType), v));
         entity.Property(e => e.DocumentType).HasColumnName("DocumentType").HasConversion(
             v => v.ToString(),
-            v => (IdentificationType)Enum.Parse(typeof(IdentificationType), v));
+            v => (DocumentType)Enum.Parse(typeof(DocumentType), v));
     }
 }
