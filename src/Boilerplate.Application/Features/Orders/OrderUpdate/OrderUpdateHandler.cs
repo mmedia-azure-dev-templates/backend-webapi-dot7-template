@@ -119,7 +119,10 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 await _context.OrderItems.AddRangeAsync(orderItems);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                var removePayments = await _context.Payments.Where(x => x.OrderId == request.OrderId).ToListAsync();
+                var removePayments = await _context.Payments.Where(x => x.OrderId == request.OrderId).ToListAsync(cancellationToken);
+                _context.Payments.RemoveRange(removePayments);
+                await _context.SaveChangesAsync(cancellationToken);
+
                 List<Payment> payments = new List<Payment>();
                 foreach (var payment in request.PaymentMethodAllResponse)
                 {
