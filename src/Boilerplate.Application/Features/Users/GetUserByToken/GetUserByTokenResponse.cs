@@ -17,7 +17,7 @@ public class GetUserByTokenResponse
     public DateTime? LastLogin { get; set; }
     public string Email { get; set; }
     public bool EmailConfirmed { get; set; }
-    public IdentificationType TypeDocument { get; set; }
+    public DocumentType DocumentType { get; set; }
     public required NacionalityType Nacionality { get; set; }
     public required string Ndocument { get; set; }
     public required GenderType Gender { get; set; }

@@ -42,7 +42,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<Ge
                             LastLogin = applicationUser.LastLogin,
                             Email = applicationUser.Email,
                             EmailConfirmed = applicationUser.EmailConfirmed,
-                            TypeDocument = userInformation.TypeDocument,
+                            DocumentType = userInformation.TypeDocument,
                             Nacionality = userInformation.Nacionality,
                             Ndocument = userInformation.Ndocument,
                             Gender = userInformation.Gender,

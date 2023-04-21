@@ -19,7 +19,7 @@ public class OrderUpdateRequest: IRequest<OrderUpdateResponse>
     public string? Notes { get; set; }
     public string? DocumentUrl { get; set; }
     public string? Documentation { get; set; }
-    public CustomerUpdateRequest CustomerUpdateRequest { get; set; }
+    public CustomerUpdateRequest? CustomerUpdateRequest { get; set; }
     public List<ArticleSearchResponse> ArticleSearchResponse { get; set; }
     public List<PaymentMethodAllResponse> PaymentMethodAllResponse { get; set; }
 }

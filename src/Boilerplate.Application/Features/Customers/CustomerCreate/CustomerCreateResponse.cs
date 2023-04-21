@@ -8,7 +8,7 @@ namespace Boilerplate.Application.Features.Customers.CustomerCreate;
 public class CustomerCreateResponse: ICustomerCreateResponse
 {
     public CustomerId? CustomerId { get; set; } = null;
-    public IdentificationType DocumentType { get; init; }
+    public DocumentType DocumentType { get; init; }
     public string? Ndocument { get; init; } = null!;
     public DateTime? BirthDate { get; init; }
     public GenderType? GenderType { get; init; }

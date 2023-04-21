@@ -34,7 +34,7 @@ public class UserInformationConfiguration : IEntityTypeConfiguration<UserInforma
             v => (NacionalityType)Enum.Parse(typeof(NacionalityType), v));
         entity.Property(e => e.TypeDocument).HasColumnName("TypeDocument").HasConversion(
             v => v.ToString(),
-            v => (IdentificationType)Enum.Parse(typeof(IdentificationType), v));
+            v => (DocumentType)Enum.Parse(typeof(DocumentType), v));
         entity.Property(e => e.Mobile)
             .HasMaxLength(50)
             .HasColumnName("Mobile");
