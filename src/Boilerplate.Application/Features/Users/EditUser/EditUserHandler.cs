@@ -10,8 +10,6 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Graph;
-using Microsoft.Graph.CallRecords;
 using System;
 using System.Linq;
 using System.Threading;
@@ -71,7 +69,7 @@ public class EditUserHandler : IRequestHandler<EditUserRequest, EditUserResponse
                 AmazonObject objectImageProfile = await _awsS3Service.UploadFileBase64Async(request.ImageProfile, "users/" + applicationUser.Id.ToString(), "fotoperfil.jpg");
 
                 UserInformation userInformation = await _context.UserInformations.Where(x => x.UserId == request.UserId).FirstOrDefaultAsync();
-                userInformation.TypeDocument = request.IdentificationType;
+                userInformation.DocumentType = request.DocumentType;
                 userInformation.Nacionality = request.NacionalityType;
                 userInformation.Ndocument = request.Ndocument;
                 userInformation.Gender = request.GenderType;

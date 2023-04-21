@@ -19,7 +19,7 @@ public partial class UserInformation : Entity<IdentificationId>, IDateCreatedAnd
     
     public UserId UserId { get; set; }
 
-    public DocumentType TypeDocument { get; set; }
+    public DocumentType DocumentType { get; set; }
 
     public required NacionalityType Nacionality { get; set; }
 
