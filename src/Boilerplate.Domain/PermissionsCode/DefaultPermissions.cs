@@ -56,6 +56,8 @@ public enum DefaultPermissions : ushort //Must be ushort to work with AuthP
     OrderCreate = 3001,
     [Display(GroupName = "Orders", Description = "Puede modificar ordenes")]
     OrderModify = 3002,
+    [Display(GroupName = "Orders", Description = "Puede ver todas las ordenes")]
+    OrderAll = 3003,
 
     //----------------------------------------------------
     //Admin section
