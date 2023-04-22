@@ -38,18 +38,14 @@ public class ProductsComponent : IComponent
             // step 2
             table.Header(header =>
             {
-                header.Cell().Element(CellStyle).AlignCenter().Text("#");
-                header.Cell().Element(CellStyle).AlignCenter().Text("Sku");
-                header.Cell().Element(CellStyle).AlignCenter().Text("Producto");
-                header.Cell().Element(CellStyle).AlignCenter().Text("Precio U.");
-                header.Cell().Element(CellStyle).AlignCenter().Text("Cantidad");
-                header.Cell().Element(CellStyle).AlignCenter().Text("Total");
-
-                static IContainer CellStyle(IContainer container)
-                {
-                    return container.DefaultTextStyle(x => x.SemiBold()).AlignMiddle().Border(1, Unit.Mill).BorderColor(Colors.Black);
-                }
+                header.Cell().Element(CellStyle).AlignCenter().AlignMiddle().Text("#").SemiBold();
+                header.Cell().Element(CellStyle).AlignCenter().AlignMiddle().Text("Sku").SemiBold();
+                header.Cell().Element(CellStyle).AlignCenter().AlignMiddle().Text("Producto").SemiBold();
+                header.Cell().Element(CellStyle).AlignCenter().AlignMiddle().Text("Precio U.").SemiBold();
+                header.Cell().Element(CellStyle).AlignCenter().AlignMiddle().Text("Cantidad").SemiBold();
+                header.Cell().Element(CellStyle).AlignCenter().AlignMiddle().Text("Total").SemiBold();
             });
+
             var delivered = TextStyle.Default.BackgroundColor(Colors.Green.Lighten3).FontSize(7).Medium();
             var pending = TextStyle.Default.BackgroundColor(Colors.Orange.Lighten3).FontSize(7).Medium();
 
@@ -64,11 +60,6 @@ public class ProductsComponent : IComponent
                     table.Cell().Element(CellStyle).PaddingRight(4).AlignRight().Text("");
                     table.Cell().Element(CellStyle).AlignCenter().AlignMiddle().Text("");
                     table.Cell().Element(CellStyle).PaddingRight(4).AlignRight().Text("");
-
-                    static IContainer CellStyle(IContainer container)
-                    {
-                        return container.Border(1).BorderColor(Colors.Black).PaddingVertical(5);
-                    }
                 }
             }
 
@@ -81,8 +72,8 @@ public class ProductsComponent : IComponent
                     table.Cell().Element(CellStyle).AlignCenter().Text(item.Sku);
                     table.Cell().Element(CellStyle).PaddingLeft(4).Row(row =>
                     {
-                        row.AutoItem().Text($"{item.Display}  ");
-                        row.AutoItem().AlignMiddle().Text(text =>
+                        row.RelativeItem(4).Text($"{item.Display}  ");
+                        row.RelativeItem().AlignMiddle().Text(text =>
                         {
                             if (item.Delivered == true)
                             {
@@ -93,17 +84,11 @@ public class ProductsComponent : IComponent
                                 text.Span("PENDIENTE").Style(pending);
                             }
                         });
-
                     });
 
                     table.Cell().Element(CellStyle).PaddingRight(4).AlignRight().Text($"{item.Cost}");
-                    table.Cell().Element(CellStyle).AlignCenter().AlignMiddle().Text(item.Quantity);
+                    table.Cell().Element(CellStyle).AlignCenter().Text(item.Quantity);
                     table.Cell().Element(CellStyle).PaddingRight(4).AlignRight().Text($"{item.Total}");
-
-                    static IContainer CellStyle(IContainer container)
-                    {
-                        return container.Border(1, Unit.Mill).BorderColor(Colors.Black).PaddingVertical(5);
-                    }
                 }
             }
             
@@ -126,11 +111,8 @@ public class ProductsComponent : IComponent
                     footer.Cell().Row(2).Column(6).Element(CellStyle).PaddingRight(4).AlignRight().Text("");
                     footer.Cell().Row(3).Column(6).Element(CellStyle).PaddingRight(4).AlignRight().Text($"${_order.Total}").SemiBold();
                 }
-                static IContainer CellStyle(IContainer container)
-                {
-                    return container.AlignMiddle().MinHeight(20).Border(1,Unit.Mill).BorderColor(Colors.Black);
-                }
-                // for simplicity, you can also use extension method described in the "Extending DSL" section
+                
+
                 static IContainer Block(IContainer container)
                 {
                     return container
@@ -143,6 +125,11 @@ public class ProductsComponent : IComponent
                         .AlignMiddle();
                 }
             });
+
+            static IContainer CellStyle(IContainer container)
+            {
+                return container.MinHeight(25).Border(1).BorderColor(Colors.Black).AlignMiddle();
+            }
 
 
         });        

@@ -15,7 +15,7 @@ public class NotesComponent : IComponent
         container.Background(Colors.Grey.Lighten3).Padding(10).Column(column =>
         {
             column.Spacing(5);
-            column.Item().Text("Notas: ").FontSize(14);
+            column.Item().Text("Notas: ").Bold().FontSize(14);
             if(Notes != null) { 
                 column.Item().Text(Notes).FontSize(12);
             }
