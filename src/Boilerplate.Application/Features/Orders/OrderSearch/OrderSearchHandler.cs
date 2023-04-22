@@ -87,7 +87,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
 
         if (request.OrderFilterType == null)
         {
-            defaultFilter = defaultFilter.Where(x => x.order.DateCreated >= request.StartDate && x.order.DateCreated <= request.EndDate).OrderByDescending(x => x.order.DateCreated);
+            defaultFilter = defaultFilter.Where(x => x.order.DateCreated >= request.StartDate && x.order.DateCreated <= request.EndDate);//.OrderByDescending(x => x.order.DateCreated);
         }
 
         if (request.OrderFilterType != null)
@@ -179,7 +179,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                           order.userAssignedApplicationUser,
                           order.userAssignedUserInformation
                       } by new { order.order.OrderNumber } into g
-                      orderby g.Key.OrderNumber ascending
+                      orderby g.First().order.DateCreated descending
                       select new OrderSearchResponse
                       {
                           Order = g.First().order,
@@ -296,6 +296,5 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
 
 
         return await orders.ToPaginatedListAsync(request.CurrentPage, request.PageSize);
-        //.OrderBy(x => x.)
     }
 }
