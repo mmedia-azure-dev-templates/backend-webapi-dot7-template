@@ -111,19 +111,18 @@ public class ProductsComponent : IComponent
                     footer.Cell().Row(2).Column(6).Element(CellStyle).PaddingRight(4).AlignRight().Text("");
                     footer.Cell().Row(3).Column(6).Element(CellStyle).PaddingRight(4).AlignRight().Text($"${_order.Total}").SemiBold();
                 }
-                
 
-                static IContainer Block(IContainer container)
-                {
-                    return container
-                        .Border(1)
-                        .Background(Colors.Grey.Lighten3)
-                        .ShowOnce()
-                        .MinWidth(50)
-                        .MinHeight(50)
-                        .AlignCenter()
-                        .AlignMiddle();
-                }
+                //static IContainer Block(IContainer container)
+                //{
+                //    return container
+                //        .Border(1)
+                //        .Background(Colors.Grey.Lighten3)
+                //        .ShowOnce()
+                //        .MinWidth(50)
+                //        .MinHeight(50)
+                //        .AlignCenter()
+                //        .AlignMiddle();
+                //}
             });
 
             static IContainer CellStyle(IContainer container)

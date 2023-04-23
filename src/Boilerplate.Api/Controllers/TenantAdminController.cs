@@ -121,7 +121,7 @@ public class TenantAdminController : Controller
         var user = await _userManager.FindByIdAsync(_session.UserId.ToString());
 
         MailStruct mailData = new MailStruct(
-                    "Nueva invitación de " + user.FirstName + " " + user.LastName,
+                    "Nueva invitación de " + user!.FirstName + " " + user.LastName,
                     new List<string> {
                         addUserData.Email
                     },
@@ -189,7 +189,7 @@ public class TenantAdminController : Controller
     [HttpGet]
     [Route("confirmInvitation")]
     [AllowAnonymous]
-    public async Task<VerifyInvitationResponse> confirmInvitation([FromQuery] string inviteParam, string? email)
+    public async Task<VerifyInvitationResponse> confirmInvitation([FromQuery] string inviteParam, string email)
     {
         VerifyInvitationResponse verifyInvitationResponse = new VerifyInvitationResponse();
 
@@ -198,6 +198,7 @@ public class TenantAdminController : Controller
             var normalizedEmail = email.Trim().ToLower();
             AddNewUserDto newUserData;
             var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(inviteParam));
+
             newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
 
             if (newUserData.Email != normalizedEmail)
