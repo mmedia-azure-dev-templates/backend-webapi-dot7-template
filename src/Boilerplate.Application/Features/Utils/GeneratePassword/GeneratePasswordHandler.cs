@@ -10,15 +10,10 @@ namespace Boilerplate.Application.Features.Utils.GeneratePassword;
 
 public class GeneratePasswordHandler : IRequestHandler<GeneratePasswordRequest,GeneratePasswordResponse>
 {
-    private readonly IContext _context;
-    private readonly IMapper _mapper;
     private readonly UserManager<ApplicationUser> _userManager;
 
-
-    public GeneratePasswordHandler(IMapper mapper, IContext context, UserManager<ApplicationUser> userManager)
+    public GeneratePasswordHandler(UserManager<ApplicationUser> userManager)
     {
-        _mapper = mapper;
-        _context = context;
         _userManager = userManager;
     }
 

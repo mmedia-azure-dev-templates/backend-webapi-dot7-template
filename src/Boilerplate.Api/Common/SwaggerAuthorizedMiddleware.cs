@@ -61,7 +61,7 @@ public class SwaggerAuthorizedMiddleware
                     return;
                 }
 
-                var hours = Convert.ToInt32((DateTime.Now - user.LastLogin).Value.TotalHours);
+                var hours = Convert.ToInt32((DateTime.Now - user.LastLogin!).Value.TotalHours);
 
                 if (hours > 1)
                 {
