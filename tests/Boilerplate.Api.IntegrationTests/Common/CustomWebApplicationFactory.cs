@@ -1,16 +1,8 @@
-﻿using AuthPermissions.AspNetCore.GetDataKeyCode;
-using Boilerplate.Application.Common;
+﻿using Boilerplate.Application.Common;
 using Boilerplate.Infrastructure.Context;
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
-using DotNet.Testcontainers.Containers;
-using EntityFramework.Exceptions.SqlServer;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Respawn;
 using System;
@@ -20,17 +12,8 @@ using System.Net.Http;
 
 namespace Boilerplate.Api.IntegrationTests.Common;
 
-public class CustomWebApplicationFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLifetime
+public class CustomWebApplicationFactory : WebApplicationFactory<IAssemblyMarker>
 {
-    
-    // Db connection
-    private readonly MsSqlTestcontainer _dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
-        .WithDatabase(new MsSqlTestcontainerConfiguration()
-        {
-            Password = "myHardCoreTestDb123"
-        })
-        .WithName($"integration-tests-{Guid.NewGuid()}")
-        .Build();
     private string _connString = default!;
     private Respawner _respawner = default!;
     
@@ -82,5 +65,5 @@ public class CustomWebApplicationFactory : WebApplicationFactory<IAssemblyMarker
         });
     }
 
-    async Task IAsyncLifetime.DisposeAsync() => await _dbContainer.DisposeAsync();
+    //async Task IAsyncLifetime.DisposeAsync() => await _dbContainer.DisposeAsync();
 }
