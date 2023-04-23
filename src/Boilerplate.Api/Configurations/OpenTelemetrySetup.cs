@@ -1,7 +1,9 @@
 ﻿using Boilerplate.Application.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System;
@@ -16,45 +18,44 @@ public static class OpenTelemetrySetup
         Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 
         var jaegerConfig = builder.Configuration.GetSection("Jaeger");
-
         builder.Services
             .AddOpenTelemetry()
-            .WithTracing(telemetry =>
-        {
-            telemetry
+            .WithTracing(builder =>
+            {
+                builder
                 .AddSource(OpenTelemetryExtensions.ServiceName)
                 .SetResourceBuilder(
                     ResourceBuilder.CreateDefault()
                         .AddService(serviceName: OpenTelemetryExtensions.ServiceName,
                             serviceVersion: OpenTelemetryExtensions.ServiceVersion)
                         .AddTelemetrySdk()
-                        .AddEnvironmentVariableDetector())
-                .AddAspNetCoreInstrumentation(o =>
-                {
-                    o.RecordException = true;
-                })
-                .AddEntityFrameworkCoreInstrumentation(o =>
-                {
-                    o.SetDbStatementForText = true;
-                });
+                        .AddEnvironmentVariableDetector());
+                //.AddAspNetCoreInstrumentation(o =>
+                //{
+                //    o.RecordException = true;
+                //})
+                //.AddEntityFrameworkCoreInstrumentation(o =>
+                //{
+                //    o.SetDbStatementForText = true;
+                //});
 
-            if (jaegerConfig!= null && !string.IsNullOrWhiteSpace(jaegerConfig.GetValue<string>("AgentHost")))
-            {
-                telemetry.AddJaegerExporter(o =>
+                if (jaegerConfig != null && !string.IsNullOrWhiteSpace(jaegerConfig.GetValue<string>("AgentHost")))
                 {
-                    o.AgentHost = jaegerConfig["AgentHost"];
-                    o.AgentPort = Convert.ToInt32(jaegerConfig["AgentPort"]);
-                    o.MaxPayloadSizeInBytes = 4096;
-                    o.ExportProcessorType = ExportProcessorType.Batch;
-                    o.BatchExportProcessorOptions = new BatchExportProcessorOptions<Activity>
+                    builder.AddJaegerExporter(o =>
                     {
-                        MaxQueueSize = 2048,
-                        ScheduledDelayMilliseconds = 5000,
-                        ExporterTimeoutMilliseconds = 30000,
-                        MaxExportBatchSize = 512,
-                    };
-                });   
-            }
-        });
+                        o.AgentHost = jaegerConfig["AgentHost"];
+                        o.AgentPort = Convert.ToInt32(jaegerConfig["AgentPort"]);
+                        o.MaxPayloadSizeInBytes = 4096;
+                        o.ExportProcessorType = ExportProcessorType.Batch;
+                        o.BatchExportProcessorOptions = new BatchExportProcessorOptions<Activity>
+                        {
+                            MaxQueueSize = 2048,
+                            ScheduledDelayMilliseconds = 5000,
+                            ExporterTimeoutMilliseconds = 30000,
+                            MaxExportBatchSize = 512,
+                        };
+                    });
+                }
+            });
     }
 }

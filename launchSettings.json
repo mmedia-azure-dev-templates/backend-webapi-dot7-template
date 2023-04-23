@@ -8,7 +8,7 @@
       "composeLaunchUrl": "{Scheme}://api.mad.ec:{ServicePort}/swagger/index.html",
       "serviceActions": {
         "jaeger-development": "DoNotStart",
-        "jaeger-production": "DoNotStart",
+        "jaeger-production": "StartWithoutDebugging",
         "jiban-api-development": "StartDebugging",
         "jiban-api-production": "DoNotStart",
         "jiban-db": "DoNotStart"
