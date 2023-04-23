@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -121,7 +120,7 @@ public class TenantAdminController : Controller
         var user = await _userManager.FindByIdAsync(_session.UserId.ToString());
 
         MailStruct mailData = new MailStruct(
-                    "Nueva invitación de " + user.FirstName + " " + user.LastName,
+                    "Nueva invitación de " + user!.FirstName + " " + user.LastName,
                     new List<string> {
                         addUserData.Email
                     },
@@ -158,13 +157,13 @@ public class TenantAdminController : Controller
     [HttpGet]
     [Route("verifyInvitation")]
     [AllowAnonymous]
-    public async Task<VerifyInvitationResponse> verifyInvitation([FromQuery] string inviteParam)
+    public VerifyInvitationResponse verifyInvitation([FromQuery] string inviteParam)
     {
         VerifyInvitationResponse verifyInvitationResponse = new VerifyInvitationResponse();
         
         try
         {
-            AddNewUserDto newUserData;
+            AddNewUserDto newUserData = new();
             var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(inviteParam));
             newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
   
@@ -189,15 +188,16 @@ public class TenantAdminController : Controller
     [HttpGet]
     [Route("confirmInvitation")]
     [AllowAnonymous]
-    public async Task<VerifyInvitationResponse> confirmInvitation([FromQuery] string inviteParam, string? email)
+    public VerifyInvitationResponse confirmInvitation([FromQuery] string inviteParam, string email)
     {
         VerifyInvitationResponse verifyInvitationResponse = new VerifyInvitationResponse();
 
         try
         {
             var normalizedEmail = email.Trim().ToLower();
-            AddNewUserDto newUserData;
+            AddNewUserDto newUserData = new();
             var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(inviteParam));
+
             newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
 
             if (newUserData.Email != normalizedEmail)

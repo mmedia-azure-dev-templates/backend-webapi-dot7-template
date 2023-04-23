@@ -25,10 +25,10 @@ public class GetUsersResponse
     public string? CurriculumUrl { get; set; }
     public string? Mobile { get; set; }
     public string? Phone { get; set; }
-    public string PrimaryStreet { get; set; }
-    public string SecondaryStreet { get; set; }
-    public string Numeration { get; set; }
-    public string Reference { get; set; }
+    public string PrimaryStreet { get; set; } = null!;
+    public string SecondaryStreet { get; set; } = null!;
+    public string Numeration { get; set; } = null!;
+    public string Reference { get; set; } = null!;
     public int Provincia { get; set; }
     public int Canton { get; set; }
     public int Parroquia { get; set; }

@@ -25,20 +25,19 @@ public class InvoiceController : ControllerBase
 
     [HttpGet]
     [Route("invoices")]
+    [HasPermission(DefaultPermissions.InvoiceRead)]
     public async Task<List<InvoiceSummaryDto>> Invoices()
     {
-        var listInvoices = User.HasPermission(DefaultPermissions.InvoiceRead)
-            ? await InvoiceSummaryDto.SelectInvoices(_context.Invoices)
+        var listInvoices = await InvoiceSummaryDto.SelectInvoices(_context.Invoices)
                 .OrderByDescending(x => x.DateCreated)
-                .ToListAsync()
-            : null;
+                .ToListAsync();
         return listInvoices;
     }
 
     [HttpPost]
     [Route("createinvoice")]
     [HasPermission(DefaultPermissions.InvoiceCreate)]
-    public async Task<IActionResult> CreateInvoice(Invoice invoice)
+    public IActionResult CreateInvoice(Invoice invoice)
     {
         return Ok("Hola");
         //var builder = new ExampleInvoiceBuilder(null);

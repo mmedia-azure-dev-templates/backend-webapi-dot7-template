@@ -22,7 +22,7 @@ public class UserInformation : Entity<UserInformationId>, IDateCreatedAndUpdated
     public required bool Hired { get; set; }
     public string? ImgUrl { get; set; }
     public string? CurriculumUrl { get; set; }
-    public string? Mobile { get; set; }
+    public string Mobile { get; set; } = null!;
     public string? Phone { get; set; }
     public required string PrimaryStreet { get; set; }
     public required string SecondaryStreet { get; set; }
