@@ -257,7 +257,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                               FirstName = g.First().userAssignedApplicationUser.FirstName,
                               LastName = g.First().userAssignedApplicationUser.LastName,
                               LastLogin = g.First().userAssignedApplicationUser.LastLogin,
-                              Email = g.First().userAssignedApplicationUser.Email,
+                              Email = g.First().userAssignedApplicationUser.Email!,
                               EmailConfirmed = g.First().userAssignedApplicationUser.EmailConfirmed,
                               DocumentType = g.First().userAssignedUserInformation.DocumentType,
                               Nacionality = g.First().userAssignedUserInformation.Nacionality,

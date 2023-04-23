@@ -9,16 +9,14 @@ namespace Boilerplate.Application.Features.Articles.ArticleCreate;
 public class ArticleCreateHandler:IRequestHandler<ArticleCreateRequest, ArticleCreateResponse>
 {
     private readonly IContext _context;
-    private readonly IMapper _mapper;
-    private ArticleCreateResponse _articleCreateResponse;
 
-    public ArticleCreateHandler(IMapper mapper, IContext context)
+    public ArticleCreateHandler(IContext context)
     {
-        _mapper = mapper;
         _context = context;
     }
     public async Task<ArticleCreateResponse> Handle(ArticleCreateRequest request, CancellationToken cancellationToken)
     {
+        ArticleCreateResponse _articleCreateResponse = new ArticleCreateResponse();
         Article article = new()
         {
             Provider = request.Provider,

@@ -1,23 +1,26 @@
 ﻿using Boilerplate.Application.Features.Orders.OrderById;
-using Org.BouncyCastle.Utilities;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using System.Collections;
 using System.IO;
-using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class HeaderComponent : IComponent
 {
-    public WebClient _client = new WebClient();
-    public OrderByIdResponse _orderByIdResponse { get; set; }
-    public byte[] _logo { get; set; }
-    public Stream? _stream { get; set; }
+    readonly HttpClient _client = new();
+    public OrderByIdResponse OrderByIdResponse { get; set; }
+    public byte[] Logo { get; set; } = new byte[0];
     public HeaderComponent(OrderByIdResponse orderByIdResponse)
     {
-        _orderByIdResponse = orderByIdResponse;
-        _logo = _client.DownloadData("https://mad-storage.s3.amazonaws.com/public/logomarket.png");
+        OrderByIdResponse = orderByIdResponse;
+        _ = DownloadFile("https://mad-storage.s3.amazonaws.com/public/logomarket.png");
+    }
+
+    public async Task DownloadFile(string url)
+    {
+        Logo = await _client.GetByteArrayAsync(url);
     }
 
     public void Compose(IContainer container)
@@ -32,38 +35,38 @@ public class HeaderComponent : IComponent
                     column.Item().Text(text =>
                     {
                         text.Span($"ORDEN DE COMPRA No. ").Bold().FontSize(16);
-                        text.Span($"{_orderByIdResponse.Order.OrderNumber}").Bold().Style(titleStyle);
+                        text.Span($"{OrderByIdResponse.Order.OrderNumber}").Bold().Style(titleStyle);
 
                     });
                 });
 
-                row.RelativeItem(1).Image(_logo, ImageScaling.FitArea);
+                row.RelativeItem(1).Image(Logo!, ImageScaling.FitArea);
             });
 
             column.Item().Text(text =>
             {
                 text.DefaultTextStyle(TextStyle.Default.LineHeight(1.5f));
                 text.Span("Fecha: ").SemiBold();
-                text.Span($"{_orderByIdResponse.Order.DateCreated:F}").Light();
+                text.Span($"{OrderByIdResponse.Order.DateCreated:F}").Light();
                 text.EmptyLine();
 
                 text.Span($"No. Cédula: ").SemiBold();
-                if (_orderByIdResponse.Customer?.Ndocument != null)
+                if (OrderByIdResponse.Customer?.Ndocument != null)
                 {
-                    text.Span($"{_orderByIdResponse.Customer?.Ndocument}").Light();
+                    text.Span($"{OrderByIdResponse.Customer?.Ndocument}").Light();
                 }
-                if (_orderByIdResponse.Customer?.Ndocument == null)
+                if (OrderByIdResponse.Customer?.Ndocument == null)
                 {
                     text.Span("_________________").Light();
                 }
                 text.EmptyLine();
 
                 text.Span("Nombres y Apellidos: ").SemiBold();
-                if (_orderByIdResponse.Customer?.FirstName != null && _orderByIdResponse.Customer?.LastName != null)
+                if (OrderByIdResponse.Customer?.FirstName != null && OrderByIdResponse.Customer?.LastName != null)
                 {
-                    text.Span($"{_orderByIdResponse.Customer?.FirstName} {_orderByIdResponse.Customer?.LastName}").Light();
+                    text.Span($"{OrderByIdResponse.Customer?.FirstName} {OrderByIdResponse.Customer?.LastName}").Light();
                 }
-                if (_orderByIdResponse.Customer?.FirstName == null || _orderByIdResponse.Customer?.LastName == null)
+                if (OrderByIdResponse.Customer?.FirstName == null || OrderByIdResponse.Customer?.LastName == null)
                 {
                     text.Span("___________________________________________").Light();
                 }
@@ -71,49 +74,49 @@ public class HeaderComponent : IComponent
 
                 text.Span("Dirección domiciliar: ").SemiBold();
                 if (
-                    _orderByIdResponse.Customer?.AddressByIdResponse?.PrimaryStreet != null &&
-                    _orderByIdResponse.Customer?.AddressByIdResponse?.SecondaryStreet != null &&
-                    _orderByIdResponse.Customer?.AddressByIdResponse?.Numeration != null
+                    OrderByIdResponse.Customer?.AddressByIdResponse?.PrimaryStreet != null &&
+                    OrderByIdResponse.Customer?.AddressByIdResponse?.SecondaryStreet != null &&
+                    OrderByIdResponse.Customer?.AddressByIdResponse?.Numeration != null
                     )
                 {
-                    text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.PrimaryStreet} {_orderByIdResponse.Customer?.AddressByIdResponse?.SecondaryStreet} {_orderByIdResponse.Customer?.AddressByIdResponse?.Numeration}").Light();
+                    text.Span($"{OrderByIdResponse.Customer?.AddressByIdResponse?.PrimaryStreet} {OrderByIdResponse.Customer?.AddressByIdResponse?.SecondaryStreet} {OrderByIdResponse.Customer?.AddressByIdResponse?.Numeration}").Light();
                 }
-                if (_orderByIdResponse.Customer?.AddressByIdResponse?.PrimaryStreet == null ||
-                    _orderByIdResponse.Customer?.AddressByIdResponse?.SecondaryStreet == null ||
-                    _orderByIdResponse.Customer?.AddressByIdResponse?.Numeration == null)
+                if (OrderByIdResponse.Customer?.AddressByIdResponse?.PrimaryStreet == null ||
+                    OrderByIdResponse.Customer?.AddressByIdResponse?.SecondaryStreet == null ||
+                    OrderByIdResponse.Customer?.AddressByIdResponse?.Numeration == null)
                 {
                     text.Span("__________________________________________________________").Light();
                 }
                 text.EmptyLine();
 
                 text.Span("Referencia del domicilio: ").SemiBold();
-                if (_orderByIdResponse.Customer?.AddressByIdResponse?.Reference != null)
+                if (OrderByIdResponse.Customer?.AddressByIdResponse?.Reference != null)
                 {
-                    text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.Reference}").Light();
+                    text.Span($"{OrderByIdResponse.Customer?.AddressByIdResponse?.Reference}").Light();
                 }
-                if (_orderByIdResponse.Customer?.AddressByIdResponse?.Reference == null)
+                if (OrderByIdResponse.Customer?.AddressByIdResponse?.Reference == null)
                 {
                     text.Span("_____________________________________________________").Light();
                 }
                 text.EmptyLine();
 
                 text.Span("Teléfonos: ").SemiBold();
-                if (_orderByIdResponse.Customer?.Mobile != null)
+                if (OrderByIdResponse.Customer?.Mobile != null)
                 {
-                    text.Span($"{_orderByIdResponse.Customer?.Mobile}").Light();
+                    text.Span($"{OrderByIdResponse.Customer?.Mobile}").Light();
                 }
-                if (_orderByIdResponse.Customer?.Mobile == null)
+                if (OrderByIdResponse.Customer?.Mobile == null)
                 {
                     text.Span("___________________________").Light();
                 }
                 text.EmptyLine();
 
                 text.Span("Correo electrónico: ").SemiBold();
-                if (_orderByIdResponse.Customer?.Email != null)
+                if (OrderByIdResponse.Customer?.Email != null)
                 {
-                    text.Span($"{_orderByIdResponse.Customer?.Email}").Light();
+                    text.Span($"{OrderByIdResponse.Customer?.Email}").Light();
                 }
-                if (_orderByIdResponse.Customer?.Email == null)
+                if (OrderByIdResponse.Customer?.Email == null)
                 {
                     text.Span("__________________________________").Light();
                 }
@@ -126,11 +129,11 @@ public class HeaderComponent : IComponent
                         {
                             text.DefaultTextStyle(TextStyle.Default.LineHeight(1.5f));
                             text.Span("Provincia: ").SemiBold();
-                            if (_orderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay != null)
+                            if (OrderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay != null)
                             {
-                                text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay} ").Light();
+                                text.Span($"{OrderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay} ").Light();
                             }
-                            if (_orderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay == null)
+                            if (OrderByIdResponse.Customer?.AddressByIdResponse?.ProvinciaDisplay == null)
                             {
                                 text.Span("______________________").Light();
                             }
@@ -141,12 +144,12 @@ public class HeaderComponent : IComponent
                         {
                             text.DefaultTextStyle(TextStyle.Default.LineHeight(1.5f));
                             text.Span("Canton: ").SemiBold();
-                            if (_orderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay != null)
+                            if (OrderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay != null)
                             {
-                                text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay} ").Light();
+                                text.Span($"{OrderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay} ").Light();
                             }
 
-                            if (_orderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay == null)
+                            if (OrderByIdResponse.Customer?.AddressByIdResponse?.CantonDisplay == null)
                             {
                                 text.Span("________________________").Light();
                             }
@@ -157,11 +160,11 @@ public class HeaderComponent : IComponent
                         {
                             text.DefaultTextStyle(TextStyle.Default.LineHeight(1.5f));
                             text.Span("Parroquia: ").SemiBold();
-                            if (_orderByIdResponse.Customer?.AddressByIdResponse?.ParroquiaDisplay != null)
+                            if (OrderByIdResponse.Customer?.AddressByIdResponse?.ParroquiaDisplay != null)
                             {
-                                text.Span($"{_orderByIdResponse.Customer?.AddressByIdResponse?.ParroquiaDisplay} ").Light();
+                                text.Span($"{OrderByIdResponse.Customer?.AddressByIdResponse?.ParroquiaDisplay} ").Light();
                             }
-                            if (_orderByIdResponse.Customer?.AddressByIdResponse?.ParroquiaDisplay == null)
+                            if (OrderByIdResponse.Customer?.AddressByIdResponse?.ParroquiaDisplay == null)
                             {
                                 text.Span("______________________").Light();
                             }

@@ -10,7 +10,7 @@ public class ApplicationUser : IdentityUser<Guid>
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int LegacyId { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
     public DateTime? LastLogin { get; set; }
 }
