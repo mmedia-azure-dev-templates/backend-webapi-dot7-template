@@ -10,14 +10,14 @@ using System.Net;
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class HeaderComponent : IComponent
 {
-    public WebClient client = new WebClient();
+    public WebClient _client = new WebClient();
     public OrderByIdResponse _orderByIdResponse { get; set; }
     public byte[] _logo { get; set; }
     public Stream? _stream { get; set; }
     public HeaderComponent(OrderByIdResponse orderByIdResponse)
     {
         _orderByIdResponse = orderByIdResponse;
-        _logo = client.DownloadData("https://mad-storage.s3.amazonaws.com/public/logomarket.png");
+        _logo = _client.DownloadData("https://mad-storage.s3.amazonaws.com/public/logomarket.png");
     }
 
     public void Compose(IContainer container)

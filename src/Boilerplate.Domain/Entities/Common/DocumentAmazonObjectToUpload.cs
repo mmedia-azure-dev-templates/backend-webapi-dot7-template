@@ -10,15 +10,15 @@ public class DocumentAmazonObjectToUpload
     /// <summary>
     /// File Name
     /// </summary>
-    public string FileName { get; set; }
+    public string? FileName { get; set; }
 
     /// <summary>
     /// File
     /// </summary>
-    public IFormFile File { get; set; }
+    public IFormFile? File { get; set; }
 
     /// <summary>
     /// Prefix
     /// </summary>
-    public string Prefix { get; set; }
+    public string? Prefix { get; set; }
 }

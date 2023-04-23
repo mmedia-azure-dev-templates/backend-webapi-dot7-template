@@ -19,6 +19,6 @@ public class CustomerUpdateRequest: IRequest<CustomerUpdateResponse>
     public string? Email { get; set; } = null!;
     public string? Mobile { get; set; }
     public string? Phone { get; set; }
-    public AddressUpdateRequest AddresUpdateRequest { get; set; }
+    public AddressUpdateRequest AddresUpdateRequest { get; set; } = new AddressUpdateRequest();
     public string? Notes { get; set; }
 }

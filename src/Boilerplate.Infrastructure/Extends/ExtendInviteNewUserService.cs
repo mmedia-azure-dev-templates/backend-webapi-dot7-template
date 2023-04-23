@@ -205,7 +205,7 @@ public class ExtendInviteNewUserService : IInviteNewUserService
             {
                 successEndingKey = "SendInviteTenant";
                 messages.Add(
-                    $"Please send the url to the user '{invitedUser.Email ?? invitedUser.UserName}' which allow them to join the tenant '{foundTenant.TenantFullName}'.");
+                    $"Please send the url to the user '{invitedUser.Email ?? invitedUser.UserName}' which allow them to join the tenant '{foundTenant?.TenantFullName}'.");
 
             }
 
@@ -257,9 +257,10 @@ public class ExtendInviteNewUserService : IInviteNewUserService
         }
         catch (Exception e)
         {
+
             //Could add a log here
             return status.AddErrorString("VerityFailed".ClassLocalizeKey(this, true),
-                "Sorry, the verification failed.");
+                "Sorry, the verification failed. " + e.Message);
         }
 
         if (newUserData.Email != normalizedEmail)

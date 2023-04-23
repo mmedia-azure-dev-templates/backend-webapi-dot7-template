@@ -133,7 +133,7 @@ public class ExtendIndividualUserAddUserManager<TIdentity> : IAddNewUserManager
         if (UserLoginData == null)
             throw new AuthPermissionsException($"Must call {nameof(SetUserInfoAsync)} before calling this method.");
 
-        var user = await _userManager.FindByEmailAsync(UserLoginData.Email);
+        var user = await _userManager.FindByEmailAsync(UserLoginData.Email) ?? throw new AuthPermissionsException($"The user {UserLoginData.Email} is not known.");
         await _signInManager.SignInAsync(user, isPersistent: UserLoginData.IsPersistent);
 
         var status = new StatusGenericLocalizer<AddNewUserDto>(_localizeDefault);

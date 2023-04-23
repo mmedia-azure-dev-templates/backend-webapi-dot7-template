@@ -113,6 +113,7 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                 var normalizedEmail = request.Email.Trim().ToLower();
                 AddNewUserDto newUserData;
                 var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(request.Invitation));
+
                 newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
 
                 if (newUserData.Email != normalizedEmail)

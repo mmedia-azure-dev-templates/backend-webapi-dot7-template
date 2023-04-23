@@ -26,11 +26,16 @@ public class SwaggerAuthorizedMiddleware
     {
         if (context.Request.Path.StartsWithSegments("/swagger"))
         {
-            string authHeader = context.Request.Headers["Authorization"];
+            string authHeader = context.Request.Headers["Authorization"]!;
             if (authHeader != null && authHeader.StartsWith("Basic "))
             {
                 // Get the credentials from request header
                 var header = AuthenticationHeaderValue.Parse(authHeader);
+                if(header.Parameter == null)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    return;
+                }
                 var inBytes = Convert.FromBase64String(header.Parameter);
                 var credentials = Encoding.UTF8.GetString(inBytes).Split(':');
                 string username = credentials[0];

@@ -13,15 +13,15 @@ public class AmazonObject
     //
     // Summary:
     //     Any ETag set on the object.
-    public string ETag { get; set; }
+    public string? ETag { get; set; }
     //
     // Summary:
     //     The name of the bucket containing this object.
-    public string BucketName { get; set; }
+    public string? BucketName { get; set; }
     //
     // Summary:
     //     The key of the object.
-    public string Key { get; set; }
+    public string? Key { get; set; }
     //
     // Summary:
     //     The date and time the object was last modified. The date retrieved from S3 is
@@ -30,16 +30,16 @@ public class AmazonObject
     //
     // Summary:
     //     The owner of the object.
-    public Owner Owner { get; set; }
+    public Owner? Owner { get; set; }
     //
     // Summary:
     //     The size of the object.
     public long Size { get; set; }
-    public string Name { get; set; }
+    public string? Name { get; set; }
     public bool File { get; set; }
-    public string FileIcon { get; set; }
+    public string? FileIcon { get; set; }
     public string Prefix { get; set; } = string.Empty;
-    public string DestinationKey { get; set; }
-    public string ObjectUrl { get; set; }
-    public string S3Uri { get; set; }
+    public string? DestinationKey { get; set; }
+    public string? ObjectUrl { get; set; }
+    public string? S3Uri { get; set; }
 }

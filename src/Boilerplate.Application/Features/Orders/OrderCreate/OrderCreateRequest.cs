@@ -16,7 +16,7 @@ public class OrderCreateRequest: IRequest<OrderCreateResponse>
     public string? Notes { get; set; }
     public string? DocumentUrl { get; set; }
     public string? Documentation { get; set; }
-    public CustomerCreateRequest CustomerCreateRequest { get; set; }
-    public List<ArticleSearchResponse> ArticleSearchResponse { get; set; }
-    public List<PaymentMethodAllResponse> PaymentMethodAllResponse { get; set; }
+    public CustomerCreateRequest CustomerCreateRequest { get; set; } = new CustomerCreateRequest();
+    public List<ArticleSearchResponse> ArticleSearchResponse { get; set; } = new List<ArticleSearchResponse>();
+    public List<PaymentMethodAllResponse> PaymentMethodAllResponse { get; set; } = new List<PaymentMethodAllResponse>();
 }

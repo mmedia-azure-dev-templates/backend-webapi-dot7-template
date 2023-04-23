@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 namespace Boilerplate.Application.Features.Articles.ArticleCreate;
 public class ArticleCreateResponse:IArticleCreateResponse
 {
-    public string Message { get; set; }
+    public string? Message { get; set; } 
 }

@@ -8,5 +8,5 @@ public class PaymentMethodUpdateRequest : IRequest<PaymentMethodUpdateResponse>
 {
     public PaymentMethodId Id { get; set; }
     public bool Active { get; set; }
-    public string Icon { get; set; }
+    public string? Icon { get; set; }
 }

@@ -19,7 +19,7 @@ public class CustomerUpdateResponse: ICustomerUpdateResponse
     public string? Email { get; init; } = null!;
     public string? Mobile { get; init; }
     public string? Phone { get; init; }
-    public AddressUpdateResponse AddresUpdateResponse { get; set; }
+    public AddressUpdateResponse? AddresUpdateResponse { get; set; }
     public string? Notes { get; init; }
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }

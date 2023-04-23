@@ -10,7 +10,7 @@ namespace Boilerplate.Domain.Entities;
 public class OrderItem : Entity<OrderItemId>, IDataKeyFilterReadWrite, IDateCreatedAndUpdated
 {
     public override OrderItemId Id { get; set; }
-    public string DataKey { get; set; }
+    public string DataKey { get; set; } = null!;
     public OrderId OrderId { get; set; }
     public ArticleId ArticleId { get; set; }
     public bool Delivered { get; set; }

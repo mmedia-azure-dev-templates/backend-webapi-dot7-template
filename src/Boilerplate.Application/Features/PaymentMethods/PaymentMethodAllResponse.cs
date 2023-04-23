@@ -8,9 +8,9 @@ namespace Boilerplate.Application.Features.PaymentMethods;
 public class PaymentMethodAllResponse
 {
     public PaymentMethodId Id { get; set; }
-    public string DataKey { get; set; }
+    public string? DataKey { get; set; }
     public PaymentMethodsType PaymentMethodsType { get; set; }
-    public string Display { get; set; }
+    public string? Display { get; set; }
     public string? Icon { get; set; }
     public bool Active { get; set; }
     public bool IsSelected { get; set; } = false;
