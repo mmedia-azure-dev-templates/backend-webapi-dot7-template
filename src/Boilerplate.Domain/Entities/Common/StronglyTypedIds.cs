@@ -57,26 +57,6 @@ public partial struct HeroId : ILong
     }
 }
 
-[StronglyTypedId]
-public partial struct IdentificationId : IGuid
-{
-    public static implicit operator IdentificationId(Guid identificationId)
-    {
-        return new IdentificationId(identificationId);
-    }
-}
-
-public readonly partial struct IdentificationId
-{
-    public class StronglyTypedIdEfValueConverter : ValueConverter<IdentificationId, Guid>
-    {
-        public StronglyTypedIdEfValueConverter(ConverterMappingHints mappingHints = null)
-            : base(id => id.Value, value => new IdentificationId(value), mappingHints)
-        {
-        }
-    }
-}
-
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Long)]
 public partial struct InscriptionId : ILong
 {
@@ -126,13 +106,6 @@ public partial struct ProductId : ILong
 public partial struct UserId : IGuid
 {
     public static explicit operator Guid(UserId userId) => userId.Value;
-    public class StronglyTypedIdEfValueConverter : ValueConverter<UserId, Guid>
-    {
-        public StronglyTypedIdEfValueConverter(ConverterMappingHints mappingHints = null)
-            : base(id => id.Value, value => new UserId(value), mappingHints)
-        {
-        }
-    }
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
@@ -215,4 +188,10 @@ public partial struct PaymentMethodId : IGuid
 public partial struct PaymentId : IGuid
 {
     public static explicit operator Guid(PaymentId paymentId) => paymentId.Value;
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct UserInformationId : IGuid
+{
+    public static explicit operator Guid(UserInformationId userInformationId) => userInformationId.Value;
 }

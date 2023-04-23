@@ -44,7 +44,7 @@ public class OrderPdfHandler : IRequestHandler<OrderPdfRequest, OrderPdfResponse
         //document.GeneratePdf("hello.pdf");
         AmazonObject amazonObject = await _pdfService.CreateOrderPdf(document);
         result.IsValid = true;
-        result.DocumentUrl = amazonObject.ObjectUrl;
+        result.DocumentUrl = amazonObject.ObjectUrl!;
 
         //orderValid.OrderByIdResponse.Order.DocumentUrl = amazonObject.ObjectUrl;
 

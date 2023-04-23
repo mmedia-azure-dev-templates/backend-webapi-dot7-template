@@ -10,10 +10,10 @@ public class AmazonObjectToUpload
     /// <summary>
     /// Prefix
     /// </summary>
-    public string Prefix { get; set; }
+    public string? Prefix { get; set; }
 
     /// <summary>
     /// HTTP file
     /// </summary>
-    public IFormFile FormFile { get; set; }
+    public IFormFile? FormFile { get; set; }
 }

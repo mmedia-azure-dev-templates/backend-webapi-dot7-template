@@ -56,6 +56,10 @@ public class RolesController : ControllerBase
     {
         var userId = User.GetUserIdFromUser();
         var role = await _authRolesAdmin.QueryRoleToPermissions(userId).SingleOrDefaultAsync(x => x.RoleName == roleName);
+        if(role == null)
+        {
+            return NotFound();
+        }
         var permissionsDisplay = _authRolesAdmin.GetPermissionDisplay(false);
         RoleCreateUpdateDto roleCreateUpdate = RoleCreateUpdateDto.SetupForCreateUpdate(role.RoleName, role.Description, role.PermissionNames, permissionsDisplay, role.RoleType);
         return roleCreateUpdate;
@@ -68,6 +72,10 @@ public class RolesController : ControllerBase
     {
         var userId = User.GetUserIdFromUser();
         var role = await _authRolesAdmin.QueryRoleToPermissions(userId).SingleOrDefaultAsync(x => x.RoleName == roleName);
+        if(role == null)
+        {
+            return NotFound();
+        }
         var permissionsDisplay = _authRolesAdmin.GetPermissionDisplay(false);
         RoleCreateUpdateDto roleCreateUpdate = RoleCreateUpdateDto.SetupForCreateUpdate(role.RoleName, role.Description, role.PermissionNames, permissionsDisplay, role.RoleType);
         return roleCreateUpdate;

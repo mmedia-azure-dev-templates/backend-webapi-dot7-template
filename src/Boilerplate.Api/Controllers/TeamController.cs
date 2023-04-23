@@ -29,7 +29,10 @@ public class TeamController : ControllerBase
     public async Task<IActionResult> GetParent(UserId childId)
     {
         var child = await _context.Teams.Where(x => x.UserId == childId).FirstOrDefaultAsync();
-
+        if(child == null)
+        {
+            return NotFound();
+        }
         var parent = await _context.Teams
                 .FirstOrDefaultAsync(e => e.HierarchyId == child.HierarchyId.GetAncestor(1));
         return Ok(parent);
@@ -40,6 +43,10 @@ public class TeamController : ControllerBase
     public async Task<IActionResult> GetChildren(UserId parentId)
     {
         var parent = await _context.Teams.Where(x => x.UserId == parentId).FirstOrDefaultAsync();
+        if (parent == null)
+        {
+            return NotFound();
+        }
         var childrens = await _context.Teams
             .Where(x => x.HierarchyId.GetAncestor(1) == parent.HierarchyId)
             .ToListAsync();
@@ -51,7 +58,10 @@ public class TeamController : ControllerBase
     public async Task<IActionResult> GetDescendants(UserId parentId)
     {
         var manager = await _context.Teams.Where(x => x.UserId == parentId).FirstOrDefaultAsync();
-
+        if (manager == null)
+        {
+            return NotFound();
+        }
         // Parent is considered its own descendant which means that this query returns the manager (Id = 2)
         var result = await _context.Teams
                 .Where(employee => employee.HierarchyId.IsDescendantOf(manager.HierarchyId))
@@ -65,6 +75,11 @@ public class TeamController : ControllerBase
     {
         var oldManager = await _context.Teams.Where(x => x.UserId == oldParent).FirstOrDefaultAsync();
         var newManager = await _context.Teams.Where(x => x.UserId == newParent).FirstOrDefaultAsync();
+
+        if(oldManager == null || newManager == null)
+        {
+            return NotFound();
+        }
 
         var managees = await _context.Teams
                 .Where(e => e.HierarchyId != oldManager.HierarchyId
@@ -85,7 +100,10 @@ public class TeamController : ControllerBase
     public async Task<IActionResult> GetDepthLevel(UserId child)
     {
         var employee = await _context.Teams.Where(x => x.UserId == child).FirstOrDefaultAsync();
-
+        if(employee == null)
+        {
+            return NotFound();
+        }
         //Console.WriteLine(employee.HierarchyId + " Level: " + employee.HierarchyId.GetLevel());
         return Ok(employee.HierarchyId + " Level: " + employee.HierarchyId.GetLevel());
     }
@@ -116,6 +134,10 @@ public class TeamController : ControllerBase
     public async Task<IActionResult> CreateRoot(string email)
     {
         var user = await _context.ApplicationUsers.Where(x => x.Email == email).FirstOrDefaultAsync();
+        if(user == null)
+        {
+            return NotFound();
+        }
         Team root = new Team
         {
             UserId = new UserId(user.Id),
@@ -131,6 +153,10 @@ public class TeamController : ControllerBase
     public async Task<IActionResult> CreateChild(UserId managerId,UserId childId)
     {
         var manager = await _context.Teams.Where(x => x.UserId == managerId).FirstOrDefaultAsync();
+        if (manager == null)
+        {
+            return NotFound();
+        }
         var child = new Team 
         { 
             UserId = childId, 

@@ -11,7 +11,7 @@ namespace Boilerplate.Domain.Entities;
 public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUpdated
 {
     public override OrderId Id { get; set; }
-    public string DataKey { get; set; }
+    public string DataKey { get; set; } = null!;
     public bool Locked { get; set; } = false;
     public OrderStatusType OrderStatusType { get; set; }
     public OrderNumber OrderNumber { get; set; }

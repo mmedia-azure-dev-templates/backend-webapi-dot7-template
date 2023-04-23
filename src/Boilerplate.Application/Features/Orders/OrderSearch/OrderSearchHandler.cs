@@ -94,20 +94,20 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
         {
             if (request.OrderFilterType.ToString() == "OrderNumber")
             {
-                defaultFilter = defaultFilter.WhereIf(!string.IsNullOrEmpty(request.Search), x => x.order.OrderNumber == new OrderNumber(long.Parse(request.Search)));
+                defaultFilter = defaultFilter.WhereIf(!string.IsNullOrEmpty(request.Search), x => x.order.OrderNumber == new OrderNumber(long.Parse(request.Search!)));
             }
 
             if (request.OrderFilterType.ToString() == "Amount")
             {
-                defaultFilter = defaultFilter.WhereIf(!string.IsNullOrEmpty(request.Search), x => x.order.Total == decimal.Parse(request.Search, CultureInfo.InvariantCulture));
+                defaultFilter = defaultFilter.WhereIf(!string.IsNullOrEmpty(request.Search), x => x.order.Total == decimal.Parse(request.Search!, CultureInfo.InvariantCulture));
             }
 
             if (request.OrderFilterType.ToString() == "Customer")
             {
                 defaultFilter = defaultFilter
                     .WhereIf(!string.IsNullOrEmpty(request.Search),
-                    x => EF.Functions.Like(x.customer.FirstName, $"%{request.Search}%") ||
-                    EF.Functions.Like(x.customer.LastName, $"%{request.Search}%"));
+                    x => EF.Functions.Like(x.customer.FirstName!, $"%{request.Search}%") ||
+                    EF.Functions.Like(x.customer.LastName!, $"%{request.Search}%"));
             }
         }
 
@@ -224,7 +224,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                               FirstName = g.First().userGeneratedApplicationUser.FirstName,
                               LastName = g.First().userGeneratedApplicationUser.LastName,
                               LastLogin = g.First().userGeneratedApplicationUser.LastLogin,
-                              Email = g.First().userGeneratedApplicationUser.Email,
+                              Email = g.First().userGeneratedApplicationUser.Email!,
                               EmailConfirmed = g.First().userGeneratedApplicationUser.EmailConfirmed,
                               DocumentType = g.First().userGeneratedUserInformation.DocumentType,
                               Nacionality = g.First().userGeneratedUserInformation.Nacionality,
