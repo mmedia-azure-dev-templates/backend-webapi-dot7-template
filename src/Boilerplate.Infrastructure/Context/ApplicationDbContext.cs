@@ -9,8 +9,8 @@ using Boilerplate.Infrastructure.Configuration;
 using EntityFramework.Exceptions.SqlServer;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -87,6 +87,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseExceptionProcessor();
+        //optionsBuilder.ConfigureWarnings(w => w.Ignore(SqlServerEventId.SavepointsDisabledBecauseOfMARS));
+        //optionsBuilder.ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS));
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
