@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
-using Boilerplate.Domain.Implementations;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 

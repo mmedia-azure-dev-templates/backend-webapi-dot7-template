@@ -6,9 +6,9 @@ namespace Boilerplate.Domain.Entities.Common;
 public class MailDataWithAttachments
 {
     // Receiver
-    public List<string>? To { get; set; }
-    public List<string>? Bcc { get; set; }
-    public List<string>? Cc { get; set; }
+    public List<string> To { get; set; } = new();
+    public List<string> Bcc { get; set; } = new();
+    public List<string> Cc { get; set; } = new();
 
     // Sender
     public string? From { get; set; }

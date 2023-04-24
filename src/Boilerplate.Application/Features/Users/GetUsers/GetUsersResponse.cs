@@ -7,14 +7,14 @@ public class GetUsersResponse
 {
     public Guid Id { get; set; }
     public UserId UserId { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
     public DateTime? LastLogin { get; set; }
-    public string Email { get; set; }
+    public string Email { get; set; } = null!;
     public bool EmailConfirmed { get; set; }
     public DocumentType DocumentType { get; set; }
     public NacionalityType Nacionality { get; set; }
-    public string Ndocument { get; set; }
+    public string Ndocument { get; set; } = null!;
     public GenderType Gender { get; set; }
     public CivilStatusType CivilStatus { get; set; }
     public DateTime? BirthDate { get; set; }

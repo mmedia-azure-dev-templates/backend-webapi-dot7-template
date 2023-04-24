@@ -13,9 +13,9 @@ public class MailStruct
     //public string Body { get; }
     public string Template { get; set; }
     public List<string> To { get; }
-    public List<string>? Bcc { get; }
-    public List<string>? Cc { get; }
-    
+    public List<string> Bcc { get; } = new List<string>();
+    public List<string> Cc { get; } = new List<string>();
+
     // Sender
     public string? ReplyTo { get; }
     public string? ReplyToName { get; }

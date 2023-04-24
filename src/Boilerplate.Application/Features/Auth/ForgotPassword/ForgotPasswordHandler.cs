@@ -26,7 +26,7 @@ public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, Forg
         _mail = mail;
         _mediator = mediator;
         _localizationService = localizationService;
-        _forgotPasswordResponse = (ForgotPasswordResponse?)forgotPasswordResponse;
+        _forgotPasswordResponse = (ForgotPasswordResponse)forgotPasswordResponse;
     }
 
     public async Task<ForgotPasswordResponse> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
@@ -50,7 +50,7 @@ public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, Forg
         MailStruct mailStruct = new MailStruct(
             user.FirstName + " " + user.LastName,
             new List<string> {
-                        user.Email
+                        user.Email!
             },
             "Restableceer Password",
             "ForgotPasswordView"
@@ -59,7 +59,7 @@ public class ForgotPasswordHandler : IRequestHandler<ForgotPasswordRequest, Forg
         ForgotPasswordMailData forgotPasswordMailData = new ForgotPasswordMailData()
         {
             Name = user.FirstName + " " + user.LastName,
-            Email = user.Email,
+            Email = user.Email!,
             Token = token
         };
         bool emailStatus = await _mail.CreateEmailMessage(mailStruct, forgotPasswordMailData, new CancellationToken());

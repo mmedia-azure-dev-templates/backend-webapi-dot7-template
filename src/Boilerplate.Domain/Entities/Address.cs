@@ -10,7 +10,7 @@ namespace Boilerplate.Domain.Entities;
 public class Address : Entity<AddressId>, IDataKeyFilterReadWrite, IDateCreatedAndUpdated
 {
     public override AddressId Id { get; set; }
-    public string DataKey { get; set; }
+    public string DataKey { get; set; } = null!;
     public PersonId PersonId { get; set; }
     public string? PrimaryStreet { get; set; }
     public string? SecondaryStreet { get; set; }
