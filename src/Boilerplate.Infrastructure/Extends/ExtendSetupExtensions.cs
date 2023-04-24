@@ -198,7 +198,7 @@ public static class ExtendSetupExtensions
     /// Your startup services will be registered after the Migrate the AuthP's database and bulk load process, so set the OrderNum in
     /// your startup services to a negative to get them before the AuthP startup services</param>
     public static void SetupAspNetCoreAndDatabase(this AuthSetupData setupData,
-        Action<RunSequentiallyOptions> optionsAction = null)
+        Action<RunSequentiallyOptions>? optionsAction = null)
     {
         setupData.CheckDatabaseTypeIsSet();
 

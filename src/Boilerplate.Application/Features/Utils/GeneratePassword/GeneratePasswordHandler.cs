@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Users;
 using Boilerplate.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -21,9 +22,9 @@ public class GeneratePasswordHandler : IRequestHandler<GeneratePasswordRequest,G
     {
         var user = new ApplicationUser();
         var generatedPassword = _userManager.PasswordHasher.HashPassword(user, request.Password);
-        return new GeneratePasswordResponse()
+        return await Task.Run(() => new GeneratePasswordResponse()
         {
             Password = generatedPassword
-        };
+        });
     }
 }

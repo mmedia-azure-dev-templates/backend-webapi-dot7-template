@@ -6,6 +6,7 @@ using AuthPermissions.AdminCode.Services;
 using AuthPermissions.BaseCode.CommonCode;
 using AuthPermissions.BaseCode.DataLayer.Classes;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Utils.GeneratePassword;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +43,7 @@ public class JibanTenantChangeService : ITenantChangeService
     /// </summary>
     /// <param name="tenant"></param>
     /// <returns>Returns null if all OK, otherwise the create is rolled back and the return string is shown to the user</returns>
-    public async Task<string> CreateNewTenantAsync(Tenant tenant)
+    public async Task<string?> CreateNewTenantAsync(Tenant tenant)
     {
         //var newCompanyTenant = new CompanyTenant
         //{
@@ -52,7 +53,7 @@ public class JibanTenantChangeService : ITenantChangeService
         //};
         //_context.Add(newCompanyTenant);
         //await _context.SaveChangesAsync();
-
+        await Task.Delay(0);
         return null;
     }
 
@@ -68,7 +69,7 @@ public class JibanTenantChangeService : ITenantChangeService
     /// </summary>
     /// <param name="tenant"></param>
     /// <returns>Returns null if all OK, otherwise the AuthP part of the delete is rolled back and the return string is shown to the user</returns>
-    public async Task<string> SingleTenantDeleteAsync(Tenant tenant)
+    public async Task<string?> SingleTenantDeleteAsync(Tenant tenant)
     {
         await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
         try
@@ -97,7 +98,7 @@ public class JibanTenantChangeService : ITenantChangeService
             _logger.LogError(e, $"Failure when trying to delete the '{tenant.TenantFullName}' tenant.");
             return "There was a system-level problem - see logs for more detail";
         }
-
+        await Task.Delay(0);
         return null;
     }
 
@@ -107,7 +108,7 @@ public class JibanTenantChangeService : ITenantChangeService
     /// </summary>
     /// <param name="tenant"></param>
     /// <returns>Returns null if all OK, otherwise the tenant name is rolled back and the return string is shown to the user</returns>
-    public async Task<string> SingleTenantUpdateNameAsync(Tenant tenant)
+    public async Task<string?> SingleTenantUpdateNameAsync(Tenant tenant)
     {
         /*var companyTenant = await _context.Companies
             .IgnoreQueryFilters()
@@ -117,7 +118,7 @@ public class JibanTenantChangeService : ITenantChangeService
             companyTenant.CompanyName = tenant.TenantFullName;
             await _context.SaveChangesAsync();
         }*/
-
+        await Task.Delay(0);
         return null;
     }
 

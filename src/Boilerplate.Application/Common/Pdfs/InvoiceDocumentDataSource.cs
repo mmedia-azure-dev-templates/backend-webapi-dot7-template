@@ -1,6 +1,5 @@
 ﻿using QuestPDF.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 public class InvoiceModel
@@ -8,27 +7,24 @@ public class InvoiceModel
     public int InvoiceNumber { get; set; }
     public DateTime IssueDate { get; set; }
     public DateTime DueDate { get; set; }
-    public Address2 SellerAddress { get; set; }
-    public Address2 CustomerAddress { get; set; }
-    public List<OrderItem2> Items { get; set; }
-    public string Comments { get; set; }
+    public string Comments { get; set; } = null!;
 }
 
 public class OrderItem2
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     public decimal Price { get; set; }
     public int Quantity { get; set; }
 }
 
 public class Address2
 {
-    public string CompanyName { get; set; }
-    public string Street { get; set; }
-    public string City { get; set; }
-    public string State { get; set; }
-    public object Email { get; set; }
-    public string Phone { get; set; }
+    public string CompanyName { get; set; } = null!;
+    public string Street { get; set; } = null!;
+    public string City { get; set; } = null!;
+    public string State { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public string Phone { get; set; } = null!;
 }
 
 public static class InvoiceDocumentDataSource
@@ -47,11 +43,6 @@ public static class InvoiceDocumentDataSource
             InvoiceNumber = Random.Next(1_000, 10_000),
             IssueDate = DateTime.Now,
             DueDate = DateTime.Now + TimeSpan.FromDays(14),
-
-            SellerAddress = GenerateRandomAddress(),
-            CustomerAddress = GenerateRandomAddress(),
-
-            Items = items,
             Comments = Placeholders.Paragraph()
         };
     }
@@ -63,19 +54,6 @@ public static class InvoiceDocumentDataSource
             Name = Placeholders.Label(),
             Price = (decimal)Math.Round(Random.NextDouble() * 100, 2),
             Quantity = Random.Next(1, 10)
-        };
-    }
-
-    private static Address2 GenerateRandomAddress()
-    {
-        return new Address2
-        {
-            CompanyName = Placeholders.Name(),
-            Street = Placeholders.Label(),
-            City = Placeholders.Label(),
-            State = Placeholders.Label(),
-            Email = Placeholders.Email(),
-            Phone = Placeholders.PhoneNumber()
         };
     }
 }

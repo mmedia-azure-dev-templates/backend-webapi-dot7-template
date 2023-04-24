@@ -2,18 +2,18 @@
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using System.Net;
+using System.Net.Http;
 
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class HeaderComponent : IComponent
 {
-    readonly WebClient _client = new WebClient();
+    readonly HttpClient _client = new HttpClient();
     public OrderByIdResponse OrderByIdResponse { get; set; }
     public byte[] Logo { get; set; } = new byte[0];
     public HeaderComponent(OrderByIdResponse orderByIdResponse)
     {
         OrderByIdResponse = orderByIdResponse;
-        Logo = _client.DownloadData("https://mad-storage.s3.amazonaws.com/public/logomarket.png");
+        Logo = _client.GetByteArrayAsync("https://mad-storage.s3.amazonaws.com/public/logomarket.png").Result;
     }
 
     public void Compose(IContainer container)

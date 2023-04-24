@@ -68,7 +68,7 @@ public class ProductsComponent : IComponent
             {
                 foreach (var item in ArticleSearchResponse)
                 {
-                    table.Cell().Element(CellStyle).AlignCenter().Text(ArticleSearchResponse.IndexOf(item) + 1);
+                    table.Cell().Element(CellStyle).AlignCenter().Text((ArticleSearchResponse.IndexOf(item) + 1).ToString());
                     table.Cell().Element(CellStyle).AlignCenter().Text(item.Sku);
                     table.Cell().Element(CellStyle).PaddingLeft(4).Row(row =>
                     {
@@ -87,7 +87,7 @@ public class ProductsComponent : IComponent
                     });
 
                     table.Cell().Element(CellStyle).PaddingRight(4).AlignRight().Text($"{item.Cost}");
-                    table.Cell().Element(CellStyle).AlignCenter().Text(item.Quantity);
+                    table.Cell().Element(CellStyle).AlignCenter().Text((item.Quantity).ToString());
                     table.Cell().Element(CellStyle).PaddingRight(4).AlignRight().Text($"{item.Total}");
                 }
             }

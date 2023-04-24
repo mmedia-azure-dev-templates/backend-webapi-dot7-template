@@ -1,4 +1,7 @@
-﻿using Amazon.S3;
+﻿using Amazon;
+using Amazon.S3;
+using Amazon.S3.Util;
+using Boilerplate.Domain.Implementations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -12,15 +15,17 @@ namespace Boilerplate.Api.Controllers;
 public class BucketsController : ControllerBase
 {
     private readonly IAmazonS3 _s3Client;
-    public BucketsController(IAmazonS3 s3Client)
+    private readonly IAwsS3Configuration _awsS3Configuration;
+    public BucketsController(IAwsS3Configuration awsS3Configuration)
     {
-        _s3Client = s3Client;
+        _awsS3Configuration = awsS3Configuration;
+        _s3Client = new AmazonS3Client(_awsS3Configuration.AwsAccessKey, _awsS3Configuration.AwsSecretAccessKey, RegionEndpoint.GetBySystemName(_awsS3Configuration.Region));
     }
 
     [HttpPost("create")]
     public async Task<IActionResult> CreateBucketAsync(string bucketName)
     {
-        var bucketExists = await _s3Client.DoesS3BucketExistAsync(bucketName);
+        var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, bucketName);
         if (bucketExists) return BadRequest($"Bucket {bucketName} already exists.");
         await _s3Client.PutBucketAsync(bucketName);
         return Ok($"Bucket {bucketName} created.");

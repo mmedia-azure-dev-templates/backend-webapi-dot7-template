@@ -1,19 +1,12 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace Boilerplate.Application.Features.Teams.Create;
 
@@ -37,22 +30,23 @@ public class CreateTeamHandler : IRequestHandler<CreateTeamRequest, CreateTeamRe
     public async Task<CreateTeamResponse> Handle(CreateTeamRequest request, CancellationToken cancellationToken)
     {
         CreateTeamResponse userResponse = new CreateTeamResponse();
+        return await Task.Run(() => userResponse); 
 
-        using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-        {
-            try
-            {
+        //using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+        //{
+        //    try
+        //    {
                 
-                scope.Complete();
-                userResponse.Transaction = true;
-                return userResponse;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(3, ex.Message);
-                userResponse.Message = ex.Message;
-                return userResponse;
-            }
-        }
+        //        scope.Complete();
+        //        userResponse.Transaction = true;
+        //        return userResponse;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogInformation(3, ex.Message);
+        //        userResponse.Message = ex.Message;
+        //        return userResponse;
+        //    }
+        //}
     }
 }
