@@ -111,10 +111,13 @@ public class CreateUserHandler : IRequestHandler<CreateUsersInformationsRequest,
                 await _context.SaveChangesAsync(cancellationToken);
 
                 var normalizedEmail = request.Email.Trim().ToLower();
-                AddNewUserDto newUserData;
                 var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(request.Invitation));
+                var newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
 
-                newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
+                if(newUserData == null)
+                {
+                    return _userResponse;
+                }
 
                 if (newUserData.Email != normalizedEmail)
                 {

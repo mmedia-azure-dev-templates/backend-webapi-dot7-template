@@ -37,6 +37,6 @@ public class GetUserByTokenHandler : IRequestHandler<GetUserByTokenRequest, GetU
                                 userInformation,
                             }).FirstOrDefaultAsync(cancellationToken);
 
-        return _mapper.Map<GetUserByTokenResponse>((result.applicationUser, result.userInformation));
+        return _mapper.Map<GetUserByTokenResponse>((result!.applicationUser, result.userInformation));
     }
 }

@@ -10,11 +10,11 @@ namespace Boilerplate.Domain.Entities;
 public class Article : Entity<ArticleId>, IDataKeyFilterReadWrite, IDateCreatedAndUpdated
 {
     public override ArticleId Id { get; set; }
-    public string DataKey { get; set; }
+    public string DataKey { get; set; } = null!;
     public int? Provider { get; set; }
-    public string Sku { get; set; }
+    public string Sku { get; set; } = null!;
     public string? Abrevia { get; set; }
-    public string Display { get; set; }
+    public string Display { get; set; } = null!;
     public decimal Cost { get; set; }
     public int? Brand { get; set; }
     public string? Notes { get; set; }

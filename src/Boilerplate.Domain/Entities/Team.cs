@@ -13,8 +13,8 @@ public class Team : Entity<TeamId>, IDataKeyFilterReadWrite, IDateCreatedAndUpda
     [Required]
     public override TeamId Id { get; set; }
     public UserId UserId { get; set; }
-    public HierarchyId HierarchyId { get; set; }
-    public string DataKey { get; set; }
+    public HierarchyId HierarchyId { get; set; } = null!;
+    public string DataKey { get; set; } = null!;
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
 }

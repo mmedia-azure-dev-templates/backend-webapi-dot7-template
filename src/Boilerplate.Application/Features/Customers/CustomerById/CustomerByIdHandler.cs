@@ -30,6 +30,7 @@ public class CustomerByIdHandler : IRequestHandler<CustomerByIdRequest, Customer
 
     public async Task<CustomerByIdResponse> Handle(CustomerByIdRequest request, CancellationToken cancellationToken)
     {
+
         var result = await (from customer in _context.Customers.AsNoTracking().DefaultIfEmpty()
                             join address in _context.Addresses on (Guid?)customer.Id equals (Guid)address.PersonId into j1
                             from address in j1.DefaultIfEmpty()
@@ -65,6 +66,6 @@ public class CustomerByIdHandler : IRequestHandler<CustomerByIdRequest, Customer
                                     DateUpdated = address.DateUpdated,
                                 }
                             }).FirstOrDefaultAsync(cancellationToken);
-        return result;
+        return result ?? new CustomerByIdResponse();
     }
 }

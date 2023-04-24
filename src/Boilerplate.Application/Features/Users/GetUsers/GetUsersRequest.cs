@@ -10,5 +10,5 @@ namespace Boilerplate.Application.Features.Users.GetUsers;
 public class GetUsersRequest : PaginatedRequest, IRequest<PaginatedList<GetUsersResponse>>
 {
     public OwnerFilterType Filter { get; set; }
-    public string Search { get; init; }
+    public string Search { get; init; } = null!;
 }

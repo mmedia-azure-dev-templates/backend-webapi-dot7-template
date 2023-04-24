@@ -27,7 +27,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<Ge
 
     public async Task<PaginatedList<GetUsersResponse>> Handle(GetUsersRequest request, CancellationToken cancellationToken)
     {
-        string filter = Enum.Parse(typeof(OwnerFilterType), request.Filter.ToString()).ToString();
+        string filter = Enum.Parse(typeof(OwnerFilterType), request.Filter.ToString()).ToString()!;
 
         var users = _context.ApplicationUsers.AsNoTracking()
                     .Join(_context.UserInformations.AsNoTracking(),
@@ -40,7 +40,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersRequest, PaginatedList<Ge
                             FirstName = applicationUser.FirstName,
                             LastName = applicationUser.LastName,
                             LastLogin = applicationUser.LastLogin,
-                            Email = applicationUser.Email,
+                            Email = applicationUser.Email!,
                             EmailConfirmed = applicationUser.EmailConfirmed,
                             DocumentType = userInformation.DocumentType,
                             Nacionality = userInformation.Nacionality,

@@ -15,7 +15,7 @@ public class CreateUsersInformationsRequest : IRequest<UserResponse>
     public GenderType GenderType { get; init; }
     public CivilStatusType CivilStatusType { get; init; }
     public DateTime? BirthDate { get; init; }
-    public string? Mobile { get; init; }
+    public string Mobile { get; init; } = null!;
     public string PrimaryStreet { get; init; } = null!;
     public string SecondaryStreet { get; init; } = null!;
     public string Numeration { get; init; } = null!;
