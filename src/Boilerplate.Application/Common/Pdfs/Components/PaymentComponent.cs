@@ -28,7 +28,9 @@ public class PaymentComponent : IComponent
                 {
                     foreach (var item in _paymentByIdResponse)
                     {
-                        text.Span($"| {item.Display} | ").Medium();
+                        text.Span($"| ").ExtraBlack();
+                        text.Span($"{item.Display}");
+                        text.Span($" | ").ExtraBlack();
                     }
                 }
             });
