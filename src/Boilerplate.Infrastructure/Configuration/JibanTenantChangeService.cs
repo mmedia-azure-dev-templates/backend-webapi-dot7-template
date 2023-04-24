@@ -3,17 +3,11 @@
 
 using AuthPermissions.AdminCode;
 using AuthPermissions.AdminCode.Services;
-using AuthPermissions.BaseCode.CommonCode;
 using AuthPermissions.BaseCode.DataLayer.Classes;
-using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Utils.GeneratePassword;
-using Boilerplate.Domain.Entities;
 using Boilerplate.Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Infrastructure.Configuration;
@@ -71,33 +65,33 @@ public class JibanTenantChangeService : ITenantChangeService
     /// <returns>Returns null if all OK, otherwise the AuthP part of the delete is rolled back and the return string is shown to the user</returns>
     public async Task<string?> SingleTenantDeleteAsync(Tenant tenant)
     {
-        await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
-        try
-        {
-            //De momento deshabilite estas lineas para que no borre los datos de la base de datos
-            //var dataKey = tenant.GetTenantDataKey();
-            //var deleteSalesSql = $"DELETE FROM invoice.{nameof(ApplicationDbContext.LineItems)} WHERE DataKey = '{dataKey}'";
-            //await _context.Database.ExecuteSqlRawAsync(deleteSalesSql);
-            //var deleteStockSql = $"DELETE FROM invoice.{nameof(ApplicationDbContext.Invoices)} WHERE DataKey = '{dataKey}'";
-            //await _context.Database.ExecuteSqlRawAsync(deleteStockSql);
+        //await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+        //try
+        //{
+        //    //De momento deshabilite estas lineas para que no borre los datos de la base de datos
+        //    //var dataKey = tenant.GetTenantDataKey();
+        //    //var deleteSalesSql = $"DELETE FROM invoice.{nameof(ApplicationDbContext.LineItems)} WHERE DataKey = '{dataKey}'";
+        //    //await _context.Database.ExecuteSqlRawAsync(deleteSalesSql);
+        //    //var deleteStockSql = $"DELETE FROM invoice.{nameof(ApplicationDbContext.Invoices)} WHERE DataKey = '{dataKey}'";
+        //    //await _context.Database.ExecuteSqlRawAsync(deleteStockSql);
             
-            //var companyTenant = await _context.Set<CompanyTenant>()
-            //    .IgnoreQueryFilters()
-            //    .SingleOrDefaultAsync(x => x.AuthPTenantId == tenant.TenantId);
-            //if (companyTenant != null)
-            //{
-            //    _context.Remove(companyTenant);
-            //    await _context.SaveChangesAsync();
-            //    DeletedTenantId = tenant.TenantId;
-            //}
+        //    //var companyTenant = await _context.Set<CompanyTenant>()
+        //    //    .IgnoreQueryFilters()
+        //    //    .SingleOrDefaultAsync(x => x.AuthPTenantId == tenant.TenantId);
+        //    //if (companyTenant != null)
+        //    //{
+        //    //    _context.Remove(companyTenant);
+        //    //    await _context.SaveChangesAsync();
+        //    //    DeletedTenantId = tenant.TenantId;
+        //    //}
 
-            //await transaction.CommitAsync();
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, $"Failure when trying to delete the '{tenant.TenantFullName}' tenant.");
-            return "There was a system-level problem - see logs for more detail";
-        }
+        //    //await transaction.CommitAsync();
+        //}
+        //catch (Exception e)
+        //{
+        //    _logger.LogError(e, $"Failure when trying to delete the '{tenant.TenantFullName}' tenant.");
+        //    return "There was a system-level problem - see logs for more detail";
+        //}
         await Task.Delay(0);
         return null;
     }

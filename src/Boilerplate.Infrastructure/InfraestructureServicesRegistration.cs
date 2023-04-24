@@ -1,6 +1,8 @@
-﻿using AuthPermissions.SupportCode.AddUsersServices.Authentication;
+﻿using AuthPermissions;
+using AuthPermissions.BaseCode;
+using AuthPermissions.BaseCode.SetupCode;
 using AuthPermissions.SupportCode.AddUsersServices;
-using AuthPermissions;
+using AuthPermissions.SupportCode.AddUsersServices.Authentication;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Services;
 using Boilerplate.Domain.Entities;
@@ -8,21 +10,18 @@ using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.PermissionsCode;
 using Boilerplate.Infrastructure.Configuration;
 using Boilerplate.Infrastructure.Context;
+using Boilerplate.Infrastructure.Extends;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text;
-using System;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 using System.Threading.Tasks;
-using AuthPermissions.BaseCode;
-using AuthPermissions.BaseCode.SetupCode;
-using Boilerplate.Infrastructure.Extends;
-using Boilerplate.Application.Implementations;
 
 namespace Boilerplate.Infrastructure;
 
@@ -48,6 +47,7 @@ public static class InfraestructureServicesRegistration
             o.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>(); // add this line
             o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"), conf =>
             {
+                conf.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                 conf.UseHierarchyId();
             });
         });
