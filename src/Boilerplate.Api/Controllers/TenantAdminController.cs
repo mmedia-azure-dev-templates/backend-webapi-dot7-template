@@ -163,9 +163,14 @@ public class TenantAdminController : Controller
         
         try
         {
-            AddNewUserDto newUserData = new();
             var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(inviteParam));
-            newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
+            var newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
+
+            if (newUserData == null)
+            {
+                verifyInvitationResponse.Message = "La invitación no es válida!. Póngase en contacto con la persona que envió la invitación.";
+                return verifyInvitationResponse;
+            }
   
             if (newUserData.TimeInviteExpires != default && newUserData.TimeInviteExpires < DateTime.UtcNow.Ticks)
             {
@@ -195,10 +200,14 @@ public class TenantAdminController : Controller
         try
         {
             var normalizedEmail = email.Trim().ToLower();
-            AddNewUserDto newUserData = new();
             var decrypted = _encryptService.Decrypt(Base64UrlEncoder.Decode(inviteParam));
+            var newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
 
-            newUserData = JsonSerializer.Deserialize<AddNewUserDto>(decrypted);
+            if(newUserData == null)
+            {
+                verifyInvitationResponse.Message = "La invitación no es válida!. Póngase en contacto con la persona que envió la invitación.";
+                return verifyInvitationResponse;
+            }
 
             if (newUserData.Email != normalizedEmail)
             {

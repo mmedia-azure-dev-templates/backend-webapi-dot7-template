@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
@@ -19,7 +20,7 @@ public class UpdatePasswordHandler : IRequestHandler<UpdatePasswordRequest, User
         _context = context;
     }
 
-    public async Task<UserResponse> Handle(UpdatePasswordRequest request, CancellationToken cancellationToken)
+    public Task<UserResponse> Handle(UpdatePasswordRequest request, CancellationToken cancellationToken)
     {
         throw new System.NotImplementedException();
        // // Guaranteed to be valid, because it comes from the session.

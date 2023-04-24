@@ -1,5 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Util;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
@@ -45,7 +46,7 @@ public class FilesController : ControllerBase
     [HttpPost("upload")]
     public async Task<IActionResult> UploadFileAsync(IFormFile file, string bucketName, string? prefix)
     {
-        var bucketExists = await _s3Client.DoesS3BucketExistAsync(bucketName);
+        var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, bucketName);
         if (!bucketExists) return NotFound($"Bucket {bucketName} does not exist.");
         var request = new PutObjectRequest()
         {
@@ -63,7 +64,7 @@ public class FilesController : ControllerBase
     [HttpGet("get-all")]
     public async Task<IActionResult> GetAllFilesAsync(string bucketName, string? prefix)
     {
-        var bucketExists = await _s3Client.DoesS3BucketExistAsync(bucketName);
+        var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, bucketName);
         if (!bucketExists) return NotFound($"Bucket {bucketName} does not exist.");
         var request = new ListObjectsV2Request()
         {
@@ -92,7 +93,7 @@ public class FilesController : ControllerBase
     [HttpGet("get-by-key")]
     public async Task<IActionResult> GetFileByKeyAsync(string bucketName, string key)
     {
-        var bucketExists = await _s3Client.DoesS3BucketExistAsync(bucketName);
+        var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, bucketName);
         if (!bucketExists) return NotFound($"Bucket {bucketName} does not exist.");
         var s3Object = await _s3Client.GetObjectAsync(bucketName, key);
         return File(s3Object.ResponseStream, s3Object.Headers.ContentType);
@@ -101,7 +102,7 @@ public class FilesController : ControllerBase
     [HttpDelete("deletefile")]
     public async Task<IActionResult> DeleteFileAsync(string bucketName, string key)
     {
-        var bucketExists = await _s3Client.DoesS3BucketExistAsync(bucketName);
+        var bucketExists = await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, bucketName);
         if (!bucketExists) return NotFound($"Bucket {bucketName} does not exist");
         await _s3Client.DeleteObjectAsync(bucketName, key);
         return NoContent();
