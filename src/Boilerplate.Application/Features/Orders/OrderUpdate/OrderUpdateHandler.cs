@@ -138,12 +138,10 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                     payments.Count > 0 &&
                     orderItems.Count > 0)
                 {
-                    if(customerCreateResponse!.CustomerComplete == true || customerUpdateResponse!.CustomerComplete == true)
+                    if((customerCreateResponse!.CustomerComplete == true || customerUpdateResponse!.CustomerComplete == true) && order.Locked == false)
                     {
                         checkOrderComplete = true;
                         order.Locked = true;
-                        //_context.Orders.Update(order);
-                        //await _context.SaveChangesAsync(cancellationToken);
                     }
                 }
 
