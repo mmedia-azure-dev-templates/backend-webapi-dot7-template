@@ -27,9 +27,9 @@ public class CustomerUpdateHandler : IRequestHandler<CustomerUpdateRequest, Cust
 
     public CustomerUpdateHandler(
         IMediator mediator,
-        IContext context, 
-        IMapper mapper, 
-        ILogger<CustomerUpdateHandler> logger, 
+        IContext context,
+        IMapper mapper,
+        ILogger<CustomerUpdateHandler> logger,
         ICustomerUpdateResponse customerUpdateResponse,
         IAddressUpdateResponse addresUpdateResponse)
     {
@@ -44,8 +44,8 @@ public class CustomerUpdateHandler : IRequestHandler<CustomerUpdateRequest, Cust
     {
         using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
-            var customer = await _context.Customers.Where(x=> x.Id == request.CustomerId).FirstOrDefaultAsync(cancellationToken);
-            if(customer != null)
+            var customer = await _context.Customers.Where(x => x.Id == request.CustomerId).FirstOrDefaultAsync(cancellationToken);
+            if (customer != null)
             {
                 //Insert Format Customer 
                 customer.BirthDate = request.BirthDate;
@@ -78,7 +78,7 @@ public class CustomerUpdateHandler : IRequestHandler<CustomerUpdateRequest, Cust
                 customer.LastName != null &&
                 customer.Email != null &&
                 customer.Mobile != null &&
-                _customerUpdateResponse.AddresUpdateResponse.AddressComplete == true
+                _customerUpdateResponse.AddresUpdateResponse?.AddressComplete == true
                 )
                 {
                     _customerUpdateResponse.CustomerComplete = true;
@@ -87,7 +87,7 @@ public class CustomerUpdateHandler : IRequestHandler<CustomerUpdateRequest, Cust
 
             scope.Complete();
         }
-            
+
         return _customerUpdateResponse;
     }
 }

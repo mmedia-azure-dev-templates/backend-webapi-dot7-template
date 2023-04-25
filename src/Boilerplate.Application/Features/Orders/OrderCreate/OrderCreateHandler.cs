@@ -3,7 +3,6 @@ using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Address.AddresUpdate;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.Customers.CustomerUpdate;
-using Boilerplate.Application.Implementations;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
@@ -27,24 +26,17 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly ILogger<OrderCreateHandler> _logger;
-    private readonly IMailService _mail;
     private readonly ILocalizationService _localizationService;
-    private readonly IAwsS3Service _awsS3Service;
-    private readonly IPdfService _pdfService;
     private OrderCreateResponse _orderCreateResponse;
 
-
-    public OrderCreateHandler(IContext context, ISession session, IMapper mapper, IMediator mediator, ILogger<OrderCreateHandler> logger, IMailService mail, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IPdfService pdfService)
+    public OrderCreateHandler(IContext context, ISession session, IMapper mapper, IMediator mediator, ILogger<OrderCreateHandler> logger, IOrderCreateResponse orderCreateResponse, ILocalizationService localizationService)
     {
         _logger = logger;
         _mapper = mapper;
         _context = context;
         _session = session;
-        _mail = mail;
         _orderCreateResponse = (OrderCreateResponse)orderCreateResponse;
         _localizationService = localizationService;
-        _awsS3Service = awsS3Service;
-        _pdfService = pdfService;
         _mediator = mediator;
     }
     public async Task<OrderCreateResponse> Handle(OrderCreateRequest request, CancellationToken cancellationToken)
