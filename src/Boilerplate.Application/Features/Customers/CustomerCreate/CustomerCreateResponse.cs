@@ -7,9 +7,10 @@ using System;
 namespace Boilerplate.Application.Features.Customers.CustomerCreate;
 public class CustomerCreateResponse: ICustomerCreateResponse
 {
+    public bool CustomerComplete { get; set; } = false;
     public CustomerId? CustomerId { get; set; } = null;
     public DocumentType DocumentType { get; init; }
-    public string? Ndocument { get; init; } = null!;
+    public string Ndocument { get; init; } = null;
     public DateTime? BirthDate { get; init; }
     public GenderType? GenderType { get; init; }
     public CivilStatusType? CivilStatusType { get; init; }
