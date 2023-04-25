@@ -37,6 +37,18 @@ public class AddressCreateHandler : IRequestHandler<AddressCreateRequest, Addres
         await _context.SaveChangesAsync(cancellationToken);
         _addresCreateResponse = _mapper.Map(address, _addresCreateResponse);
         _addresCreateResponse.PersonId = address.PersonId;
+        if(
+            address.DataKey != null && 
+            address.PrimaryStreet != null && 
+            address.SecondaryStreet != null && 
+            address.Numeration != null &&
+            address.Reference != null &&
+            address.Provincia != null &&
+            address.Canton != null &&
+            address.Parroquia != null)
+        {
+            _addresCreateResponse.AddressComplete = true;
+        }
         return _addresCreateResponse;
     }
 }

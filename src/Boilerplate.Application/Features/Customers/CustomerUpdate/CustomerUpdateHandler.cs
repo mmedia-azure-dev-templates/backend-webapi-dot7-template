@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Address.AddresUpdate;
+using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using MediatR;
@@ -65,6 +66,23 @@ public class CustomerUpdateHandler : IRequestHandler<CustomerUpdateRequest, Cust
                 request.AddresUpdateRequest.PersonId = new PersonId((Guid)customer.Id);
                 _customerUpdateResponse.AddresUpdateResponse = await _mediator.Send(request.AddresUpdateRequest);
                 await _context.SaveChangesAsync(cancellationToken);
+
+                if (
+                customer.DataKey != null &&
+                customer.DocumentType != null &&
+                customer.Ndocument != null &&
+                customer.BirthDate != null &&
+                customer.GenderType != null &&
+                customer.CivilStatusType != null &&
+                customer.FirstName != null &&
+                customer.LastName != null &&
+                customer.Email != null &&
+                customer.Mobile != null &&
+                _customerUpdateResponse.AddresUpdateResponse.AddressComplete == true
+                )
+                {
+                    _customerUpdateResponse.CustomerComplete = true;
+                }
             }
 
             scope.Complete();

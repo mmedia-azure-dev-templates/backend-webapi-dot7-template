@@ -1,6 +1,5 @@
 ﻿using Boilerplate.Domain.Entities.Common;
 using MediatR;
-using System;
 
 namespace Boilerplate.Application.Features.Address.AddresCreate;
 public class AddressCreateRequest : IRequest<AddressCreateResponse>

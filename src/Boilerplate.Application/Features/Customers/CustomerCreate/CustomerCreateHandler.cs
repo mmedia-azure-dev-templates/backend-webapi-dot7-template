@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Address.AddresCreate;
+using Boilerplate.Application.Features.Customers.CustomerUpdate;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
@@ -70,7 +71,7 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
                 customer.LastName != null &&
                 customer.Email != null &&
                 customer.Mobile != null &&
-                request.addresCreateRequest != null
+                _customerCreateResponse.addresCreateResponse?.AddressComplete == true
                 )
             {
                 _customerCreateResponse.CustomerComplete = true;

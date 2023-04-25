@@ -1,5 +1,4 @@
-﻿using Boilerplate.Application.Features.Address.AddresCreate;
-using Boilerplate.Application.Features.Address.AddresUpdate;
+﻿using Boilerplate.Application.Features.Address.AddresUpdate;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;
@@ -8,6 +7,7 @@ using System;
 namespace Boilerplate.Application.Features.Customers.CustomerUpdate;
 public class CustomerUpdateResponse: ICustomerUpdateResponse
 {
+    public bool CustomerComplete { get; set; } = false;
     public CustomerId? CustomerId { get; set; } = null;
     public DocumentType DocumentType { get; init; }
     public string? Ndocument { get; init; } = null!;
