@@ -54,7 +54,6 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 CustomerUpdateRequest customerUpdateRequest = new CustomerUpdateRequest();
                 CustomerCreateRequest customerCreateRequest = new CustomerCreateRequest();
                 var customer = await _context.Customers.Where(x => x.Ndocument == request.CustomerUpdateRequest.Ndocument).FirstOrDefaultAsync(cancellationToken);
-
                 if (customer != null)
                 {
                     customerUpdateRequest = _mapper.Map<CustomerUpdateRequest>(customer);
@@ -130,30 +129,26 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 await _context.Payments.AddRangeAsync(payments);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                //bool checkCustomerComplete = false;
-                //bool checkComplete = false;
+                bool checkOrderComplete = false;
 
-                //if (
-                //    customer.DataKey == null &&
-                //    customer.Ndocument == null &&
-                //    customer.BirthDate == null &&
-                //    customer.GenderType == null &&
-                //    customer.CivilStatusType == null &&
-                //    customer.FirstName == null &&
-                //    customer.LastName == null &&
-                //    customer.Email == null &&
-                //    customer.Mobile == null
-                //    )
-                //{
+                if (
+                    order.DataKey != null && 
+                    order.UserAssigned != null && 
+                    order.CustomerId != null && 
+                    payments.Count > 0 &&
+                    orderItems.Count > 0)
+                {
+                    if(customerCreateResponse!.CustomerComplete == true || customerUpdateResponse!.CustomerComplete == true)
+                    {
+                        checkOrderComplete = true;
+                        order.Locked = true;
+                        //_context.Orders.Update(order);
+                        //await _context.SaveChangesAsync(cancellationToken);
+                    }
+                }
 
-                //}
-
-                //if (order.DataKey == null && order.UserAssigned == null && order.CustomerId == null && payments.Count > 0)
-                //{
-                //    checkComplete = true;
-                //}
-
-
+                _context.Orders.Update(order);
+                await _context.SaveChangesAsync(cancellationToken);
 
                 scope.Complete();
                 _orderUpdateResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;

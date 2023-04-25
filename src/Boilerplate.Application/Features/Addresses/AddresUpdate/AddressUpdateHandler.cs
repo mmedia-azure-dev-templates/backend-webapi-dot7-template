@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Address.AddresCreate;
-using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using org.apache.zookeeper.data;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,8 +20,8 @@ public class AddressUpdateHandler : IRequestHandler<AddressUpdateRequest, Addres
     }
     public async Task<AddressUpdateResponse> Handle(AddressUpdateRequest request, CancellationToken cancellationToken)
     {
-        var address = await _context.Addresses.Where(x=> x.PersonId == request.PersonId).FirstOrDefaultAsync(cancellationToken);
-        if (address != null) 
+        var address = await _context.Addresses.Where(x => x.PersonId == request.PersonId).FirstOrDefaultAsync(cancellationToken);
+        if (address != null)
         {
             address.PersonId = request.PersonId;
             address.PrimaryStreet = request.PrimaryStreet;
@@ -41,6 +36,18 @@ public class AddressUpdateHandler : IRequestHandler<AddressUpdateRequest, Addres
             await _context.SaveChangesAsync(cancellationToken);
             _addresUpdateResponse = _mapper.Map(address, _addresUpdateResponse);
             _addresUpdateResponse.PersonId = request.PersonId;
+            if (
+            address.DataKey != null &&
+            address.PrimaryStreet != null &&
+            address.SecondaryStreet != null &&
+            address.Numeration != null &&
+            address.Reference != null &&
+            address.Provincia != null &&
+            address.Canton != null &&
+            address.Parroquia != null)
+            {
+                _addresUpdateResponse.AddressComplete = true;
+            }
         }
         return _addresUpdateResponse;
     }

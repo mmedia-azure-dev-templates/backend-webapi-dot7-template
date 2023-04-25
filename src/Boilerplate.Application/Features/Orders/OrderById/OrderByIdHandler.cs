@@ -69,21 +69,27 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
         var customPayments = (from payment in result.AsNoTracking().DefaultIfEmpty()
                               join paymentMethod in _context.PaymentMethods.AsNoTracking().DefaultIfEmpty() on payment.payments.PaymentMethodId equals paymentMethod.Id into j101
                               from paymentMethod in j101.DefaultIfEmpty()
-                              where payment.payments != null && payment.order != null
+                              where payment.payments != null
+                              group new
+                              {
+                                  payment.payments,
+                                  paymentMethod
+                              }
+                              by new { payment.payments.Id } into g
                               select new PaymentByIdResponse
                               {
-                                  Id = payment.payments.Id,
-                                  DataKey = payment.payments.DataKey,
-                                  OrderId = payment.payments.OrderId,
-                                  PaymentMethodId = payment.payments.PaymentMethodId,
-                                  Amount = payment.payments.Amount,
-                                  Notes = payment.payments.Notes,
-                                  PaymentMethodsType = paymentMethod.PaymentMethodsType,
-                                  Display = paymentMethod.Display,
-                                  Active = paymentMethod.Active,
-                                  Icon = paymentMethod.Icon,
-                                  DateCreated = payment.payments.DateCreated,
-                                  DateUpdated = payment.payments.DateUpdated
+                                  Id = g.First().payments.Id,
+                                  DataKey = g.First().payments.DataKey,
+                                  OrderId = g.First().payments.OrderId,
+                                  PaymentMethodId = g.First().payments.PaymentMethodId,
+                                  Amount = g.First().payments.Amount,
+                                  Notes = g.First().payments.Notes,
+                                  PaymentMethodsType = g.First().paymentMethod.PaymentMethodsType,
+                                  Display = g.First().paymentMethod.Display,
+                                  Active = g.First().paymentMethod.Active,
+                                  Icon = g.First().paymentMethod.Icon,
+                                  DateCreated = g.First().payments.DateCreated,
+                                  DateUpdated = g.First().payments.DateUpdated
                               });
 
         var products = (from product in result.AsNoTracking().DefaultIfEmpty()

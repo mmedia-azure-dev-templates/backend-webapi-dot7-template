@@ -5,6 +5,7 @@ using System;
 namespace Boilerplate.Application.Features.Address.AddresCreate;
 public class AddressCreateResponse
 {
+    public bool AddressComplete { get; set; } = false;
     public PersonId PersonId { get; set; }
     public string PrimaryStreet { get; set; }
     public string SecondaryStreet { get; set; }
