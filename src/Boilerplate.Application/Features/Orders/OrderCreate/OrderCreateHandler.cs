@@ -137,6 +137,26 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
                 }
                 await _context.Payments.AddRangeAsync(payments);
                 await _context.SaveChangesAsync(cancellationToken);
+
+                bool checkOrderComplete = false;
+
+                if (
+                    order.DataKey != null &&
+                    order.UserAssigned != null &&
+                    order.CustomerId != null &&
+                    payments.Count > 0 &&
+                    orderItems.Count > 0)
+                {
+                    if ((customerCreateResponse!.CustomerComplete == true || customerUpdateResponse!.CustomerComplete == true) && order.Locked == false)
+                    {
+                        checkOrderComplete = true;
+                        order.Locked = true;
+                        _context.Orders.Update(order);
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                }
+
+
                 scope.Complete();
                 _orderCreateResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
                 _orderCreateResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
