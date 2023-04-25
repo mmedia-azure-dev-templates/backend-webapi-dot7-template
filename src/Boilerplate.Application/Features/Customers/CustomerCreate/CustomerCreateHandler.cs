@@ -28,7 +28,7 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
     private readonly IMediator _mediator;
 
 
-    public CustomerCreateHandler(IContext context, IMapper mapper, ILogger<CustomerCreateHandler> logger, IMailService mail, ICustomerCreateResponse customerCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service,IMediator mediator)
+    public CustomerCreateHandler(IContext context, IMapper mapper, ILogger<CustomerCreateHandler> logger, IMailService mail, ICustomerCreateResponse customerCreateResponse, ILocalizationService localizationService, IAwsS3Service awsS3Service, IMediator mediator)
     {
         _logger = logger;
         _mapper = mapper;
@@ -47,10 +47,9 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
             var customer = new Customer();
             customer = _mapper.Map(request, customer);
             customer.Id = new CustomerId(Guid.NewGuid());
-            _context.Customers.Add(customer);
             await _context.Customers.AddAsync(customer, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
-            if(request.addresCreateRequest != null)
+            if (request.addresCreateRequest != null)
             {
                 addresCreateRequest = request.addresCreateRequest;
                 addresCreateRequest.PersonId = new PersonId((Guid)customer.Id);
@@ -59,6 +58,24 @@ public class CustomerCreateHandler : IRequestHandler<CustomerCreateRequest, Cust
 
             _customerCreateResponse = _mapper.Map(customer, _customerCreateResponse);
             _customerCreateResponse.CustomerId = customer.Id;
+
+            if (
+                customer.DataKey != null &&
+                customer.DocumentType != null &&
+                customer.Ndocument != null &&
+                customer.BirthDate != null &&
+                customer.GenderType != null &&
+                customer.CivilStatusType != null &&
+                customer.FirstName != null &&
+                customer.LastName != null &&
+                customer.Email != null &&
+                customer.Mobile != null &&
+                request.addresCreateRequest != null
+                )
+            {
+                _customerCreateResponse.CustomerComplete = true;
+            }
+
             scope.Complete();
         }
 

@@ -129,6 +129,32 @@ public class OrderUpdateHandler : IRequestHandler<OrderUpdateRequest, OrderUpdat
                 }
                 await _context.Payments.AddRangeAsync(payments);
                 await _context.SaveChangesAsync(cancellationToken);
+
+                //bool checkCustomerComplete = false;
+                //bool checkComplete = false;
+
+                //if (
+                //    customer.DataKey == null &&
+                //    customer.Ndocument == null &&
+                //    customer.BirthDate == null &&
+                //    customer.GenderType == null &&
+                //    customer.CivilStatusType == null &&
+                //    customer.FirstName == null &&
+                //    customer.LastName == null &&
+                //    customer.Email == null &&
+                //    customer.Mobile == null
+                //    )
+                //{
+
+                //}
+
+                //if (order.DataKey == null && order.UserAssigned == null && order.CustomerId == null && payments.Count > 0)
+                //{
+                //    checkComplete = true;
+                //}
+
+
+
                 scope.Complete();
                 _orderUpdateResponse.SweetAlert.Title = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;
                 _orderUpdateResponse.SweetAlert.Text = _localizationService.GetLocalizedHtmlString("OrderCreatedSuccess").Value;

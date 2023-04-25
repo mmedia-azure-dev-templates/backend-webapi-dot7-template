@@ -12,7 +12,7 @@ public class Customer : Entity<CustomerId>, IDataKeyFilterReadWrite, IDateCreate
 {
     public override CustomerId Id { get; set; }
     public string DataKey { get; set; } = null!;
-    public DocumentType DocumentType { get; set; }
+    public DocumentType? DocumentType { get; set; } = null!;
     public string Ndocument { get; set; } = null!;
     public DateTime? BirthDate { get; set; }
     public GenderType? GenderType { get; set; }
