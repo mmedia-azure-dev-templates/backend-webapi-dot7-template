@@ -11,8 +11,9 @@ public class PaymentMethodAllResponse
     public string? DataKey { get; set; }
     public PaymentMethodsType PaymentMethodsType { get; set; }
     public string? Display { get; set; }
-    public string? Icon { get; set; }
+    public int Priority { get; set; }
     public bool Active { get; set; }
+    public string? Icon { get; set; }
     public bool IsSelected { get; set; } = false;
     public DateTime DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
