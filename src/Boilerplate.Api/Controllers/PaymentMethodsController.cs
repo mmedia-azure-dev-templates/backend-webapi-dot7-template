@@ -2,6 +2,7 @@
 using Boilerplate.Application.Features.PaymentMethods;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodById;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodCreate;
+using Boilerplate.Application.Features.PaymentMethods.PaymentMethodPriorityUpdate;
 using Boilerplate.Application.Features.PaymentMethods.PaymentMethodUpdate;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +31,7 @@ public class PaymentMethodsController : ControllerBase
     public async Task <List<PaymentMethodAllResponse>> PaymentMethods()
     {
         var result = await (from t in _context.PaymentMethods
+                            orderby t.Priority
                      select t).ToListAsync();
         List<PaymentMethodAllResponse> paymentMethodAllResponse = new List<PaymentMethodAllResponse>();
         foreach (var item in result)
@@ -38,11 +40,12 @@ public class PaymentMethodsController : ControllerBase
                 new PaymentMethodAllResponse
                 {
                     Id = item.Id,
+                    DataKey = item.DataKey,
                     PaymentMethodsType = item.PaymentMethodsType,
                     Display = item.Display,
-                    DataKey = item.DataKey,
-                    Icon = item.Icon,
+                    Priority = item.Priority,
                     Active = item.Active,
+                    Icon = item.Icon,
                     DateCreated = item.DateCreated,
                     DateUpdated = item.DateUpdated
                 }
@@ -68,6 +71,13 @@ public class PaymentMethodsController : ControllerBase
     [HttpPatch]
     [Route("edit")]
     public async Task<PaymentMethodUpdateResponse> Edit(PaymentMethodUpdateRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpPatch]
+    [Route("priority")]
+    public async Task<PaymentMethodPriorityUpdateResponse> Priority([FromBody]PaymentMethodPriorityUpdateRequest request)
     {
         return await _mediator.Send(request);
     }
