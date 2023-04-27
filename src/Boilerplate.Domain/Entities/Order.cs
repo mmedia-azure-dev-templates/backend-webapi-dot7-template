@@ -15,6 +15,7 @@ public class Order : Entity<OrderId>, IDataKeyFilterReadWrite, IDateCreatedAndUp
     public bool Locked { get; set; } = false;
     public OrderStatusType OrderStatusType { get; set; }
     public OrderNumber OrderNumber { get; set; }
+    public PaymentMethodId? PaymentMethodId { get; set; } = null!;
     public UserGenerated UserGenerated { get; set; }
     public UserAssigned? UserAssigned { get; set; } = null!;
     public CustomerId? CustomerId { get; set; } = null;
