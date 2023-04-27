@@ -16,6 +16,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         entity.Property(e => e.OrderStatusType).HasColumnName("OrderStatusType").HasConversion(
             v => v.ToString(),
             v => (OrderStatusType)Enum.Parse(typeof(OrderStatusType), v));
+        entity.Property(e => e.PaymentMethodId).HasConversion<PaymentMethodId.EfCoreValueConverter>();
         entity.Property(e => e.CustomerId).HasConversion<CustomerId.EfCoreValueConverter>();
         entity.Property(e => e.UserGenerated).HasConversion<UserGenerated.EfCoreValueConverter>();
         entity.Property(e => e.UserAssigned).HasConversion<UserAssigned.EfCoreValueConverter>();
