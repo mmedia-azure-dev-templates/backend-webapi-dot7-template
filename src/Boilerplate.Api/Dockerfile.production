@@ -3,7 +3,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 #INSTALAR LIBRERIAS UBUNTU
-RUN apt-get update && apt-get install -y apt-utils iputils-ping telnet vim libfontconfig1 fontforge cabextract
+RUN apt-get update && apt-get install -y wget apt-utils iputils-ping telnet vim libfontconfig1 fontforge cabextract
 RUN wget https://gist.githubusercontent.com/maxwelleite/10774746/raw/ttf-vista-fonts-installer.sh -q -O - | bash
 WORKDIR /app
 EXPOSE 80
@@ -25,6 +25,8 @@ ENV TZ="America/Guayaquil"
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN apt-get update && apt-get install -y wget apt-utils iputils-ping telnet vim libfontconfig1 fontforge cabextract
+RUN wget https://gist.githubusercontent.com/maxwelleite/10774746/raw/ttf-vista-fonts-installer.sh -q -O - | bash
 WORKDIR /src
 COPY . .
 WORKDIR "/src/src/Boilerplate.Api"
