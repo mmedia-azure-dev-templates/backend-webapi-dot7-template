@@ -6,7 +6,8 @@ WORKDIR /app
 EXPOSE 44360
 EXPOSE 44361
 
-RUN apt-get update && apt-get install -y apt-utils iputils-ping telnet vim wget git libfontconfig1
+RUN apt-get update && apt-get install -y apt-utils iputils-ping telnet vim wget git libfontconfig1 fontforge cabextract
+RUN wget https://gist.githubusercontent.com/maxwelleite/10774746/raw/ttf-vista-fonts-installer.sh -q -O - | bash
 RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb && apt-get update && apt-get install -y dotnet-sdk-7.0
 # Disable the invariant mode (set in base image)
