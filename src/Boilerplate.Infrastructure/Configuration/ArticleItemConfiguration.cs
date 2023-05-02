@@ -11,6 +11,7 @@ public class ArticleItemConfiguration : IEntityTypeConfiguration<ArticleItem>
     {
         entity.HasKey(e => e.Id).HasName("PK_ArticlesItems");
         entity.Property(e => e.Id).HasConversion<ArticleItemId.EfCoreValueConverter>();
+        entity.Property(e => e.Id).ValueGeneratedOnAdd();
         entity.Property(e => e.ArticleId).HasConversion<ArticleId.EfCoreValueConverter>();
         entity.Property(e => e.PaymentMethodId).HasConversion<PaymentMethodId.EfCoreValueConverter>();
     }

@@ -1,7 +1,10 @@
-﻿using Boilerplate.Domain.Entities;
+﻿using Boilerplate.Application.Features.ArticlesItems.ArticleItemUpdateBySku;
+using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Entities.Excels;
 using ClosedXML.Excel;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -17,14 +21,15 @@ namespace Boilerplate.Api.Controllers;
 [Authorize]
 public class ExcelController : ControllerBase
 {
-    public ExcelController()
+    private readonly IMediator _mediator;
+    public ExcelController(IMediator mediator)
     {
-        
+        _mediator = mediator;
     }
 
     [HttpPost]
     [Route("excel")]
-    public IActionResult ExcelFile(IFormFile excelFile)
+    public async Task<IActionResult> ExcelFile(IFormFile excelFile)
     {
         //https://stackoverflow.com/questions/22296136/download-file-with-closedxml
         using (MemoryStream stream = new MemoryStream())
@@ -55,23 +60,19 @@ public class ExcelController : ControllerBase
             }
 
             var rows = workSheet.RowsUsed().Skip(1);
-            var articlesItems = new List<ArticleItem>();
             foreach (var row in rows)
             {
-                var articleItem = new ArticleItem();
                 if(header.DirectCredit != null)
                 {
-                    
-                    //articleItem.DateUpdated = row.Cell(1).Value.ToString();
-                    //articleItem.PaymentMethodId = (PaymentMethodsType)Enum.Parse(typeof(PaymentMethodsType), row.Cell(3).Value.ToString());
-                    //return BadRequest("El archivo no tiene el formato correcto");
-
+                    ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest();
+                    articleItemUpdateBySkuRequest.Sku = row.Cell(1).Value.ToString();
+                    articleItemUpdateBySkuRequest.Display = row.Cell(2).Value.ToString();
+                    articleItemUpdateBySkuRequest.PaymentMethodsType = (PaymentMethodsType)header.DirectCredit;
+                    articleItemUpdateBySkuRequest.Price = Convert.ToDecimal(row.Cell(3).Value.ToString());
+                    var hola = await _mediator.Send(articleItemUpdateBySkuRequest);
                 }
-                var hola = row.Cell(1).Value;
-                var rowNumber = row.RowNumber();
             }
 
-            //workbook.SaveAs(stream);
             stream.Seek(0, SeekOrigin.Begin);
 
             return File(

@@ -9,6 +9,7 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
 {
     public void Configure(EntityTypeBuilder<Article> entity)
     {
+        entity.Property(e => e.Id).ValueGeneratedOnAdd();
         entity.Property(e => e.Id).HasConversion<ArticleId.EfCoreValueConverter>();
         entity.HasKey(e => e.Id).HasName("PK_Articles");
         entity.ToTable("Articles", "web");

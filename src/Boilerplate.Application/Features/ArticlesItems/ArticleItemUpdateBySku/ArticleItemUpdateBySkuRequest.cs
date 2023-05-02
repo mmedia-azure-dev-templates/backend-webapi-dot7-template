@@ -1,4 +1,5 @@
 ﻿using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Enums;
 using MediatR;
 using System;
 
@@ -7,6 +8,6 @@ public class ArticleItemUpdateBySkuRequest : IRequest<ArticleItemUpdateBySkuResp
 {
     public string Sku { get; set; }
     public string Display { get; set; }
-    public PaymentMethodId PaymentMethodId { get; set; }
+    public PaymentMethodsType PaymentMethodsType { get; set; }
     public decimal Price { get; set; }
 }
