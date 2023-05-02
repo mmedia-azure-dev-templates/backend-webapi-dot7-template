@@ -5,18 +5,18 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Articles.ArticleCreate;
-public class ArticleCreateHandler:IRequestHandler<ArticleCreateRequest, ArticleCreateResponse>
+namespace Boilerplate.Application.Features.Articles.ArticleUpdate;
+public class ArticleUpdateHandler:IRequestHandler<ArticleUpdateRequest, ArticleUpdateResponse>
 {
     private readonly IContext _context;
 
-    public ArticleCreateHandler(IContext context)
+    public ArticleUpdateHandler(IContext context)
     {
         _context = context;
     }
-    public async Task<ArticleCreateResponse> Handle(ArticleCreateRequest request, CancellationToken cancellationToken)
+    public async Task<ArticleUpdateResponse> Handle(ArticleUpdateRequest request, CancellationToken cancellationToken)
     {
-        ArticleCreateResponse _articleCreateResponse = new ArticleCreateResponse();
+        ArticleUpdateResponse _articleUpdateResponse = new ArticleUpdateResponse();
         Article article = new()
         {
             Provider = request.Provider,
@@ -30,7 +30,6 @@ public class ArticleCreateHandler:IRequestHandler<ArticleCreateRequest, ArticleC
 
         _context.Articles.Add(article);
         await _context.SaveChangesAsync(cancellationToken);
-        _articleCreateResponse.Article = article;
-        return _articleCreateResponse;
+        return _articleUpdateResponse;
     }
 }

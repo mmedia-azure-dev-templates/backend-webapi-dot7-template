@@ -1,12 +1,8 @@
-﻿using Boilerplate.Domain.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Implementations;
 
 namespace Boilerplate.Application.Features.Articles.ArticleCreate;
 public class ArticleCreateResponse:IArticleCreateResponse
 {
-    public string? Message { get; set; } 
+    public Article Article { get; set; } 
 }

@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Domain.Implementations;
-public interface IArticleUpdateResponse
+public interface IArticleCreateResponse
 {
 }
