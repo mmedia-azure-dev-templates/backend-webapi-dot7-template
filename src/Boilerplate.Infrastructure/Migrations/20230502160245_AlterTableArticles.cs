@@ -47,6 +47,16 @@ public partial class AlterTableArticles : Migration
                     table: "Articles",
                     unique: true,
                     columns: new[] { "DataKey", "Sku" });
+
+        migrationBuilder.AddForeignKey(
+                    schema: "web",
+                    table: "ArticlesItems",
+                    column: "ArticleId",
+                    name: "FK_ArticlesItems_Articles_ArticleItemId",
+                    principalSchema: "web",
+                    principalTable: "Articles",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Restrict);
     }
 
     /// <inheritdoc />
@@ -70,6 +80,11 @@ public partial class AlterTableArticles : Migration
             scale: 2,
             nullable: false);
 
+        migrationBuilder.DropIndex(
+            name: "DataKeySkuIndex",
+            schema: "web",
+            table: "Articles");
+
         migrationBuilder.AlterColumn<string>(
             name: "Sku",
             schema: "web",
@@ -83,5 +98,10 @@ public partial class AlterTableArticles : Migration
             table: "Articles",
             nullable: true,
             oldNullable: false);
+
+        migrationBuilder.DropForeignKey(
+            name: "FK_ArticlesItems_Articles_ArticleItemId",
+            schema: "web",
+            table: "ArticlesItems");
     }
 }
