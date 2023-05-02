@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
+using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.ArticlesItems.ArticleItemUpdateBySku;
+namespace Boilerplate.Application.Features.ArticlesItems.ArticleItemCreateUpdateBySku;
 public class ArticleItemUpdateBySkuHandler : IRequestHandler<ArticleItemUpdateBySkuRequest, ArticleItemUpdateBySkuResponse>
 {
     private readonly IContext _context;
@@ -57,6 +58,33 @@ public class ArticleItemUpdateBySkuHandler : IRequestHandler<ArticleItemUpdateBy
             }
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+        if(article == null)
+        {
+            var articleCreateRequest = new ArticleCreateRequest
+            {
+                Provider = 1,
+                Sku = request.Sku,
+                Display = request.Display,
+                Brand = 1,
+                Notes = null,
+                Meta = null,
+                Discontinued = false,
+            };
+            var articleCreateResponse = await new ArticleCreateHandler(_context).Handle(articleCreateRequest, cancellationToken);
+            articleItemUpdateBySkuResponse.Article = articleCreateResponse.Article;
+
+            var paymentMethod = await _context.PaymentMethods.Where(x => x.PaymentMethodsType == request.PaymentMethodsType).FirstOrDefaultAsync(cancellationToken);
+            var articleItem = new ArticleItem
+            {
+                ArticleId = articleCreateResponse.Article.Id,
+                PaymentMethodId = paymentMethod!.Id,
+                Price = request.Price
+            };
+            _context.ArticlesItems.Add(articleItem);
+            articleItemUpdateBySkuResponse.ArticleItem = articleItem;
+            await _context.SaveChangesAsync(cancellationToken);
+        }   
         return articleItemUpdateBySkuResponse;
     }
 }

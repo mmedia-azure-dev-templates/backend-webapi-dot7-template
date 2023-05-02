@@ -21,9 +21,7 @@ public class ArticleCreateHandler:IRequestHandler<ArticleCreateRequest, ArticleC
         {
             Provider = request.Provider,
             Sku = request.Sku,
-            Abrevia = request.Abrevia,
             Display = request.Display,
-            Cost = request.Cost,
             Brand = request.Brand,
             Notes = request.Notes,
             Meta = request.Meta,
@@ -32,6 +30,7 @@ public class ArticleCreateHandler:IRequestHandler<ArticleCreateRequest, ArticleC
 
         _context.Articles.Add(article);
         await _context.SaveChangesAsync(cancellationToken);
+        _articleCreateResponse.Article = article;
         return _articleCreateResponse;
     }
 }

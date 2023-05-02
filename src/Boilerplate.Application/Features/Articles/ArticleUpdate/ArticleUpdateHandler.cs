@@ -21,9 +21,7 @@ public class ArticleUpdateHandler:IRequestHandler<ArticleUpdateRequest, ArticleU
         {
             Provider = request.Provider,
             Sku = request.Sku,
-            Abrevia = request.Abrevia,
             Display = request.Display,
-            Cost = request.Cost,
             Brand = request.Brand,
             Notes = request.Notes,
             Meta = request.Meta,

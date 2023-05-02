@@ -1,9 +1,11 @@
-﻿using Boilerplate.Application.Features.ArticlesItems.ArticleItemUpdateBySku;
+﻿using Boilerplate.Application.Features.ArticlesItems.ArticleItemCreateUpdateBySku;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Entities.Excels;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.Spreadsheet;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -62,14 +64,38 @@ public class ExcelController : ControllerBase
             var rows = workSheet.RowsUsed().Skip(1);
             foreach (var row in rows)
             {
-                if(header.DirectCredit != null)
+                bool isEmpty = false;
+
+                foreach (IXLCell cell in row.Cells())
                 {
-                    ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest();
-                    articleItemUpdateBySkuRequest.Sku = row.Cell(1).Value.ToString();
-                    articleItemUpdateBySkuRequest.Display = row.Cell(2).Value.ToString();
-                    articleItemUpdateBySkuRequest.PaymentMethodsType = (PaymentMethodsType)header.DirectCredit;
-                    articleItemUpdateBySkuRequest.Price = Convert.ToDecimal(row.Cell(3).Value.ToString());
-                    var hola = await _mediator.Send(articleItemUpdateBySkuRequest);
+                    if (cell.IsEmpty())
+                    {
+                        isEmpty = true;
+                    }
+
+                }
+
+                if (header.DirectCredit != null && isEmpty == false)
+                {
+                    ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest
+                    {
+                        Sku = row.Cell(1).Value.ToString(),
+                        Display = row.Cell(2).Value.ToString(),
+                        PaymentMethodsType = (PaymentMethodsType)header.DirectCredit,
+                        Price = Convert.ToDecimal(row.Cell(3).Value.ToString())
+                    };
+                    await _mediator.Send(articleItemUpdateBySkuRequest);
+                }
+                if (header.Fcme != null && isEmpty == false)
+                {
+                    ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest
+                    {
+                        Sku = row.Cell(1).Value.ToString(),
+                        Display = row.Cell(2).Value.ToString(),
+                        PaymentMethodsType = (PaymentMethodsType)header.Fcme,
+                        Price = Convert.ToDecimal(row.Cell(4).Value.ToString())
+                    };
+                    await _mediator.Send(articleItemUpdateBySkuRequest);
                 }
             }
 
