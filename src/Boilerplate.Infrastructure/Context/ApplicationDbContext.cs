@@ -30,6 +30,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public virtual DbSet<GeographicLocation> GeographicLocations { get; set; }
     public virtual DbSet<Team> Teams { get; set; }
     public virtual DbSet<Article> Articles { get; set; }
+    public virtual DbSet<ArticleItem> ArticlesItems { get; set; }
     public virtual DbSet<Counter> Counters { get; set; }
     public virtual DbSet<OrderItem> OrderItems { get; set; }
     public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }

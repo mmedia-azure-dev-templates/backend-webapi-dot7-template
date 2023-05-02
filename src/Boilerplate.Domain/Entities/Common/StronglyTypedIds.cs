@@ -136,6 +136,12 @@ public partial struct ArticleId : IGuid
 }
 
 [StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
+public partial struct ArticleItemId : IGuid
+{
+    public static explicit operator Guid(ArticleItemId articleItemId) => articleItemId.Value;
+}
+
+[StronglyTypedId(backingType: StronglyTypedIdBackingType.Guid)]
 public partial struct OrderItemId : IGuid
 {
     public static explicit operator Guid(OrderItemId orderItemId) => orderItemId.Value;
