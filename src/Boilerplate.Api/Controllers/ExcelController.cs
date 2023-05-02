@@ -1,17 +1,12 @@
 ﻿using Boilerplate.Application.Features.ArticlesItems.ArticleItemCreateUpdateBySku;
-using Boilerplate.Domain.Entities;
-using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Entities.Excels;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml.Spreadsheet;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,7 +38,7 @@ public class ExcelController : ControllerBase
             var columns = workSheet.FirstRowUsed();
             HeaderArticlesPrices header = new HeaderArticlesPrices();
 
-            if(columns.Cell(1).Value.IsBlank || columns.Cell(2).Value.IsBlank)
+            if (columns.Cell(1).Value.IsBlank || columns.Cell(2).Value.IsBlank)
             {
                 return BadRequest("El archivo no tiene el formato correcto");
             }
@@ -53,12 +48,22 @@ public class ExcelController : ControllerBase
 
             if (columns.Cell(3).Value.IsBlank == false)
             {
-                header.DirectCredit = (PaymentMethodsType)Enum.Parse(typeof(PaymentMethodsType), columns.Cell(3).Value.ToString());
+                header.CashPayment = (PaymentMethodsType)Enum.Parse(typeof(PaymentMethodsType), columns.Cell(3).Value.ToString());
             }
 
             if (columns.Cell(4).Value.IsBlank == false)
             {
-                header.Fcme = (PaymentMethodsType)Enum.Parse(typeof(PaymentMethodsType), columns.Cell(4).Value.ToString());
+                header.CreditCard = (PaymentMethodsType)Enum.Parse(typeof(PaymentMethodsType), columns.Cell(4).Value.ToString());
+            }
+
+            if (columns.Cell(5).Value.IsBlank == false)
+            {
+                header.DirectCredit = (PaymentMethodsType)Enum.Parse(typeof(PaymentMethodsType), columns.Cell(5).Value.ToString());
+            }
+
+            if (columns.Cell(6).Value.IsBlank == false)
+            {
+                header.Fcme = (PaymentMethodsType)Enum.Parse(typeof(PaymentMethodsType), columns.Cell(6).Value.ToString());
             }
 
             var rows = workSheet.RowsUsed().Skip(1);
@@ -72,31 +77,39 @@ public class ExcelController : ControllerBase
                     {
                         isEmpty = true;
                     }
+                }
 
+                ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest
+                {
+                    Sku = row.Cell(1).Value.ToString(),
+                    Display = row.Cell(2).Value.ToString()
+                };
+
+                if (header.CashPayment != null && isEmpty == false)
+                {
+                    articleItemUpdateBySkuRequest.PaymentMethodsType = (PaymentMethodsType)header.CashPayment;
+                    articleItemUpdateBySkuRequest.Price = Convert.ToDecimal(row.Cell(3).Value.ToString());
+                }
+
+                if (header.CreditCard != null && isEmpty == false)
+                {
+                    articleItemUpdateBySkuRequest.PaymentMethodsType = (PaymentMethodsType)header.CreditCard;
+                    articleItemUpdateBySkuRequest.Price = Convert.ToDecimal(row.Cell(4).Value.ToString());
                 }
 
                 if (header.DirectCredit != null && isEmpty == false)
                 {
-                    ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest
-                    {
-                        Sku = row.Cell(1).Value.ToString(),
-                        Display = row.Cell(2).Value.ToString(),
-                        PaymentMethodsType = (PaymentMethodsType)header.DirectCredit,
-                        Price = Convert.ToDecimal(row.Cell(3).Value.ToString())
-                    };
-                    await _mediator.Send(articleItemUpdateBySkuRequest);
+                    articleItemUpdateBySkuRequest.PaymentMethodsType = (PaymentMethodsType)header.DirectCredit;
+                    articleItemUpdateBySkuRequest.Price = Convert.ToDecimal(row.Cell(5).Value.ToString());
                 }
+
                 if (header.Fcme != null && isEmpty == false)
                 {
-                    ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest
-                    {
-                        Sku = row.Cell(1).Value.ToString(),
-                        Display = row.Cell(2).Value.ToString(),
-                        PaymentMethodsType = (PaymentMethodsType)header.Fcme,
-                        Price = Convert.ToDecimal(row.Cell(4).Value.ToString())
-                    };
-                    await _mediator.Send(articleItemUpdateBySkuRequest);
+                    articleItemUpdateBySkuRequest.PaymentMethodsType = (PaymentMethodsType)header.Fcme;
+                    articleItemUpdateBySkuRequest.Price = Convert.ToDecimal(row.Cell(6).Value.ToString());
                 }
+
+                await _mediator.Send(articleItemUpdateBySkuRequest);
             }
 
             stream.Seek(0, SeekOrigin.Begin);

@@ -38,7 +38,6 @@ public partial class Articles : Migration
             {
                 table.PrimaryKey("PK_Articles", x => x.Id);
             });
-
     }
 
     /// <inheritdoc />
