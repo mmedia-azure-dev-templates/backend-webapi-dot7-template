@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Features.Address.AddresCreate;
 using Boilerplate.Application.Features.Address.AddresUpdate;
-using Boilerplate.Application.Features.Articles.ArticleSearch;
+using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.Customers.CustomerUpdate;
@@ -128,7 +128,7 @@ public class MappingProfile : Profile
         CreateMap<OrderUpdateRequest, Order>();
 
         // Hero Map
-        CreateMap<Article, ArticleSearchResponse>()
+        CreateMap<Article, ArticleSearchByPaymentMethodTypeResponse>()
             .ForMember(dest => dest.ArticleId, opt => opt.MapFrom(src => src.Id));
         //CreateMap<Article, ArticleSearchResponse>().ReverseMap();
         CreateMap<Hero, GetHeroResponse>().ReverseMap();

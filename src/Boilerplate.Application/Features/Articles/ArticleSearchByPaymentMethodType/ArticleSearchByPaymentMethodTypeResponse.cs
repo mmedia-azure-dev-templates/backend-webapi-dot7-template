@@ -1,7 +1,7 @@
 ﻿using Boilerplate.Domain.Entities.Common;
 
-namespace Boilerplate.Application.Features.Articles.ArticleSearch;
-public class ArticleSearchResponse
+namespace Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
+public class ArticleSearchByPaymentMethodTypeResponse
 {
     public ArticleId ArticleId { get; set; }
     public OrderId? OrderId { get; set; } = null;

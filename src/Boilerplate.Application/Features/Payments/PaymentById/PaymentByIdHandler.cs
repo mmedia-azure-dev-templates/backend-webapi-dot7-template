@@ -1,15 +1,7 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Address.AddresById;
-using Boilerplate.Application.Features.Articles.ArticleSearch;
-using Boilerplate.Application.Features.Customers.CustomerById;
-using Boilerplate.Application.Features.Users.GetUsers;
-using Boilerplate.Domain.Entities.Enums;
-using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using org.apache.zookeeper.data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;

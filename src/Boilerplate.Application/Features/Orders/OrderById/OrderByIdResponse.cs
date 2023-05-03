@@ -1,4 +1,4 @@
-﻿using Boilerplate.Application.Features.Articles.ArticleSearch;
+﻿using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Application.Features.Users.GetUsers;
@@ -11,7 +11,7 @@ public class OrderByIdResponse: IOrderByIdResponse
 {
     public Order Order { get; set; } = new();
     public List<PaymentByIdResponse> PaymentByIdResponse { get; set; }
-    public List<ArticleSearchResponse> ArticleSearchResponse { get; set; } = new();
+    public List<ArticleSearchByPaymentMethodTypeResponse> ArticleSearchResponse { get; set; } = new();
     public GetUsersResponse? UserGenerated { get; set; }
     public GetUsersResponse? UserAssigned { get; set; }
     public CustomerByIdResponse? Customer { get; set; }

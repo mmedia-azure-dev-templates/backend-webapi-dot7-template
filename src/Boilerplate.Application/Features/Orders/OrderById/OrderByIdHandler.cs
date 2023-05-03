@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Address.AddresById;
-using Boilerplate.Application.Features.Articles.ArticleSearch;
+using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Application.Features.Users.GetUsers;
@@ -101,7 +101,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                             product.orderItems,
                             articles,
                         } by new { product.orderItems.Id } into h
-                        select new ArticleSearchResponse
+                        select new ArticleSearchByPaymentMethodTypeResponse
                         {
                             ArticleId = h.First().orderItems.ArticleId,
                             OrderId = h.First().orderItems.OrderId,
@@ -240,7 +240,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                                                    from payment in customPayments
                                                    where payment.OrderId == g.First().order.Id
                                                    select payment),
-                               ArticleSearchResponse = (List<ArticleSearchResponse>)(
+                               ArticleSearchResponse = (List<ArticleSearchByPaymentMethodTypeResponse>)(
                                                         from product in products.DefaultIfEmpty()
                                                         where product.OrderId == g.First().order.Id
                                                         select product)

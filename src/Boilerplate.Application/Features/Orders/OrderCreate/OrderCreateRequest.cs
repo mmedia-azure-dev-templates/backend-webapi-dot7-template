@@ -1,10 +1,8 @@
-﻿using Boilerplate.Application.Features.Articles.ArticleSearch;
+﻿using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.PaymentMethods;
 using Boilerplate.Domain.Entities.Common;
-using Boilerplate.Domain.Entities.Enums;
 using MediatR;
-using System;
 using System.Collections.Generic;
 
 namespace Boilerplate.Application.Features.Orders.OrderCreate;
@@ -17,6 +15,6 @@ public class OrderCreateRequest: IRequest<OrderCreateResponse>
     public string? DocumentUrl { get; set; }
     public string? Documentation { get; set; }
     public CustomerCreateRequest CustomerCreateRequest { get; set; } = new CustomerCreateRequest();
-    public List<ArticleSearchResponse> ArticleSearchResponse { get; set; } = new List<ArticleSearchResponse>();
+    public List<ArticleSearchByPaymentMethodTypeResponse> ArticleSearchResponse { get; set; } = new List<ArticleSearchByPaymentMethodTypeResponse>();
     public List<PaymentMethodAllResponse> PaymentMethodAllResponse { get; set; } = new List<PaymentMethodAllResponse>();
 }
