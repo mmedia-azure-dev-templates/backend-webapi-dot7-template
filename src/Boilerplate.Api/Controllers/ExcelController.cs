@@ -79,37 +79,53 @@ public class ExcelController : ControllerBase
                     }
                 }
 
-                ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest
-                {
-                    Sku = row.Cell(1).Value.ToString(),
-                    Display = row.Cell(2).Value.ToString()
-                };
-
                 if (header.CashPayment != null && isEmpty == false)
                 {
-                    articleItemUpdateBySkuRequest.PaymentMethodsType = (PaymentMethodsType)header.CashPayment;
-                    articleItemUpdateBySkuRequest.Price = Convert.ToDecimal(row.Cell(3).Value.ToString());
+                    ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest
+                    {
+                        Sku = row.Cell(1).Value.ToString(),
+                        Display = row.Cell(2).Value.ToString(),
+                        PaymentMethodsType = (PaymentMethodsType)header.CashPayment,
+                        Price = Convert.ToDecimal(row.Cell(3).Value.ToString())
+                    };
+                    await _mediator.Send(articleItemUpdateBySkuRequest);
                 }
 
                 if (header.CreditCard != null && isEmpty == false)
                 {
-                    articleItemUpdateBySkuRequest.PaymentMethodsType = (PaymentMethodsType)header.CreditCard;
-                    articleItemUpdateBySkuRequest.Price = Convert.ToDecimal(row.Cell(4).Value.ToString());
+                    ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest
+                    {
+                        Sku = row.Cell(1).Value.ToString(),
+                        Display = row.Cell(2).Value.ToString(),
+                        PaymentMethodsType = (PaymentMethodsType)header.CreditCard,
+                        Price = Convert.ToDecimal(row.Cell(4).Value.ToString())
+                    };
+                    await _mediator.Send(articleItemUpdateBySkuRequest);
                 }
 
                 if (header.DirectCredit != null && isEmpty == false)
                 {
-                    articleItemUpdateBySkuRequest.PaymentMethodsType = (PaymentMethodsType)header.DirectCredit;
-                    articleItemUpdateBySkuRequest.Price = Convert.ToDecimal(row.Cell(5).Value.ToString());
+                    ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest
+                    {
+                        Sku = row.Cell(1).Value.ToString(),
+                        Display = row.Cell(2).Value.ToString(),
+                        PaymentMethodsType = (PaymentMethodsType)header.DirectCredit,
+                        Price = Convert.ToDecimal(row.Cell(5).Value.ToString())
+                    };
+                    await _mediator.Send(articleItemUpdateBySkuRequest);
                 }
 
                 if (header.Fcme != null && isEmpty == false)
                 {
-                    articleItemUpdateBySkuRequest.PaymentMethodsType = (PaymentMethodsType)header.Fcme;
-                    articleItemUpdateBySkuRequest.Price = Convert.ToDecimal(row.Cell(6).Value.ToString());
+                    ArticleItemUpdateBySkuRequest articleItemUpdateBySkuRequest = new ArticleItemUpdateBySkuRequest
+                    {
+                        Sku = row.Cell(1).Value.ToString(),
+                        Display = row.Cell(2).Value.ToString(),
+                        PaymentMethodsType = (PaymentMethodsType)header.Fcme,
+                        Price = Convert.ToDecimal(row.Cell(6).Value.ToString())
+                    };
+                    await _mediator.Send(articleItemUpdateBySkuRequest);
                 }
-
-                await _mediator.Send(articleItemUpdateBySkuRequest);
             }
 
             stream.Seek(0, SeekOrigin.Begin);

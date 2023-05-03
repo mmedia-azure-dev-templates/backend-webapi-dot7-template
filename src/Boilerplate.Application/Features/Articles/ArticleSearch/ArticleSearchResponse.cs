@@ -1,9 +1,4 @@
 ﻿using Boilerplate.Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Articles.ArticleSearch;
 public class ArticleSearchResponse
@@ -13,7 +8,6 @@ public class ArticleSearchResponse
     public bool Delivered { get; set; } = false;
     public int? Provider { get; set; }
     public string? Sku { get; set; }
-    public string? Abrevia { get; set; }
     public string? Display { get; set; }
     public int Quantity { get; set; }
     public decimal Cost { get; set; }
