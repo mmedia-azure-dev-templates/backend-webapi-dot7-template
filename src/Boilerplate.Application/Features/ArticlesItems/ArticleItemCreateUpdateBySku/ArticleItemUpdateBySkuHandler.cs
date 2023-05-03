@@ -23,33 +23,31 @@ public class ArticleItemUpdateBySkuHandler : IRequestHandler<ArticleItemUpdateBy
     public async Task<ArticleItemUpdateBySkuResponse> Handle(ArticleItemUpdateBySkuRequest request, CancellationToken cancellationToken)
     {
         ArticleItemUpdateBySkuResponse articleItemUpdateBySkuResponse = new ArticleItemUpdateBySkuResponse();
-        var article = await _context.Articles.Where(x => x.Sku == request.Sku).FirstOrDefaultAsync(cancellationToken);
-        if (article != null)
+        var result = await (from article in _context.Articles.DefaultIfEmpty()
+                            join articleItem in _context.ArticlesItems on article.Id equals articleItem.ArticleId into j1
+                            from articleItem in j1.DefaultIfEmpty()
+                            join paymentMethod in _context.PaymentMethods on articleItem.PaymentMethodId equals paymentMethod.Id into j2
+                            from paymentMethod in j2.DefaultIfEmpty()
+                            where article.Sku == request.Sku
+                            select new { article, articleItem }).FirstOrDefaultAsync(cancellationToken);
+        if (result != null)
         {
-            articleItemUpdateBySkuResponse.Article = article;
-            article.Display = request.Display;
-            _context.Articles.Update(article);
-            articleItemUpdateBySkuResponse.Article = article;
+            result.article.Display = request.Display;
+            _context.Articles.Update(result.article);
+            articleItemUpdateBySkuResponse.Article = result.article;
 
-            var articleItemPaymentMethod = await (from articleItem in _context.ArticlesItems.AsNoTracking()
-                                           join paymentMethod in _context.PaymentMethods on articleItem.PaymentMethodId equals paymentMethod.Id into j1
-                                           from paymentMethod in j1.DefaultIfEmpty()
-                                           where articleItem.ArticleId == article.Id && paymentMethod.PaymentMethodsType == request.PaymentMethodsType
-                                           select new { articleItem, paymentMethod }).FirstOrDefaultAsync(cancellationToken);
-
-            if (articleItemPaymentMethod != null)
+            if (result.articleItem != null)
             {
-                articleItemPaymentMethod.articleItem.Price = request.Price;
-                articleItemPaymentMethod.articleItem.PaymentMethodId = articleItemPaymentMethod.paymentMethod.Id;
-                _context.ArticlesItems.Update(articleItemPaymentMethod.articleItem);
-                articleItemUpdateBySkuResponse.ArticleItem = articleItemPaymentMethod.articleItem;
+                result.articleItem.Price = request.Price;
+                _context.ArticlesItems.Update(result.articleItem);
+                articleItemUpdateBySkuResponse.ArticleItem = result.articleItem;
             }
-            if(articleItemPaymentMethod == null)
+            if (result.articleItem == null)
             {
                 var paymentMethod = await _context.PaymentMethods.Where(x => x.PaymentMethodsType == request.PaymentMethodsType).FirstOrDefaultAsync(cancellationToken);
                 var articleItem = new ArticleItem
                 {
-                    ArticleId = article.Id,
+                    ArticleId = result.article.Id,
                     PaymentMethodId = paymentMethod!.Id,
                     Price = request.Price
                 };
@@ -59,7 +57,7 @@ public class ArticleItemUpdateBySkuHandler : IRequestHandler<ArticleItemUpdateBy
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        if(article == null)
+        if (result == null)
         {
             var articleCreateRequest = new ArticleCreateRequest
             {
@@ -84,7 +82,7 @@ public class ArticleItemUpdateBySkuHandler : IRequestHandler<ArticleItemUpdateBy
             _context.ArticlesItems.Add(articleItem);
             articleItemUpdateBySkuResponse.ArticleItem = articleItem;
             await _context.SaveChangesAsync(cancellationToken);
-        }   
+        }
         return articleItemUpdateBySkuResponse;
     }
 }
