@@ -63,7 +63,7 @@ public partial class ArticlesItemsMigration : Migration
         migrationBuilder.DropForeignKey(
                         name: "FK_ArticlesItems_PaymentMethods_PaymentMethodId",
                         schema: "web",
-                        table: "PaymentMethods");
+                        table: "ArticlesItems");
         migrationBuilder.DropTable(
                         schema: "web",
                         name: "ArticlesItems");
