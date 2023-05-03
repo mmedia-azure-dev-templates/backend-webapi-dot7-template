@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OneOf.Types;
 using System;
 using System.IO;
 using System.Linq;
@@ -66,16 +67,17 @@ public class ExcelController : ControllerBase
                 header.Fcme = (PaymentMethodsType)Enum.Parse(typeof(PaymentMethodsType), columns.Cell(6).Value.ToString());
             }
 
-            var rows = workSheet.RowsUsed().Skip(1);
+            var rows = workSheet.Rows().Skip(1);
             foreach (var row in rows)
             {
                 bool isEmpty = false;
-
-                foreach (IXLCell cell in row.Cells())
+                //row.RowNumber();
+                foreach (IXLCell cell in workSheet.Range($"{row.FirstCell()}:{row.LastCellUsed()}").Cells())
                 {
                     if (cell.IsEmpty())
                     {
                         isEmpty = true;
+                        break;
                     }
                 }
 
