@@ -88,6 +88,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseExceptionProcessor();
+        optionsBuilder.EnableSensitiveDataLogging();
         //optionsBuilder.ConfigureWarnings(w => w.Ignore(SqlServerEventId.SavepointsDisabledBecauseOfMARS));
         //optionsBuilder.ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS));
     }
