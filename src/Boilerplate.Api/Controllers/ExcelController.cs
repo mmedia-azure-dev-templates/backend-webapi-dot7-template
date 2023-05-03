@@ -71,12 +71,13 @@ public class ExcelController : ControllerBase
             foreach (var row in rows)
             {
                 bool isEmpty = false;
-
+                //row.RowNumber();
                 foreach (IXLCell cell in workSheet.Range($"{row.FirstCell()}:{row.LastCellUsed()}").Cells())
                 {
                     if (cell.IsEmpty())
                     {
                         isEmpty = true;
+                        break;
                     }
                 }
 
