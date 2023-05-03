@@ -2,28 +2,24 @@
 using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Responses;
-using Boilerplate.Application.Extensions;
-using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static QuestPDF.Helpers.Colors;
 
-namespace Boilerplate.Application.Features.Articles.ArticleSearch;
-public class ArticleSearchHandler : IRequestHandler<ArticleSearchRequest, PaginatedList<ArticleSearchResponse>>
+namespace Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
+public class ArticleSearchByPaymentMethodTypeHandler : IRequestHandler<ArticleSearchByPaymentMethodTypeRequest, PaginatedList<ArticleSearchByPaymentMethodTypeResponse>>
 {
     private readonly IContext _context;
     private readonly IMapper _mapper;
-    public ArticleSearchHandler(IMapper mapper, IContext context)
+    public ArticleSearchByPaymentMethodTypeHandler(IMapper mapper, IContext context)
     {
         _mapper = mapper;
         _context = context;
     }
 
-    public async Task<PaginatedList<ArticleSearchResponse>> Handle(ArticleSearchRequest request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<ArticleSearchByPaymentMethodTypeResponse>> Handle(ArticleSearchByPaymentMethodTypeRequest request, CancellationToken cancellationToken)
     {
         var articles = from article in _context.Articles.AsNoTracking().DefaultIfEmpty()
                        join articleItem in _context.ArticlesItems.AsNoTracking() on article.Id equals articleItem.ArticleId into j1
@@ -46,12 +42,8 @@ public class ArticleSearchHandler : IRequestHandler<ArticleSearchRequest, Pagina
             defaultFilter = defaultFilter.Where(x => EF.Functions.Like(x.article.Sku, $"%{request.Sku}%"));
         }
 
-        //.WhereIf(!string.IsNullOrEmpty(request.Sku), x => EF.Functions.Like(x.Sku, $"%{request.Sku}%"))
-        //.WhereIf(!string.IsNullOrEmpty(request.Display), x => EF.Functions.Like(x.Display!, $"%{request.Display}%"))
-        //;
-
         var result = from item in defaultFilter
-                     select new ArticleSearchResponse
+                     select new ArticleSearchByPaymentMethodTypeResponse
                      {
                          ArticleId = item.article.Id,
                         //OrderId = item.

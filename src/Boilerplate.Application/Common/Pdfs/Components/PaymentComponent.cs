@@ -1,9 +1,7 @@
-﻿using Boilerplate.Application.Features.Articles.ArticleSearch;
-using Boilerplate.Application.Features.Payments.PaymentById;
+﻿using Boilerplate.Application.Features.Payments.PaymentById;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class PaymentComponent : IComponent

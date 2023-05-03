@@ -1,20 +1,18 @@
-﻿using Boilerplate.Application.Features.Articles.ArticleSearch;
-using Boilerplate.Application.Features.Orders.OrderValid;
+﻿using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Domain.Entities;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class ProductsComponent : IComponent
 {
     public Order _order { get; set; }
-    public List<ArticleSearchResponse> ArticleSearchResponse { get; }
+    public List<ArticleSearchByPaymentMethodTypeResponse> ArticleSearchResponse { get; }
     public List<PaymentByIdResponse> _paymentByIdResponse { get; }
-    public ProductsComponent(Order order,List<ArticleSearchResponse> model, List<PaymentByIdResponse> paymentByIdResponse)
+    public ProductsComponent(Order order,List<ArticleSearchByPaymentMethodTypeResponse> model, List<PaymentByIdResponse> paymentByIdResponse)
     {
         _order = order;
         ArticleSearchResponse = model;

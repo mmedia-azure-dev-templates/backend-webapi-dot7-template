@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using MediatR;
 using Boilerplate.Application.Features.Articles.ArticleCreate;
-using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Microsoft.AspNetCore.Authorization;
+using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 
 namespace Boilerplate.Api.Controllers;
 
@@ -26,10 +26,10 @@ public class ArticleController : ControllerBase
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    [ProducesResponseType(typeof(PaginatedList<ArticleSearchResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedList<ArticleSearchByPaymentMethodTypeResponse>), StatusCodes.Status200OK)]
     [HttpGet]
     [Route("articles")]
-    public async Task<PaginatedList<ArticleSearchResponse>> GetArticles([FromQuery] ArticleSearchRequest request)
+    public async Task<PaginatedList<ArticleSearchByPaymentMethodTypeResponse>> GetArticles([FromQuery] ArticleSearchByPaymentMethodTypeRequest request)
     {
         return await _mediator.Send(request);
     }

@@ -5,11 +5,10 @@ using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Extensions;
 using Boilerplate.Application.Features.Address.AddresById;
-using Boilerplate.Application.Features.Articles.ArticleSearch;
+using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Application.Features.Users.GetUsers;
-using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using Boilerplate.Domain.PermissionsCode;
@@ -145,7 +144,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                             product.orderItems,
                             articles,
                         } by new { product.orderItems.Id } into h
-                        select new ArticleSearchResponse
+                        select new ArticleSearchByPaymentMethodTypeResponse
                         {
                             ArticleId = h.First().orderItems.ArticleId,
                             OrderId = h.First().orderItems.OrderId,
@@ -285,7 +284,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                                                    from payment in customPayments
                                                    where payment.OrderId == g.First().order.Id
                                                    select payment),
-                          ArticleSearchResponse = (List<ArticleSearchResponse>)(
+                          ArticleSearchResponse = (List<ArticleSearchByPaymentMethodTypeResponse>)(
                                                    from product in products
                                                    where product.OrderId == g.First().order.Id
                                                    select product)

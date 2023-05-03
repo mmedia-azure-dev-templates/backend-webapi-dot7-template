@@ -3,9 +3,9 @@ using Boilerplate.Application.Common.Responses;
 using Boilerplate.Domain.Entities.Enums;
 using MediatR;
 
-namespace Boilerplate.Application.Features.Articles.ArticleSearch;
+namespace Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 
-public class ArticleSearchRequest : PaginatedRequest, IRequest<PaginatedList<ArticleSearchResponse>>
+public class ArticleSearchByPaymentMethodTypeRequest : PaginatedRequest, IRequest<PaginatedList<ArticleSearchByPaymentMethodTypeResponse>>
 {
     public PaymentMethodsType PaymentMethodsTypePriority { get; set; }
     public string? Sku { get; set; }
