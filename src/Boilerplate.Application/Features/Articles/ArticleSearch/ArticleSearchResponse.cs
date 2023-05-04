@@ -13,12 +13,12 @@ public class ArticleSearchResponse
 
 public class ArticleItemPaymentMethodResponse
 {
-    public ArticleId ArticleId { get; set; }
-    public ArticleItemId ArticleItemId { get; set; }
-    public PaymentMethodId PaymentMethodId { get; set; }
-    public PaymentMethodsType PaymentMethodsType { get; set; }
-    public string Display { get; set; }
-    public decimal Price { get; set; }
-    public DateTime DateCreated { get; set; }
+    public ArticleId? ArticleId { get; set; }
+    public ArticleItemId? ArticleItemId { get; set; }
+    public PaymentMethodId? PaymentMethodId { get; set; }
+    public PaymentMethodsType? PaymentMethodsType { get; set; }
+    public string? Display { get; set; }
+    public decimal? Price { get; set; }
+    public DateTime? DateCreated { get; set; }
     public DateTime? DateUpdated { get; set; }
 }

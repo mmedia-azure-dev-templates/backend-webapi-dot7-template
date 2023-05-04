@@ -6,8 +6,8 @@
   <ItemGroup>
     <!--    add your PackageVersion nodes here -->
     <PackageVersion Include="AuthPermissions.AspNetCore" Version="4.1.0" />
-    <PackageVersion Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.5" />
-    <PackageVersion Include="AWSSDK.S3" Version="3.7.104.2" />
+    <PackageVersion Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
+    <PackageVersion Include="AWSSDK.S3" Version="3.7.104.9" />
     <PackageVersion Include="ClosedXML" Version="0.101.0" />
     <PackageVersion Include="EntityFramework" Version="6.4.4" />
     <PackageVersion Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="4.0.0" />
@@ -20,12 +20,12 @@
     <PackageVersion Include="Microsoft.SqlServer.Types" Version="160.1000.6" />
     <PackageVersion Include="Net.DistributedFileStoreCache" Version="2.0.0" />
     <PackageVersion Include="NewId" Version="4.0.1" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
-    <PackageVersion Include="NSwag.AspNetCore" Version="13.18.2" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
+    <PackageVersion Include="NSwag.AspNetCore" Version="13.19.0" />
     <PackageVersion Include="OpenTelemetry" Version="1.4.0" />
     <PackageVersion Include="OpenTelemetry.Api" Version="1.4.0" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.4.0" />
-    <PackageVersion Include="QuestPDF" Version="2022.12.4" />
+    <PackageVersion Include="QuestPDF" Version="2022.12.5" />
     <PackageVersion Include="Razor.Templating.Core" Version="1.8.0" />
     <PackageVersion Include="RazorEngineCore" Version="2022.8.1" />
     <PackageVersion Include="Rollbar" Version="5.2.0" />
