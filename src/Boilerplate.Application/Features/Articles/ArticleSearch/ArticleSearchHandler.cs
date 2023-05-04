@@ -34,12 +34,14 @@ public class ArticleSearchHandler : IRequestHandler<ArticleSearchRequest, Pagina
         var defaultFilter = articles;
 
         var articlesItemsMethods = from article in defaultFilter.AsNoTracking().DefaultIfEmpty()
-                            join articleItem in _context.ArticlesItems.AsNoTracking() on article.Id equals articleItem.ArticleId into j1
-                            from articleItem in j1.DefaultIfEmpty()
-                            join paymentMethod in _context.PaymentMethods.AsNoTracking() on articleItem.PaymentMethodId equals paymentMethod.Id into j2
-                            from paymentMethod in j2.DefaultIfEmpty()
+                                   join articleItem in _context.ArticlesItems.AsNoTracking() on article.Id equals articleItem.ArticleId into j1
+                                   from articleItem in j1.DefaultIfEmpty()
+                                   join paymentMethod in _context.PaymentMethods.AsNoTracking() on articleItem.PaymentMethodId equals paymentMethod.Id into j2
+                                   from paymentMethod in j2.DefaultIfEmpty()
+                                   //where articleItem != null
                                    select new ArticleItemPaymentMethodResponse
                                    {
+                                       ArticleId = article.Id,
                                        ArticleItemId = articleItem.Id,
                                        PaymentMethodId = articleItem.PaymentMethodId,
                                        PaymentMethodsType = paymentMethod.PaymentMethodsType,
@@ -49,14 +51,15 @@ public class ArticleSearchHandler : IRequestHandler<ArticleSearchRequest, Pagina
                                        DateUpdated = articleItem.DateUpdated
                                    };
 
-
         var result = from article in defaultFilter.AsNoTracking().DefaultIfEmpty()
                      orderby article.Sku ascending
                      select new ArticleSearchResponse
                      {
                          Article = article,
-                         ListArticleItemPaymentMethodResponse = (List<ArticleItemPaymentMethodResponse>)(
-                                                   articlesItemsMethods)
+                         ListArticleItemPaymentMethodResponse = (
+                                                  from articleItemMethod in articlesItemsMethods
+                                                  where articleItemMethod.ArticleId == article.Id
+                                                  select articleItemMethod).ToList(),
                      };
 
         return await result.ToPaginatedListAsync(request.CurrentPage, request.PageSize);

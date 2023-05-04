@@ -13,6 +13,7 @@ public class ArticleSearchResponse
 
 public class ArticleItemPaymentMethodResponse
 {
+    public ArticleId ArticleId { get; set; }
     public ArticleItemId ArticleItemId { get; set; }
     public PaymentMethodId PaymentMethodId { get; set; }
     public PaymentMethodsType PaymentMethodsType { get; set; }
