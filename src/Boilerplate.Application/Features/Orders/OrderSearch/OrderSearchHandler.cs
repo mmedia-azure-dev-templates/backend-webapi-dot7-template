@@ -4,7 +4,7 @@ using AutoMapper;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Extensions;
-using Boilerplate.Application.Features.Address.AddresById;
+using Boilerplate.Application.Features.Addresses.AddressById;
 using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Payments.PaymentById;

@@ -2,7 +2,7 @@
 using Boilerplate.Domain.Implementations;
 using System;
 
-namespace Boilerplate.Application.Features.Address.AddresById;
+namespace Boilerplate.Application.Features.Addresses.AddressById;
 public class AddressByIdResponse
 {
     public PersonId PersonId { get; set; }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Address.AddresById;
+using Boilerplate.Application.Features.Addresses.AddressById;
 using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Customers.CustomerById;
 using Boilerplate.Application.Features.Payments.PaymentById;

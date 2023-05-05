@@ -1,5 +1,4 @@
-﻿using Boilerplate.Application.Features.Address.AddresCreate;
-using Boilerplate.Application.Features.Address.AddresUpdate;
+﻿using Boilerplate.Application.Features.Addresses.AddresUpdate;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using MediatR;

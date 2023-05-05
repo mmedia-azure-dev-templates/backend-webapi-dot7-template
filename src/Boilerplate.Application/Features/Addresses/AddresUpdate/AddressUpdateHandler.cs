@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Address.AddresUpdate;
+namespace Boilerplate.Application.Features.Addresses.AddresUpdate;
 public class AddressUpdateHandler : IRequestHandler<AddressUpdateRequest, AddressUpdateResponse>
 {
     private readonly IContext _context;

@@ -1,7 +1,9 @@
 ﻿using Boilerplate.Application.Common.Responses;
+using Boilerplate.Application.Features.Articles.ArticleAvailable;
 using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
+using Boilerplate.Application.Features.Users.AvailableUserEmail;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -43,6 +45,13 @@ public class ArticleController : ControllerBase
     [HttpGet]
     [Route("articles")]
     public async Task<PaginatedList<ArticleSearchResponse>> GetArticles([FromQuery] ArticleSearchRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpPost]
+    [Route("available")]
+    public async Task<ArticleAvailableResponse> Available(ArticleAvailableRequest request)
     {
         return await _mediator.Send(request);
     }

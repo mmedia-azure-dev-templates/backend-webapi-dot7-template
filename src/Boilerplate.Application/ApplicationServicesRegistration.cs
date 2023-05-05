@@ -1,7 +1,7 @@
 ﻿using Boilerplate.Application.Auth;
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Common.Handlers;
-using Boilerplate.Application.Features.Address.AddresUpdate;
+using Boilerplate.Application.Features.Addresses.AddresUpdate;
 using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Auth;
 using Boilerplate.Application.Features.Auth.ForgotPassword;

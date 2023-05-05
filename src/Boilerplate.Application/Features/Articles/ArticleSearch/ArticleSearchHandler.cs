@@ -38,7 +38,6 @@ public class ArticleSearchHandler : IRequestHandler<ArticleSearchRequest, Pagina
                                    from articleItem in j1.DefaultIfEmpty()
                                    join paymentMethod in _context.PaymentMethods.AsNoTracking() on articleItem.PaymentMethodId equals paymentMethod.Id into j2
                                    from paymentMethod in j2.DefaultIfEmpty()
-                                   //where articleItem != null
                                    select new ArticleItemPaymentMethodResponse
                                    {
                                        ArticleId = article.Id,
