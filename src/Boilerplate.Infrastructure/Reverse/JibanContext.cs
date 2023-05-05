@@ -342,7 +342,6 @@ public partial class JibanContext : DbContext
                 .ToTable("Orders", "web");
 
             entity.Property(e => e.Balance).HasColumnType("decimal(14, 2)");
-            entity.Property(e => e.CashAdvance).HasColumnType("decimal(14, 2)");
             entity.Property(e => e.Credit).HasColumnType("decimal(14, 2)");
             entity.Property(e => e.Dispatch)
                 .HasMaxLength(50)

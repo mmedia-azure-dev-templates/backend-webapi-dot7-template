@@ -27,8 +27,6 @@ public partial class Order
 
     public string? PersonType { get; set; }
 
-    public decimal? CashAdvance { get; set; }
-
     public decimal? SubTotal { get; set; }
 
     public decimal? Iva { get; set; }

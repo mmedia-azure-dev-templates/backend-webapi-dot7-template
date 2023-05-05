@@ -1,12 +1,4 @@
-﻿using Boilerplate.Application.Features.Users;
-using Boilerplate.Domain.Entities.Common;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace Boilerplate.Application.Features.Articles.ArticleCreate;
 public class ArticleCreateRequest : IRequest<ArticleCreateResponse>
