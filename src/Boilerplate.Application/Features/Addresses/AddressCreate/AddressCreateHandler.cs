@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.Address.AddresCreate;
+namespace Boilerplate.Application.Features.Addresses.AddressCreate;
 public class AddressCreateHandler : IRequestHandler<AddressCreateRequest, AddressCreateResponse>
 {
     private readonly IContext _context;
@@ -21,7 +21,7 @@ public class AddressCreateHandler : IRequestHandler<AddressCreateRequest, Addres
     }
     public async Task<AddressCreateResponse> Handle(AddressCreateRequest request, CancellationToken cancellationToken)
     {
-        var address = new Domain.Entities.Address
+        var address = new Address
         {
             Id = new AddressId(Guid.NewGuid()),
             PersonId = new PersonId((Guid)request.PersonId),
@@ -37,10 +37,10 @@ public class AddressCreateHandler : IRequestHandler<AddressCreateRequest, Addres
         await _context.SaveChangesAsync(cancellationToken);
         _addresCreateResponse = _mapper.Map(address, _addresCreateResponse);
         _addresCreateResponse.PersonId = address.PersonId;
-        if(
-            address.DataKey != null && 
-            address.PrimaryStreet != null && 
-            address.SecondaryStreet != null && 
+        if (
+            address.DataKey != null &&
+            address.PrimaryStreet != null &&
+            address.SecondaryStreet != null &&
             address.Numeration != null &&
             address.Reference != null &&
             address.Provincia != null &&

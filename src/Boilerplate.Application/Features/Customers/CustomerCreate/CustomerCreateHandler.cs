@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Boilerplate.Application.Common;
-using Boilerplate.Application.Features.Address.AddresCreate;
+using Boilerplate.Application.Features.Addresses.AddressCreate;
 using Boilerplate.Application.Features.Customers.CustomerUpdate;
 using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;

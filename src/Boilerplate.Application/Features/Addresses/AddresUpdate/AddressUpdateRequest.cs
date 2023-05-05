@@ -2,7 +2,7 @@
 using MediatR;
 using System;
 
-namespace Boilerplate.Application.Features.Address.AddresUpdate;
+namespace Boilerplate.Application.Features.Addresses.AddresUpdate;
 public class AddressUpdateRequest : IRequest<AddressUpdateResponse>
 {
     public PersonId PersonId { get; set; }

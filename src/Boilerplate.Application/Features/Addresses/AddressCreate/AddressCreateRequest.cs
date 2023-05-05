@@ -1,7 +1,7 @@
 ﻿using Boilerplate.Domain.Entities.Common;
 using MediatR;
 
-namespace Boilerplate.Application.Features.Address.AddresCreate;
+namespace Boilerplate.Application.Features.Addresses.AddressCreate;
 public class AddressCreateRequest : IRequest<AddressCreateResponse>
 {
     public PersonId PersonId { get; set; }

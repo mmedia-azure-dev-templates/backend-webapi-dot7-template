@@ -2,7 +2,7 @@
 using Boilerplate.Domain.Implementations;
 using System;
 
-namespace Boilerplate.Application.Features.Address.AddresCreate;
+namespace Boilerplate.Application.Features.Addresses.AddressCreate;
 public class AddressCreateResponse
 {
     public bool AddressComplete { get; set; } = false;

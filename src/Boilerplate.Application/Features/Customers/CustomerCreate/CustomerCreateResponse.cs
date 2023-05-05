@@ -1,4 +1,4 @@
-﻿using Boilerplate.Application.Features.Address.AddresCreate;
+﻿using Boilerplate.Application.Features.Addresses.AddressCreate;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Implementations;

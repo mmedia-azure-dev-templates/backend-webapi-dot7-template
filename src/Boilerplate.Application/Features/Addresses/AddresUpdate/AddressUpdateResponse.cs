@@ -2,8 +2,8 @@
 using Boilerplate.Domain.Implementations;
 using System;
 
-namespace Boilerplate.Application.Features.Address.AddresUpdate;
-public class AddressUpdateResponse: IAddressUpdateResponse
+namespace Boilerplate.Application.Features.Addresses.AddresUpdate;
+public class AddressUpdateResponse : IAddressUpdateResponse
 {
     public bool AddressComplete { get; set; } = false;
     public PersonId PersonId { get; set; }
