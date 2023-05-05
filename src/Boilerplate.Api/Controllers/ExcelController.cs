@@ -1,4 +1,4 @@
-﻿using Boilerplate.Application.Features.ArticlesItems.ArticleItemCreateUpdateBySku;
+﻿using Boilerplate.Application.Features.Articles.ArticleItemCreateUpdateBySku;
 using Boilerplate.Domain.Entities.Enums;
 using Boilerplate.Domain.Entities.Excels;
 using ClosedXML.Excel;

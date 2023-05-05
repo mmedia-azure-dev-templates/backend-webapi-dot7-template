@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Boilerplate.Application.Features.ArticlesItems.ArticleItemCreateUpdateBySku;
+namespace Boilerplate.Application.Features.Articles.ArticleItemCreateUpdateBySku;
 public class ArticleItemUpdateBySkuHandler : IRequestHandler<ArticleItemUpdateBySkuRequest, ArticleItemUpdateBySkuResponse>
 {
     private readonly IContext _context;
@@ -52,7 +52,7 @@ public class ArticleItemUpdateBySkuHandler : IRequestHandler<ArticleItemUpdateBy
                     PaymentMethodId = paymentMethod!.Id,
                     Price = request.Price
                 };
-                await _context.ArticlesItems.AddAsync(articleItem,cancellationToken);
+                await _context.ArticlesItems.AddAsync(articleItem, cancellationToken);
                 articleItemUpdateBySkuResponse.ArticleItem = articleItem;
             }
             await _context.SaveChangesAsync(cancellationToken);
