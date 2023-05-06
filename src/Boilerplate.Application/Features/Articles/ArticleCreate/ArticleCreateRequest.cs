@@ -1,23 +1,23 @@
-﻿using Boilerplate.Application.Features.Users;
-using Boilerplate.Domain.Entities.Common;
+﻿using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Enums;
 using MediatR;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Articles.ArticleCreate;
 public class ArticleCreateRequest : IRequest<ArticleCreateResponse>
 {
-    public int Provider { get; set; }
+    public int Provider { get; set; } = 1;
     public string Sku { get; set; }
-    public string Abrevia { get; set; }
     public string Display { get; set; }
-    public decimal Cost { get; set; }
-    public int Brand { get; set; }
+    public int Brand { get; set; } = 1;
     public string? Notes { get; set; }
     public string? Meta { get; set; }
-    public bool Discontinued { get; set; }
+    public bool Discontinued { get; set; } = false;
+    public List<ArticleItemsPrices> ListArticleItemsPrices { get; set; } = new();
+}
+
+public class ArticleItemsPrices
+{
+    public PaymentMethodId PaymentMethodId { get; set; }
+    public decimal? Price { get; set; }
 }

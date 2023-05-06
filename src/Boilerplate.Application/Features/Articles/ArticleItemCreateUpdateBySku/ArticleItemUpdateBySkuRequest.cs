@@ -3,7 +3,7 @@ using Boilerplate.Domain.Entities.Enums;
 using MediatR;
 using System;
 
-namespace Boilerplate.Application.Features.ArticlesItems.ArticleItemCreateUpdateBySku;
+namespace Boilerplate.Application.Features.Articles.ArticleItemCreateUpdateBySku;
 public class ArticleItemUpdateBySkuRequest : IRequest<ArticleItemUpdateBySkuResponse>
 {
     public string Sku { get; set; }
