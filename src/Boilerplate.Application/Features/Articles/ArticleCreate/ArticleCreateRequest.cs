@@ -1,4 +1,5 @@
-﻿using Boilerplate.Domain.Entities.Enums;
+﻿using Boilerplate.Domain.Entities.Common;
+using Boilerplate.Domain.Entities.Enums;
 using MediatR;
 using System.Collections.Generic;
 
@@ -12,11 +13,11 @@ public class ArticleCreateRequest : IRequest<ArticleCreateResponse>
     public string? Notes { get; set; }
     public string? Meta { get; set; }
     public bool Discontinued { get; set; } = false;
-    public List<ArticleItemsPrices>? ListArticleItemsPrices { get; set; }
+    public List<ArticleItemsPrices> ListArticleItemsPrices { get; set; } = new();
 }
 
 public class ArticleItemsPrices
 {
-    public PaymentMethodsType PaymentMethodsType { get; set; }
+    public PaymentMethodId PaymentMethodId { get; set; }
     public decimal? Price { get; set; }
 }
