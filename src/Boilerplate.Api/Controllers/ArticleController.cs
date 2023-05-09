@@ -1,8 +1,10 @@
 ﻿using Boilerplate.Application.Common.Responses;
 using Boilerplate.Application.Features.Articles.ArticleAvailable;
+using Boilerplate.Application.Features.Articles.ArticleById;
 using Boilerplate.Application.Features.Articles.ArticleCreate;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
+using Boilerplate.Application.Features.Articles.ArticleUpdate;
 using Boilerplate.Application.Features.Users.AvailableUserEmail;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -43,7 +45,7 @@ public class ArticleController : ControllerBase
     /// <returns></returns>
     [ProducesResponseType(typeof(PaginatedList<ArticleSearchResponse>), StatusCodes.Status200OK)]
     [HttpGet]
-    [Route("articles")]
+    [Route("getarticles")]
     public async Task<PaginatedList<ArticleSearchResponse>> GetArticles([FromQuery] ArticleSearchRequest request)
     {
         return await _mediator.Send(request);
@@ -59,6 +61,20 @@ public class ArticleController : ControllerBase
     [HttpPost]
     [Route("create")]
     public async Task<ActionResult<ArticleCreateResponse>> CreateArticle(ArticleCreateRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpGet]
+    [Route("getarticle")]
+    public async Task<ArticleSearchResponse> GetArticle([FromQuery]ArticleByIdRequest request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpPut]
+    [Route("update")]
+    public async Task<ArticleUpdateResponse> UpdateArticle(ArticleUpdateRequest request)
     {
         return await _mediator.Send(request);
     }
