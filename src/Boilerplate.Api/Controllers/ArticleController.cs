@@ -67,7 +67,7 @@ public class ArticleController : ControllerBase
 
     [HttpGet]
     [Route("getarticle")]
-    public async Task<ArticleSearchResponse> GetArticle([FromQuery]ArticleByIdRequest request)
+    public async Task<ArticleByIdResponse> GetArticle([FromQuery]ArticleByIdRequest request)
     {
         return await _mediator.Send(request);
     }

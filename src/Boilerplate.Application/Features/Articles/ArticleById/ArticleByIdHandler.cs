@@ -2,15 +2,21 @@
 using Boilerplate.Application.Common;
 using Boilerplate.Application.Features.Articles.ArticleSearch;
 using Boilerplate.Application.Features.Articles.ArticleUpdate;
+using Boilerplate.Application.Features.PaymentMethods.PaymentMethodById;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Enums;
+using Boilerplate.Domain.Implementations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using org.apache.zookeeper.data;
+using System.Drawing;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Boilerplate.Application.Features.Articles.ArticleById;
-public class ArticleByIdHandler : IRequestHandler<ArticleByIdRequest, ArticleSearchResponse>
+public class ArticleByIdHandler : IRequestHandler<ArticleByIdRequest, ArticleByIdResponse>
 {
     private readonly IContext _context;
 
@@ -18,7 +24,7 @@ public class ArticleByIdHandler : IRequestHandler<ArticleByIdRequest, ArticleSea
     {
         _context = context;
     }
-    public async Task<ArticleSearchResponse> Handle(ArticleByIdRequest request, CancellationToken cancellationToken)
+    public async Task<ArticleByIdResponse> Handle(ArticleByIdRequest request, CancellationToken cancellationToken)
     {
         var articles = from article in _context.Articles.AsNoTracking().DefaultIfEmpty()
                        where article.Id == request.ArticleId
@@ -41,10 +47,20 @@ public class ArticleByIdHandler : IRequestHandler<ArticleByIdRequest, ArticleSea
                      select new ArticleByIdResponse
                      {
                          Article = article,
-                         ListArticleItemPaymentMethodResponse = (
-                                                  from articleItemMethod in articlesItemsMethods
-                                                  where articleItemMethod.ArticleId == article.Id
-                                                  select articleItemMethod).ToList(),
+                         ListArticleItem = articlesItemsMethods.GroupBy(x=>x.articleItem.Id).Select(x => x.First().articleItem).ToList(),
+                         ListPaymentMethodByIdResponse = articlesItemsMethods.GroupBy(x =>x.paymentMethod.Id).Select(x => new PaymentMethodByIdResponse
+                         {
+                             Id = x.First().paymentMethod.Id,
+                             DataKey = x.First().paymentMethod.DataKey,
+                             PaymentMethodsType = x.First().paymentMethod.PaymentMethodsType,
+                             Display = x.First().paymentMethod.Display,
+                             Priority = x.First().paymentMethod.Priority,
+                             Active = x.First().paymentMethod.Active,
+                             Icon = x.First().paymentMethod.Icon,
+                             IsSelected = true,
+                             DateCreated = x.First().paymentMethod.DateCreated,
+                             DateUpdated = x.First().paymentMethod.DateUpdated
+                         }).ToList()
                      };
 
         return await result.FirstOrDefaultAsync(cancellationToken);

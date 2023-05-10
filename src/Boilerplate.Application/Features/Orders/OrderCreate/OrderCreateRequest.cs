@@ -1,6 +1,7 @@
 ﻿using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Customers.CustomerCreate;
 using Boilerplate.Application.Features.PaymentMethods;
+using Boilerplate.Application.Features.PaymentMethods.PaymentMethodById;
 using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using System.Collections.Generic;
@@ -16,5 +17,5 @@ public class OrderCreateRequest: IRequest<OrderCreateResponse>
     public string? Documentation { get; set; }
     public CustomerCreateRequest CustomerCreateRequest { get; set; } = new CustomerCreateRequest();
     public List<ArticleSearchByPaymentMethodTypeResponse> ArticleSearchResponse { get; set; } = new List<ArticleSearchByPaymentMethodTypeResponse>();
-    public List<PaymentMethodAllResponse> PaymentMethodAllResponse { get; set; } = new List<PaymentMethodAllResponse>();
+    public List<PaymentMethodByIdResponse> PaymentMethodAllResponse { get; set; } = new List<PaymentMethodByIdResponse>();
 }

@@ -1,6 +1,7 @@
 ﻿using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Customers.CustomerUpdate;
 using Boilerplate.Application.Features.PaymentMethods;
+using Boilerplate.Application.Features.PaymentMethods.PaymentMethodById;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Entities.Enums;
 using MediatR;
@@ -19,5 +20,5 @@ public class OrderUpdateRequest: IRequest<OrderUpdateResponse>
     public string? Documentation { get; set; }
     public CustomerUpdateRequest CustomerUpdateRequest { get; set; } = new CustomerUpdateRequest();
     public List<ArticleSearchByPaymentMethodTypeResponse> ArticleSearchResponse { get; set; } = new List<ArticleSearchByPaymentMethodTypeResponse>();
-    public List<PaymentMethodAllResponse> PaymentMethodAllResponse { get; set; } = new List<PaymentMethodAllResponse>();
+    public List<PaymentMethodByIdResponse> PaymentMethodAllResponse { get; set; } = new List<PaymentMethodByIdResponse>();
 }

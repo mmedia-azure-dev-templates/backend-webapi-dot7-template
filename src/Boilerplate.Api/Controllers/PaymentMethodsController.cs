@@ -28,16 +28,16 @@ public class PaymentMethodsController : ControllerBase
 
     [HttpGet]
     [Route("paymentmethods")]
-    public async Task <List<PaymentMethodAllResponse>> PaymentMethods()
+    public async Task <List<PaymentMethodByIdResponse>> PaymentMethods()
     {
         var result = await (from t in _context.PaymentMethods
                             orderby t.Priority
                      select t).ToListAsync();
-        List<PaymentMethodAllResponse> paymentMethodAllResponse = new List<PaymentMethodAllResponse>();
+        List<PaymentMethodByIdResponse> paymentMethodAllResponse = new List<PaymentMethodByIdResponse>();
         foreach (var item in result)
         {
             paymentMethodAllResponse.Add(
-                new PaymentMethodAllResponse
+                new PaymentMethodByIdResponse
                 {
                     Id = item.Id,
                     DataKey = item.DataKey,

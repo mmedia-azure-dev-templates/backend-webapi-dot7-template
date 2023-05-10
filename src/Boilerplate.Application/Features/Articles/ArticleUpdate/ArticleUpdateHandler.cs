@@ -1,5 +1,6 @@
 ﻿using Boilerplate.Application.Common;
 using Boilerplate.Domain.Entities;
+using Boilerplate.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 
 namespace Boilerplate.Application.Features.Articles.ArticleUpdate;
-public class ArticleUpdateHandler:IRequestHandler<ArticleUpdateRequest, ArticleUpdateResponse>
+public class ArticleUpdateHandler : IRequestHandler<ArticleUpdateRequest, ArticleUpdateResponse>
 {
     private readonly IContext _context;
 
@@ -23,32 +24,24 @@ public class ArticleUpdateHandler:IRequestHandler<ArticleUpdateRequest, ArticleU
         using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
             var article = await _context.Articles.Where(x => x.Id == request.ArticleId).FirstOrDefaultAsync(cancellationToken);
-            article.Provider = request.Provider;
+            article!.Provider = request.Provider;
             article.Sku = request.Sku;
             article.Display = request.Display;
             article.Brand = request.Brand;
             article.Notes = request.Notes;
             article.Meta = request.Meta;
             article.Discontinued = request.Discontinued;
+            _context.Articles.Update(article);
 
-            await _context.Articles.AddAsync(article);
+            var listArticlesItems = await _context.ArticlesItems.Where(x => x.ArticleId == article.Id).ToListAsync(cancellationToken);
 
-            List<ArticleItem> listArticlesItems = new List<ArticleItem>();
-            foreach (var articleItem in request.ListArticleItemsPrices)
+            foreach (var articleItem in listArticlesItems)
             {
-                if (articleItem.Price != null)
-                {
-                    var item = new ArticleItem
-                    {
-                        ArticleId = article.Id,
-                        PaymentMethodId = articleItem.PaymentMethodId,
-                        Price = (decimal)articleItem.Price,
-                    };
-                    listArticlesItems.Add(item);
-                }
+                var articleItemPrice = request.ListArticleItemsPrices.Where(x => x.PaymentMethodId == articleItem.PaymentMethodId).FirstOrDefault();
+                articleItem.Price = (decimal)articleItemPrice!.Price;
+                articleItem.PaymentMethodId = articleItemPrice!.PaymentMethodId;
+                _context.ArticlesItems.Update(articleItem);
             }
-            await _context.ArticlesItems.AddRangeAsync(listArticlesItems);
-
             _articleUpdateResponse.Article = article;
             _articleUpdateResponse.ListArticlesItems = listArticlesItems;
             _articleUpdateResponse.Message = "Article updated successfully!";
