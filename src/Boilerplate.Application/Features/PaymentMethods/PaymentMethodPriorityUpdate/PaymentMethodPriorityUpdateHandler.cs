@@ -34,7 +34,7 @@ public class PaymentMethodPriorityUpdateHandler : IRequestHandler<PaymentMethodP
             await _context.SaveChangesAsync(cancellationToken);
             scope.Complete();
             paymentMethodPriorityUpdateResponse.Success = true;
-            paymentMethodPriorityUpdateResponse.Message = "Prioridad de pago no actualizado";
+            paymentMethodPriorityUpdateResponse.Message = "Prioridad de pago actualizado";
             return paymentMethodPriorityUpdateResponse;
         }
     }
