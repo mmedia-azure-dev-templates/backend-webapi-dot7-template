@@ -26,12 +26,11 @@ public class ExcelController : ControllerBase
     }
 
     [HttpPost]
-    [Route("excel")]
-    public async Task<IActionResult> ExcelFile(IFormFile excelFile)
+    [Route("uploadexcelarticles")]
+    public async Task<IActionResult> UploadExcelArticles(IFormFile excelFile)
     {
         //https://stackoverflow.com/questions/22296136/download-file-with-closedxml
-        //var excelFile = Request.Form.Files[0];
-        using (MemoryStream stream = new MemoryStream())
+        using (MemoryStream memoryStream = new MemoryStream())
         {
             foreach (var fontFamily in SixLabors.Fonts.SystemFonts.Collection.Families)
                 Console.WriteLine(fontFamily.Name);
@@ -69,8 +68,16 @@ public class ExcelController : ControllerBase
             }
 
             var rows = workSheet.Rows().Skip(1);
+            TextWriter articleLog = new StreamWriter(memoryStream);
+            //{
+            //    tw.Write("blabla");
+            //    tw.Flush();
+            //    memoryStream.Position = 0;
+            //    memoryStream.Close();
+            //}
             foreach (var row in rows)
             {
+
                 bool isEmpty = false;
                 //row.RowNumber();
                 foreach (IXLCell cell in workSheet.Range($"{row.FirstCell()}:{row.LastCellUsed()}").Cells())
@@ -91,6 +98,8 @@ public class ExcelController : ControllerBase
                         PaymentMethodsType = (PaymentMethodsType)header.CashPayment,
                         Price = Convert.ToDecimal(row.Cell(3).Value.ToString())
                     };
+                    articleLog.Write(row.Cell(1).Value.ToString());
+                    articleLog.WriteLine();
                     await _mediator.Send(articleItemUpdateBySkuRequest);
                 }
 
@@ -103,6 +112,8 @@ public class ExcelController : ControllerBase
                         PaymentMethodsType = (PaymentMethodsType)header.CreditCard,
                         Price = Convert.ToDecimal(row.Cell(4).Value.ToString())
                     };
+                    articleLog.Write(row.Cell(1).Value.ToString());
+                    articleLog.WriteLine();
                     await _mediator.Send(articleItemUpdateBySkuRequest);
                 }
 
@@ -115,6 +126,8 @@ public class ExcelController : ControllerBase
                         PaymentMethodsType = (PaymentMethodsType)header.DirectCredit,
                         Price = Convert.ToDecimal(row.Cell(5).Value.ToString())
                     };
+                    articleLog.Write(row.Cell(1).Value.ToString());
+                    articleLog.WriteLine();
                     await _mediator.Send(articleItemUpdateBySkuRequest);
                 }
 
@@ -127,19 +140,18 @@ public class ExcelController : ControllerBase
                         PaymentMethodsType = (PaymentMethodsType)header.Fcme,
                         Price = Convert.ToDecimal(row.Cell(6).Value.ToString())
                     };
+                    articleLog.Write(row.Cell(1).Value.ToString());
+                    articleLog.WriteLine();
                     await _mediator.Send(articleItemUpdateBySkuRequest);
                 }
+
+                
             }
 
-            stream.Seek(0, SeekOrigin.Begin);
-
-            return File(
-                fileContents: stream.ToArray(),
-                contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                // By setting a file download name the framework will
-                // automatically add the attachment Content-Disposition header
-                fileDownloadName: "ERSheet.xlsx"
-            );
+            //stream.Seek(0, SeekOrigin.Begin);
+            articleLog.Flush();
+            memoryStream.Close();
+            return File(memoryStream.ToArray(),"application/force-download", "articleLog.txt");
         }
     }
 
