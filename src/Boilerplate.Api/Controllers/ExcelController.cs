@@ -30,6 +30,7 @@ public class ExcelController : ControllerBase
     public async Task<IActionResult> ExcelFile(IFormFile excelFile)
     {
         //https://stackoverflow.com/questions/22296136/download-file-with-closedxml
+        //var excelFile = Request.Form.Files[0];
         using (MemoryStream stream = new MemoryStream())
         {
             foreach (var fontFamily in SixLabors.Fonts.SystemFonts.Collection.Families)
