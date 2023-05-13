@@ -7,7 +7,7 @@
     <!--    add your PackageVersion nodes here -->
     <PackageVersion Include="AuthPermissions.AspNetCore" Version="4.1.0" />
     <PackageVersion Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
-    <PackageVersion Include="AWSSDK.S3" Version="3.7.104.9" />
+    <PackageVersion Include="AWSSDK.S3" Version="3.7.104.14" />
     <PackageVersion Include="ClosedXML" Version="0.101.0" />
     <PackageVersion Include="EntityFramework" Version="6.4.4" />
     <PackageVersion Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="4.0.0" />
@@ -25,7 +25,7 @@
     <PackageVersion Include="OpenTelemetry" Version="1.4.0" />
     <PackageVersion Include="OpenTelemetry.Api" Version="1.4.0" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.4.0" />
-    <PackageVersion Include="QuestPDF" Version="2022.12.5" />
+    <PackageVersion Include="QuestPDF" Version="2023.4.2" />
     <PackageVersion Include="Razor.Templating.Core" Version="1.8.0" />
     <PackageVersion Include="RazorEngineCore" Version="2022.8.1" />
     <PackageVersion Include="Rollbar" Version="5.2.0" />
@@ -40,7 +40,7 @@
     <PackageVersion Include="MediatR" Version="12.0.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageVersion Include="OneOf" Version="3.0.243" />
-    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.29.0" />
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />
     <PackageVersion Include="EntityFrameworkCore.Exceptions.SqlServer" Version="6.0.3.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.5" />
@@ -74,7 +74,7 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.11" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta.4" />
     <PackageVersion Include="Serilog" Version="2.12.0" />
-    <PackageVersion Include="Serilog.AspNetCore" Version="6.1.0" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageVersion Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageVersion Include="Serilog.Sinks.Async" Version="1.5.0" />
