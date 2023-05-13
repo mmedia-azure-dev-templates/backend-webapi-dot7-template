@@ -110,6 +110,7 @@ public class OrderByIdHandler : IRequestHandler<OrderByIdRequest, OrderByIdRespo
                             Display = h.First().articles.Display,
                             Delivered = h.First().orderItems.Delivered,
                             Quantity = h.First().orderItems.Quantity,
+                            Cost = h.First().orderItems.Price,
                             Total = h.First().orderItems.Total,
                             Brand = h.First().articles.Brand,
                             Notes = h.First().articles.Notes,
