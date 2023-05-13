@@ -2,6 +2,7 @@
 using Boilerplate.Application.Common.Responses;
 using Boilerplate.Domain.Entities.Enums;
 using MediatR;
+using System.Collections.Generic;
 
 namespace Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 
@@ -11,5 +12,6 @@ public class ArticleSearchByPaymentMethodTypeRequest : PaginatedRequest, IReques
     public string? Sku { get; set; }
     public string? Display { get; set; }
     public int? Brand { get; set; }
+    public List<ArticleSearchByPaymentMethodTypeResponse>? ListArticleSearchByPaymentMethodTypeResponse { get; set; }
 }
 

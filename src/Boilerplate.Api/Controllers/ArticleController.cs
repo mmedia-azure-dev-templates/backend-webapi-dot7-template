@@ -32,8 +32,8 @@ public class ArticleController : ControllerBase
     /// <returns></returns>
     [ProducesResponseType(typeof(PaginatedList<ArticleSearchByPaymentMethodTypeResponse>), StatusCodes.Status200OK)]
     [HttpGet]
-    [Route("articlesbypaymentmethodtype")]
-    public async Task<PaginatedList<ArticleSearchByPaymentMethodTypeResponse>> GetArticlesByPaymentMethodType([FromQuery] ArticleSearchByPaymentMethodTypeRequest request)
+    [Route("articlesearchsbypaymentmethodtype")]
+    public async Task<PaginatedList<ArticleSearchByPaymentMethodTypeResponse>> GetArticlesSearchByPaymentMethodType([FromQuery] ArticleSearchByPaymentMethodTypeRequest request)
     {
         return await _mediator.Send(request);
     }
