@@ -4,5 +4,5 @@ public class PaginatedRequest
 {
     public int CurrentPage { get; init; } = 1;
 
-    public int PageSize { get; init; } = 10;
+    public int PageSize { get; set; } = 10;
 }
