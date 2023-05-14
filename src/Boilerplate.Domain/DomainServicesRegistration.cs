@@ -1,10 +1,9 @@
 ﻿using Amazon.S3;
-using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Implementations;
 using Boilerplate.Domain.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using QuestPDF.Infrastructure;
 
 namespace Boilerplate.Domain;
 
@@ -18,7 +17,7 @@ public static class DomainServicesRegistration
         services.AddAWSService<IAmazonS3>();
         services.AddSingleton<IAwsS3Configuration, AwsS3ConfigurationServices>();
         services.AddScoped<IAwsS3Service, AwsS3Service>();
-
+        QuestPDF.Settings.License = LicenseType.Community;
         return services;
     }
 }
