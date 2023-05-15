@@ -42,6 +42,12 @@ public class ArticleSearchByPaymentMethodTypeHandler : IRequestHandler<ArticleSe
             defaultFilter = defaultFilter.Where(x => EF.Functions.Like(x.article.Sku, $"%{request.Sku}%"));
         }
 
+        if(request.ListArticleSearchByPaymentMethodTypeResponse != null)
+        {
+            request.PageSize = 500;
+            defaultFilter = defaultFilter.Where(x => request.ListArticleSearchByPaymentMethodTypeResponse.Select(y => y.ArticleId).Contains(x.articleItem.ArticleId));
+        }
+
         var result = from item in defaultFilter
                      select new ArticleSearchByPaymentMethodTypeResponse
                      {
