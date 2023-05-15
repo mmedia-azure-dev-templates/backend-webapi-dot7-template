@@ -45,7 +45,7 @@ public class ArticleSearchByPaymentMethodTypeHandler : IRequestHandler<ArticleSe
         if(request.ListArticleSearchByPaymentMethodTypeResponse != null)
         {
             request.PageSize = 500;
-            defaultFilter = defaultFilter.Where(x => !request.ListArticleSearchByPaymentMethodTypeResponse.Any(y => y.ArticleId == x.article.Id));
+            defaultFilter = defaultFilter.Where(x => request.ListArticleSearchByPaymentMethodTypeResponse.Select(y => y.ArticleId).Contains(x.articleItem.ArticleId));
         }
 
         var result = from item in defaultFilter
