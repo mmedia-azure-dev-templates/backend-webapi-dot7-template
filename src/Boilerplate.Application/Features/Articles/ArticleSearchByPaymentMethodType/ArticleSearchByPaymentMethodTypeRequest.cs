@@ -12,6 +12,6 @@ public class ArticleSearchByPaymentMethodTypeRequest : PaginatedRequest, IReques
     public string? Sku { get; set; }
     public string? Display { get; set; }
     public int? Brand { get; set; }
-    public List<ArticleSearchByPaymentMethodTypeResponse>? ListArticleSearchByPaymentMethodTypeResponse { get; set; }
+    public List<ArticleSearchByPaymentMethodTypeResponse> ListArticleSearchByPaymentMethodTypeResponse { get; set; } = new List<ArticleSearchByPaymentMethodTypeResponse>();
 }
 
