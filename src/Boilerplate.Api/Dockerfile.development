@@ -8,8 +8,6 @@ EXPOSE 44361
 RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update
 RUN apt-get install -y wget apt-utils iputils-ping telnet vim wget git libfontconfig1 fontforge cabextract
 RUN wget https://gist.githubusercontent.com/maxwelleite/10774746/raw/ttf-vista-fonts-installer.sh -q -O - | bash
-RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
-#RUN dpkg -i packages-microsoft-prod.deb && apt-get install -y dotnet-sdk-7.0
 # Disable the invariant mode (set in base image)
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 ENV TZ="America/Guayaquil"
