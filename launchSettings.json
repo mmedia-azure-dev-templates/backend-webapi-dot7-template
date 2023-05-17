@@ -11,7 +11,7 @@
         "jaeger-production": "DoNotStart",
         "jiban-api-development": "StartDebugging",
         "jiban-api-production": "DoNotStart",
-        "jiban-db": "DoNotStart"
+        "jiban-db": "StartWithoutDebugging"
       }
     }
   }
