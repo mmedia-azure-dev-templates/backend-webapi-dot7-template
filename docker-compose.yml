@@ -17,8 +17,8 @@ services:
     image: jiban-api-production:${TAG}
     container_name: jiban-api-production
     ports:
-      - "80:80"
-      - "443:443"
+      - "${PORT_HTTP}:${PORT_HTTP}"
+      - "${PORT_HTTPS}:${PORT_HTTPS}"
     networks: 
         Production:
             aliases: 
