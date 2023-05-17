@@ -7,8 +7,8 @@ RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false upd
 RUN apt-get install -y wget apt-utils iputils-ping telnet vim libfontconfig1 fontforge cabextract
 RUN wget https://gist.githubusercontent.com/maxwelleite/10774746/raw/ttf-vista-fonts-installer.sh -q -O - | bash
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE ${PORT_HTTP}
+EXPOSE ${PORT_HTTPS}
 
 ARG JIBAN_Initial=${JIBAN__Initial} \
     USER_SECRETS_ID=${USER_SECRETS_ID} \
