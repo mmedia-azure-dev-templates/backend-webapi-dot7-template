@@ -33,19 +33,32 @@ public class ArticleUpdateHandler : IRequestHandler<ArticleUpdateRequest, Articl
             article.Discontinued = request.Discontinued;
             _context.Articles.Update(article);
 
-            var listArticlesItems = await _context.ArticlesItems.Where(x => x.ArticleId == article.Id).ToListAsync(cancellationToken);
-
-            foreach (var articleItem in listArticlesItems)
+            foreach (var item in request.ListArticleItemsPrices)
             {
-                var articleItemPrice = request.ListArticleItemsPrices.Where(x => x.PaymentMethodId == articleItem.PaymentMethodId).FirstOrDefault();
-                articleItem.Price = (decimal)articleItemPrice!.Price;
-                articleItem.PaymentMethodId = articleItemPrice!.PaymentMethodId;
-                _context.ArticlesItems.Update(articleItem);
+                var newArticleItemPrice = await (_context.ArticlesItems.Where(x => x.ArticleId == article.Id && x.PaymentMethodId == item.PaymentMethodId)).FirstOrDefaultAsync(cancellationToken);
+
+                if (newArticleItemPrice != null)
+                {
+                    newArticleItemPrice.Price = (decimal)item!.Price!;
+                    newArticleItemPrice.PaymentMethodId = item!.PaymentMethodId;
+                    _context.ArticlesItems.Update(newArticleItemPrice);
+                }
+
+                if (newArticleItemPrice == null)
+                {
+                    newArticleItemPrice = new ArticleItem();
+                    newArticleItemPrice.ArticleId = article.Id;
+                    newArticleItemPrice.PaymentMethodId = item.PaymentMethodId;
+                    newArticleItemPrice.Price = (decimal) item.Price;
+                    _context.ArticlesItems.Add(newArticleItemPrice);
+                }
             }
+            await _context.SaveChangesAsync(cancellationToken);
+
+            var listArticlesItems = await _context.ArticlesItems.Where(x => x.ArticleId == article.Id).ToListAsync(cancellationToken);
             _articleUpdateResponse.Article = article;
             _articleUpdateResponse.ListArticlesItems = listArticlesItems;
             _articleUpdateResponse.Message = "Article updated successfully!";
-            await _context.SaveChangesAsync(cancellationToken);
             scope.Complete();
         }
 

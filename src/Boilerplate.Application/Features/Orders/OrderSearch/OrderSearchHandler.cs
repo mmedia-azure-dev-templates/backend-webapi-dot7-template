@@ -113,7 +113,6 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
         var customPayments = (from payment in defaultFilter.AsNoTracking().DefaultIfEmpty()
                               join paymentMethod in _context.PaymentMethods.AsNoTracking().DefaultIfEmpty() on payment.payments.PaymentMethodId equals paymentMethod.Id into j101
                               from paymentMethod in j101.DefaultIfEmpty()
-                              where payment.payments != null
                               group new 
                               { 
                                   payment.payments, paymentMethod 

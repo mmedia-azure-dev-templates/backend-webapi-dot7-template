@@ -5,13 +5,13 @@
       "commandVersion": "1.0",
       "composeLaunchAction": "LaunchBrowser",
       "composeLaunchServiceName": "jiban-api-development",
-      "composeLaunchUrl": "{Scheme}://api.mad.ec:{ServicePort}/swagger/index.html",
+      "composeLaunchUrl": "{Scheme}://apiqa.mad.ec:{ServicePort}/swagger/index.html",
       "serviceActions": {
         "jaeger-development": "StartWithoutDebugging",
         "jaeger-production": "DoNotStart",
         "jiban-api-development": "StartDebugging",
         "jiban-api-production": "DoNotStart",
-        "jiban-db": "DoNotStart"
+        "jiban-db": "StartWithoutDebugging"
       }
     }
   }
