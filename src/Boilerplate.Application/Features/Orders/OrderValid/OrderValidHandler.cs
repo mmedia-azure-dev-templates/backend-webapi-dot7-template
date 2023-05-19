@@ -24,7 +24,7 @@ public class OrderValidHandler : IRequestHandler<OrderValidRequest, OrderValidRe
         var order = await _mediator.Send(new OrderByIdRequest { OrderId = request.OrderId }, cancellationToken);
         result.OrderByIdResponse = order;
 
-        var products = order.ArticleSearchResponse.Count();
+        var products = order.ListArticleSearchResponse.Count();
 
         if(products.Equals(0))
         {

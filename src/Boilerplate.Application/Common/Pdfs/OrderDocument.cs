@@ -1,9 +1,6 @@
 ﻿using Boilerplate.Application.Common.Pdfs.Components;
 using Boilerplate.Application.Features.Orders.OrderValid;
-using Boilerplate.Domain.Implementations;
-using QuestPDF.Drawing;
 using QuestPDF.Fluent;
-using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace Boilerplate.Application.Common.Pdfs;
@@ -45,7 +42,7 @@ public class OrderDocument : IDocument
 
     void ComposeProducts(IContainer container)
     {
-        new ProductsComponent(_orderValidResponse.OrderByIdResponse.Order, _orderValidResponse.OrderByIdResponse.ArticleSearchResponse, _orderValidResponse.OrderByIdResponse.PaymentByIdResponse).Compose(container);
+        new ProductsComponent(_orderValidResponse.OrderByIdResponse.Order, _orderValidResponse.OrderByIdResponse.ListArticleSearchResponse, _orderValidResponse.OrderByIdResponse.PaymentMethodById).Compose(container);
     }
     void ComposeNotes(IContainer container)
     {

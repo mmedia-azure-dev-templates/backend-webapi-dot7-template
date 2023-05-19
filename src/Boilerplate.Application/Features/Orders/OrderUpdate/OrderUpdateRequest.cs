@@ -11,7 +11,7 @@ namespace Boilerplate.Application.Features.Orders.OrderUpdate;
 public class OrderUpdateRequest: IRequest<OrderUpdateResponse>
 {
     public OrderId OrderId { get; set; }
-    public PaymentMethodsType? PaymentMethodsType { get; set; }
+    public PaymentMethodId? PaymentMethodId { get; set; }
     public UserAssigned? UserAssigned { get; set; }
     public decimal SubTotal { get; set; }
     public decimal Total { get; set; }
