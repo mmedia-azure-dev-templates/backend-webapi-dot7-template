@@ -9,6 +9,7 @@ using System.Collections.Generic;
 namespace Boilerplate.Application.Features.Orders.OrderCreate;
 public class OrderCreateRequest: IRequest<OrderCreateResponse>
 {
+    public PaymentMethodId? PaymentMethodId { get; set; }
     public UserAssigned? UserAssigned { get; set; }
     public decimal SubTotal { get; set; }
     public decimal Total { get; set; }

@@ -7,8 +7,10 @@ using Boilerplate.Application.Extensions;
 using Boilerplate.Application.Features.Addresses.AddressById;
 using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
 using Boilerplate.Application.Features.Customers.CustomerById;
+using Boilerplate.Application.Features.PaymentMethods.PaymentMethodById;
 using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Application.Features.Users.GetUsers;
+using Boilerplate.Domain.Entities;
 using Boilerplate.Domain.Entities.Common;
 using Boilerplate.Domain.Implementations;
 using Boilerplate.Domain.PermissionsCode;
@@ -39,6 +41,8 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
         var result = (from order in _context.Orders.AsNoTracking().DefaultIfEmpty()
                       join orderItems in _context.OrderItems.AsNoTracking().DefaultIfEmpty() on order.Id equals orderItems.OrderId into j1
                       from orderItems in j1.DefaultIfEmpty()
+                      join paymentMethodSingle in _context.PaymentMethods.AsNoTracking().DefaultIfEmpty() on order.PaymentMethodId equals paymentMethodSingle.Id into j200
+                      from paymentMethodSingle in j200.DefaultIfEmpty()
                       join payments in _context.Payments.AsNoTracking().DefaultIfEmpty() on order.Id equals payments.OrderId into j100
                       from payments in j100.DefaultIfEmpty()
                       join userGeneratedApplicationUser in _context.ApplicationUsers.AsNoTracking().DefaultIfEmpty() on new { p1 = (Guid)order.UserGenerated } equals new { p1 = userGeneratedApplicationUser.Id } into j3
@@ -63,6 +67,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                       {
                           order,
                           orderItems,
+                          paymentMethodSingle,
                           payments,
                           userGeneratedApplicationUser,
                           userGeneratedUserInformation,
@@ -113,10 +118,11 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
         var customPayments = (from payment in defaultFilter.AsNoTracking().DefaultIfEmpty()
                               join paymentMethod in _context.PaymentMethods.AsNoTracking().DefaultIfEmpty() on payment.payments.PaymentMethodId equals paymentMethod.Id into j101
                               from paymentMethod in j101.DefaultIfEmpty()
-                              group new 
-                              { 
-                                  payment.payments, paymentMethod 
-                              } 
+                              group new
+                              {
+                                  payment.payments,
+                                  paymentMethod
+                              }
                               by new { payment.payments.Id } into g
                               select new PaymentByIdResponse
                               {
@@ -137,7 +143,7 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
         var products = (from product in defaultFilter.AsNoTracking().DefaultIfEmpty()
                         join articles in _context.Articles.AsNoTracking().DefaultIfEmpty() on product.orderItems.ArticleId equals articles.Id into j2
                         from articles in j2.DefaultIfEmpty()
-                        //where product.orderItems != null && product.articles != null
+                            //where product.orderItems != null && product.articles != null
                         group new
                         {
                             product.orderItems,
@@ -161,11 +167,36 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                             IsSelected = true,
                         });
 
+        //var customPaymentMethod = (from cPaymentMethod in defaultFilter.AsNoTracking().DefaultIfEmpty()
+        //                           where cPaymentMethod.order.PaymentMethodId != null
+        //                           group new
+        //                           {
+        //                               cPaymentMethod.order,
+        //                               cPaymentMethod.paymentMethodSingle
+        //                           }
+        //                           by new { cPaymentMethod.order.Id } into b
+        //                           select new PaymentMethodByIdResponse
+        //                           {
+        //                               Id = b.First().paymentMethodSingle.Id,
+        //                               DataKey = b.First().paymentMethodSingle.DataKey,
+        //                               PaymentMethodsType = b.First().paymentMethodSingle.PaymentMethodsType,
+        //                               Display = b.First().paymentMethodSingle.Display,
+        //                               Priority = b.First().paymentMethodSingle.Priority,
+        //                               Active = b.First().paymentMethodSingle.Active,
+        //                               Icon = b.First().paymentMethodSingle.Icon,
+        //                               DateCreated = b.First().paymentMethodSingle.DateCreated,
+        //                               DateUpdated = b.First().paymentMethodSingle.DateUpdated
+
+        //                           });
+
+        //var chespi = await customPaymentMethod.FirstOrDefaultAsync(cancellationToken);
+
         var orders = (from order in defaultFilter.AsNoTracking()
                       group new
                       {
                           order.order,
                           order.customer,
+                          order.paymentMethodSingle,
                           order.payments,
                           order.address,
                           order.provincia,
@@ -280,11 +311,23 @@ public class OrderSearchHandler : IRequestHandler<OrderSearchRequest, PaginatedL
                               DateCreated = g.First().userAssignedUserInformation.DateCreated,
                               DateUpdated = g.First().userAssignedUserInformation.DateUpdated,
                           },
-                          PaymentByIdResponse = (List<PaymentByIdResponse>)(
+                          PaymentMethod = g.First().order.PaymentMethodId == null ? null : new PaymentMethodByIdResponse
+                          {
+                              Id = g.First().paymentMethodSingle.Id,
+                              DataKey = g.First().paymentMethodSingle.DataKey,
+                              PaymentMethodsType = g.First().paymentMethodSingle.PaymentMethodsType,
+                              Display = g.First().paymentMethodSingle.Display,
+                              Priority = g.First().paymentMethodSingle.Priority,
+                              Active = g.First().paymentMethodSingle.Active,
+                              Icon = g.First().paymentMethodSingle.Icon,
+                              DateCreated = g.First().paymentMethodSingle.DateCreated,
+                              DateUpdated = g.First().paymentMethodSingle.DateUpdated
+                          },
+                          ListPayments = (List<PaymentByIdResponse>)(
                                                    from payment in customPayments
                                                    where payment.OrderId == g.First().order.Id
                                                    select payment),
-                          ArticleSearchResponse = (List<ArticleSearchByPaymentMethodTypeResponse>)(
+                          ListArticleSearchResponse = (List<ArticleSearchByPaymentMethodTypeResponse>)(
                                                    from product in products
                                                    where product.OrderId == g.First().order.Id
                                                    select product)

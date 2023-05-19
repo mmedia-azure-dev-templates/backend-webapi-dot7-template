@@ -1,16 +1,15 @@
-﻿using Boilerplate.Application.Features.Payments.PaymentById;
+﻿using Boilerplate.Application.Features.PaymentMethods.PaymentMethodById;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
-using System.Collections.Generic;
 
 namespace Boilerplate.Application.Common.Pdfs.Components;
 public class PaymentComponent : IComponent
 {
-    private List<PaymentByIdResponse> _paymentByIdResponse { get; }
+    private PaymentMethodByIdResponse _paymentMethodByIdResponse { get; }
 
-    public PaymentComponent(List<PaymentByIdResponse> paymentByIdResponse)
+    public PaymentComponent(PaymentMethodByIdResponse paymentMethodByIdResponse)
     {
-        _paymentByIdResponse = paymentByIdResponse;
+        _paymentMethodByIdResponse = paymentMethodByIdResponse;
     }
 
     public void Compose(IContainer container)
@@ -21,16 +20,9 @@ public class PaymentComponent : IComponent
             {
                 text.Span("Formas de Pago: ").Bold();
                 text.EmptyLine();
-
-                if (_paymentByIdResponse.Count > 0)
-                {
-                    foreach (var item in _paymentByIdResponse)
-                    {
-                        text.Span($"| ").ExtraBlack();
-                        text.Span($"{item.Display}");
-                        text.Span($" | ").ExtraBlack();
-                    }
-                }
+                text.Span($"| ").ExtraBlack();
+                text.Span($"{_paymentMethodByIdResponse?.Display}");
+                text.Span($" | ").ExtraBlack();
             });
         });
     }

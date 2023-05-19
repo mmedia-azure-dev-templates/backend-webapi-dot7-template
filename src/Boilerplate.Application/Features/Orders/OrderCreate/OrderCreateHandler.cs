@@ -87,6 +87,7 @@ public class OrderCreateHandler : IRequestHandler<OrderCreateRequest, OrderCreat
 
                 var order = new Order
                 {
+                    PaymentMethodId = request.PaymentMethodId,
                     OrderStatusType = OrderStatusType.Entered,
                     OrderNumber = new OrderNumber(counter.CustomCounter.Value),
                     UserGenerated = new UserGenerated(_session.UserId.Value),

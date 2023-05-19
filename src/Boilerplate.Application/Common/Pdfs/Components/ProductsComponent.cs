@@ -1,4 +1,5 @@
 ﻿using Boilerplate.Application.Features.Articles.ArticleSearchByPaymentMethodType;
+using Boilerplate.Application.Features.PaymentMethods.PaymentMethodById;
 using Boilerplate.Application.Features.Payments.PaymentById;
 using Boilerplate.Domain.Entities;
 using QuestPDF.Fluent;
@@ -11,12 +12,12 @@ public class ProductsComponent : IComponent
 {
     public Order _order { get; set; }
     public List<ArticleSearchByPaymentMethodTypeResponse> ArticleSearchResponse { get; }
-    public List<PaymentByIdResponse> _paymentByIdResponse { get; }
-    public ProductsComponent(Order order,List<ArticleSearchByPaymentMethodTypeResponse> model, List<PaymentByIdResponse> paymentByIdResponse)
+    public PaymentMethodByIdResponse _paymentMethodByIdResponse { get; }
+    public ProductsComponent(Order order,List<ArticleSearchByPaymentMethodTypeResponse> model, PaymentMethodByIdResponse paymentMethodByIdResponse)
     {
         _order = order;
         ArticleSearchResponse = model;
-        _paymentByIdResponse = paymentByIdResponse;
+        _paymentMethodByIdResponse = paymentMethodByIdResponse;
     }
     public void Compose(IContainer container)
     {
@@ -134,6 +135,6 @@ public class ProductsComponent : IComponent
 
     void ComposePayments(IContainer container)
     {
-        new PaymentComponent(_paymentByIdResponse).Compose(container);
+        new PaymentComponent(_paymentMethodByIdResponse).Compose(container);
     }
 }
