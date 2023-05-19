@@ -3,8 +3,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 WORKDIR /app
-EXPOSE 44360
-EXPOSE 44361
+EXPOSE ${PORT_HTTP}
+EXPOSE ${PORT_HTTPS}
 RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update
 RUN apt-get install -y wget apt-utils iputils-ping telnet vim wget git libfontconfig1 fontforge cabextract
 RUN wget https://gist.githubusercontent.com/maxwelleite/10774746/raw/ttf-vista-fonts-installer.sh -q -O - | bash
