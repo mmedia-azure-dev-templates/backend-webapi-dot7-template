@@ -59,6 +59,14 @@ public enum DefaultPermissions : ushort //Must be ushort to work with AuthP
     [Display(GroupName = "Orders", Description = "Puede ver todas las ordenes")]
     OrderAll = 3003,
 
+    //Here is an articles of detailed control over some feature
+    [Display(GroupName = "Articles", Description = "Puede ver artículos")]
+    ArticleRead = 3100,
+    [Display(GroupName = "Articles", Description = "Puede crear artículos")]
+    ArticleCreate = 3101,
+    [Display(GroupName = "Articles", Description = "Puede modificar artículos")]
+    ArticleModify = 3102,
+
     //----------------------------------------------------
     //Admin section
 
