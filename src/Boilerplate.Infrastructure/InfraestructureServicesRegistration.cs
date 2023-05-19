@@ -47,6 +47,7 @@ public static class InfraestructureServicesRegistration
             o.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>(); // add this line
             o.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"), conf =>
             {
+                conf.CommandTimeout(180);
                 conf.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                 conf.UseHierarchyId();
             });
