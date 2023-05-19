@@ -30,7 +30,7 @@ services:
       - 1433:1433
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Yourpassword123
+      - MSSQL_SA_PASSWORD=Yourpassword123
       - TZ=America/Guayaquil
     networks: 
         Production:
