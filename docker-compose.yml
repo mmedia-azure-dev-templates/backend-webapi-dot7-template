@@ -50,8 +50,8 @@ services:
     image: jiban-api-development:${TAG}
     container_name: jiban-api-development
     ports:
-      - ${PORT_HTTP}:${PORT_HTTP}
-      - ${PORT_HTTPS}:${PORT_HTTPS}
+      - 8080:${PORT_HTTP}
+      - 4545:${PORT_HTTPS}
     networks: 
         Development:
             aliases: 
