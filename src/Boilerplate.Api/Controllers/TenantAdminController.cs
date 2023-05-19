@@ -30,6 +30,7 @@ namespace Boilerplate.Api.Controllers;
 [Authorize]
 public class TenantAdminController : Controller
 {
+    private readonly IAuthRolesAdminService _authRolesAdmin;
     private readonly IAuthUsersAdminService _authUsersAdmin;
     private readonly IEncryptDecryptService _encryptService;
     private readonly IAuthUsersAdminService _usersAdmin;
@@ -39,9 +40,10 @@ public class TenantAdminController : Controller
     private readonly ISession _session;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public TenantAdminController(IAuthUsersAdminService authUsersAdmin, IEncryptDecryptService encryptService,
+    public TenantAdminController(IAuthRolesAdminService authRolesAdmin,IAuthUsersAdminService authUsersAdmin, IEncryptDecryptService encryptService,
         IAuthUsersAdminService usersAdmin, IAddNewUserManager addNewUserManager, IAuthPDefaultLocalizer localizeProvider, IMailService mailService,ISession session, UserManager<ApplicationUser> userManager)
     {
+        _authRolesAdmin = authRolesAdmin;
         _authUsersAdmin = authUsersAdmin;
         _encryptService = encryptService;
         _usersAdmin = usersAdmin;
@@ -91,6 +93,13 @@ public class TenantAdminController : Controller
             AllRoleNames = await _authUsersAdmin.GetRoleNamesForUsersAsync(User.GetUserIdFromUser()),
             ExpirationTimesDropdown = inviteService.ListOfExpirationTimes()
         };
+        var status = await _authUsersAdmin.FindAuthUserByUserIdAsync(User.GetUserIdFromUser());
+        var isAdminTenant = status.Result.UserRoles.Where(x => x.RoleName == "Administrador Empresa").Count();
+
+        if (isAdminTenant == 0)
+        {
+            setupInvite.AllRoleNames = setupInvite.AllRoleNames.Where(x => x != "Administrador Empresa").ToList();
+        }
 
         return setupInvite;
     }
